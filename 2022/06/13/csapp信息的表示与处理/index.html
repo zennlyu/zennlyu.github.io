@@ -34,8 +34,9 @@
 <meta property="og:image" content="http://example.com/statics/csapp/bool.png">
 <meta property="og:image" content="http://example.com/statics/csapp/boolExe.png">
 <meta property="og:image" content="http://example.com/statics/csapp/xor.png">
+<meta property="og:image" content="http://example.com/statics/csapp/2-8.png">
 <meta property="article:published_time" content="2022-06-13T05:25:58.062Z">
-<meta property="article:modified_time" content="2022-06-26T03:37:09.125Z">
+<meta property="article:modified_time" content="2022-06-26T03:51:47.399Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="csapp">
 <meta name="twitter:card" content="summary">
@@ -235,7 +236,49 @@
 <p>逻辑运算认为所有非零的参数都表示 TRUE，而参数 0 表示 FALSE。它们返回 1 或者 0，分别表示结果为 TRUE 或者为 FALSE。以下是一些表达式求值的示例。</p>
 <p>逻辑运算符&amp;&amp;和‖与它们对应的位级运算&amp;和|之间第二个重要的区别是，如果对第一个参数求值就能确定表达式的结果，那么逻辑运算符就不会对第二个参数求值。因此，例如，表达式a&amp;&amp;5&#x2F;a将不会造成被零除，而表达式p&amp;&amp;*p++也不会导致间接引用空指针。</p>
 <h3 id="C-语言中的移位运算"><a href="#C-语言中的移位运算" class="headerlink" title="C 语言中的移位运算"></a>C 语言中的移位运算</h3><p>对于一个位表示为  [x<sub>w-1</sub>,x<sub>w-2</sub>…x<sub>0</sub>] 的操作数 x, C 表达式 x &lt;&lt; k 会生成一个值，其位表示为 [x<sub>w-k-1</sub>,x<sub>w-k-2</sub>,…,x<sub>0</sub>,0,…,0]。也就是说，x 向左移动 k 位，丢弃最高的 k 位，并在右端补 k 个 0。移位量应该是一个 0~w-1 之间的值。移位运算是从左至右可结合的，所以 x&lt;&lt;j&lt;&lt;k 等价于（x&lt;&lt;j)&lt;&lt;k。</p>
-<h2 id="2-2-整数表示"><a href="#2-2-整数表示" class="headerlink" title="2.2 整数表示"></a>2.2 整数表示</h2><h3 id="整型数据类型"><a href="#整型数据类型" class="headerlink" title="整型数据类型"></a>整型数据类型</h3><h3 id="无符号数的编码"><a href="#无符号数的编码" class="headerlink" title="无符号数的编码"></a>无符号数的编码</h3><h3 id="补码编码"><a href="#补码编码" class="headerlink" title="补码编码"></a>补码编码</h3><h3 id="有符号数和无符号数的转换"><a href="#有符号数和无符号数的转换" class="headerlink" title="有符号数和无符号数的转换"></a>有符号数和无符号数的转换</h3><h3 id="C-语言中的有符号数和无符号数"><a href="#C-语言中的有符号数和无符号数" class="headerlink" title="C 语言中的有符号数和无符号数"></a>C 语言中的有符号数和无符号数</h3><h3 id="扩展一个数字的位表示"><a href="#扩展一个数字的位表示" class="headerlink" title="扩展一个数字的位表示"></a>扩展一个数字的位表示</h3><h3 id="截断数字"><a href="#截断数字" class="headerlink" title="截断数字"></a>截断数字</h3><h3 id="关于有符号数和无符号数的建议"><a href="#关于有符号数和无符号数的建议" class="headerlink" title="关于有符号数和无符号数的建议"></a>关于有符号数和无符号数的建议</h3><h2 id="2-3-整数运算"><a href="#2-3-整数运算" class="headerlink" title="2.3 整数运算"></a>2.3 整数运算</h2><h3 id="无符号加法"><a href="#无符号加法" class="headerlink" title="无符号加法"></a>无符号加法</h3><h3 id="补码加法"><a href="#补码加法" class="headerlink" title="补码加法"></a>补码加法</h3><h3 id="补码的非"><a href="#补码的非" class="headerlink" title="补码的非"></a>补码的非</h3><h3 id="无符号乘法"><a href="#无符号乘法" class="headerlink" title="无符号乘法"></a>无符号乘法</h3><h3 id="补码乘法"><a href="#补码乘法" class="headerlink" title="补码乘法"></a>补码乘法</h3><h3 id="乘以常数"><a href="#乘以常数" class="headerlink" title="乘以常数"></a>乘以常数</h3><h3 id="关于整数运算的思考"><a href="#关于整数运算的思考" class="headerlink" title="关于整数运算的思考"></a>关于整数运算的思考</h3><h2 id="2-4-浮点数"><a href="#2-4-浮点数" class="headerlink" title="2.4 浮点数"></a>2.4 浮点数</h2><h3 id="二进制小数"><a href="#二进制小数" class="headerlink" title="二进制小数"></a>二进制小数</h3><h3 id="IEEE-浮点表示"><a href="#IEEE-浮点表示" class="headerlink" title="IEEE 浮点表示"></a>IEEE 浮点表示</h3><h3 id="数字示例"><a href="#数字示例" class="headerlink" title="数字示例"></a>数字示例</h3><h3 id="舍入"><a href="#舍入" class="headerlink" title="舍入"></a>舍入</h3><h3 id="浮点运算"><a href="#浮点运算" class="headerlink" title="浮点运算"></a>浮点运算</h3><h3 id="C-语言中的浮点数"><a href="#C-语言中的浮点数" class="headerlink" title="C 语言中的浮点数"></a>C 语言中的浮点数</h3>
+<p>有一个相应的右移运算 x&gt;&gt;k，但是它的行为有点微妙。一般而言，机器支持两种形式的右移：</p>
+<ul>
+<li>逻辑右移算术右移逻辑右移在左端补 k 个 0，得到的结果是 [0,…,0,x<sub>w-1</sub>,x<sub>w-2</sub>,…,x<sub>k</sub>]</li>
+<li>算术右移是在左端补及个最高有效位的值，得到的结果是[x<sub>w-1</sub>,…,x<sub>w-1</sub>,x<sub>w-1</sub>,x<sub>w-2</sub>…x<sub>k</sub>] 。这种做法看上去可能有点奇特，但是我们会发现它对有符号整数数据的运算非常有用。</li>
+</ul>
+<p>让我们来看一个例子，下面的表给出了对一个 8 位参数×的两个不同的值做不同的移位操作得到的结果：</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Parameter x</td>
+<td>[01100011] [10010101]</td>
+</tr>
+<tr>
+<td>x &lt;&lt; 4</td>
+<td>[0011<em>0000</em>] [0101<em>0000</em>]</td>
+</tr>
+<tr>
+<td>x &gt;&gt; 4(Logical shift)</td>
+<td>[<em>0000</em>0110] [<em>0000</em>1001]</td>
+</tr>
+<tr>
+<td>x &gt;&gt; 4(arithmetic shift)</td>
+<td>[<em>0000</em>0110] [<em>1111</em>1001]</td>
+</tr>
+</tbody></table>
+<p>斜体的数字表示的是最右端（左移）或最左端（右移）填充的值。可以看到除了一个条目之外，其他的都包含填充 0。唯一的例外是算术右移【10010101] 的情况。因为操作数的最高位是 1，填充的值就是 1。</p>
+<p>C 语言标准并没有明确定义对于有符号数应该使用哪种类型的右移一算术右移或者逻辑右移都可以。不幸地，这就意味着任何假设一种或者另一种右移形式的代码都可能会遇到可移 植性问题。然而，实际上，几乎所有的编译器&#x2F;机器组合都对有符号数使用算术右移，且许多程序员也都假设机器会使用这种右移。另一方面，对于无符号数，右移必须是逻辑的。</p>
+<p>与 C 相比，Jva 对于如何进行右移有明确的定义。表达是 x&gt;&gt;k 会将 x 算术右移 k 个位置，而 x&gt;&gt;k 会对 x 做逻辑右移。</p>
+<h6 id="旁注移动-K-位，这里-k-很大"><a href="#旁注移动-K-位，这里-k-很大" class="headerlink" title="旁注移动 K 位，这里 k 很大"></a>旁注移动 K 位，这里 k 很大</h6><p>对于一个由位组成的数据类型，如果要移动 k≥w 位会得到什么结果呢？例如，计算下面的表达式会得到什么结果，假设数据类型 int 为 w&#x3D;32：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> 	 lval = <span class="number">0xFEDCBA98</span>  &lt;&lt;<span class="number">32</span>;</span><br><span class="line"><span class="type">int</span> 	 aval = <span class="number">0xFEDCBA98</span>  &gt;&gt;<span class="number">36</span>;</span><br><span class="line"><span class="type">unsigned</span> uval = OxFEDCBA98u &gt;&gt;<span class="number">40</span>;</span><br></pre></td></tr></table></figure>
+
+<p>C 语言标准很小心地规避了说明在这种情况下该如何做。在许多机器上，当移动一个w位的值时，移位指令只考虑位移量的低 log<sub>2</sub>w 位，因此实际上位移量就是通过计算 k mod w 得到的。例如，当 ω&#x3D;32 时，上面三个移位运算分别是移动 0、4 和 8 位，得到结果：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lval <span class="number">0xFEDCBA98</span></span><br><span class="line">aval OxFFEDCBA9</span><br><span class="line">uval OxOOFEDCBA</span><br></pre></td></tr></table></figure>
+
+<p>不过这种行为对于 C 程序来说是没有保证的，所以应该保持位移量小于待移位值的位数</p>
+<p>另一方面，Java 特别要求位移数量应该按照我们前面所讲的求模的方法来计算。</p>
+<h2 id="2-2-整数表示"><a href="#2-2-整数表示" class="headerlink" title="2.2 整数表示"></a>2.2 整数表示</h2><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/../statics/csapp/2-8.png" alt="2-8"></p>
+<h3 id="整型数据类型"><a href="#整型数据类型" class="headerlink" title="整型数据类型"></a>整型数据类型</h3><h3 id="无符号数的编码"><a href="#无符号数的编码" class="headerlink" title="无符号数的编码"></a>无符号数的编码</h3><h3 id="补码编码"><a href="#补码编码" class="headerlink" title="补码编码"></a>补码编码</h3><h3 id="有符号数和无符号数的转换"><a href="#有符号数和无符号数的转换" class="headerlink" title="有符号数和无符号数的转换"></a>有符号数和无符号数的转换</h3><h3 id="C-语言中的有符号数和无符号数"><a href="#C-语言中的有符号数和无符号数" class="headerlink" title="C 语言中的有符号数和无符号数"></a>C 语言中的有符号数和无符号数</h3><h3 id="扩展一个数字的位表示"><a href="#扩展一个数字的位表示" class="headerlink" title="扩展一个数字的位表示"></a>扩展一个数字的位表示</h3><h3 id="截断数字"><a href="#截断数字" class="headerlink" title="截断数字"></a>截断数字</h3><h3 id="关于有符号数和无符号数的建议"><a href="#关于有符号数和无符号数的建议" class="headerlink" title="关于有符号数和无符号数的建议"></a>关于有符号数和无符号数的建议</h3><h2 id="2-3-整数运算"><a href="#2-3-整数运算" class="headerlink" title="2.3 整数运算"></a>2.3 整数运算</h2><h3 id="无符号加法"><a href="#无符号加法" class="headerlink" title="无符号加法"></a>无符号加法</h3><h3 id="补码加法"><a href="#补码加法" class="headerlink" title="补码加法"></a>补码加法</h3><h3 id="补码的非"><a href="#补码的非" class="headerlink" title="补码的非"></a>补码的非</h3><h3 id="无符号乘法"><a href="#无符号乘法" class="headerlink" title="无符号乘法"></a>无符号乘法</h3><h3 id="补码乘法"><a href="#补码乘法" class="headerlink" title="补码乘法"></a>补码乘法</h3><h3 id="乘以常数"><a href="#乘以常数" class="headerlink" title="乘以常数"></a>乘以常数</h3><h3 id="关于整数运算的思考"><a href="#关于整数运算的思考" class="headerlink" title="关于整数运算的思考"></a>关于整数运算的思考</h3><h2 id="2-4-浮点数"><a href="#2-4-浮点数" class="headerlink" title="2.4 浮点数"></a>2.4 浮点数</h2><h3 id="二进制小数"><a href="#二进制小数" class="headerlink" title="二进制小数"></a>二进制小数</h3><h3 id="IEEE-浮点表示"><a href="#IEEE-浮点表示" class="headerlink" title="IEEE 浮点表示"></a>IEEE 浮点表示</h3><h3 id="数字示例"><a href="#数字示例" class="headerlink" title="数字示例"></a>数字示例</h3><h3 id="舍入"><a href="#舍入" class="headerlink" title="舍入"></a>舍入</h3><h3 id="浮点运算"><a href="#浮点运算" class="headerlink" title="浮点运算"></a>浮点运算</h3><h3 id="C-语言中的浮点数"><a href="#C-语言中的浮点数" class="headerlink" title="C 语言中的浮点数"></a>C 语言中的浮点数</h3>
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
 </div></section></div>
