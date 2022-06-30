@@ -1,5 +1,5 @@
 ---
-title: Notes OSInterfaces_S081_Ch01
+title: Notes riscv_S081_Ch01
 categories: [mit_opencourseware]
 tags: [S081, Operating System]
 ---
