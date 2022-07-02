@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>coursera 1.5 Union-Find - zennlyu</title>
+
+  
+    <meta name="description" content="‣ dynamic connectivityGiven a set of N objects. Union command: connect two objects. Find&#x2F;connected query: is there a path connecting the two objects?  Modeling the objectsApplications involve man">
+<meta property="og:type" content="article">
+<meta property="og:title" content="coursera 1.5 Union-Find">
+<meta property="og:url" content="http://example.com/2022/07/02/Union-Find/index.html">
+<meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="‣ dynamic connectivityGiven a set of N objects. Union command: connect two objects. Find&#x2F;connected query: is there a path connecting the two objects?  Modeling the objectsApplications involve man">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/07/02/Union-Find/UF.png">
+<meta property="og:image" content="http://example.com/2022/07/02/Union-Find/weight.png">
+<meta property="og:image" content="http://example.com/2022/07/02/Union-Find/quick-union.png">
+<meta property="article:published_time" content="2022-07-02T04:11:49.770Z">
+<meta property="article:modified_time" content="2022-07-02T08:37:39.012Z">
+<meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="algorithms">
+<meta property="article:tag" content="coursera">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/07/02/Union-Find/UF.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://github.com/zennlyu/zennlyu.github.io/blob/main/avatar.png" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-dynamic-connectivity"><span class="toc-text">‣ dynamic connectivity</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Given-a-set-of-N-objects"><span class="toc-text">Given a set of N objects.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Modeling-the-objects"><span class="toc-text">Modeling the objects</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Modeling-the-connections"><span class="toc-text">Modeling the connections</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Implementing-the-operations"><span class="toc-text">Implementing the operations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Union-find-data-type-API"><span class="toc-text">Union-find data type (API)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dynamic-connectivity-client"><span class="toc-text">Dynamic-connectivity client</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-quick-find"><span class="toc-text">‣ quick find</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#eager-approach"><span class="toc-text">eager approach</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Data-Structure"><span class="toc-text">Data Structure</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Find"><span class="toc-text">Find.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Union"><span class="toc-text">Union.</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Quick-Find-is-too-slow"><span class="toc-text">Quick-Find is too slow</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Quadratic-algorithms-do-not-scale"><span class="toc-text">Quadratic algorithms do not scale</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-quick-union"><span class="toc-text">‣ quick union</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#lazy-approach"><span class="toc-text">lazy approach</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Data-structure"><span class="toc-text">Data structure</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Quick-union-is-also-too-slow"><span class="toc-text">Quick-union is also too slow</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Quick-find-defect"><span class="toc-text">Quick-find defect.</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Quick-union-defect"><span class="toc-text">Quick-union defect.</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-improvements"><span class="toc-text">‣ improvements</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Weighted-quick-union"><span class="toc-text">1 Weighted quick-union.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Quick-union-and-weighted-quick-union-example"><span class="toc-text">Quick-union and weighted quick-union example</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-applications"><span class="toc-text">‣ applications</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+    
+
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/algorithms/">algorithms</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2022-07-02T04:11:49.770Z">2022-07-02</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>coursera 1.5 Union-Find</span></h1>
+<h2 id="‣-dynamic-connectivity"><a href="#‣-dynamic-connectivity" class="headerlink" title="‣ dynamic connectivity"></a>‣ dynamic connectivity</h2><h3 id="Given-a-set-of-N-objects"><a href="#Given-a-set-of-N-objects" class="headerlink" title="Given a set of N objects."></a>Given a set of N objects.</h3><ul>
+<li>Union command: connect two objects.</li>
+<li>Find&#x2F;connected query: is there a path connecting the two objects?</li>
+</ul>
+<h3 id="Modeling-the-objects"><a href="#Modeling-the-objects" class="headerlink" title="Modeling the objects"></a>Modeling the objects</h3><p>Applications involve manipulating objects of all types.</p>
+<ul>
+<li>Pixels in a digital photo.</li>
+<li>Computers in a network.</li>
+<li>Friends in a social network. </li>
+<li>Transistors in a computer chip. </li>
+<li>Elements in a mathematical set. </li>
+<li>Variable names in Fortran program. </li>
+<li>Metallic sites in a composite system.</li>
+</ul>
+<p>When programming, convenient to name objects 0 to N –1.</p>
+<ul>
+<li>Use integers as array index.</li>
+<li>Suppress details not relevant to union-find.(can use symbol table to translate from site names to integers: stay tuned (Chapter 3))</li>
+</ul>
+<h3 id="Modeling-the-connections"><a href="#Modeling-the-connections" class="headerlink" title="Modeling the connections"></a>Modeling the connections</h3><p>We assume “is connected to” is an equivalence relation:</p>
+<ul>
+<li>Reflexive: <em>p</em> is connected to <em>p</em>.</li>
+<li>Symmetric: if <em>p</em> is connected to <em>q</em>, then <em>q</em> is connected to <em>p</em>. </li>
+<li>Transitive: if <em>p</em> is connected to <em>q</em> and <em>q</em> is connected to <em>r</em>, then <em>p</em> is connected to <em>r</em>.</li>
+</ul>
+<h3 id="Implementing-the-operations"><a href="#Implementing-the-operations" class="headerlink" title="Implementing the operations"></a>Implementing the operations</h3><ul>
+<li>Find query. Check if two objects are in the same component.</li>
+<li>Union command. Replace components containing two objects with their union.</li>
+</ul>
+<h3 id="Union-find-data-type-API"><a href="#Union-find-data-type-API" class="headerlink" title="Union-find data type (API)"></a>Union-find data type (API)</h3><p><strong>Goal.</strong> Design efficient data structure for union-find.</p>
+<ul>
+<li>Number of objects <em>N</em> can be huge.</li>
+<li>Number of operations <em>M</em> can be huge.</li>
+<li>Find queries and union commands may be intermixed.</li>
+</ul>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/02/Union-Find/UF.png" alt="UF"></p>
+<h3 id="Dynamic-connectivity-client"><a href="#Dynamic-connectivity-client" class="headerlink" title="Dynamic-connectivity client"></a>Dynamic-connectivity client</h3><ul>
+<li>・Read in number of objects <em>N</em> from standard input. </li>
+<li>・Repeat:<ul>
+<li>–  read in pair of integers from standard input</li>
+<li>–  if they are not yet connected, connect them and print out pair</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> StdIn.readInt(); </span><br><span class="line">	<span class="type">UF</span> <span class="variable">uf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UF</span>(N);</span><br><span class="line">	<span class="keyword">while</span> (!StdIn.isEmpty()) &#123;</span><br><span class="line">		<span class="type">int</span> <span class="variable">p</span> <span class="operator">=</span> StdIn.readInt(); </span><br><span class="line">		<span class="type">int</span> <span class="variable">q</span> <span class="operator">=</span> StdIn.readInt(); </span><br><span class="line">		<span class="keyword">if</span> (!uf.connected(p, q)) &#123;</span><br><span class="line">			uf.union(p, q);</span><br><span class="line">			StdOut.println(p + <span class="string">&quot; &quot;</span> + q); </span><br><span class="line">		&#125;</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="‣-quick-find"><a href="#‣-quick-find" class="headerlink" title="‣ quick find"></a>‣ quick find</h2><h3 id="eager-approach"><a href="#eager-approach" class="headerlink" title="eager approach"></a>eager approach</h3><h4 id="Data-Structure"><a href="#Data-Structure" class="headerlink" title="Data Structure"></a>Data Structure</h4><ul>
+<li>Integer array <code>id[]</code> of length N.</li>
+<li>Interpretation: <code>p</code> and <code>q</code> are connected <code>iff</code> they have the same id.</li>
+</ul>
+<h4 id="Find"><a href="#Find" class="headerlink" title="Find."></a>Find.</h4><p>Check if p and q have the same id.</p>
+<h4 id="Union"><a href="#Union" class="headerlink" title="Union."></a>Union.</h4><p>To merge components containing <code>p</code> and <code>q</code>, change all entries whose id equals <code>id[p]</code> to <code>id[q]</code>.</p>
+<h3 id="Quick-Find-is-too-slow"><a href="#Quick-Find-is-too-slow" class="headerlink" title="Quick-Find is too slow"></a>Quick-Find is too slow</h3><p><strong>Cost model.</strong> Number of array accesses (for read or write).</p>
+<p><strong>order of growth of number of array accesses</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Algorithms</th>
+<th>Initialize</th>
+<th>Union</th>
+<th>Find</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Quick-find</td>
+<td>N</td>
+<td>N</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p><strong>Union is too expensive</strong> :It takes $N^2$ array accesses to process a sequence of $N$ union commands on $N$ objects.</p>
+<h4 id="Quadratic-algorithms-do-not-scale"><a href="#Quadratic-algorithms-do-not-scale" class="headerlink" title="Quadratic algorithms do not scale"></a>Quadratic algorithms do not scale</h4><h2 id="‣-quick-union"><a href="#‣-quick-union" class="headerlink" title="‣ quick union"></a>‣ quick union</h2><h3 id="lazy-approach"><a href="#lazy-approach" class="headerlink" title="lazy approach"></a>lazy approach</h3><h4 id="Data-structure"><a href="#Data-structure" class="headerlink" title="Data structure"></a>Data structure</h4><ul>
+<li>Integer array <code>id[]</code> of length <code>N</code>. </li>
+<li>Interpretation: <code>id[i]</code> is parent of <code>i</code>. </li>
+<li>Root of i is <code>id[id[id[...id[i]...]]]</code></li>
+</ul>
+<p><strong>Find.</strong> Check if p and q have the same root.</p>
+<p><strong>Union.</strong> To merge components containing p and q, set the id of p’s root to the id of q’s root.</p>
+<h4 id="Quick-union-is-also-too-slow"><a href="#Quick-union-is-also-too-slow" class="headerlink" title="Quick-union is also too slow"></a>Quick-union is also too slow</h4><p>Cost model. Number of array accesses (for read or write).</p>
+<table>
+<thead>
+<tr>
+<th>Algorithms</th>
+<th>Initialize</th>
+<th>Union</th>
+<th>Find</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Quick-find</td>
+<td>N</td>
+<td>N</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Quick-union</td>
+<td>N</td>
+<td>$N^†$($†$ includes cost of finding roots)</td>
+<td>N</td>
+</tr>
+</tbody></table>
+<h5 id="Quick-find-defect"><a href="#Quick-find-defect" class="headerlink" title="Quick-find defect."></a>Quick-find defect.</h5><ul>
+<li>Union too expensive ( $N$ array accesses).</li>
+<li>Trees are flat, but too expensive to keep them flat.</li>
+</ul>
+<h5 id="Quick-union-defect"><a href="#Quick-union-defect" class="headerlink" title="Quick-union defect."></a>Quick-union defect.</h5><ul>
+<li>Trees can get tall.</li>
+<li>Find too expensive (could be <em>N</em> array accesses).</li>
+</ul>
+<h2 id="‣-improvements"><a href="#‣-improvements" class="headerlink" title="‣ improvements"></a>‣ improvements</h2><h3 id="1-Weighted-quick-union"><a href="#1-Weighted-quick-union" class="headerlink" title="1 Weighted quick-union."></a>1 Weighted quick-union.</h3><ul>
+<li>Modify quick-union to avoid tall trees.</li>
+<li>Keep track of size of each tree (number of objects).</li>
+<li>Balance by linking root of smaller tree to root of larger tree.(reasonable alternatives: union by height or “rank”)</li>
+</ul>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/02/Union-Find/weight.png" alt="weight"></p>
+<h3 id="Quick-union-and-weighted-quick-union-example"><a href="#Quick-union-and-weighted-quick-union-example" class="headerlink" title="Quick-union and weighted quick-union example"></a>Quick-union and weighted quick-union example</h3><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/02/Union-Find/quick-union.png" alt="quick-union"></p>
+<h2 id="‣-applications"><a href="#‣-applications" class="headerlink" title="‣ applications"></a>‣ applications</h2>
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/07/01/6-824-mapreduce/">6.824-mapreduce<span class="note">Older</span></a><div class="line"></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="http://example.com/">@zennlyu</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</script>
+</body>
+</html>
