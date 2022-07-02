@@ -97,16 +97,21 @@
 </ul>
 <h2 id="一、RISC-V-toolchain"><a href="#一、RISC-V-toolchain" class="headerlink" title="一、RISC-V toolchain"></a>一、RISC-V toolchain</h2><p>下载后在源码根目录进行编译，具体参考官方文档。编译大约需要30min：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone --recursive https://github.com/riscv/riscv-gnu-toolchain</span><br><span class="line">cd riscv-gnu-toolchain</span><br><span class="line">./configure --prefix=/usr/local/opt/riscv-gnu-toolchain    #配置产物路径</span><br><span class="line">make                                                       #编译</span><br></pre></td></tr></table></figure>
-<p>在macOS catalina版本下进行./configure时提示缺少GNU的 awk 和 sed: configure: error: GNU awk not found，手动安装即可: </p>
+
+<p>在macOS catalina版本下进行.&#x2F;configure时提示缺少GNU的 awk 和 sed: configure: error: GNU awk not found，手动安装即可: </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install gawk</span><br><span class="line">brew install gsed</span><br></pre></td></tr></table></figure>
-<p>安装完成后需配置环境变量，与上一步设置的安装路径一致。Mac下的环境配置文件是~/.bash_profile（Linux下为~/.bashrc或~/.profile)，操作如下：</p>
+
+<p>安装完成后需配置环境变量，与上一步设置的安装路径一致。Mac下的环境配置文件是<del>&#x2F;.bash_profile（Linux下为</del>&#x2F;.bashrc或~&#x2F;.profile)，操作如下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bash_profile                                              #打开配置文件</span><br><span class="line">export PATH=&quot;$PATH:/usr/local/opt/riscv-gnu-toolchain/bin&quot;       #末尾添加此行</span><br><span class="line">source ~/.bash_profile                                           #使配置生效</span><br></pre></td></tr></table></figure>
+
 <p>此时在命令行输入 <code>riscv64-unknown-elf-gcc -v</code>，如果能显示版本信息则代表安装成功。</p>
 <p>需要注意的是，在编译的过程中，会出现报错，需要手动在 <code>terminal.c</code> 和  <code>rltty.c</code> 中添加 <code>#include &lt;sys/ioctl.h&gt;</code> 头文件。</p>
 <h2 id="二、QEMU"><a href="#二、QEMU" class="headerlink" title="二、QEMU"></a>二、QEMU</h2><p>编译生成的 risc-v 机器码需要通过模拟 cpu 执行，因此需要从qemu官网下载指定版本的源码并编译：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://download.qemu.org/qemu-4.1.0.tar.xz  #下载后解压并进入目录</span><br><span class="line">./configure                                       #默认安装所有目标平台，产物路径为/usr/local/bin</span><br><span class="line">make &amp;&amp; make install                              #编译并安装</span><br></pre></td></tr></table></figure>
+
 <h2 id="三、xv6"><a href="#三、xv6" class="headerlink" title="三、xv6"></a>三、xv6</h2><p>进入 MIT 的官网 <code>https://pdos.csail.mit.edu/6.S081/2020/</code> , 键入以下命令</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> git://g.csail.mit.edu/xv6-labs-2020</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> xv6-labs-2020</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git checkout util</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make qemu</span></span><br></pre></td></tr></table></figure>
+
 <p>即进入实验环境</p>
 
 
