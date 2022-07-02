@@ -92,7 +92,6 @@
 <h1 class="article-title"><span>Catalina quarantine for corrupted apps</span></h1>
 <p>低于 <code>Big Sur</code> 系统版本的 <code>macOS</code> 或 <code>m1</code> 芯片机器在安装一些未适配软件时候可能会出现 <code>安装包损坏, 打不开“XXX”,因为它来自身份不明的开发者</code> 等报错，在此状态下可以尝试以下做法。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo spctl --master-disable</span><br><span class="line">sudo xattr -r -d com.apple.quarantine /Applications/Sketch.app/</span><br><span class="line">// 输入 sudo xattr -r -d com.apple.quarantine 后将应用程序拖入 teminal 中</span><br></pre></td></tr></table></figure>
-
 <p>（以及 Catalina 真的好耐看啊！）</p>
 
 
@@ -101,7 +100,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/06/09/s081Utilities/">S081 Utilities<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/06/09/SS7/">SS7 Attack<span class="note">Newer</span></a></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/06/09/s081Syscall/">S081 Syscalls<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/06/09/SS7/">SS7 Attack<span class="note">Newer</span></a></section></div>
 
 
 
