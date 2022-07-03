@@ -24,30 +24,30 @@
     <meta name="description" content="‣ IntroductionStake holder Programmer Client Theoretician  Blocking and tackling  SuccessesFFT algorithm: Discrete Fourier transform. Break down waveform of N samples into periodic components.  Applic">
 <meta property="og:type" content="article">
 <meta property="og:title" content="coursera 1.4 ANALYSIS OF ALGORITHMS">
-<meta property="og:url" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/index.html">
+<meta property="og:url" content="http://example.com/2022/06/30/coursera-ANALYSIS/index.html">
 <meta property="og:site_name" content="zennlyu">
 <meta property="og:description" content="‣ IntroductionStake holder Programmer Client Theoretician  Blocking and tackling  SuccessesFFT algorithm: Discrete Fourier transform. Break down waveform of N samples into periodic components.  Applic">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/standard_plot.png">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/log-log.png">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/hyp.png">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/double-hyp1.png">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/double-hyp2.png">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/exp-anly.png">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/mathmodel.png">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/dscrtmath.png">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/orderofgrowth.png">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/classification.png">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/notation.png">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/dataobj.png">
-<meta property="og:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/virgin-string.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/standard_plot.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/log-log.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/hyp.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/double-hyp1.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/double-hyp2.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/exp-anly.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/mathmodel.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/dscrtmath.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/orderofgrowth.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/classification.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/notation.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/dataobj.png">
+<meta property="og:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/virgin-string.png">
 <meta property="article:published_time" content="2022-06-30T05:07:59.037Z">
 <meta property="article:modified_time" content="2022-07-02T08:37:36.247Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="algorithms">
 <meta property="article:tag" content="coursera">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/standard_plot.png">
+<meta name="twitter:image" content="http://example.com/2022/06/30/coursera-ANALYSIS/standard_plot.png">
   
   
 
@@ -141,20 +141,20 @@
 
 <h3 id="Messure-Running-Time"><a href="#Messure-Running-Time" class="headerlink" title="Messure Running Time"></a>Messure Running Time</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span>[] a = In.readInts(args[<span class="number">0</span>]);</span><br><span class="line">	<span class="type">Stopwatch</span> <span class="variable">stopwatch</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Stopwatch</span>();</span><br><span class="line">	StdOut.println(ThreeSum.count(a)); </span><br><span class="line">	<span class="type">double</span> <span class="variable">time</span> <span class="operator">=</span> stopwatch.elapsedTime();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="Empirical-analysis"><a href="#Empirical-analysis" class="headerlink" title="Empirical analysis"></a>Empirical analysis</h4><h4 id="Data-analysis"><a href="#Data-analysis" class="headerlink" title="Data analysis"></a>Data analysis</h4><h6 id="Standard-plot"><a href="#Standard-plot" class="headerlink" title="Standard plot."></a>Standard plot.</h6><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/standard_plot.png" alt="standard_plot"></p>
+<h4 id="Empirical-analysis"><a href="#Empirical-analysis" class="headerlink" title="Empirical analysis"></a>Empirical analysis</h4><h4 id="Data-analysis"><a href="#Data-analysis" class="headerlink" title="Data analysis"></a>Data analysis</h4><h6 id="Standard-plot"><a href="#Standard-plot" class="headerlink" title="Standard plot."></a>Standard plot.</h6><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/standard_plot.png" alt="standard_plot"></p>
 <h6 id="Log-log-plot"><a href="#Log-log-plot" class="headerlink" title="Log-log plot."></a>Log-log plot.</h6><p>Plot running time <em>T</em>(<em>N</em>) vs. input size <em>N</em> using <strong>log-log scale.</strong></p>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/log-log.png" alt="log-log"></p>
-<h6 id="Regression"><a href="#Regression" class="headerlink" title="Regression."></a>Regression.</h6><h6 id="Hypothesis"><a href="#Hypothesis" class="headerlink" title="Hypothesis."></a>Hypothesis.</h6><h4 id="Prediction-and-validation"><a href="#Prediction-and-validation" class="headerlink" title="Prediction and validation"></a>Prediction and validation</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/hyp.png" alt="log-log"></p>
-<h4 id="Doubling-hypothesis-Quick-way-to-estimate-b-in-a-power-law-relationship"><a href="#Doubling-hypothesis-Quick-way-to-estimate-b-in-a-power-law-relationship" class="headerlink" title="Doubling hypothesis - Quick way to estimate b in a power-law relationship"></a>Doubling hypothesis - Quick way to estimate <em>b</em> in a power-law relationship</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/double-hyp1.png" alt="log-log"></p>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/double-hyp2.png" alt="log-log"></p>
-<h4 id="Experimental-algorithmics"><a href="#Experimental-algorithmics" class="headerlink" title="Experimental algorithmics"></a>Experimental algorithmics</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/exp-anly.png" alt="exp-anly"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/log-log.png" alt="log-log"></p>
+<h6 id="Regression"><a href="#Regression" class="headerlink" title="Regression."></a>Regression.</h6><h6 id="Hypothesis"><a href="#Hypothesis" class="headerlink" title="Hypothesis."></a>Hypothesis.</h6><h4 id="Prediction-and-validation"><a href="#Prediction-and-validation" class="headerlink" title="Prediction and validation"></a>Prediction and validation</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/hyp.png" alt="log-log"></p>
+<h4 id="Doubling-hypothesis-Quick-way-to-estimate-b-in-a-power-law-relationship"><a href="#Doubling-hypothesis-Quick-way-to-estimate-b-in-a-power-law-relationship" class="headerlink" title="Doubling hypothesis - Quick way to estimate b in a power-law relationship"></a>Doubling hypothesis - Quick way to estimate <em>b</em> in a power-law relationship</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/double-hyp1.png" alt="log-log"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/double-hyp2.png" alt="log-log"></p>
+<h4 id="Experimental-algorithmics"><a href="#Experimental-algorithmics" class="headerlink" title="Experimental algorithmics"></a>Experimental algorithmics</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/exp-anly.png" alt="exp-anly"></p>
 <h3 id="‣-Mathematical-models-for-running-time"><a href="#‣-Mathematical-models-for-running-time" class="headerlink" title="‣ Mathematical models for running time"></a>‣ Mathematical models for running time</h3><p>Total running time: sum of cost × frequency for all operations.</p>
 <ul>
 <li>Need to analyze program to determine set of operations.</li>
 <li>Cost depends on machine, compiler.</li>
 <li>Frequency depends on algorithm, input data.</li>
 </ul>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/mathmodel.png" alt="log-log"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/mathmodel.png" alt="log-log"></p>
 <h4 id="Example-1-SUM"><a href="#Example-1-SUM" class="headerlink" title="Example 1-SUM:"></a>Example 1-SUM:</h4><blockquote>
 <p>Q. How many instructions as a function of input size <em>N</em> ?</p>
 </blockquote>
@@ -261,11 +261,11 @@
 <h4 id="Estimating-a-discrete-sum"><a href="#Estimating-a-discrete-sum" class="headerlink" title="Estimating a discrete sum"></a>Estimating a discrete sum</h4><p>Q. How to estimate a discrete sum?</p>
 <p>A1. Take discrete mathematics course.</p>
 <p>A2. Replace the sum with an integral, and use calculus!</p>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/dscrtmath.png" alt="log-log"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/dscrtmath.png" alt="log-log"></p>
 <h3 id="‣-Order-of-growth-classifications"><a href="#‣-Order-of-growth-classifications" class="headerlink" title="‣ Order-of-growth classifications"></a>‣ Order-of-growth classifications</h3><p>the small set of functions suffices to describe order-of-growth of typical algorithms. —— $1$, $logN$, $N$, $NlogN$, $N^2$, $N^3$, $2^N$</p>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/orderofgrowth.png" alt="log-log"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/orderofgrowth.png" alt="log-log"></p>
 <p>Bottom line. Need linear or linearithmic alg to keep pace with Moore’s law.</p>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/classification.png" alt="log-log"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/classification.png" alt="log-log"></p>
 <h3 id="‣-theory-of-algorithms"><a href="#‣-theory-of-algorithms" class="headerlink" title="‣ theory of algorithms"></a>‣ theory of algorithms</h3><h4 id="Type-of-analyses"><a href="#Type-of-analyses" class="headerlink" title="Type of analyses"></a>Type of analyses</h4><ul>
 <li>Best case. Lower bound on cost.</li>
 </ul>
@@ -308,7 +308,7 @@
 <li>Performance guarantee (to within a constant factor) for any input. </li>
 <li>No algorithm can provide a better performance guarantee.</li>
 </ul>
-<h4 id="Commonly-used-notations"><a href="#Commonly-used-notations" class="headerlink" title="Commonly-used notations"></a><strong>Commonly-used notations</strong></h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/notation.png" alt="log-log"></p>
+<h4 id="Commonly-used-notations"><a href="#Commonly-used-notations" class="headerlink" title="Commonly-used notations"></a><strong>Commonly-used notations</strong></h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/notation.png" alt="log-log"></p>
 <h4 id="Algorithm-design-approach"><a href="#Algorithm-design-approach" class="headerlink" title="Algorithm design approach"></a>Algorithm design approach</h4><h5 id="Start"><a href="#Start" class="headerlink" title="Start."></a>Start.</h5><ul>
 <li>Develop an algorithm. </li>
 <li>Prove a lower bound.</li>
@@ -417,8 +417,8 @@
 <li>Reference. 8 bytes.</li>
 <li>Padding. Each object uses a multiple of 8 bytes.</li>
 </ul>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/dataobj.png" alt="log-log"></p>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/ANALYSIS%20OF%20ALGORITHMS/virgin-string.png" alt="log-log"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/dataobj.png" alt="log-log"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/coursera-ANALYSIS/virgin-string.png" alt="log-log"></p>
 <h4 id="Memory-Usage-Summary"><a href="#Memory-Usage-Summary" class="headerlink" title="Memory Usage Summary"></a>Memory Usage Summary</h4><p>Total memory usage for a data type value:</p>
 <ul>
 <li>Primitive type: 4 bytes for int, 8 bytes for double, … </li>
@@ -436,7 +436,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/06/30/Union-Find/">coursera 1.5 Union-Find<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/07/01/6-824-mapreduce/">6.824-mapreduce<span class="note">Newer</span></a></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/06/30/coursera-UnionFind/">coursera 1.5 Union-Find<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/07/01/6-824-mapreduce/">6.824-mapreduce<span class="note">Newer</span></a></section></div>
 
 
 
