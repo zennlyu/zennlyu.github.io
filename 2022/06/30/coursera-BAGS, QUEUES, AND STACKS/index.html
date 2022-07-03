@@ -4,7 +4,7 @@
 <head>
   <meta name="generator" content="Hexo 6.2.0">
   <meta charset="utf-8">
-  <meta name="robots" content="noindex,follow">
+  
 
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
@@ -18,15 +18,21 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>Archives - zennlyu</title>
+  <title>coursera 1.3 BAGS, QUEUES, AND STACKS - zennlyu</title>
 
   
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Archives">
-<meta property="og:url" content="http://example.com/archives/index.html">
+    <meta name="description" content="‣ stacks‣ resizing arrays‣ queues‣ generics‣ iterators‣ applications">
+<meta property="og:type" content="article">
+<meta property="og:title" content="coursera 1.3 BAGS, QUEUES, AND STACKS">
+<meta property="og:url" content="http://example.com/2022/06/30/coursera-BAGS,%20QUEUES,%20AND%20STACKS/index.html">
 <meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="‣ stacks‣ resizing arrays‣ queues‣ generics‣ iterators‣ applications">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-06-30T05:07:59.037Z">
+<meta property="article:modified_time" content="2022-07-03T11:56:00.691Z">
 <meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="algorithms">
+<meta property="article:tag" content="coursera">
 <meta name="twitter:card" content="summary">
   
   
@@ -52,8 +58,10 @@
   
 
 
+
+
   <div class='l_body' id='start'>
-    <aside class='l_left' layout=''>
+    <aside class='l_left' layout='post'>
     
 
 
@@ -63,335 +71,41 @@
 <nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
 
 <div class="widgets">
-<div class="widget-wrap" id="markdown"><div class="widget-header cap dis-select"><span class="name">欢迎</span></div><div class="widget-body fs14"><p>Hello, world!</p>
-</div></div>
 
-<div class="widget-wrap" id="recent"><div class="widget-header cap dis-select"><span class="name">Recent Update</span><a class="cap-action" id="rss" title="Subscribe" href="/atom.xml"><svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8938"><path d="M800.966 947.251c0-404.522-320.872-732.448-716.69-732.448V62.785c477.972 0 865.44 395.987 865.44 884.466h-148.75z m-162.273 0h-148.74c0-228.98-181.628-414.598-405.678-414.598v-152.01c306.205 0 554.418 253.68 554.418 566.608z m-446.24-221.12c59.748 0 108.189 49.503 108.189 110.557 0 61.063-48.44 110.563-108.188 110.563-59.747 0-108.18-49.5-108.18-110.563 0-61.054 48.433-110.556 108.18-110.556z" p-id="8939"></path></svg></a></div><div class="widget-body fs14"><div class="more-item"><a class="title" href="/2022/06/13/CSAPP-Ch03%20Machine%20Level/">CSAPP-03 Machine Level Programming</a></div><div class="more-item"><a class="title" href="/2022/06/30/coursera-BAGS,%20QUEUES,%20AND%20STACKS/">coursera 1.3 BAGS, QUEUES, AND STACKS</a></div><div class="more-item"><a class="title" href="/2022/06/13/CSAPP-Ch02_Bits/">CSAPP-Ch02_Bits & Bytes & Integer & Floating Point</a></div><div class="more-item"><a class="title" href="/2022/06/30/coursera-Union%20Find/">coursera 1.5 Union-Find</a></div><div class="more-item"><a class="title" href="/2022/06/30/coursera-ANALYSIS%20OF%20ALGORITHMS/">coursera 1.4 ANALYSIS OF ALGORITHMS</a></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-stacks"><span class="toc-text">‣ stacks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-resizing-arrays"><span class="toc-text">‣ resizing arrays</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-queues"><span class="toc-text">‣ queues</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-generics"><span class="toc-text">‣ generics</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-iterators"><span class="toc-text">‣ iterators</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-applications"><span class="toc-text">‣ applications</span></a></li></ol></div></div></div>
+
+
 </div>
 
 
     </aside>
-    <div class='l_main list'>
+    <div class='l_main'>
       
-  
-
-<header class="header mobile-only">
-
-<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://github.com/zennlyu/zennlyu.github.io/blob/main/avatar.png" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
-</header>
-
-
 
       
 
-  
-  <div class='nav-wrap'>
-  <nav class='sub post cap'>
     
-      <a href='/'>Recent</a>
-    
-    
-      
-        <a href='/categories'>Categories</a>
-      
-    
-    
-      
-        <a href='/tags'>Tags</a>
-      
-    
-    
-      
-        <a class='active' href='/archives'>Archives</a>
-      
-    
-  </nav>
-</div>
 
-  <div class='post-list'>
-  	
-  	
-  		
-  		
-  			
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  	
-  		<article class='' id='archive'>
-  			<div class='archive-header h4'>2022</div>
-  			
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/07/01/6-824-mapreduce/">
-    					<time>07-01</time>
-    					<span>
-                
-      						6.824-mapreduce
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/30/coursera-ANALYSIS%20OF%20ALGORITHMS/">
-    					<time>06-30</time>
-    					<span>
-                
-      						coursera 1.4 ANALYSIS OF ALGORITHMS
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/30/coursera-BAGS,%20QUEUES,%20AND%20STACKS/">
-    					<time>06-30</time>
-    					<span>
-                
-      						coursera 1.3 BAGS, QUEUES, AND STACKS
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/30/coursera-Union%20Find/">
-    					<time>06-30</time>
-    					<span>
-                
-      						coursera 1.5 Union-Find
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/13/CSAPP-Ch02_Bits/">
-    					<time>06-13</time>
-    					<span>
-                
-      						CSAPP-Ch02_Bits & Bytes & Integer & Floating Point
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/13/CSAPP-Ch03%20Machine%20Level/">
-    					<time>06-13</time>
-    					<span>
-                
-      						CSAPP-03 Machine Level Programming
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/13/CSAPP-Ch07_Link/">
-    					<time>06-13</time>
-    					<span>
-                
-      						CSAPP-07 Link
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/13/CSAPP-Ch10%20System%20IO/">
-    					<time>06-13</time>
-    					<span>
-                
-      						CSAPP-10 System Level IO
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/13/CSAPP-Ch11%20Network%20Prog/">
-    					<time>06-13</time>
-    					<span>
-                
-      						CSAPP-11 Network Programming
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/13/CSAPP-Ch12%20Concurrency/">
-    					<time>06-13</time>
-    					<span>
-                
-      						CSAPP-12 Concurrency
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/12/riscv_S081_Ch01/">
-    					<time>06-12</time>
-    					<span>
-                
-      						Notes riscv_S081_Ch01
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/10/s081Guidance/">
-    					<time>06-10</time>
-    					<span>
-                
-      						S081-xv6 setup on Catalina
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/09/SS7/">
-    					<time>06-09</time>
-    					<span>
-                
-      						SS7 Attack
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/09/quarantine-Catalina/">
-    					<time>06-09</time>
-    					<span>
-                
-      						Catalina quarantine for corrupted apps
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/09/s081Syscall/">
-    					<time>06-09</time>
-    					<span>
-                
-      						S081 Syscalls
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/09/s081Utilities/">
-    					<time>06-09</time>
-    					<span>
-                
-      						S081 Utilities
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/08/s081riscv/">
-    					<time>06-08</time>
-    					<span>
-                
-      						S081 RISC-V Book en Ch
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  		</article>
-  	
-  </div>
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/algorithms/">algorithms</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2022-06-30T05:07:59.037Z">2022-06-30</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>coursera 1.3 BAGS, QUEUES, AND STACKS</span></h1>
+<h2 id="‣-stacks"><a href="#‣-stacks" class="headerlink" title="‣ stacks"></a>‣ stacks</h2><h2 id="‣-resizing-arrays"><a href="#‣-resizing-arrays" class="headerlink" title="‣ resizing arrays"></a>‣ resizing arrays</h2><h2 id="‣-queues"><a href="#‣-queues" class="headerlink" title="‣ queues"></a>‣ queues</h2><h2 id="‣-generics"><a href="#‣-generics" class="headerlink" title="‣ generics"></a>‣ generics</h2><h2 id="‣-iterators"><a href="#‣-iterators" class="headerlink" title="‣ iterators"></a>‣ iterators</h2><h2 id="‣-applications"><a href="#‣-applications" class="headerlink" title="‣ applications"></a>‣ applications</h2>
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/06/30/coursera-Union%20Find/">coursera 1.5 Union-Find<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/06/30/coursera-ANALYSIS%20OF%20ALGORITHMS/">coursera 1.4 ANALYSIS OF ALGORITHMS<span class="note">Newer</span></a></section></div>
+
+
+
+
+
+
 
 
       
