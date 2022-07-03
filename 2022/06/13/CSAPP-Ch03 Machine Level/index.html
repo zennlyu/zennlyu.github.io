@@ -21,12 +21,12 @@
   <title>CSAPP-03 Machine Level Programming - zennlyu</title>
 
   
-    <meta name="description" content="1 历史观点2 程序编码1linux&gt; gcc -Og -o p p1.c p2.c 实际上 gcc 命令调用了一整套的程序，将源代码转化成可执行代码。  首先，C 预处理器扩展源代码，插入所有用#include 命令指定的文件，并扩展所有用#define 声明指定的宏。 其次，编译器产生两个源文件的汇编代码，名字分别为 P1. S 和 p2. S。 接下来，汇编器会将汇编代码转化成二进制目">
+    <meta name="description" content="1 历史观点2 程序编码1linux&gt; gcc -Og -o p p1.c p2.c  实际上 gcc 命令调用了一整套的程序，将源代码转化成可执行代码。  首先，C 预处理器扩展源代码，插入所有用#include 命令指定的文件，并扩展所有用#define 声明指定的宏。 其次，编译器产生两个源文件的汇编代码，名字分别为 P1. S 和 p2. S。 接下来，汇编器会将汇编代码转化成二进制">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CSAPP-03 Machine Level Programming">
 <meta property="og:url" content="http://example.com/2022/06/13/CSAPP-Ch03%20Machine%20Level/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="1 历史观点2 程序编码1linux&gt; gcc -Og -o p p1.c p2.c 实际上 gcc 命令调用了一整套的程序，将源代码转化成可执行代码。  首先，C 预处理器扩展源代码，插入所有用#include 命令指定的文件，并扩展所有用#define 声明指定的宏。 其次，编译器产生两个源文件的汇编代码，名字分别为 P1. S 和 p2. S。 接下来，汇编器会将汇编代码转化成二进制目">
+<meta property="og:description" content="1 历史观点2 程序编码1linux&gt; gcc -Og -o p p1.c p2.c  实际上 gcc 命令调用了一整套的程序，将源代码转化成可执行代码。  首先，C 预处理器扩展源代码，插入所有用#include 命令指定的文件，并扩展所有用#define 声明指定的宏。 其次，编译器产生两个源文件的汇编代码，名字分别为 P1. S 和 p2. S。 接下来，汇编器会将汇编代码转化成二进制">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2022/06/13/CSAPP-Ch03%20Machine%20Level/3-1.png">
 <meta property="og:image" content="http://example.com/Users/mac/github/zennlyu.github.io/hexo/source/statics/csapp/3-2.png">
@@ -92,6 +92,7 @@
 <article class='content md post'>
 <h1 class="article-title"><span>CSAPP-03 Machine Level Programming</span></h1>
 <h2 id="1-历史观点"><a href="#1-历史观点" class="headerlink" title="1 历史观点"></a>1 历史观点</h2><h2 id="2-程序编码"><a href="#2-程序编码" class="headerlink" title="2 程序编码"></a>2 程序编码</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">linux&gt; </span><span class="language-bash">gcc -Og -o p p1.c p2.c</span></span><br></pre></td></tr></table></figure>
+
 <p>实际上 gcc 命令调用了一整套的程序，将源代码转化成可执行代码。</p>
 <ul>
 <li>首先，C 预处理器扩展源代码，插入所有用#include 命令指定的文件，并扩展所有用#define 声明指定的宏。</li>
