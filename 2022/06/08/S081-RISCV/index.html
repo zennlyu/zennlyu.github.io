@@ -29,7 +29,7 @@
 <meta property="og:description" content="Chapter 1 Operating System Interfaces1.1 Processes and MemoryAn xv6 process consists of  用户空间内存(指令、数据和堆栈) 内核私有的进程状态  Xv6 time-shares processes:  进程共享 cpu，它透明地切换当前 cpu 正在执行的进程。 当一个进程暂时不使用 cpu 时， xv6 会保">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-08T09:42:17.367Z">
-<meta property="article:modified_time" content="2022-07-04T16:25:57.538Z">
+<meta property="article:modified_time" content="2022-07-04T16:36:03.892Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="S081">
 <meta name="twitter:card" content="summary">
@@ -71,7 +71,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-1-Operating-System-Interfaces"><span class="toc-text">Chapter 1 Operating System Interfaces</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Processes-and-Memory"><span class="toc-text">1.1 Processes and Memory</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fork"><span class="toc-text">fork</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exit"><span class="toc-text">exit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#wait"><span class="toc-text">wait</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exec"><span class="toc-text">exec</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Shell"><span class="toc-text">Shell</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-I-x2F-O-and-File-Descriptor"><span class="toc-text">1.2 I&#x2F;O and File Descriptor</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#read-write"><span class="toc-text">read&#x2F;write</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#close"><span class="toc-text">close</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#open"><span class="toc-text">open</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dup"><span class="toc-text">dup</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-Pipes"><span class="toc-text">1.3 Pipes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-File-System"><span class="toc-text">1.4 File System</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#chdir"><span class="toc-text">chdir</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mkdir-mknod"><span class="toc-text">mkdir&#x2F;mknod</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fstat"><span class="toc-text">fstat</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#link"><span class="toc-text">link</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#unlink"><span class="toc-text">unlink</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-Real-world"><span class="toc-text">1.5 Real world</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%AF%B9%E7%89%A9%E7%90%86%E8%B5%84%E6%BA%90%E8%BF%9B%E8%A1%8C%E6%8A%BD%E8%B1%A1"><span class="toc-text">2.1 对物理资源进行抽象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E7%94%A8%E6%88%B7%E6%A8%A1%E5%BC%8F%E3%80%81%E5%86%85%E6%A0%B8%E6%A8%A1%E5%BC%8F%E5%8F%8A%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-text">2.2 用户模式、内核模式及系统调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E5%86%85%E6%A0%B8%E7%9A%84%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84"><span class="toc-text">2.3 内核的组织结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-xv6%E7%9A%84%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84"><span class="toc-text">2.4 xv6的代码组织结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%E8%BF%9B%E7%A8%8B%E7%AE%80%E4%BB%8B"><span class="toc-text">2.5 进程简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-RISV%E7%9A%84%E9%99%B7%E9%98%B1%E6%9C%BA%E5%88%B6"><span class="toc-text">4.1 RISV的陷阱机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E6%9D%A5%E8%87%AA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E7%9A%84%E9%99%B7%E9%98%B1"><span class="toc-text">4.2 来自用户空间的陷阱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E4%BB%A3%E7%A0%81%EF%BC%9A%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-text">4.3 代码：系统调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-%E4%BB%A3%E7%A0%81%EF%BC%9A%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%82%E6%95%B0"><span class="toc-text">4.4 代码：系统调用参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-%E5%86%85%E6%A0%B8%E7%A9%BA%E9%97%B4%E4%B8%AD%E7%9A%84%E9%99%B7%E9%98%B1"><span class="toc-text">4.5 内核空间中的陷阱</span></a></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-1-Operating-System-Interfaces"><span class="toc-text">Chapter 1 Operating System Interfaces</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Processes-and-Memory"><span class="toc-text">1.1 Processes and Memory</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fork"><span class="toc-text">fork</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exit"><span class="toc-text">exit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#wait"><span class="toc-text">wait</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exec"><span class="toc-text">exec</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Shell"><span class="toc-text">Shell</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-I-x2F-O-and-File-Descriptor"><span class="toc-text">1.2 I&#x2F;O and File Descriptor</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#read-write"><span class="toc-text">read&#x2F;write</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#close"><span class="toc-text">close</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#open"><span class="toc-text">open</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dup"><span class="toc-text">dup</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-Pipes"><span class="toc-text">1.3 Pipes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-File-System"><span class="toc-text">1.4 File System</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#chdir"><span class="toc-text">chdir</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mkdir-mknod"><span class="toc-text">mkdir&#x2F;mknod</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fstat"><span class="toc-text">fstat</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#link"><span class="toc-text">link</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#unlink"><span class="toc-text">unlink</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-Real-world"><span class="toc-text">1.5 Real world</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC2%E7%AB%A0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E7%BB%87%E5%BD%A2%E5%BC%8F"><span class="toc-text">第2章 操作系统的组织形式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Abstracting-physical-resources"><span class="toc-text">2.1 Abstracting physical resources</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E7%94%A8%E6%88%B7%E6%A8%A1%E5%BC%8F%E3%80%81%E5%86%85%E6%A0%B8%E6%A8%A1%E5%BC%8F%E5%8F%8A%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-text">2.2 用户模式、内核模式及系统调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%86%85%E6%A0%B8%E7%9A%84%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84"><span class="toc-text">2.3 内核的组织结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-xv6%E7%9A%84%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84"><span class="toc-text">2.4 xv6的代码组织结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E8%BF%9B%E7%A8%8B%E7%AE%80%E4%BB%8B"><span class="toc-text">2.5 进程简介</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC4%E7%AB%A0-%E9%99%B7%E9%98%B1%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-text">第4章 陷阱和系统调用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-RISV%E7%9A%84%E9%99%B7%E9%98%B1%E6%9C%BA%E5%88%B6"><span class="toc-text">4.1 RISV的陷阱机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%9D%A5%E8%87%AA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E7%9A%84%E9%99%B7%E9%98%B1"><span class="toc-text">4.2 来自用户空间的陷阱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E4%BB%A3%E7%A0%81%EF%BC%9A%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-text">4.3 代码：系统调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E4%BB%A3%E7%A0%81%EF%BC%9A%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%82%E6%95%B0"><span class="toc-text">4.4 代码：系统调用参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E5%86%85%E6%A0%B8%E7%A9%BA%E9%97%B4%E4%B8%AD%E7%9A%84%E9%99%B7%E9%98%B1"><span class="toc-text">4.5 内核空间中的陷阱</span></a></li></ol></li></ol></div></div></div>
 
 
 </div>
@@ -171,7 +171,7 @@
 
 <p>如果两个文件描述符是通过一系列的 <code>fork</code> 和 <code>dup</code> 调用从同一个原始文件描述符衍生出 来的，那么这两个文件描述符共享一个偏移量。否则，文件描述符不共享偏移量，即使它们 是由同一个文件的打开调用产生的。<code>dup</code> 允许 shell 实现这样的命令: <code>ls existing-file non-existing-file &gt; tmp1 2&gt;&amp;1</code>。<code>2&gt;&amp;1</code> 表示 2 是 1 的复制品(<code>dup(1)</code>)，即重定向错误信息到 标准输出，已存在文件的名称和不存在文件的错误信息都会显示在文件 tmp1 中。xv6 shell 不支持错误文件描述符的 I&#x2F;O 重定向，但现在你知道如何实现它了。</p>
 <p>文件描述符是一个强大的抽象，因为它们隐藏了它们连接的细节:一个向文件描述符 1 写入的进程可能是在向一个文件、控制台等设备或向一个管道写入。</p>
-<h2 id="1-3-Pipes"><a href="#1-3-Pipes" class="headerlink" title="1.3 Pipes"></a>1.3 Pipes</h2><p>管道是一个小的内核缓冲区，作为一对文件描述符暴露给进程，一个用于读，一个用于 写。将数据写入管道的一端就可以从管道的另一端读取数据。管道为进程提供了一种通信方 式。</p>
+<h3 id="1-3-Pipes"><a href="#1-3-Pipes" class="headerlink" title="1.3 Pipes"></a>1.3 Pipes</h3><p>管道是一个小的内核缓冲区，作为一对文件描述符暴露给进程，一个用于读，一个用于 写。将数据写入管道的一端就可以从管道的另一端读取数据。管道为进程提供了一种通信方 式。</p>
 <p>下面的示例代码运行程序 <code>wc</code>，标准输入连接到管道的读取端。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> p[<span class="number">2</span>];</span><br><span class="line"><span class="type">char</span> *argv[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">argv[<span class="number">0</span>] = <span class="string">&quot;wc&quot;</span>;</span><br><span class="line">argv[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">pipe(p); </span><br><span class="line"><span class="keyword">if</span>(fork() == <span class="number">0</span>) &#123;</span><br><span class="line">	close(<span class="number">0</span>);		<span class="comment">// 释放文件描述符0</span></span><br><span class="line">	dup(p[<span class="number">0</span>]);	<span class="comment">// 复制一个 p[0](管道读端)，此时文件描述符 0 (标准输入) 也引用管道读端，故改变了标准输入。</span></span><br><span class="line">	close(p[<span class="number">0</span>]);</span><br><span class="line">	close(p[<span class="number">1</span>]);</span><br><span class="line">	exec(<span class="string">&quot;/bin/wc&quot;</span>, argv);	<span class="comment">// // wc 从标准输入读取数据，并写入到参数中的每一个文件</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	close(p[<span class="number">0</span>]);</span><br><span class="line">	write(p[<span class="number">1</span>], <span class="string">&quot;hello world\n&quot;</span>, <span class="number">12</span>);</span><br><span class="line">	close(p[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -196,7 +196,7 @@
 <li>第三，管道可以分阶段的并行执行，而文件方式则需要在第二个程序开始之前完成第一个程序。</li>
 <li>第四，如果你要实现进程间的通信，管道阻塞读写比文件的非阻塞语义更有效率。</li>
 </ul>
-<h2 id="1-4-File-System"><a href="#1-4-File-System" class="headerlink" title="1.4 File System"></a>1.4 File System</h2><h4 id="chdir"><a href="#chdir" class="headerlink" title="chdir"></a><code>chdir</code></h4><p>xv6 文件系统包含了数据文件(拥有字节数组)和目录(拥有对数据文件和其他目录的 命名引用)。可以通过 <code>chdir</code> 系统调用来改变进程的当前目录。下面两个 <code>open</code> 打开了同一个文件(假设所有涉及的目录都存在)。</p>
+<h3 id="1-4-File-System"><a href="#1-4-File-System" class="headerlink" title="1.4 File System"></a>1.4 File System</h3><h4 id="chdir"><a href="#chdir" class="headerlink" title="chdir"></a><code>chdir</code></h4><p>xv6 文件系统包含了数据文件(拥有字节数组)和目录(拥有对数据文件和其他目录的 命名引用)。可以通过 <code>chdir</code> 系统调用来改变进程的当前目录。下面两个 <code>open</code> 打开了同一个文件(假设所有涉及的目录都存在)。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chdir(&quot;/a&quot;); </span><br><span class="line">chdir(&quot;b&quot;); </span><br><span class="line">open(&quot;c&quot;, O_RDONLY);</span><br><span class="line"></span><br><span class="line">open(&quot;/a/b/c&quot;, O_RDONLY);</span><br></pre></td></tr></table></figure>
 
 <p>前两行将进程的当前目录改为 <code>/a/b</code>; 后面两行既不引用也不改变进程的当前目录。</p>
@@ -223,42 +223,100 @@
 
 <p>这段代码是创建一个临时文件的一种惯用方式，它创建了一个无名称 inode，故会在进 程关闭 <code>fd</code> 或者退出时删除文件。</p>
 <p>Unix 提供了 shell 可调用的文件操作程序，作为用户级程序，例如 <code>mkdir</code>、<code>ln</code> 和 <code>rm</code>。这 种设计允许任何人通过添加新的用户级程序来扩展命令行接口。现在看来，这个设计似乎是 显而易见的，但在 Unix 时期设计的其他系统通常将这类命令内置到 shell 中(并将 shell 内 置到内核中)。</p>
-<h2 id="1-5-Real-world"><a href="#1-5-Real-world" class="headerlink" title="1.5 Real world"></a>1.5 Real world</h2><p>Unix 将标准文件描述符、管道和方便的 shell 语法结合起来进行操作，是编写通用可重 用程序的一大进步。这个想法引发了一种软件工具文化，这也是 Unix 强大和流行的主要原 因，而 shell 是第一种所谓的脚本语言。Unix 系统调用接口今天仍然存在于 BSD、Linux 和 Mac OS X 等系统中。</p>
+<h3 id="1-5-Real-world"><a href="#1-5-Real-world" class="headerlink" title="1.5 Real world"></a>1.5 Real world</h3><p>Unix 将标准文件描述符、管道和方便的 shell 语法结合起来进行操作，是编写通用可重 用程序的一大进步。这个想法引发了一种软件工具文化，这也是 Unix 强大和流行的主要原 因，而 shell 是第一种所谓的脚本语言。Unix 系统调用接口今天仍然存在于 BSD、Linux 和 Mac OS X 等系统中。</p>
 <p>Xv6 并不符合 POSIX 标准:它缺少许多系统调用(包括基本的系统调用，如 lseek)， 而且它提供的许多系统调用与标准不同。我们对 xv6 的主要目标是简单明了，同时提供一个 简单的类似 UNIX 的系统调用接口。一些人已经添加了一些系统调用和一个简单的 C 库扩展 了 xv6，以便运行基本的 Unix 程序。然而，现代内核比 xv6 提供了更多的系统调用和更多种 类的内核服务。例如，它们支持网络、窗口系统、用户级线程、许多设备的驱动程序等等。 现代内核不断快速发展，并提供了许多超越 POSIX 的功能。</p>
 <p>Unix 用一套文件名和文件描述符接口统一了对多种类型资源(文件、目录和设备)的访 问。这个思想可以扩展到更多种类的资源，一个很好的例子是 Plan 9[13]，它把资源就是文 件的概念应用到网络、图形等方面。然而，大多数 Unix 衍生的操作系统都没有遵循这一路线。</p>
 <p>文件系统和文件描述符已经是强大的抽象。即便如此，操作系统接口还有其他模式。 Multics 是 Unix 的前身，它以一种使文件存储看起来像内存的方式抽象了文件存储，产生了 一种截然不同的接口。Multics 设计的复杂性直接影响了 Unix 的设计者，他们试图建立一些 更简单的东西。</p>
 <p>Xv6 没有用户系统;用 Unix 的术语来说，所有的 xv6 进程都以 root 身份运行。</p>
 <p>本书研究的是 xv6 如何实现其类似 Unix 的接口，但其思想和概念不仅仅适用于 Unix。 任何操作系统都必须将进程复用到底层硬件上，将进程相互隔离，并提供受控进程间通信的 机制。在学习了 xv6 之后，您应该能够研究其他更复杂的操作系统，并在这些系统中看到 xv6 的基本概念。</p>
-<h1 id="第2章-操作系统的组织形式"><a href="#第2章-操作系统的组织形式" class="headerlink" title="第2章 操作系统的组织形式"></a>第2章 操作系统的组织形式</h1><p>操作系统的一个关键要求是要一次支持多个活动。比如，使用系统调用fork，一个进程可以启动新进程。</p>
-<p>操作系统必须在这些进程间分时共享计算机资源。比如，即使系统中的进程数比硬件CPU多，则操作系统也必须保证所有进程都有执行的机会。</p>
-<p>操作系统必须安排进程之间的隔离。即， 如果一个进程里有错误，并出现故障，则不应影响不依赖该进程的那些进程。但是，彻底地隔离又太强了，因为进程间可能存在交互，比如管道。</p>
-<p>因此，操作系统必须满足三个要求：多路复用、隔离、交互。</p>
+<h2 id="第2章-操作系统的组织形式"><a href="#第2章-操作系统的组织形式" class="headerlink" title="第2章 操作系统的组织形式"></a>第2章 操作系统的组织形式</h2><p>操作系统必须满足三个要求：<strong>多路复用、隔离、交互</strong></p>
+<blockquote>
 <p>本章概述了如何组织操作系统来实现前述3个要求。</p>
 <p>虽然已证明有很多方式来实现这3个要求，但是本文重点关注有关整体内核的主流设计，比如许多Unix操作系统使用的就是这种设计。</p>
-<p>本章也概述了xv6进程，其中进程是xv6系统的隔离单元。<br>本章也概述了当 xv6 启动时，第一个进程是如何创建的。</p>
-<p>xv6 在一台多核的 RISC-V 的微处理器上运行，许多 xv6 的底层功能都是特定于 RISC-V 的。RISC-V 是一个64位的CPU，xv6 是用<code>LP64</code>C编写的，表示在 C 语言里的 long 和 pointer 是64位的，而不是32位。</p>
-<p>本书假定读者了解在某种体系架构上的一些机器级编程，并会介绍 RISC-V 特定的思想。有关 RISC-V 的有用的参考是《The RISC-V Reader: An Open Architecture Atlas》。</p>
-<p>在一台完整的电脑上的CPU是被支持硬件包围着的，其中的大部分都是I&#x2F;O接口。通过qemu的<code>-machine virt</code>选项，可为支持硬件编写xv6。这里的支持硬件包括RAM、一个包含启动代码的ROM、用户键盘&#x2F;屏幕的串行连接、一个存储用的磁盘。</p>
-<h2 id="2-1-对物理资源进行抽象"><a href="#2-1-对物理资源进行抽象" class="headerlink" title="2.1 对物理资源进行抽象"></a>2.1 对物理资源进行抽象</h2><p>为什么会有操作系统？</p>
-<p>如果没有操作系统，则可以通过类库的形式来实现系统调用，应用通过链接到类库的方式来使用类库。<br>使用类库的方式实现系统调用，每个应用甚应用至可以根据自身需要量身定制自己的类库。<br>使用类库的方式来实现系统调用，应用能直接跟硬件资源交互，以对应用最优的方式来使用硬件资源。<br>一些嵌入式设备或者实时系统采用这种组织形式。<br>类库方法的缺点是：如果有多个应用在运行，则这些应用必须有良好的行为，比如每个应用必须周期性地放弃CPU，以便其他应用可以运行。如果所有的应用都彼此信任，且没有错误，则这种协作式分时共享策略是可行的。由于对于应用来说，更常见的是彼此不信任，或者有错误。所以我们想要的隔离度要比协作式策略更强。</p>
-<p>换句话说，协作式策略需要的隔离是弱隔离。</p>
-<p>禁止应用直接访问敏感的硬件资源，转而将资源抽象为服务，对实现强隔离是有帮助的。<br>比如，UNIX应用只能通过文件系统的<code>open</code>、<code>read</code>、<code>write</code>、<code>close</code>等系统调用来跟存储交互，而不是直接读写磁盘。UNIX的文件系统为应用提供了路径名，且允许操作系统来管理磁盘。</p>
+<p>本章也概述了xv6进程，其中进程是xv6系统的隔离单元。</p>
+<p>本章也概述了当 xv6 启动时，第一个进程是如何创建的。</p>
+</blockquote>
+<ul>
+<li><p>操作系统的一个关键要求是要一次支持多个活动。比如，使用系统调用fork，一个进程可以启动新进程。</p>
+</li>
+<li><p>操作系统必须在这些进程间分时共享计算机资源。比如，即使系统中的进程数比硬件CPU多，则操作系统也必须保证所有进程都有执行的机会。</p>
+</li>
+<li><p>操作系统必须安排进程之间的隔离。即， 如果一个进程里有错误，并出现故障，则不应影响不依赖该进程的那些进程。但是，彻底地隔离又太强了，因为进程间可能存在交互，比如管道。</p>
+</li>
+</ul>
+<p>xv6 runs on multicore risc-v processor，许多 xv6 底层功能是特定于 RISC-V 的。</p>
+<blockquote>
+<p>RISC-V 是一个64位的CPU，xv6 是用<code>LP64</code>C编写的，表示在 C 语言里的 long 和 pointer 是64位的，而不是32位。</p>
+<p>有关 RISC-V 的有用的参考是《The RISC-V Reader: An Open Architecture Atlas》</p>
+<p>在一台完整的电脑上的CPU是被支持硬件包围着的，其中的大部分都是I&#x2F;O接口。</p>
+<p>通过 <code>qemu</code>的<code>-machine virt</code>选项，可为支持硬件编写xv6。这里的支持硬件包括</p>
+<ul>
+<li>RAM</li>
+<li>一个包含启动代码的ROM</li>
+<li>用户键盘&#x2F;屏幕的串行连接</li>
+<li>一个存储用的磁盘</li>
+</ul>
+</blockquote>
+<h3 id="2-1-Abstracting-physical-resources"><a href="#2-1-Abstracting-physical-resources" class="headerlink" title="2.1 Abstracting physical resources"></a>2.1 Abstracting physical resources</h3><p>If no OS：类库 -&gt; 实现系统调用，应用通过链接到类库的方式来使用类库。</p>
+<ul>
+<li>每个应用甚应用至可以根据自身需要量身定制自己的类库。</li>
+<li>应用能直接跟硬件资源交互，以对应用最优的方式来使用硬件资源。</li>
+<li>一些嵌入式设备或者实时系统采用这种组织形式。</li>
+</ul>
+<p>类库方法的缺点是：</p>
+<ul>
+<li>如果有多个应用在运行，则这些应用必须有良好的行为，比如每个应用必须周期性地放弃CPU，以便其他应用可以运行。</li>
+<li>如果所有的应用都彼此信任，且没有错误，则这种协作式分时共享策略是可行的。由于对于应用来说，更常见的是彼此不信任，或者有错误。所以我们想要的隔离度要比协作式策略更强。</li>
+</ul>
+<p><strong>换句话说，协作式策略需要的隔离是弱隔离。</strong></p>
+<ul>
+<li><p>禁止应用直接访问敏感的硬件资源，转而将资源抽象为服务，对实现强隔离是有帮助的。</p>
+<blockquote>
+<p>比如，UNIX应用只能通过文件系统的<code>open</code>、<code>read</code>、<code>write</code>、<code>close</code>等系统调用来跟存储交互，而不是直接读写磁盘。</p>
+<p>UNIX的文件系统为应用提供了路径名，且允许操作系统来管理磁盘。</p>
+</blockquote>
+</li>
+</ul>
 <p>即使不关心隔离特性，那些存在交互或者只希望彼此保持隔离的程序也可能会发现：文件系统是一个比直接使用磁盘更方便的抽象。</p>
-<p>类似地，通过按需保存和恢复寄存器状态，UNIX透明地在多个进程间切换硬件CPU，使得应用自身意识不到分时共享。这种透明性允许：即使有应用陷入死循环，则操作系统仍可以共享CPU。</p>
-<p>比如，UNIX进程使用<code>exec</code>来构建它的内存映像，而不是直接跟物理内存交互。这样就允许：操作系统决定进程在内存中的放置位置。如果内存不够用的话，则操作系统甚至会将进程的数据保存在磁盘上。除此之外，<code>exec</code>为用户提供了方便的文件系统来存储可执行程序映像。</p>
-<p>UNIX进程间的许多进程的交互方式都是通过文件描述符发生的。文件描述符不仅抽象了许多细节(比如数据是存储在管道里还是文件里等)，而且还是以简化交互的形式定义的。比如，如果在管道中的一个应用失败了，则内核会为管道中的下一个进程生成一个<code>end-of-file</code>的信号。</p>
+<ul>
+<li><p>类似地，通过按需保存和恢复寄存器状态，UNIX透明地在多个进程间切换硬件CPU，使得应用自身意识不到分时共享。</p>
+</li>
+<li><p>这种透明性允许：即使有应用陷入死循环，则操作系统仍可以共享CPU。</p>
+<blockquote>
+<p>比如，UNIX进程使用<code>exec</code>来构建它的内存映像，而不是直接跟物理内存交互。这样就允许：</p>
+<ul>
+<li>操作系统决定进程在内存中的放置位置。</li>
+<li>如果内存不够用的话，则操作系统甚至会将进程的数据保存在磁盘上。</li>
+<li><code>exec</code>为用户提供了方便的文件系统来存储可执行程序映像。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p>UNIX进程间的许多进程的交互方式都是通过文件描述符发生的。</p>
+<ul>
+<li><p>不仅抽象了许多细节(比如数据是存储在管道里还是文件里等)，</p>
+</li>
+<li><p>还是以简化交互的形式定义的。</p>
+<blockquote>
+<p>比如，如果在管道中的一个应用失败了，则内核会为管道中的下一个进程生成一个<code>end-of-file</code>的信号。</p>
+</blockquote>
+</li>
+</ul>
 <p>为了既为程序员提供方便，也提供强隔离，则在图1.3中的系统调用接口是经过仔细设计的。</p>
-<p>虽然UNIX接口不是唯一地抽象资源方式，但已被证明是一个很好的设计。</p>
-<h2 id="2-2-用户模式、内核模式及系统调用"><a href="#2-2-用户模式、内核模式及系统调用" class="headerlink" title="2.2 用户模式、内核模式及系统调用"></a>2.2 用户模式、内核模式及系统调用</h2><p>强隔离要求应用和操作系统之间有一个明确的边界。如果应用出错了，我们不想让操作系统也崩溃，或者让其他应用崩溃。</p>
+<h3 id="2-2-用户模式、内核模式及系统调用"><a href="#2-2-用户模式、内核模式及系统调用" class="headerlink" title="2.2 用户模式、内核模式及系统调用"></a>2.2 用户模式、内核模式及系统调用</h3><p>强隔离要求应用和操作系统之间有一个明确的边界。如果应用出错了，我们不想让操作系统也崩溃，或者让其他应用崩溃。</p>
 <p>操作系统应该能清理出错的应用，继续运行其他应用。</p>
 <p>为了达到强隔离，则操作系统必须安排好使得应用不能修改操作系统的数据结构和指令，不能访问其他进程的内存。</p>
-<p>CPU为强隔离提供硬件上的支持，比如，RISC-V有3种CPU执行指令的模式：机器模式，超级用户模式，用户模式。<br>在机器模式下执行指令具有完整的特权。机器模式主要用于配置计算机。<br>xv6在机器模式下执行若干行指令，然后切换到超级用户模式。</p>
-<p>在超级用户模式下，允许CPU执行特权指令，比如使中断生效和失效、读写持有页表地址的寄存器等。<br>如果处于用户模式的应用尝试去执行一个特权指令，则CPU不会执行该指令，而是切换到超级用户模式，使得超级用户代码能终止该应用，因为应用做了本不应该它做的事。<br>第一章中的图1.1说明了这种组织方式。</p>
+<p>CPU为强隔离提供硬件上的支持，比如，RISC-V有3种CPU执行指令的模式：机器模式，超级用户模式，用户模式。</p>
+<p>在机器模式下执行指令具有完整的特权。机器模式主要用于配置计算机。</p>
+<p>xv6在机器模式下执行若干行指令，然后切换到超级用户模式。</p>
+<p>在超级用户模式下，允许CPU执行特权指令，比如使中断生效和失效、读写持有页表地址的寄存器等。</p>
+<p>如果处于用户模式的应用尝试去执行一个特权指令，则CPU不会执行该指令，而是切换到超级用户模式，使得超级用户代码能终止该应用，因为应用做了本不应该它做的事。</p>
+<p>第一章中的图1.1说明了这种组织方式。</p>
 <p>应用只能执行用户模式的指令(比如，将数字相加等)，称该软件在用户控件运行。</p>
 <p>在超级用户模式下的软件也能执行特权指令，称该软件在内核空间运行。<br>在内核空间中运行的软件成为内核。</p>
 <p>想调用内核功能(比如xv6中的<code>read</code>系统调用)的的应用必须要切换到内核。<br>CPU提供了一个特定指令(RISC-V提供了<code>ecall</code>指令)，该指令的功能是从用户模式切换到超级用户模式的特定指令，进入内核的指定位置。<br>一旦CPU切换到了超级用户模式，则内核就能验证该系统调用的参数，决定是否允许应用执行请求操作，拒绝执行或者执行。</p>
 <p>重要的是内核控制着切换到超级用户模式的入口点。如果应用能决定内核的进入点，则一个恶意的应用就能在一个跳过验证参数的点进入内核。</p>
-<h2 id="2-3-内核的组织结构"><a href="#2-3-内核的组织结构" class="headerlink" title="2.3 内核的组织结构"></a>2.3 内核的组织结构</h2><p>一个很关键的设计问题：操作系统的哪些部分应该以超级用户模式运行？</p>
+<h3 id="2-3-内核的组织结构"><a href="#2-3-内核的组织结构" class="headerlink" title="2.3 内核的组织结构"></a>2.3 内核的组织结构</h3><p>一个很关键的设计问题：操作系统的哪些部分应该以超级用户模式运行？</p>
 <p>思路1：宏内核monolithic kernel</p>
 <p>整个操作系统都驻留在内核，使得所有的系统调用都是在超级用户模式下运行。</p>
 <p>在整体内核中，整个操作系统运行时都具有完整的硬件特权。</p>
@@ -280,9 +338,9 @@
 <p>图2.1说明了这种微内核设计。<br>作为进程运行的OS服务称为服务器，文件系统作为一个用户级别的进程在运行。</p>
 <p>为了允许应用跟文件服务器交互，内核提供了进程间通讯机制来从一个处于用户模式的进程向另一个发送消息。<br>比如，如果shell想读写一个文件，则shell进程就会给文件服务器发送一个消息，并等待响应。<br>在微内核中，内核接口由若干个底层功能构成，比如开始一个应用、发送消息、访问硬件设备等。<br>这种组织形式允许内核可以相对地小，大部分操作系统驻留作为用户级别的服务器。</p>
 <p>跟大部分Unix操作系统一样，xv6采用宏内核的方式来实现。因此，xv6的内核接口对应的是操作系统接口，内核实现了完整的操作系统。<br>由于xv6没有提供许多服务，因此跟一些微内核相比，xv6的内核相对较小，但是从概念上讲，xv6是宏内核。</p>
-<h2 id="2-4-xv6的代码组织结构"><a href="#2-4-xv6的代码组织结构" class="headerlink" title="2.4 xv6的代码组织结构"></a>2.4 xv6的代码组织结构</h2><p>xv6的内核源代码是在<code>kernel</code>子目录下。遵循粗略的模块化概念，它被分成许多文件，如图2.2所示。</p>
+<h3 id="2-4-xv6的代码组织结构"><a href="#2-4-xv6的代码组织结构" class="headerlink" title="2.4 xv6的代码组织结构"></a>2.4 xv6的代码组织结构</h3><p>xv6的内核源代码是在<code>kernel</code>子目录下。遵循粗略的模块化概念，它被分成许多文件，如图2.2所示。</p>
 <p>模块间接口被定义在<code>defs.h</code>中。</p>
-<h2 id="2-5-进程简介"><a href="#2-5-进程简介" class="headerlink" title="2.5 进程简介"></a>2.5 进程简介</h2><p>xv6里的一个隔离单元就是一个进程。</p>
+<h3 id="2-5-进程简介"><a href="#2-5-进程简介" class="headerlink" title="2.5 进程简介"></a>2.5 进程简介</h3><p>xv6里的一个隔离单元就是一个进程。</p>
 <p>进程抽象可以防止一个进程破坏或者监视另一个进程的内存、CPU、文件描述符等。<br>进程抽象还可以防止一个进程破坏内核，以便一个进程不能颠覆内核的隔离机制。</p>
 <p>内核必须仔细地实现隔离机制，因为一个出错的或者恶意的应用会诱使操作系统做一些不好的事情，比如绕过隔离等。</p>
 <p>内核用来实现进程的机制包括用户&#x2F;超级用户模式标记、地址空间、线程的时间分片等。</p>
@@ -322,7 +380,7 @@
 <p><code>p-&gt;kstack</code>：进程的内核栈。</p>
 <p><code>p-&gt;state</code>表示进程的状态，包括已分配、待运行、运行中、等待I&#x2F;O、退出等。</p>
 <p><code>p-&gt;pagetable</code>持有的是进程的页表，格式要满足RISC-V硬件的要求。<br>xv6使得：在用户空间中执行进程时，分页硬件使用进程的<code>p-&gt;pagetable</code>。<br>进程的页表也记录用于存储进程内存的物理页的地址。</p>
-<h1 id="第4章-陷阱和系统调用"><a href="#第4章-陷阱和系统调用" class="headerlink" title="第4章 陷阱和系统调用"></a>第4章 陷阱和系统调用</h1><p>有3类事件可导致CPU把普通的指令执行搁置在一边，强制把控制权转移到能处理事件的特定代码处。</p>
+<h2 id="第4章-陷阱和系统调用"><a href="#第4章-陷阱和系统调用" class="headerlink" title="第4章 陷阱和系统调用"></a>第4章 陷阱和系统调用</h2><p>有3类事件可导致CPU把普通的指令执行搁置在一边，强制把控制权转移到能处理事件的特定代码处。</p>
 <ul>
 <li>系统调用<br>用户程序执行<code>ecall</code>指令来请求内核为它做一些事；</li>
 <li>异常<br>一条指令(用户或者内核)做了非法的事，比如除以0、使用了一个非法的虚拟地址等；</li>
@@ -353,7 +411,7 @@
 <li>系统调用或者设备驱动服务例程；</li>
 </ul>
 <p>虽然这3类陷阱之间的共性建议：内核可使用一条代码路径来处理所有类型的陷阱，但是事实证明，针对用户空间陷阱、内核空间陷阱、计时器中断等3种不同的情形，有单独的汇编向量及C陷阱处理程序是很方便的。</p>
-<h2 id="4-1-RISV的陷阱机制"><a href="#4-1-RISV的陷阱机制" class="headerlink" title="4.1 RISV的陷阱机制"></a>4.1 RISV的陷阱机制</h2><p>每个RISC-V的CPU都有一套控制寄存器，内核可向其中写入信息来告知CPU如何处理陷阱，内核可从中读数据来查找有关已发生的陷阱信息。</p>
+<h3 id="4-1-RISV的陷阱机制"><a href="#4-1-RISV的陷阱机制" class="headerlink" title="4.1 RISV的陷阱机制"></a>4.1 RISV的陷阱机制</h3><p>每个RISC-V的CPU都有一套控制寄存器，内核可向其中写入信息来告知CPU如何处理陷阱，内核可从中读数据来查找有关已发生的陷阱信息。</p>
 <p>在<code>riscv.h</code>中包含了xv6使用的定义。</p>
 <table>
 <thead>
@@ -407,7 +465,7 @@
 <li>假设CPU不切换程序寄存器pc。则还在运行用户指令，陷阱就切换到超级用户模式了。这样，那些用户指令就能破坏用户&#x2F;内核隔离机制了，比如通过修改satp寄存器来指向允许访问整个物理内存的页表了。</li>
 <li>因此，CPU切换到由stvec寄存器指定的内核指令地址是非常重要的。</li>
 </ul>
-<h2 id="4-2-来自用户空间的陷阱"><a href="#4-2-来自用户空间的陷阱" class="headerlink" title="4.2 来自用户空间的陷阱"></a>4.2 来自用户空间的陷阱</h2><ul>
+<h3 id="4-2-来自用户空间的陷阱"><a href="#4-2-来自用户空间的陷阱" class="headerlink" title="4.2 来自用户空间的陷阱"></a>4.2 来自用户空间的陷阱</h3><ul>
 <li>问题：一次完整的来自用户空间的陷阱处理流程是怎样的？</li>
 <li>问题：<code>uservec</code>做了哪些事？</li>
 <li>问题：<code>usertrap</code>做了哪些事？</li>
@@ -439,7 +497,7 @@
 <p>userret切换satp指向进程的用户页表。<br>回想一下，用户页表既映射了trampoline页，也映射了TRPFRAME，但没有映射来自内核的其他内容。<br>在用户页表和内核页表中，trampoline页被映射到相同的虚拟地址，这就允许：在修改satp之后，uservec继续执行。</p>
 <p>userret拷贝trapframe上保存的用户a0到sscratch中，为以后的TRAPFRAME交换做好准备。</p>
 <p>从现在起，userret能使用的数据只有寄存器的内容和trapframe的内容。<br>接下来，userret从trapframe中恢复被保存的寄存器，做最后一次a0和sscratch的交换来恢复a0，为接下来的陷阱而保存TRAPFRAME，使用sret返回到用户空间。</p>
-<h2 id="4-3-代码：系统调用"><a href="#4-3-代码：系统调用" class="headerlink" title="4.3 代码：系统调用"></a>4.3 代码：系统调用</h2><p>第2章以initcode.S结束，在initcode.S中触发了exec系统调用。让我们看看用户的调用是如何抵达内核中的exec系统调用实现的。</p>
+<h3 id="4-3-代码：系统调用"><a href="#4-3-代码：系统调用" class="headerlink" title="4.3 代码：系统调用"></a>4.3 代码：系统调用</h3><p>第2章以initcode.S结束，在initcode.S中触发了exec系统调用。让我们看看用户的调用是如何抵达内核中的exec系统调用实现的。</p>
 <p>用户代码在寄存器a0和a1中放入了用于exec的参数，在寄存器a7中放入了系统调用编号。</p>
 <p>系统调用编号是跟syscalls数组的条目相匹配的，其中syscalls是一个由多个函数指针组成的表。</p>
 <p>ecall 指令进入到内核，执行 uservec、usertrap，然后是syscall。</p>
@@ -447,7 +505,7 @@
 <p>当从系统调用实现函数中返回时，syscall在p-&gt;trapframe-&gt;a0中记录返回值。由于在RISC-V上的C调用约定在寄存器a0中放入返回值，则前述操作会导致初始用户空间对exec()调用返回syscall在trapframe-&gt;a0中放入的值。</p>
 <p>系统调用约定返回负数表示错误，0或者整数表示成功。</p>
 <p>如果系统调用号非法，则syscall会输出错误，并返回-1。</p>
-<h2 id="4-4-代码：系统调用参数"><a href="#4-4-代码：系统调用参数" class="headerlink" title="4.4 代码：系统调用参数"></a>4.4 代码：系统调用参数</h2><p>寄存器-&gt;陷阱帧trapframe</p>
+<h3 id="4-4-代码：系统调用参数"><a href="#4-4-代码：系统调用参数" class="headerlink" title="4.4 代码：系统调用参数"></a>4.4 代码：系统调用参数</h3><p>寄存器-&gt;陷阱帧trapframe</p>
 <p>内核中的系统调用实现需要找到用户代码传递的参数。</p>
 <p>因为用户代码调用的是经过包装的系统调用函数，所以参数最开始是按照RISC-V的C调用约定，保存在寄存器中的。</p>
 <p>内核的陷阱trap代码将寄存器的值保存到当前进程的陷阱帧trap frame中，内核代码是从当前进程的trapframe上找到系统调用参数的。</p>
@@ -464,7 +522,7 @@
 <p>copyinstr从用户页表pagetale中的虚拟地址srcva处最多拷贝max个字节。它使用walkaddr来遍历软件形式的页表来确定srcva对应的物理地址pa0。因为内核映射所有的RAM地址到相同的内核虚拟地址，所以copyinstr可以直接从pa0拷贝字符串字节到dst。</p>
 <p>walkaddr会检查用户提供的虚拟地址是否属于用户地址空间，所以程序不能骗过内核去读其他内存。</p>
 <p>类似的函数还有copyout：将数据从内核拷贝到用户提供的地址。</p>
-<h2 id="4-5-内核空间中的陷阱"><a href="#4-5-内核空间中的陷阱" class="headerlink" title="4.5 内核空间中的陷阱"></a>4.5 内核空间中的陷阱</h2><p>来自内核空间的陷阱处理步骤</p>
+<h3 id="4-5-内核空间中的陷阱"><a href="#4-5-内核空间中的陷阱" class="headerlink" title="4.5 内核空间中的陷阱"></a>4.5 内核空间中的陷阱</h3><p>来自内核空间的陷阱处理步骤</p>
 <ul>
 <li>保存寄存器</li>
 <li>处理陷阱</li>
