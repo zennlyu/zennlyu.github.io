@@ -66,7 +66,7 @@
 
 <header class="header">
 
-<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://github.com/zennlyu/zennlyu.github.io/blob/main/avatar.png" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/04/NdRvX.png" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
 <nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
 
 <div class="widgets">
@@ -92,7 +92,6 @@
 <h1 class="article-title"><span>Catalina quarantine for corrupted apps</span></h1>
 <p>低于 <code>Big Sur</code> 系统版本的 <code>macOS</code> 或 <code>m1</code> 芯片机器在安装一些未适配软件时候可能会出现 <code>安装包损坏, 打不开“XXX”,因为它来自身份不明的开发者</code> 等报错，在此状态下可以尝试以下做法。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo spctl --master-disable</span><br><span class="line">sudo xattr -r -d com.apple.quarantine /Applications/Sketch.app/</span><br><span class="line">// 输入 sudo xattr -r -d com.apple.quarantine 后将应用程序拖入 teminal 中</span><br></pre></td></tr></table></figure>
-
 <p>（以及 Catalina 真的好耐看啊！）</p>
 
 

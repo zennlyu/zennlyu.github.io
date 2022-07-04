@@ -28,13 +28,13 @@
 <meta property="og:site_name" content="zennlyu">
 <meta property="og:description" content="第2章 操作系统的组织形式操作系统的一个关键要求是要一次支持多个活动。比如，使用系统调用fork，一个进程可以启动新进程。 操作系统必须在这些进程间分时共享计算机资源。比如，即使系统中的进程数比硬件CPU多，则操作系统也必须保证所有进程都有执行的机会。 操作系统必须安排进程之间的隔离。即， 如果一个进程里有错误，并出现故障，则不应影响不依赖该进程的那些进程。但是，彻底地隔离又太强了，因为进程间可能">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://math.jianshu.com/math?formula=2%5E%7B38%7D-1=0x3fffffffff">
+<meta property="og:image" content="https://math.jianshu.com/math?formula=2%5E%7B38%7D-1%3D0x3fffffffff">
 <meta property="article:published_time" content="2022-06-08T09:42:17.367Z">
 <meta property="article:modified_time" content="2022-07-03T12:06:25.040Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="S081">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://math.jianshu.com/math?formula=2%5E%7B38%7D-1=0x3fffffffff">
+<meta name="twitter:image" content="https://math.jianshu.com/math?formula=2%5E%7B38%7D-1%3D0x3fffffffff">
   
   
 
@@ -68,7 +68,7 @@
 
 <header class="header">
 
-<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://github.com/zennlyu/zennlyu.github.io/blob/main/avatar.png" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/04/NdRvX.png" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
 <nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
 
 <div class="widgets">
@@ -99,7 +99,7 @@
 <p>本章也概述了xv6进程，其中进程是xv6系统的隔离单元。<br>本章也概述了当xv6启动时，第一个进程是如何创建的。</p>
 <p>xv6在一台多核的RISC-V的微处理器上运行，许多xv6的底层功能都是特定于RISC-V的。RISC-V是一个64位的CPU，xv6是用<code>LP64</code>C编写的，表示在C语言里的long和pointer是64位的，而不是32位。</p>
 <p>本书假定读者了解在某种体系架构上的一些机器级编程，并会介绍RISC-V特定的思想。有关RISC-V的有用的参考是《The RISC-V Reader: An Open Architecture Atlas》。</p>
-<p>在一台完整的电脑上的CPU是被支持硬件包围着的，其中的大部分都是I&#x2F;O接口。通过qemu的<code>-machine virt</code>选项，可为支持硬件编写xv6。这里的支持硬件包括RAM、一个包含启动代码的ROM、用户键盘&#x2F;屏幕的串行连接、一个存储用的磁盘。</p>
+<p>在一台完整的电脑上的CPU是被支持硬件包围着的，其中的大部分都是I/O接口。通过qemu的<code>-machine virt</code>选项，可为支持硬件编写xv6。这里的支持硬件包括RAM、一个包含启动代码的ROM、用户键盘/屏幕的串行连接、一个存储用的磁盘。</p>
 <h2 id="2-1-对物理资源进行抽象"><a href="#2-1-对物理资源进行抽象" class="headerlink" title="2.1 对物理资源进行抽象"></a>2.1 对物理资源进行抽象</h2><p>为什么会有操作系统？</p>
 <p>如果没有操作系统，则可以通过类库的形式来实现系统调用，应用通过链接到类库的方式来使用类库。<br>使用类库的方式实现系统调用，每个应用甚应用至可以根据自身需要量身定制自己的类库。<br>使用类库的方式来实现系统调用，应用能直接跟硬件资源交互，以对应用最优的方式来使用硬件资源。<br>一些嵌入式设备或者实时系统采用这种组织形式。<br>类库方法的缺点是：如果有多个应用在运行，则这些应用必须有良好的行为，比如每个应用必须周期性地放弃CPU，以便其他应用可以运行。如果所有的应用都彼此信任，且没有错误，则这种协作式分时共享策略是可行的。由于对于应用来说，更常见的是彼此不信任，或者有错误。所以我们想要的隔离度要比协作式策略更强。</p>
 <p>换句话说，协作式策略需要的隔离是弱隔离。</p>
@@ -146,7 +146,7 @@
 <h2 id="2-5-进程简介"><a href="#2-5-进程简介" class="headerlink" title="2.5 进程简介"></a>2.5 进程简介</h2><p>xv6里的一个隔离单元就是一个进程。</p>
 <p>进程抽象可以防止一个进程破坏或者监视另一个进程的内存、CPU、文件描述符等。<br>进程抽象还可以防止一个进程破坏内核，以便一个进程不能颠覆内核的隔离机制。</p>
 <p>内核必须仔细地实现隔离机制，因为一个出错的或者恶意的应用会诱使操作系统做一些不好的事情，比如绕过隔离等。</p>
-<p>内核用来实现进程的机制包括用户&#x2F;超级用户模式标记、地址空间、线程的时间分片等。</p>
+<p>内核用来实现进程的机制包括用户/超级用户模式标记、地址空间、线程的时间分片等。</p>
 <p>为了有助于加强隔离度，进程抽象给程序提供了一种拥有自己专属机器的错觉。</p>
 <p>进程不仅给程序提供了不能被其他进程读写的私有内存空间，即地址空间。<br>进程而且给程序提供了看起来似乎是自己的CPU来执行程序指令。</p>
 <p>xv6使用页表(通过硬件来实现)来给予每个进程自己的地址空间。<br>RISC-V页表将虚拟地址(RISC-V指令能操作的地址)映射到物理地址(CPU芯片发送给主内存的地址)。</p>
@@ -160,7 +160,7 @@
 <li>trapframe</li>
 </ul>
 <p>有若干个限制进程地址空间大小的因素：在RISC-V上的指针是64位的；硬件仅使用低39位去页表中查询虚拟地址；xv6仅使用这39位中的38位。</p>
-<p>因此，最大的地址是<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://math.jianshu.com/math?formula=2%5E%7B38%7D-1=0x3fffffffff" alt="2^{38}-1=0x3fffffffff">，即MAXVA(定义可见<code>kernel/risv.h</code>)。</p>
+<p>因此，最大的地址是<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://math.jianshu.com/math?formula=2%5E%7B38%7D-1%3D0x3fffffffff" alt="2^{38}-1=0x3fffffffff">，即MAXVA(定义可见<code>kernel/risv.h</code>)。</p>
 <p>在地址空间的顶部，xv6预留了一页用于trampoline，一页用于映射进程的trapframe来切换到内核。</p>
 <p>这里留了两个问题：</p>
 <ul>
@@ -178,9 +178,9 @@
 <li>该指令提升硬件特权等级，修改程序计数器到某个内核定义的入口点。内核入口点的代码切换到一个内核栈，执行实现了该系统调用的内核指令。</li>
 </ul>
 <p>当系统调用完成时，内核通过调用<code>sret</code>指令来切换回用户栈，和返回到用户空间。该指令降低硬件特权等级，恢复执行紧邻系统调用指令的那条用户指令。</p>
-<p>一个进程的线程可以在内核中因为等待I&#x2F;O而阻塞，当I&#x2F;O完成时，该线程就在挂起的地方开始执行。</p>
+<p>一个进程的线程可以在内核中因为等待I/O而阻塞，当I/O完成时，该线程就在挂起的地方开始执行。</p>
 <p><code>p-&gt;kstack</code>：进程的内核栈。</p>
-<p><code>p-&gt;state</code>表示进程的状态，包括已分配、待运行、运行中、等待I&#x2F;O、退出等。</p>
+<p><code>p-&gt;state</code>表示进程的状态，包括已分配、待运行、运行中、等待I/O、退出等。</p>
 <p><code>p-&gt;pagetable</code>持有的是进程的页表，格式要满足RISC-V硬件的要求。<br>xv6使得：在用户空间中执行进程时，分页硬件使用进程的<code>p-&gt;pagetable</code>。<br>进程的页表也记录用于存储进程内存的物理页的地址。</p>
 <h1 id="第4章-陷阱和系统调用"><a href="#第4章-陷阱和系统调用" class="headerlink" title="第4章 陷阱和系统调用"></a>第4章 陷阱和系统调用</h1><p>有3类事件可导致CPU把普通的指令执行搁置在一边，强制把控制权转移到能处理事件的特定代码处。</p>
 <ul>
@@ -215,6 +215,7 @@
 <p>虽然这3类陷阱之间的共性建议：内核可使用一条代码路径来处理所有类型的陷阱，但是事实证明，<strong>针对用户空间陷阱、内核空间陷阱、计时器中断等3种不同的情形，有单独的汇编向量及C陷阱处理程序是很方便的</strong>。</p>
 <h2 id="4-1-RISV的陷阱机制"><a href="#4-1-RISV的陷阱机制" class="headerlink" title="4.1 RISV的陷阱机制"></a>4.1 RISV的陷阱机制</h2><p>每个RISC-V的CPU都有一套控制寄存器，内核可向其中写入信息来告知CPU如何处理陷阱，内核可从中读数据来查找有关已发生的陷阱信息。</p>
 <p>在<code>riscv.h</code>中包含了xv6使用的定义。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -222,7 +223,8 @@
 <th>Function</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>stvec寄存器</td>
 <td>内核向其中写入中断处理程序的地址；<br>RISC-V将跳转到这里记录的地址处理陷阱；</td>
 </tr>
@@ -242,7 +244,9 @@
 <td>sstatus寄存器</td>
 <td>在sstatus中的SIE位控制的是设备中断是否生效；<br>如果内核清除了SIE，则RISC-V将延迟设备中断直到内核设置了SIE。<br>在sstatus中的SPP位记录的是陷阱来自用户模式还是超级用户模式，及控制sret返回到哪种模式。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <blockquote>
 <p>以上5个跟陷阱相关的寄存器都是在超级用户模式下处理的，在用户模式下不能读写这5个寄存器的值。</p>
 </blockquote>
@@ -264,7 +268,7 @@
 <p><strong>理由：</strong>CPU在处理陷阱的过程中做少量的工作是为了给软件提供更大的灵活性。比如，一些操作系统在某些情况下不需要页表切换的，这可以提升性能。</p>
 <p>能不能对CPU的陷阱处理步骤进行进一步的简化？</p>
 <ul>
-<li>假设CPU不切换程序寄存器pc。则还在运行用户指令，陷阱就切换到超级用户模式了。这样，那些用户指令就能破坏用户&#x2F;内核隔离机制了，比如通过修改satp寄存器来指向允许访问整个物理内存的页表了。</li>
+<li>假设CPU不切换程序寄存器pc。则还在运行用户指令，陷阱就切换到超级用户模式了。这样，那些用户指令就能破坏用户/内核隔离机制了，比如通过修改satp寄存器来指向允许访问整个物理内存的页表了。</li>
 <li>因此，CPU切换到由stvec寄存器指定的内核指令地址是非常重要的。</li>
 </ul>
 <h2 id="4-2-来自用户空间的陷阱"><a href="#4-2-来自用户空间的陷阱" class="headerlink" title="4.2 来自用户空间的陷阱"></a>4.2 来自用户空间的陷阱</h2><ul>
