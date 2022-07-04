@@ -29,7 +29,7 @@
 <meta property="og:description" content="Lecture 2: Infrastructure: RPC and threadsWhy Go? good support for threads convenient RPC type- and memory- safe garbage-collected (no use after freeing problems) threads + GC is particularly attracti">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-01T04:27:15.000Z">
-<meta property="article:modified_time" content="2022-07-04T08:23:29.540Z">
+<meta property="article:modified_time" content="2022-07-04T08:31:28.673Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="6.824">
 <meta name="twitter:card" content="summary">
@@ -71,7 +71,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-Go"><span class="toc-text">Why Go?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Threads"><span class="toc-text">Threads</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thread-%E2%80%9Cthread-of-execution%E2%80%9D"><span class="toc-text">Thread &#x3D; “thread of execution”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-threads"><span class="toc-text">Why threads?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#I-O-concurrency"><span class="toc-text">I&#x2F;O concurrency</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Multicore-performance"><span class="toc-text">Multicore performance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Convenience"><span class="toc-text">Convenience</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Is-there-an-alternative-to-threads"><span class="toc-text">Is there an alternative to threads?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%9Cevent-driven-%E2%80%9D"><span class="toc-text">“event-driven.”</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Threading-challenges"><span class="toc-text">Threading challenges:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sharing-data-safely"><span class="toc-text">sharing data safely</span></a></li></ol></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-Go"><span class="toc-text">Why Go?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Threads"><span class="toc-text">Threads</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thread-%E2%80%9Cthread-of-execution%E2%80%9D"><span class="toc-text">Thread &#x3D; “thread of execution”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-threads"><span class="toc-text">Why threads?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#I-O-concurrency"><span class="toc-text">I&#x2F;O concurrency</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Multicore-performance"><span class="toc-text">Multicore performance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Convenience"><span class="toc-text">Convenience</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Is-there-an-alternative-to-threads"><span class="toc-text">Is there an alternative to threads?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%9Cevent-driven-%E2%80%9D"><span class="toc-text">“event-driven.”</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Threading-challenges"><span class="toc-text">Threading challenges:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sharing-data-safely"><span class="toc-text">sharing data safely</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#coordination-between-threads"><span class="toc-text">coordination between threads</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#deadlock"><span class="toc-text">deadlock</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-a-web-crawler"><span class="toc-text">What is a web crawler?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Crawler-challenges"><span class="toc-text">Crawler challenges</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Exploit-I-O-concurrency"><span class="toc-text">Exploit I&#x2F;O concurrency</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fetch-each-URL-only-once"><span class="toc-text">Fetch each URL only once</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Know-when-finished"><span class="toc-text">Know when finished</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Serial-crawler"><span class="toc-text">Serial crawler</span></a></li></ol></div></div></div>
 
 
 </div>
@@ -137,7 +137,49 @@
 <li><p>Event-driven gets you I/O concurrency, and eliminates thread costs (which can be substantial), but doesn’t get multi-core speedup, and is painful to program.</p>
 </li>
 </ul>
-<h2 id="Threading-challenges"><a href="#Threading-challenges" class="headerlink" title="Threading challenges:"></a>Threading challenges:</h2><h3 id="sharing-data-safely"><a href="#sharing-data-safely" class="headerlink" title="sharing data safely"></a>sharing data safely</h3>
+<h2 id="Threading-challenges"><a href="#Threading-challenges" class="headerlink" title="Threading challenges:"></a>Threading challenges:</h2><h3 id="sharing-data-safely"><a href="#sharing-data-safely" class="headerlink" title="sharing data safely"></a>sharing data safely</h3><ul>
+<li>what if two threads do n = n + 1 at the same time?</li>
+<li>​      or one thread reads while another increments?</li>
+<li>this is a “race” — and is often a bug</li>
+<li>​    -&gt; use locks (Go’s sync.Mutex)</li>
+<li>​    -&gt; or avoid sharing mutable data</li>
+</ul>
+<h3 id="coordination-between-threads"><a href="#coordination-between-threads" class="headerlink" title="coordination between threads"></a>coordination between threads</h3><ul>
+<li>one thread is producing data, another thread is consuming it</li>
+<li>​      how can the consumer wait (and release the CPU)?</li>
+<li>​      how can the producer wake up the consumer?</li>
+<li>-&gt; use Go channels or sync.Cond or sync.WaitGroup</li>
+</ul>
+<h3 id="deadlock"><a href="#deadlock" class="headerlink" title="deadlock"></a>deadlock</h3><p>cycles via locks and/or communication (e.g. RPC or Go channels)</p>
+<p>Let’s look at the tutorial’s web crawler as a threading example.</p>
+<h2 id="What-is-a-web-crawler"><a href="#What-is-a-web-crawler" class="headerlink" title="What is a web crawler?"></a>What is a web crawler?</h2><ul>
+<li>goal: fetch all web pages, e.g. to feed to an indexer</li>
+<li>you give it a starting web page</li>
+<li>it recursively follows all links</li>
+<li>but don’t fetch a given page more than once</li>
+<li>​        and don’t get stuck in cycles</li>
+</ul>
+<h2 id="Crawler-challenges"><a href="#Crawler-challenges" class="headerlink" title="Crawler challenges"></a>Crawler challenges</h2><h3 id="Exploit-I-O-concurrency"><a href="#Exploit-I-O-concurrency" class="headerlink" title="Exploit I/O concurrency"></a>Exploit I/O concurrency</h3><ul>
+<li>Network latency is more limiting than network capacity</li>
+<li>​     Fetch many URLs at the same time</li>
+<li>​     To increase URLs fetched per second</li>
+<li>​     =&gt; Use threads for concurrency</li>
+</ul>
+<h3 id="Fetch-each-URL-only-once"><a href="#Fetch-each-URL-only-once" class="headerlink" title="Fetch each URL only once"></a>Fetch each URL only <em>once</em></h3><ul>
+<li>avoid wasting network bandwidth</li>
+<li>​     be nice to remote servers</li>
+<li>​     =&gt; Need to remember which URLs visited </li>
+</ul>
+<h3 id="Know-when-finished"><a href="#Know-when-finished" class="headerlink" title="Know when finished"></a>Know when finished</h3><p>We’ll look at three styles of solution [crawler.go on schedule page]</p>
+<h2 id="Serial-crawler"><a href="#Serial-crawler" class="headerlink" title="Serial crawler"></a>Serial crawler</h2><ul>
+<li>performs depth-first exploration via recursive Serial calls </li>
+<li>​     the “fetched” map avoids repeats, breaks cycles</li>
+<li>​          a single map, passed by reference, caller sees callee’s updates</li>
+<li>​     but: fetches only one page at a time — slow</li>
+<li>​          can we just put a “go” in front of the Serial() call?</li>
+<li>​          let’s try it… what happened?</li>
+</ul>
+
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
 </div></section></div>
