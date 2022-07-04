@@ -18,18 +18,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>S081-xv6 setup on Catalina - zennlyu</title>
+  <title>S081 Syscalls - zennlyu</title>
 
   
-    <meta name="description" content="Install xv6 on Catalina配置 S081 实验环境的时候，官网对于 macOS 的安装方法 brew install riscv-tools 等包管理无法在 Catalina 及以下的系统版本上安装成功，需要进行手动编译。编译项如下  RISC-V工具链： 包括一系列交叉编译的工具，用于把源码编译成机器码，如 gcc，binutils，glibc 等 QEMU模拟器： 用于在">
-<meta property="og:type" content="article">
-<meta property="og:title" content="S081-xv6 setup on Catalina">
-<meta property="og:url" content="http://example.com/2022/06/10/s081Guidance/index.html">
+    <meta property="og:type" content="article">
+<meta property="og:title" content="S081 Syscalls">
+<meta property="og:url" content="http://example.com/2022/06/09/S081-Syscall/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="Install xv6 on Catalina配置 S081 实验环境的时候，官网对于 macOS 的安装方法 brew install riscv-tools 等包管理无法在 Catalina 及以下的系统版本上安装成功，需要进行手动编译。编译项如下  RISC-V工具链： 包括一系列交叉编译的工具，用于把源码编译成机器码，如 gcc，binutils，glibc 等 QEMU模拟器： 用于在">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-06-10T12:56:17.461Z">
-<meta property="article:modified_time" content="2022-07-03T12:06:39.000Z">
+<meta property="article:published_time" content="2022-06-09T05:59:03.684Z">
+<meta property="article:modified_time" content="2022-07-03T12:06:44.065Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="S081">
 <meta name="twitter:card" content="summary">
@@ -69,49 +67,20 @@
 <div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/04/NdRvX.png" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
 <nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
 
-<div class="widgets">
-
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81RISC-V-toolchain"><span class="toc-text">一、RISC-V toolchain</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81QEMU"><span class="toc-text">二、QEMU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81xv6"><span class="toc-text">三、xv6</span></a></li></ol></div></div></div>
-
-
-</div>
+<div class="widgets"></div>
 
 
     </aside>
-    <div class='l_main'>
+    <div class='l_main list'>
       
 
       
 
 
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/operating-system/">operating system</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2022-06-10T12:56:17.461Z">2022-06-10</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/operating-system/">operating system</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2022-06-09T05:59:03.684Z">2022-06-09</time></div></div>
 
 <article class='content md post'>
-<h1 class="article-title"><span>S081-xv6 setup on Catalina</span></h1>
-<h1 id="Install-xv6-on-Catalina"><a href="#Install-xv6-on-Catalina" class="headerlink" title="Install xv6 on Catalina"></a>Install xv6 on Catalina</h1><p>配置 <code>S081</code> 实验环境的时候，官网对于 macOS 的安装方法 <code>brew install riscv-tools</code> 等包管理无法在 Catalina 及以下的系统版本上安装成功，需要进行手动编译。编译项如下</p>
-<ul>
-<li>RISC-V工具链： 包括一系列交叉编译的工具，用于把源码编译成机器码，如 <code>gcc，binutils，glibc</code> 等</li>
-<li>QEMU模拟器： 用于在 X86 机器上模拟 RISC-V 架构的 CPU</li>
-<li>xv6源码： xv6 操作系统源码</li>
-</ul>
-<h2 id="一、RISC-V-toolchain"><a href="#一、RISC-V-toolchain" class="headerlink" title="一、RISC-V toolchain"></a>一、RISC-V toolchain</h2><p>下载后在源码根目录进行编译，具体参考官方文档。编译大约需要30min：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone --recursive https://github.com/riscv/riscv-gnu-toolchain</span><br><span class="line">cd riscv-gnu-toolchain</span><br><span class="line">./configure --prefix=/usr/local/opt/riscv-gnu-toolchain    #配置产物路径</span><br><span class="line">make                                                       #编译</span><br></pre></td></tr></table></figure>
-
-<p>在macOS catalina版本下进行.&#x2F;configure时提示缺少GNU的 awk 和 sed: configure: error: GNU awk not found，手动安装即可: </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install gawk</span><br><span class="line">brew install gsed</span><br></pre></td></tr></table></figure>
-
-<p>安装完成后需配置环境变量，与上一步设置的安装路径一致。Mac下的环境配置文件是<del>&#x2F;.bash_profile（Linux下为</del>&#x2F;.bashrc或~&#x2F;.profile)，操作如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bash_profile                                              #打开配置文件</span><br><span class="line">export PATH=&quot;$PATH:/usr/local/opt/riscv-gnu-toolchain/bin&quot;       #末尾添加此行</span><br><span class="line">source ~/.bash_profile                                           #使配置生效</span><br></pre></td></tr></table></figure>
-
-<p>此时在命令行输入 <code>riscv64-unknown-elf-gcc -v</code>，如果能显示版本信息则代表安装成功。</p>
-<p>需要注意的是，在编译的过程中，会出现报错，需要手动在 <code>terminal.c</code> 和  <code>rltty.c</code> 中添加 <code>#include &lt;sys/ioctl.h&gt;</code> 头文件。</p>
-<h2 id="二、QEMU"><a href="#二、QEMU" class="headerlink" title="二、QEMU"></a>二、QEMU</h2><p>编译生成的 risc-v 机器码需要通过模拟 cpu 执行，因此需要从qemu官网下载指定版本的源码并编译：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://download.qemu.org/qemu-4.1.0.tar.xz  #下载后解压并进入目录</span><br><span class="line">./configure                                       #默认安装所有目标平台，产物路径为/usr/local/bin</span><br><span class="line">make &amp;&amp; make install                              #编译并安装</span><br></pre></td></tr></table></figure>
-
-<h2 id="三、xv6"><a href="#三、xv6" class="headerlink" title="三、xv6"></a>三、xv6</h2><p>进入 MIT 的官网 <code>https://pdos.csail.mit.edu/6.S081/2020/</code> , 键入以下命令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> git://g.csail.mit.edu/xv6-labs-2020</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> xv6-labs-2020</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git checkout util</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make qemu</span></span><br></pre></td></tr></table></figure>
-
-<p>即进入实验环境</p>
+<h1 class="article-title"><span>S081 Syscalls</span></h1>
 
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
@@ -119,7 +88,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/06/09/SS7/">SS7 Attack<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/06/12/riscv_S081_Ch01/">Notes riscv_S081_Ch01<span class="note">Newer</span></a></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/06/09/S081-Utilities/">S081 Utilities<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/06/10/S081-Guidance/">S081-xv6 setup on Catalina<span class="note">Newer</span></a></section></div>
 
 
 
