@@ -18,15 +18,20 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>zennlyu</title>
+  <title>6.824-RPC & Threads - zennlyu</title>
 
   
-    <meta property="og:type" content="website">
-<meta property="og:title" content="zennlyu">
-<meta property="og:url" content="http://example.com/page/2/index.html">
+    <meta name="description" content="Lecture 2: Infrastructure: RPC and threadsWhy Go? good support for threads convenient RPC type- and memory- safe garbage-collected (no use after freeing problems) threads + GC is particularly attracti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.824-RPC &amp; Threads">
+<meta property="og:url" content="http://example.com/2022/07/01/6-824-RPC&Threads/index.html">
 <meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="Lecture 2: Infrastructure: RPC and threadsWhy Go? good support for threads convenient RPC type- and memory- safe garbage-collected (no use after freeing problems) threads + GC is particularly attracti">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-07-01T04:27:15.000Z">
+<meta property="article:modified_time" content="2022-07-04T08:23:29.540Z">
 <meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="6.824">
 <meta name="twitter:card" content="summary">
   
   
@@ -52,8 +57,10 @@
   
 
 
+
+
   <div class='l_body' id='start'>
-    <aside class='l_left' layout=''>
+    <aside class='l_left' layout='post'>
     
 
 
@@ -63,99 +70,85 @@
 <nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
 
 <div class="widgets">
-<div class="widget-wrap" id="markdown"><div class="widget-header cap dis-select"><span class="name">欢迎</span></div><div class="widget-body fs14"><p>Hello, world!</p>
-</div></div>
 
-<div class="widget-wrap" id="recent"><div class="widget-header cap dis-select"><span class="name">Recent Update</span><a class="cap-action" id="rss" title="Subscribe" href="/atom.xml"><svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8938"><path d="M800.966 947.251c0-404.522-320.872-732.448-716.69-732.448V62.785c477.972 0 865.44 395.987 865.44 884.466h-148.75z m-162.273 0h-148.74c0-228.98-181.628-414.598-405.678-414.598v-152.01c306.205 0 554.418 253.68 554.418 566.608z m-446.24-221.12c59.748 0 108.189 49.503 108.189 110.557 0 61.063-48.44 110.563-108.188 110.563-59.747 0-108.18-49.5-108.18-110.563 0-61.054 48.433-110.556 108.18-110.556z" p-id="8939"></path></svg></a></div><div class="widget-body fs14"><div class="more-item"><a class="title" href="/2022/07/01/6-824-RPC&Threads/">6.824-RPC & Threads</a></div><div class="more-item"><a class="title" href="/2022/07/01/6-824-MapReduce/">6.824-MapReduce</a></div><div class="more-item"><a class="title" href="/2022/06/13/CSAPP-Ch02_Bits/">CSAPP-Ch02_Bits & Bytes & Integer & Floating Point</a></div><div class="more-item"><a class="title" href="/2022/06/30/coursera-ELEMENTARY%20SORTS/">coursera 2.1 ELEMENTARY SORTS</a></div><div class="more-item"><a class="title" href="/2022/06/30/coursera-BAGS,%20QUEUES,%20AND%20STACKS/">coursera 1.3 BAGS, QUEUES, AND STACKS</a></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-Go"><span class="toc-text">Why Go?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Threads"><span class="toc-text">Threads</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thread-%E2%80%9Cthread-of-execution%E2%80%9D"><span class="toc-text">Thread &#x3D; “thread of execution”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-threads"><span class="toc-text">Why threads?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#I-O-concurrency"><span class="toc-text">I&#x2F;O concurrency</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Multicore-performance"><span class="toc-text">Multicore performance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Convenience"><span class="toc-text">Convenience</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Is-there-an-alternative-to-threads"><span class="toc-text">Is there an alternative to threads?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%9Cevent-driven-%E2%80%9D"><span class="toc-text">“event-driven.”</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Threading-challenges"><span class="toc-text">Threading challenges:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sharing-data-safely"><span class="toc-text">sharing data safely</span></a></li></ol></li></ol></div></div></div>
+
+
 </div>
 
 
     </aside>
-    <div class='l_main list'>
+    <div class='l_main'>
       
-  
-
-<header class="header mobile-only">
-
-<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://github.com/zennlyu/zennlyu.github.io/blob/main/avatar.png" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
-</header>
-
-
 
       
 
 
-  <div class='nav-wrap'>
-  <nav class='sub post cap'>
-    
-      <a class='active' href='/'>Recent</a>
-    
-    
-      
-        <a href='/categories'>Categories</a>
-      
-    
-    
-      
-        <a href='/tags'>Tags</a>
-      
-    
-    
-      
-        <a href='/archives'>Archives</a>
-      
-    
-  </nav>
-</div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/distributed-system/">distributed system</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2022-07-01T04:27:15.000Z">2022-07-01</time></div></div>
 
-  <div class="post-list post"><a class="post-card post " href="/2022/06/13/CSAPP-Ch11%20Network%20Prog/">
-<article class="md"><h2 class="post-title">CSAPP-11 Network Programming</h2><div class="excerpt"><p>1 客户端-服务器编程模型2 网络3 全球 IP 因特网4 套接字接口5 Web 服务器6 综合：TINY Web 服务器</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-13T05:25:58.062Z">2022-06-13</time></span><span class="cap breadcrumb">csapp</span></div></article>
-</a><a class="post-card post " href="/2022/06/13/CSAPP-Ch10%20System%20IO/">
-<article class="md"><h2 class="post-title">CSAPP-10 System Level IO</h2><div class="excerpt"><p>1 UNIX I/O一个 Linux 文件就是一个 m 个字节的序列：B0, B1, …, Bk, …, Bm-1
-所有的I/O设备（例如网络、磁盘和终端）都被模型化为文件，而所有的输人和输出都被当作对相应文件的读和写来执行。这种将设备优雅地映射为文件的方式，允许 Linux内核引出一个简单、低级的应用接口，称为UNIX I/O,这使得所有的输入和输出都能以一种统一且一致的方式来执行：
+<article class='content md post'>
+<h1 class="article-title"><span>6.824-RPC & Threads</span></h1>
+<h1 id="Lecture-2-Infrastructure-RPC-and-threads"><a href="#Lecture-2-Infrastructure-RPC-and-threads" class="headerlink" title="Lecture 2: Infrastructure: RPC and threads"></a>Lecture 2: Infrastructure: RPC and threads</h1><h2 id="Why-Go"><a href="#Why-Go" class="headerlink" title="Why Go?"></a>Why Go?</h2><ul>
+<li>good support for threads</li>
+<li>convenient RPC</li>
+<li>type- and memory- safe</li>
+<li>garbage-collected (no use after freeing problems)</li>
+<li>threads + GC is particularly attractive!</li>
+<li>not too complex</li>
+</ul>
+<p>After the tutorial, use <a target="_blank" rel="noopener" href="https://golang.org/doc/effective_go.html">https://golang.org/doc/effective_go.html</a></p>
+<h2 id="Threads"><a href="#Threads" class="headerlink" title="Threads"></a>Threads</h2><ul>
+<li>a useful structuring tool, but can be tricky</li>
+<li>Go calls them goroutines; everyone else calls them threads</li>
+</ul>
+<h2 id="Thread-“thread-of-execution”"><a href="#Thread-“thread-of-execution”" class="headerlink" title="Thread = “thread of execution”"></a>Thread = “thread of execution”</h2><ul>
+<li>threads allow one program to do many things at once</li>
+<li>each thread executes serially, just like an ordinary non-threaded program</li>
+<li>the threads share memory</li>
+<li>each thread includes some per-thread state:<ul>
+<li>program counter,</li>
+<li>registers, </li>
+<li>stack,</li>
+<li>what it’s waiting for</li>
+</ul>
+</li>
+</ul>
+<h2 id="Why-threads"><a href="#Why-threads" class="headerlink" title="Why threads?"></a>Why threads?</h2><h3 id="I-O-concurrency"><a href="#I-O-concurrency" class="headerlink" title="I/O concurrency"></a>I/O concurrency</h3><ul>
+<li>Client sends requests to many servers in parallel and waits for replies.</li>
+<li>Server processes multiple client requests; each request may block.</li>
+<li>While waiting for the disk to read data for client X, process a request from client Y.</li>
+</ul>
+<h3 id="Multicore-performance"><a href="#Multicore-performance" class="headerlink" title="Multicore performance"></a>Multicore performance</h3><ul>
+<li>Execute code in parallel on several cores.</li>
+</ul>
+<h3 id="Convenience"><a href="#Convenience" class="headerlink" title="Convenience"></a>Convenience</h3><ul>
+<li>In background, once per second, check whether each worker is still alive.</li>
+</ul>
+<h2 id="Is-there-an-alternative-to-threads"><a href="#Is-there-an-alternative-to-threads" class="headerlink" title="Is there an alternative to threads?"></a>Is there an alternative to threads?</h2><h3 id="“event-driven-”"><a href="#“event-driven-”" class="headerlink" title="“event-driven.”"></a>“event-driven.”</h3><ul>
+<li>write code that explicitly interleaves activities, in a single thread. Usually called “event-driven.”</li>
+<li>Keep a table of state about each activity, e.g. each client request.</li>
+<li><p>One “event” loop that:</p>
+<ul>
+<li>checks for new input for each activity (e.g. arrival of reply from server),</li>
+<li>does the next step for each activity,</li>
+<li>updates state.</li>
+</ul>
+</li>
+<li><p>Event-driven gets you I/O concurrency, and eliminates thread costs (which can be substantial), but doesn’t get multi-core speedup, and is painful to program.</p>
+</li>
+</ul>
+<h2 id="Threading-challenges"><a href="#Threading-challenges" class="headerlink" title="Threading challenges:"></a>Threading challenges:</h2><h3 id="sharing-data-safely"><a href="#sharing-data-safely" class="headerlink" title="sharing data safely"></a>sharing data safely</h3>
 
-打...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-13T05:25:58.062Z">2022-06-13</time></span><span class="cap breadcrumb">csapp</span></div></article>
-</a><a class="post-card post " href="/2022/06/12/riscv_S081_Ch01/">
-<article class="md"><h2 class="post-title">Notes riscv_S081_Ch01</h2><div class="excerpt"><p>Chapter 1 Operating System Interfaces1.1 Processes and MemoryAn xv6 process consists of
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
 
-user-space memory (instructions, data, and stack) 
-per-process state private to the kernel
+</article>
 
-Xv6 time-shares ...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-11T16:09:23.724Z">2022-06-12</time></span><span class="cap breadcrumb">operating system</span></div></article>
-</a><a class="post-card post " href="/2022/06/10/s081Guidance/">
-<article class="md"><h2 class="post-title">S081-xv6 setup on Catalina</h2><div class="excerpt"><p>Install xv6 on Catalina配置 S081 实验环境的时候，官网对于 macOS 的安装方法 brew install riscv-tools 等包管理无法在 Catalina 及以下的系统版本上安装成功，需要进行手动编译。编译项如下
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/07/01/6-824-MapReduce/">6.824-MapReduce<span class="note">Older</span></a><div class="line"></div></section></div>
 
-RISC-V工具链： 包括一系列交叉编译的工具，用于把源码编译成机器码，如 gcc，binutils，glibc 等
-QEMU模拟器： 用...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-10T12:56:17.461Z">2022-06-10</time></span><span class="cap breadcrumb">operating system</span></div></article>
-</a><a class="post-card post " href="/2022/06/09/SS7/">
-<article class="md"><h2 class="post-title">SS7 Attack</h2><div class="excerpt"><p>SS7 Attackknowledge about SS7 attack and hack SS7 Hack or SS7 Attack :
-SS7 hack or signaling system 7 hack is the process of getting calls or sms for a subscriber, getting on another mobile number ...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-09T05:59:03.684Z">2022-06-09</time></span><span class="cap breadcrumb">Hacks</span></div></article>
-</a><a class="post-card post " href="/2022/06/09/quarantine-Catalina/">
-<article class="md"><h2 class="post-title">Catalina quarantine for corrupted apps</h2><div class="excerpt"><p>低于 Big Sur 系统版本的 macOS 或 m1 芯片机器在安装一些未适配软件时候可能会出现 安装包损坏, 打不开“XXX”,因为它来自身份不明的开发者 等报错，在此状态下可以尝试以下做法。
-123sudo spctl --master-disablesudo xattr -r -d com.apple.quarantine /Applications/Sketch.app/// 输入...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-09T05:59:03.684Z">2022-06-09</time></span><span class="cap breadcrumb">devtools</span></div></article>
-</a><a class="post-card post " href="/2022/06/09/s081Syscall/">
-<article class="md"><h2 class="post-title">S081 Syscalls</h2><div class="excerpt"><p></p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-09T05:59:03.684Z">2022-06-09</time></span><span class="cap breadcrumb">operating system</span></div></article>
-</a><a class="post-card post " href="/2022/06/09/s081Utilities/">
-<article class="md"><h2 class="post-title">S081 Utilities</h2><div class="excerpt"><p>Boot xv6 [Easy]The xv6-labs-2020 repository differs slightly from the book’s xv6-riscv; it mostly adds some files. If you are curious look at the git log:
-1$ git log
-The files you will need for thi...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-09T05:59:03.684Z">2022-06-09</time></span><span class="cap breadcrumb">operating system</span></div></article>
-</a><a class="post-card post " href="/2022/06/08/s081riscv/">
-<article class="md"><h2 class="post-title">S081 RISC-V Book en Ch</h2><div class="excerpt"><p>第2章 操作系统的组织形式操作系统的一个关键要求是要一次支持多个活动。比如，使用系统调用fork，一个进程可以启动新进程。
-操作系统必须在这些进程间分时共享计算机资源。比如，即使系统中的进程数比硬件CPU多，则操作系统也必须保证所有进程都有执行的机会。
-操作系统必须安排进程之间的隔离。即， 如果一个进程里有错误，并出现故障，则不应影响不依赖该进程的那些进程。但是，彻底地隔离又太强了，因为进程...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-08T09:42:17.367Z">2022-06-08</time></span><span class="cap breadcrumb">operating system</span></div></article>
-</a></div>
-  
-  <div class='paginator-wrap dis-select'>
-    <a class='paginator prev' href='/'>
-      <img src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/arrow/f049bbd4e88ec.svg'/>
-    </a>
-    <div class='paginator current'>
-      2<span class='sep'></span>2
-    </div>
-    <a class='paginator next disable' href='/'>
-      <img src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/arrow/064b95430caf4.svg'/>
-    </a>
-  </div>
+
+
+
 
 
 
