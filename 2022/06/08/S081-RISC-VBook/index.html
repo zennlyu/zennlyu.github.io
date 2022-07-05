@@ -28,16 +28,16 @@
 <meta property="og:site_name" content="zennlyu">
 <meta property="og:description" content="Chapter 1 Operating System Interfaces1.1 Processes and MemoryAn xv6 process consists of  用户空间内存(指令、数据和堆栈) 内核私有的进程状态  Xv6 time-shares processes:  进程共享 cpu，它透明地切换当前 cpu 正在执行的进程。 当一个进程暂时不使用 cpu 时， xv6 会保">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/f-21.png">
-<meta property="og:image" content="http://example.com/f-22.png">
-<meta property="og:image" content="http://example.com/f-23.png">
-<meta property="og:image" content="http://example.com/f-31.png">
+<meta property="og:image" content="http://example.com/2022/06/08/S081-RISC-VBook/f-21.png">
+<meta property="og:image" content="http://example.com/2022/06/08/S081-RISC-VBook/f-22.png">
+<meta property="og:image" content="http://example.com/2022/06/08/S081-RISC-VBook/f-23.png">
+<meta property="og:image" content="http://example.com/2022/06/08/S081-RISC-VBook/f-31.png">
 <meta property="article:published_time" content="2022-06-08T09:42:17.367Z">
 <meta property="article:modified_time" content="2022-07-05T11:56:34.448Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="S081">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/f-21.png">
+<meta name="twitter:image" content="http://example.com/2022/06/08/S081-RISC-VBook/f-21.png">
   
   
 
@@ -358,7 +358,7 @@
 <li>以用户模式执行操作系统剩余的大部分代码；</li>
 </ul>
 <p>图2.1说明了这种微内核设计。</p>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/f-21.png" alt="f-21"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/08/S081-RISC-VBook/f-21.png" alt="f-21"></p>
 <p>作为进程运行的OS服务称为服务器，文件系统作为一个用户级别的进程在运行。</p>
 <p>在图中，文件系统作为一个用户级进程运行。作为进程运行的 OS 服务称为服务器。</p>
 <p>为了让应用程序与文件服务器进行交互，内核提供了一种进程间通信机制，用于从一个用户模式进程向另一个进程发送消息。</p>
@@ -373,7 +373,7 @@
 </ul>
 <h3 id="2-4-Code-xv6-organization"><a href="#2-4-Code-xv6-organization" class="headerlink" title="2.4 Code: xv6 organization"></a>2.4 Code: xv6 organization</h3><p>xv6的内核源代码是在<code>kernel</code>子目录下。模块间接口被定义在<code>defs.h</code>中。</p>
 <p>遵循粗略的模块化概念，它被分成许多文件:</p>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/f-22.png" alt="f-22"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/08/S081-RISC-VBook/f-22.png" alt="f-22"></p>
 <h3 id="2-5-Process-overview"><a href="#2-5-Process-overview" class="headerlink" title="2.5 Process overview"></a>2.5 Process overview</h3><p><code>xv6</code> 里的一个隔离单元就是一个进程。</p>
 <ul>
 <li>进程抽象可以防止一个进程破坏或者监视另一个进程的内存、CPU、文件描述符等。</li>
@@ -387,7 +387,7 @@
 </ul>
 <p>为了有助于加强隔离度，进程抽象为程序提供了私有机器，私有的内存系统（地址空间），私有的 CPU（用来执行指令）</p>
 <p>xv6使用页表（通过硬件来实现）来给予每个进程自己的地址空间。RISC-V 页表将虚拟地址(RISC-V指令能操作的地址)映射到物理地址(CPU芯片发送给主内存的地址)。</p>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/f-23.png" alt="f-23"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/08/S081-RISC-VBook/f-23.png" alt="f-23"></p>
 <p>xv6为每个进程维护一张单独的页表，该页表定义了进程的地址空间。如图 2.3 所示，进程的 用户空间内存的地址空间从虚拟地址 0 开始的。</p>
 <ul>
 <li>指令存放在最前面，</li>
@@ -461,7 +461,7 @@
 <h3 id="3-1-Paging-hardware"><a href="#3-1-Paging-hardware" class="headerlink" title="3.1 Paging hardware"></a>3.1 Paging hardware</h3><p>RISC-V 指令(包括用户和内核)操作的是虚拟地址。机器 RAM，或者说物理内存，是用物理地址来做索引的，RISC-V 分页硬件 (一般指内存管理单元(Memory Management Unit, MMU)) 将这两种地址联系起来，通过将每个虚拟地址映射到物理地址上。</p>
 <p>xv6 运行在 <code>Sv39 RISC-V</code> 上，这意味着只使用 64 位虚拟地址的底部 39 位，顶部 25 位未被使用。在这种 <code>Sv39</code> 配置中，一个 RISC-V 页表在逻辑上是一个 $2^{27}(134,217,728)$ 页表项 $(Page Table Entry, PTE)$ 的数组。每个 $PTE$ 包含一个 44 位的物理页号 $(Physical Page Number，PPN)$ 和一些标志位。分页硬件通过利用 39 位中的高 27 位索引到页表中找到一 个 $PTE$ 来转换一个虚拟地址，并计算出一个 56 位的物理地址，它的前 44 位来自于 $PTE$ 中的 $PPN$，而它的后 12 位则是从原来的虚拟地址复制过来的。图 3.1 显示了这个过程，在逻辑上可以把页表看成是一个简单的 $PTE$ 数组(更完整的描述见图 3.2)。页表让操作系统控 制虚拟地址到物理地址的转换，其粒度为 $4096(2^{12})$ 字节的对齐块。这样的分块称为页。</p>
 <p>在 Sv39 RISC-V 中，虚拟地址的前 25 位不用于转换地址;将来，RISC-V 可能会使用这些位来定义更多的转换层。物理地址也有增长的空间：在 $PTE$ 格式中，物理页号还有 10 位 的增长空间。</p>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/f-31.png" alt="f-31"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/08/S081-RISC-VBook/f-31.png" alt="f-31"></p>
 <h2 id="第4章-陷阱和系统调用"><a href="#第4章-陷阱和系统调用" class="headerlink" title="第4章 陷阱和系统调用"></a>第4章 陷阱和系统调用</h2><p>有3类事件可导致CPU把普通的指令执行搁置在一边，强制把控制权转移到能处理事件的特定代码处。</p>
 <ul>
 <li>系统调用<br>用户程序执行<code>ecall</code>指令来请求内核为它做一些事；</li>
