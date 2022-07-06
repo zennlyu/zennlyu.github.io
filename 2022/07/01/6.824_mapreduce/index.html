@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://example.com/2022/07/01/6.824_mapreduce/figure4.png">
 <meta property="og:image" content="http://example.com/2022/07/01/6.824_mapreduce/table1.png">
 <meta property="article:published_time" content="2022-07-01T03:27:15.342Z">
-<meta property="article:modified_time" content="2022-07-06T06:03:41.384Z">
+<meta property="article:modified_time" content="2022-07-06T06:19:26.279Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="6.824">
 <meta name="twitter:card" content="summary">
@@ -508,17 +508,28 @@
 <blockquote>
 <p>例如，在某些 MapReduce 操作中，用户代码可能希望确保生成的输出对的数量恰好等于处理的输入对的数量，或者处理的德语文档的分数在处理的文档总数的某个可容忍范围内。</p>
 </blockquote>
-<h3 id="5-Performance"><a href="#5-Performance" class="headerlink" title="5 Performance"></a>5 Performance</h3><p>In this section we measure the performance of MapRe- duce on two computations running on a large cluster of machines. One computation searches through approxi- mately one terabyte of data looking for a particular pat- tern. The other computation sorts approximately one terabyte of data.</p>
-<p>These two programs are representative of a large sub- set of the real programs written by users of MapReduce – one class of programs shuffles data from one representa- tion to another, and another class extracts a small amount of interesting data from a large data set.</p>
-<h4 id="5-1-Cluster-Configuration"><a href="#5-1-Cluster-Configuration" class="headerlink" title="5.1 Cluster Configuration"></a>5.1 Cluster Configuration</h4><p>All of the programs were executed on a cluster that consisted of approximately 1800 machines. Each ma- chine had two 2GHz Intel Xeon processors with Hyper- Threading enabled, 4GB of memory, two 160GB IDE disks, and a gigabit Ethernet link. The machines were arranged in a two-level tree-shaped switched network with approximately 100-200 Gbps of aggregate band- width available at the root. All of the machines were in the same hosting facility and therefore the round-trip time between any pair of machines was less than a mil- lisecond.</p>
-<p>Out of the 4GB of memory, approximately 1-1.5GB was reserved by other tasks running on the cluster. The programs were executed on a weekend afternoon, when the CPUs, disks, and network were mostly idle.</p>
-<h4 id="5-2-Grep"><a href="#5-2-Grep" class="headerlink" title="5.2 Grep"></a>5.2 Grep</h4><p>The grep program scans through 1010 100-byte records, searching for a relatively rare three-character pattern (the pattern occurs in 92,337 records). The input is split into approximately 64MB pieces (M &#x3D; 15000), and the en- tire output is placed in one file (R &#x3D; 1).</p>
+<h3 id="5-Performance"><a href="#5-Performance" class="headerlink" title="5 Performance"></a>5 Performance</h3><p>MapReduce 在大型机器集群上运行的两次计算上的性能。</p>
+<blockquote>
+<p>代表了MapReduce用户编写的真实程序的大型子集 —— </p>
+<ul>
+<li><p>一类程序将数据从一种表示形式洗牌到另一种表示形式，</p>
+</li>
+<li><p>另一类从大型数据集中提取少量有趣的数据。</p>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>一个计算搜索大约一TB的数据，寻找特定的模式</li>
+<li>另一个计算对大约 1TB 的数据进行排序</li>
+</ul>
+<h4 id="5-1-Cluster-Configuration"><a href="#5-1-Cluster-Configuration" class="headerlink" title="5.1 Cluster Configuration"></a>5.1 Cluster Configuration</h4><p>所有程序都在由大约 1800 台计算机组成的集群上执行。每个机器都有两个启用了 Hyper-Threading 的 2GHz 英特尔至强处理器，4GB 内存，两个 160GB IDE 磁盘和一个千兆以太网link。这些机器被安排在一个两级树形交换网络中，根目录下可用的总带宽约为 100-200 Gbps。所有机器都在同一托管设施中，因此任何一对机器之间的往返时间不到一毫秒。在 4GB 内存中，大约 1-1.5GB 是由群集上运行的其他任务保留的。这些程序在周末下午执行，当时CPU，磁盘和网络大多处于空闲状态。</p>
+<h4 id="5-2-Grep"><a href="#5-2-Grep" class="headerlink" title="5.2 Grep"></a>5.2 Grep</h4><p><code>grep</code> 程序扫描 1010 条 $100-byte$ 记录，搜索相对罕见的三字符模式（该模式出现在 $92,337$ 条记录中）。输入被拆分为大约 64MB 的片段 $(M &#x3D; 15000)$，全部输出被放置在一个文件 $(R&#x3D;1)$  中。</p>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/01/6.824_mapreduce/figure2.png" alt="figure2"></p>
-<p>Figure 2 shows the progress of the computation over time. The Y-axis shows the rate at which the input data is scanned. The rate gradually picks up as more machines are assigned to this MapReduce computation, and peaks at over 30 GB&#x2F;s when 1764 workers have been assigned. As the map tasks finish, the rate starts dropping and hits zero about 80 seconds into the computation. The entire computation takes approximately 150 seconds from start to finish. This includes about a minute of startup over- head. The overhead is due to the propagation of the pro- gram to all worker machines, and delays interacting with GFS to open the set of 1000 input files and to get the information needed for the locality optimization.</p>
-<h4 id="5-3-Sort"><a href="#5-3-Sort" class="headerlink" title="5.3 Sort"></a>5.3 Sort</h4><p>The sort program sorts 1010 100-byte records (approxi- mately 1 terabyte of data). This program is modeled after the TeraSort benchmark [10].</p>
-<p>The sorting program consists of less than 50 lines of user code. A three-line Map function extracts a 10-byte sorting key from a text line and emits the key and the original text line as the intermediate key&#x2F;value pair. We used a built-in Identity function as the Reduce operator. This functions passes the intermediate key&#x2F;value pair un- changed as the output key&#x2F;value pair. The final sorted output is written to a set of 2-way replicated GFS files (i.e., 2 terabytes are written as the output of the program).</p>
-<p>As before, the input data is split into 64MB pieces (M &#x3D; 15000). We partition the sorted output into 4000 files (R &#x3D; 4000). The partitioning function uses the ini- tial bytes of the key to segregate it into one of R pieces.</p>
-<p>Our partitioning function for this benchmark has built- in knowledge of the distribution of keys. In a general sorting program, we would add a pre-pass MapReduce operation that would collect a sample of the keys and use the distribution of the sampled keys to compute split- points for the final sorting pass.</p>
+<p>图显示了计算随时间推移的进度。Y 轴显示扫描输入数据的速率。随着更多的机器被分配到这个 MapReduce 计算，速率逐渐回升，当分配了 1764 个 worker 时，速率的峰值超过 30 GB &#x2F; s。当 map 任务完成时，速率开始下降，并在计算中大约 80 秒处达到零。整个计算从开始到结束大约需要 150 秒。这包括大约一分钟的启动开销。开销是由于程序传播到所有 woker 机器，以及与 GFS 交互以打开 1000 个输入文件集和获取局部性优化所需信息的延迟。</p>
+<h4 id="5-3-Sort"><a href="#5-3-Sort" class="headerlink" title="5.3 Sort"></a>5.3 Sort</h4><p>排序程序对 1010 条 100-bytes 记录（大约 1TB 的数据）进行排序。该程序以 TeraSort 基准测试为蓝本。</p>
+<p>排序程序由少于 50 行的用户代码组成。三行 Map 函数从文本行中提取 10-bytes 排序键，并将该键和原始文本行作为中间键&#x2F;值对发出。我们使用内置的 identifty 函数作为 reduce 运算符。此函数将中间键&#x2F;值对作为输出键&#x2F;值对传递，保持不变。最终的排序输出被写入一组双向复制的 GFS 文件（i.e. 2TB 被写入为程序的输出）。</p>
+<p>与之前一样，输入数据被拆分为 64MB 的片段 $(M&#x3D;15000)$。我们将排序后的输出划分为 4000 个文件 $(R&#x3D;4000)$。分区函数使用密钥的初始字节将其隔离为 $R$ 的片段之一。</p>
+<p>我们针对此基准测试的分区功能内置了密钥分布知识。在常规排序程序中，我们将添加一个 pre-pass MapReduce 操作，该操作将收集键的样本，并使用 samples of the keys 的分布来计算最终排序传递的 split-points。</p>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/01/6.824_mapreduce/figure3.png" alt="figure3"></p>
 <p>Figure 3 (a) shows the progress of a normal execution of the sort program. The top-left graph shows the rate at which input is read. The rate peaks at about 13 GB&#x2F;s and dies off fairly quickly since all map tasks finish be- fore 200 seconds have elapsed. Note that the input rate is less than for grep. This is because the sort map tasks spend about half their time and I&#x2F;O bandwidth writing in- termediate output to their local disks. The corresponding intermediate output for grep had negligible size.</p>
 <p>The middle-left graph shows the rate at which data is sent over the network from the map tasks to the re- duce tasks. This shuffling starts as soon as the first map task completes. The first hump in the graph is for the first batch of approximately 1700 reduce tasks (the entire MapReduce was assigned about 1700 machines, and each machine executes at most one reduce task at a time). Roughly 300 seconds into the computation, some of these first batch of reduce tasks finish and we start shuffling data for the remaining reduce tasks. All of the shuffling is done about 600 seconds into the computation.</p>
