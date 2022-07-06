@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://example.com/2022/07/01/6.824_mapreduce/figure4.png">
 <meta property="og:image" content="http://example.com/2022/07/01/6.824_mapreduce/table1.png">
 <meta property="article:published_time" content="2022-07-01T03:27:15.342Z">
-<meta property="article:modified_time" content="2022-07-06T04:55:54.773Z">
+<meta property="article:modified_time" content="2022-07-06T05:03:31.887Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="6.824">
 <meta name="twitter:card" content="summary">
@@ -451,9 +451,12 @@
 <li><p>The weaker semantics arise because $e(R_1)$ may have read the output produced by one execution of $M$ , and $e(R_2)$ may have read the output produced by a different execution of $M$ .出现较弱的语义是因为 $e(R1)$ 可能已读取由 $M$ 的一个执行产生的输出，而 $e(R2)$ 可能已读取由 $M$ 的不同执行产生的输出。</p>
 </li>
 </ul>
-<h4 id="3-4-Locality"><a href="#3-4-Locality" class="headerlink" title="3.4 Locality"></a>3.4 Locality</h4><p>在我们的计算环境中，网络带宽是一种相对稀缺的资源。我们通过利用输入数据（由 GFS 管理）存储在组成集群的机器的本地磁盘上这一事实来节省网络带宽。GFS 将每个文件划分为 <code>64MB</code> 的块，并在不同的机器上存储<strong>每个块的多个副本</strong>（typically 3 个副本）。</p>
-<p>MapReduce master 会考虑输入文件的位置信息，并尝试在包含相应输入数据副本的计算机上调度 map 任务。如果做不到这一点，它会尝试在该任务的输入数据的副本附近调度 Map 任务 (e.g., on a worker machine that is on the same network switch as the machine containing the data)。</p>
-<p>当对集群中很大一部分 wokers 运行大型 MapReduce 操作时，大多数输入数据都是在本地读取的，并且不消耗网络带宽。</p>
+<h4 id="3-4-Locality"><a href="#3-4-Locality" class="headerlink" title="3.4 Locality"></a>3.4 Locality</h4><p>网络带宽资源相对稀缺，通过利用输入数据（GFS 管理）存储在组成集群的机器的本地磁盘上这一事实来节省网络带宽。<u>GFS 将每个文件划分为 <code>64MB</code> 的块，并在不同的机器上存储<strong>每个块的多个副本</strong>（typically 3 个副本）。</u></p>
+<p>MapReduce <code>master</code> 会考虑输入文件的位置信息，并尝试在包含相应输入数据副本的计算机上调度 <code>map</code> 任务。如果做不到这一点，它会尝试在该任务的<strong>输入数据的副本</strong>附近调度 <code>map</code> 任务 </p>
+<blockquote>
+<p>(e.g., on a worker machine that is on the same network switch as the machine containing the data)。</p>
+</blockquote>
+<p>当对集群中很大一部分 <code>wokers</code> 运行大型 MapReduce 操作时，<u>大多数</u>输入数据都是在<u>本地读取</u>的，并且<u>不消耗网络带宽</u>。</p>
 <h4 id="3-5-Task-Granularity"><a href="#3-5-Task-Granularity" class="headerlink" title="3.5 Task Granularity"></a>3.5 Task Granularity</h4><p>如上所述，我们将 <code>map</code> phase 细分为 $M$ 个部分，将 reduce phase 细分为 $R$ 个部分。</p>
 <p>理想情况下，$M$ 和 $R$ 应比 worker machine 的数量大得多。让每个 woker 执行许多不同的任务可以改善动态负载平衡 (dynamic load balancing)，还可以在一个 worker fails 时加快恢复速度：它已完成的许多 map 任务可以被分布在所有其他 worker machine 上。</p>
 <p>在我们的实现中，$M$ 和 $R$ 的大小是有实际限制的，因为 master 必须做出 $O(M+R)$ 调度决策，并将 $O(M<em>R)$ 状态保存在如上所述的内存中。（然而，constant factors for memory usage 很小：the $O(M</em>R)$  piece of the state consists of approximately one byte of data per map task&#x2F;reduce task pair)</p>
