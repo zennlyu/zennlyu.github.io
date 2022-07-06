@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://example.com/2022/07/01/6.824_mapreduce/figure4.png">
 <meta property="og:image" content="http://example.com/2022/07/01/6.824_mapreduce/table1.png">
 <meta property="article:published_time" content="2022-07-01T03:27:15.342Z">
-<meta property="article:modified_time" content="2022-07-06T03:10:29.880Z">
+<meta property="article:modified_time" content="2022-07-06T03:16:35.996Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="6.824">
 <meta name="twitter:card" content="summary">
@@ -427,21 +427,31 @@
 <p>因此，如果主节点失败，我们当前的实现将中止MapReduce计算。</p>
 <p>客户端可以检查此条件，并根据需要重试MapReduce操作。</p>
 </blockquote>
-<h5 id="semantics-in-the-presence-of-failure"><a href="#semantics-in-the-presence-of-failure" class="headerlink" title="semantics in the presence of failure"></a>semantics in the presence of failure</h5><p>当用户提供的 map 和 reduce 运算符是其输入值的确定性函数时，我们的分布式实现将生成与整个程序的非错误顺序执行所产生的输出相同的输出。</p>
-<p>我们依靠 map 的原子提交和 reduce 任务输出来实现此属性。每个正在进行的任务都会将其输出写入私有临时文件。reduce 任务生成一个这样的文件，映射任务生成 R 这样的文件 (one per reduce task)。</p>
-<p>map task 完成后，worker 会向 master 发送一条消息，并在消息中包含 R 临时文件的名称。如果 master 收到已完成的 map task 的已完成消息，它将忽略该消息。否则，它将在 master 的数据结构中记录 R 文件的名称。</p>
-<p>当 reduce 的任务完成时，reduce worker 会 atomically 将其临时输出文件重命名为最终输出文件。如果在多台计算机上执行相同的 reduce 任务，则会对同一最终输出文件执行多个重命名调用。我们依靠底层文件系统提供的原子重命名操作来保证最终的文件系统状态只包含一次执行 reduce 任务时生成的数据。</p>
-<p>我们的绝大多数 map 和 reduce operators 都是 deterministic 的，在这种情况下，我们的 semantics 等同于顺序执行的事实使得程序员很容易推断出他们的程序的 behavior。当 map 和&#x2F;或 reduce operators 是非确定性的时，我们提供较弱但仍然合理的语义。</p>
-<p>在存在 non-deterministic operators 的情况下，特定的 reduce 任务 R1 的输出等效于由non-deterministic program 的 sequential execution 生成的 R1 的输出。然而，不同 reduce 任务 R2 的输出可以对应于由 non-deterministic program 的 different sequential execution 产生的 R2 的输出。</p>
-<p>考虑 Map 任务 $M$ 和 Reduce 任务 $R_1$ 和 $R_2$:</p>
+<h5 id="semantics-in-the-presence-of-failure"><a href="#semantics-in-the-presence-of-failure" class="headerlink" title="semantics in the presence of failure"></a>semantics in the presence of failure</h5><p>当 User-supplied $map$ 和 $reduce$ 运算符是其输入值的确定性函数时，我们的分布式实现将生成与整个程序的非错误顺序执行所产生的输出相同的输出。</p>
+<ul>
+<li>我们依靠 $map$ 的<strong>原子提交</strong>和 $reduce$ <strong>任务输出</strong>来实现此属性。每个正在进行的任务都会将其输出写入私有临时文件。</li>
+<li>$reduce$ 任务生成一个这样的文件，$map$ 任务生成 $R$ 这样的文件 (one per reduce task)。<ul>
+<li>$map$ task 完成后，$worker$ 会向 $master$ 发送一条消息，并在消息中包含 R 临时文件的名称。</li>
+<li>如果 $master$ 收到已完成的 $map$ task 的已完成消息，它将忽略该消息。否则，它将在 $master$ 的数据结构中记录 $R$ 文件的名称。</li>
+<li>当 $reduce$ 的任务完成时，$reduce$ worker 会 atomically 将其临时输出文件重命名为最终输出文件。</li>
+<li>如果在多台计算机上执行相同的 reduce 任务，则会对同一最终输出文件执行多个重命名调用。</li>
+<li>我们依靠<strong>底层文件系统</strong>提供的<strong>原子重命名</strong>操作来保证最终的文件系统状态只包含一次执行 $reduce$ 任务时生成的数据。</li>
+</ul>
+</li>
+</ul>
+<p>我们的绝大多数 $map$ 和 $reduce$ operators 都是 Deterministic 的，在这种情况下</p>
+<ul>
+<li>我们的 semantics 等同于顺序执行的事实使得程序员很容易推断出他们的程序的 behavior。当 $map$ 和&#x2F;或 $reduce$ operators 是非确定性的时，我们提供较弱但仍然合理的语义。</li>
+<li>在存在 non-deterministic operators 的情况下，特定的 reduce 任务 R1 的输出等效于由 non-deterministic program 的 sequential execution 生成的 R1 的输出。</li>
+</ul>
+<p>然而，不同 reduce 任务 R2 的输出可以对应于由 non-deterministic program 的 different sequential execution 产生的 R2 的输出。考虑 Map 任务 $M$ 和 Reduce 任务 $R_1$ 和 $R_2$:</p>
 <ul>
 <li><p>Let $e(Ri)$ be the execution of $R_i$ that committed (there is exactly one such execution).</p>
 </li>
 <li><p>The weaker semantics arise because $e(R_1)$ may have read the output produced by one execution of $M$ , and $e(R_2)$ may have read the output produced by a different execution of $M$ .</p>
 </li>
-<li><p>出现较弱的语义是因为 $e(R1)$ 可能已读取由 $M$ 的一个执行产生的输出，而 $e(R2)$ 可能已读取由 $M$ 的不同执行产生的输出。</p>
-</li>
 </ul>
+<p>出现较弱的语义是因为 $e(R1)$ 可能已读取由 $M$ 的一个执行产生的输出，而 $e(R2)$ 可能已读取由 $M$ 的不同执行产生的输出。</p>
 <h4 id="3-4-Locality"><a href="#3-4-Locality" class="headerlink" title="3.4 Locality"></a>3.4 Locality</h4><p>在我们的计算环境中，网络带宽是一种相对稀缺的资源。我们通过利用输入数据（由 GFS 管理）存储在组成集群的机器的本地磁盘上这一事实来节省网络带宽。GFS 将每个文件划分为 <code>64MB</code> 的块，并在不同的机器上存储每个块的多个副本（typically 3 个副本）。</p>
 <p>MapReduce master 会考虑输入文件的位置信息，并尝试在包含相应输入数据副本的计算机上调度 map 任务。如果做不到这一点，它会尝试在该任务的输入数据的副本附近调度 Map 任务 (e.g., on a worker machine that is on the same network switch as the machine containing the data)。</p>
 <p>当对集群中很大一部分 wokers 运行大型 MapReduce 操作时，大多数输入数据都是在本地读取的，并且不消耗网络带宽。</p>
