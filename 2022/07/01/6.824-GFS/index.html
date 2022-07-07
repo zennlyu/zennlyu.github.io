@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://example.com/2022/07/01/6.824-GFS/f-1.png">
 <meta property="og:image" content="http://example.com/2022/07/01/6.824-GFS/t1.png">
 <meta property="article:published_time" content="2022-07-01T03:27:15.342Z">
-<meta property="article:modified_time" content="2022-07-07T04:46:20.953Z">
+<meta property="article:modified_time" content="2022-07-07T09:49:14.162Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="6.824">
 <meta name="twitter:card" content="summary">
@@ -107,81 +107,127 @@
 <p>因此，必须重新审视设计假设和参数，如 I&#x2F;O 操作和块大小。</p>
 </blockquote>
 </li>
-<li><p>第三，大多数文件都是通过附加新数据而不是覆盖现有数据来变异的。</p>
+<li><p>第三，大多数文件都是通过附加新数据而不是覆盖现有数据来修改的。</p>
 <blockquote>
 <p>文件中的随机写入几乎不存在。写入后，文件仅被读取，并且通常仅按顺序读取。各种数据共享这些特征。</p>
 <p>有些可能构成大型存储库，数据分析程序会扫描这些存储库。有些可能是由正在运行的应用程序连续生成的数据流。有些可能是存档数据。有些可能是在一台机器上产生并在另一台机器上处理的中间结果，无论是同时还是稍后。</p>
 <p>鉴于这种对大型文件的访问模式，追加成为性能优化和原子性保证的重点，而在客户端中缓存数据块则失去了吸引力。</p>
 </blockquote>
 </li>
-<li><p>第四，共同设计应用程序和文件系统 API 通过提高我们的灵活性，使整个系统受益。例如：</p>
+<li><p>第四，应用程序和文件系统API的协同设计提高了整个系统的灵活性。例如：</p>
 <blockquote>
-<p>我们放宽了 GFS 的一致性模型 consistency model，以大大简化文件系统，而不会给应用程序带来沉重的负担。</p>
-<p>我们还引入了原子追加操作，以便多个客户端可以并发追加到一个文件，而无需在它们之间进行额外的同步。</p>
+<p>我们放宽了 GFS 的一致性模型 consistency model 要求，以大大简化 GFS 设计，而不会给应用程序带来沉重的负担。</p>
+<p>我们还引入了原子的记录追加操作，以便多个客户端可以并发追加到一个文件，不需要额外的同步操作来保证数据的一致性。</p>
 </blockquote>
 </li>
 </ul>
-<p>目前部署多个 GFS 集群用于不同的目的。最大的节点具有 1000 多个存储节点和超过 300 TB 的磁盘存储，并且由不同计算机上的数百个客户端连续频繁访问。</p>
 <h3 id="2-DESIGN-OVERVIEW"><a href="#2-DESIGN-OVERVIEW" class="headerlink" title="2 DESIGN OVERVIEW"></a>2 DESIGN OVERVIEW</h3><h4 id="2-1-Assumptions"><a href="#2-1-Assumptions" class="headerlink" title="2.1 Assumptions"></a>2.1 Assumptions</h4><p>我们之前提到了一些关键的观察结果，现在更详细地阐述了我们的假设。</p>
 <ul>
-<li>该系统由许多经常出现故障的廉价商品组件构建而成。它必须持续监控自身，并定期检测、容忍组件故障并从中迅速恢复。</li>
-<li>系统存储适量的大文件。我们预计会有几百万个文件，每个文件的大小通常为 100 MB 或更大。多 GB 文件是常见情况，应进行有效管理。必须支持小文件，但我们不需要针对它们进行优化。</li>
-<li>工作负载主要由两种读取组成：大型流式读取和小型随机读取。<ul>
-<li>在大型流式读取中，单个操作通常读取数百 KB，更常见的是 1 MB 或更多。来自同一客户端的连续操作通常会读取文件的连续区域。</li>
-<li>一个小的随机读取通常以任意偏移量读取几个 KB。注重性能的应用程序通常会对其小读取进行批处理和排序，以在文件中稳步前进，而不是来回移动。</li>
+<li>系统必须持续监控自身的状态，它必须<strong>将组件失效作为一种常态</strong>，能够迅速地侦测、冗余并恢复失效的组件。</li>
+<li><strong>系统存储适量的大文件</strong>，预计会有几百万个文件，每个文件的大小通常为 100MB 或更大。GB 级别的文件也很常见，应进行有效管理。GFS 也必须支持小文件，但不需要针对它们进行优化。</li>
+<li>工作负载主要由两种读取组成：<strong>大型流式读取</strong>和<strong>小型随机读取。</strong><ul>
+<li>在大型流式读取中，单个操作通常读取数百 KB，更常见的是 1MB 或更多。来自同一客户端的连续操作通常会读取文件的连续区域。</li>
+<li>小规模的随机读取通常是在文件某个随机的位置读取几个 KB 数据。如果应用程序对性能非常关注，通常的做法是把小规模的随机读取操作合并并排序，之后按顺序批量读取，以在文件中稳步前进，而避免在文件中前后来回的移动读取位置。</li>
 </ul>
 </li>
-<li>工作负荷还具有许多将数据追加到文件的大型顺序写入。典型的操作大小与读取操作的大小类似。写入后，文件很少会再次修改。支持在文件中任意位置进行小写入，但不必高效。</li>
-<li>系统必须有效地为同时追加到同一文件的多个客户端实现定义明确的语义。我们的文件通常用作生产者-消费者队列或多向合并。数百个生产者，每台计算机运行一个，将同时附加到一个文件。具有最小同步开销的原子性至关重要。该文件可能稍后读取，或者使用者可能同时读取该文件。</li>
-<li>高持续带宽比低延迟更重要。我们的大多数目标应用程序都非常注重以高速率批量处理数据，而很少有应用程序对单个读取或写入有严格的响应时间要求。</li>
+<li><strong>系统的工作负载还包括许多大规模的、顺序的、数据追加方式的写操作</strong>。典型的操作大小与读取操作的大小类似。写入后，文件很少会再次修改。GFS 支持在文件中任意位置进行小规模的随机写入操作，但是可能效率不彰。</li>
+<li><strong>系统必须高效的、行为定义明确的(alex注:well-defined)实现多客户端并行追加数据到同一个文件里的语意</strong>。我们的文件通常被用于“生产者-消费者”队列，或者其它多路文件合并操作。数百个生产者，每台计算机运行一个生产者，将同时对一个文件进行 append 操作。使用最小的同步开销来实现的原子的多路追加数据操作是必不可少的。文件可稍后读取，或者是消费者在追加的操作的同时读取文件。</li>
+<li><strong>高性能的稳定网络带宽远比低延迟重要。</strong>我们的目标程序绝大部分要求能够高速率的、大批量的处理 数据，极少有程序对单一的读写操作有严格的响应时间要求。</li>
 </ul>
-<h4 id="2-2-Interface"><a href="#2-2-Interface" class="headerlink" title="2.2 Interface"></a>2.2 Interface</h4><p>GFS 提供了一个熟悉的文件系统接口，尽管它没有实现像 POSIX 这样的标准 API。文件按层次结构组织在目录中，并由路径名标识。我们支持创建、删除、打开、关闭、读取和写入文件的常规操作。</p>
-<p>此外，GFS 还具有快照和记录追加操作。快照以低成本创建文件或目录树的副本。记录追加允许多个客户端同时将数据追加到同一文件，同时保证每个客户端追加的原子性。它对于实现多路合并结果和生产者-使用者队列非常有用，许多客户端可以同时追加到这些队列，而无需额外的锁定。我们发现这些类型的文件在构建大型分布式应用程序方面非常有价值。快照和记录追加分别在第 3.4 节和第 3.3 节中进一步讨论。</p>
-<h4 id="2-3-Architecture"><a href="#2-3-Architecture" class="headerlink" title="2.3 Architecture"></a>2.3 Architecture</h4><p>GFS 集群由单个 $master$ 和多个 $chunkservers$ 组成，并由多个 $clients$ 访问，如图 1 所示。其中每个通常都是运行用户级服务器进程的商用 Linux 计算机。只要机器资源允许，在同一台计算机上运行 $chunkserver$ 和 $client$ 很容易，并且运行可能不可靠的应用程序代码导致的可靠性降低是可以接受的。</p>
+<h4 id="2-2-Interface"><a href="#2-2-Interface" class="headerlink" title="2.2 Interface"></a>2.2 Interface</h4><p>GFS 提供了一套不是严格按照 POSIX 等标准 API 的形式实现的类似传统文件系统的 API 接口函数。文件以分层目录的形式组织，用路径名来标识，支持常用的操作，如创建新文件、删除文件、打开文件、关闭文件、读和写文件。</p>
+<p>此外，GFS 还具有快照和记录追加操作。</p>
+<ul>
+<li>快照以低成本创建文件或目录树的副本。</li>
+<li>记录追加允许多个客户端并发对同一文件进行 append 操作，同时保证每个客户端追加操作的原子性。</li>
+</ul>
+<p>它对于实现多路合并结果和“生产者-消费者”队列非常有用 —— 多个客户端可以在不需要额外的同步锁定的情况下，同时对一个文件追加数据。</p>
+<p>我们发现这些类型的文件对于构建大型分布应用是非常重要的。</p>
+<h4 id="2-3-Architecture"><a href="#2-3-Architecture" class="headerlink" title="2.3 Architecture"></a>2.3 Architecture</h4><p>GFS 集群包含单个 $master$ 节点、多个 $chunkservers$ 组成，并同时由多个 $clients$ 访问，如图 1 所示。</p>
+<blockquote>
+<p>所有机器通常都是运行着 user-level 服务进程的普通 Linux machine。只要机器资源允许，可以很容易的把 $chunkserver$ 和 $client$ 都放在同一台机器上运行，并且我们能够接受不可靠的应用程序代码带来的稳定性降低的风险。</p>
+</blockquote>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/01/6.824-GFS/f-1.png" alt="f-1"></p>
-<p>文件被划分为固定大小的 $chunks$。每个 $chunk$ 都由 $master$ 在 chunk creation 时分配的不可变且全局唯一的 64-bit $chunks\ handle$ 标识。$chunkservers$ 将 $chunks$ 作为 Linux 文件存储在本地磁盘上，并读取或写入由 $chunk\ handle$ 和 $byte\ range$ 指定的块数据。为了提高可靠性，每个 $chunk$ 都复制到多个 $chunkservers$ 上。默认情况下，我们存储三个副本，但用户可以为文件命名空间的不同区域指定不同的复制级别。</p>
-<p>master 维护所有文件系统的元数据。这包含 $the\ namespace$, $access\ control\ in\ formation$， $the\ mapping\ from\ files\ to\ chunks$， and $the\ current\ locations\ of\ chunks$。它还控制系统范围的活动，例如 $chunk\ lease\ management$， $garbage\ collection\ of\ orphaned\ chunks$， and $chunk\ migration\ between\ chunkservers$ 。$master$ 定期与 $HeartBeat$ 消息中的每个 $chunkserver$  通信，以向其提供指令并收集其状态。</p>
-<p>链接到每个应用程序的 GFS 客户端代码实现文件系统 API，并与 $master$ 和 $chunkservers$ 通信，以代表应用程序读取或写入数据。客户端与 master 交互以进行元数据操作，但所有承载数据的通信都直接进入 $chunkservers$ 。我们不提供 POSIX API，因此不需要挂接到 Linux vnode layer。</p>
-<p>客户端和 $chunkserver$ 都不会缓存文件数据。客户端缓存几乎没有什么好处，因为大多数应用程序都会流式传输大型文件，或者工作集太大而无法缓存。没有它们的存在可以通过消除缓存一致性问题来简化客户端和整个系统。（但是，客户端会缓存元数据。$chunkservers$ 不需要缓存文件数据，因为 $chunks$ 存储为本地文件，因此 Linux 的缓冲区缓存已经将经常访问的数据保存在内存中。</p>
-<h4 id="2-4-Single-Master"><a href="#2-4-Single-Master" class="headerlink" title="2.4 Single Master"></a>2.4 Single Master</h4><p>拥有单个 master 极大地简化了我们的设计，并使 master 能够利用 global knowledge 做出复杂的 chunk placement 和复制决策。但是，我们必须尽量减少它对读取和写入的参与，以免它成为瓶颈。客户端从不通过 master 读取和写入文件数据。相反，客户端会询问 master 它应该联系哪些 chunkserver。它将此信息缓存 for a 有限时间，并直接与 chunkservers 交互以进行许多后续操作。</p>
-<p>让我们参考图 1 简单解释一下交互。</p>
+<p>GFS 存储文件被划分为固定大小的 $chunks$。</p>
 <ul>
-<li>首先，使用固定的块大小，客户端将应用指定的文件名和字节偏移量转换为文件中的块索引。</li>
-<li>然后，它向 master 发送包含文件名和 chunk index 的请求。master 使用相应的 chunk handle 和副本的位置进行回复。客户端使用文件名和 chunk index 作为键来缓存此信息。</li>
-<li>然后，客户端向其中一个副本（很可能是最近的副本）发送请求。该请求指定块句柄和该块中的字节范围。进一步读取同一块不需要更多的客户端-主机交互，直到缓存的信息过期或文件重新打开。</li>
-<li>实际上，客户端通常在同一请求中请求多个区块，并且 master 还可以包含紧随所请求的区块的信息。这些额外的信息可以避开几个未来的客户端-主服务器交互，而几乎不需要额外的成本。</li>
+<li>每个 $chunk$ 创建时都由 $master$ 分配一个不变、全局唯一的 $64\ bit\ chunks\ handle$ 标识。</li>
+<li>$chunkservers$ 将 $chunks$ 以 Linux 文件形式存储在本地磁盘，并根据指定的 $chunk\ handle$ 和 $byte\ range$ 读写块数据。为提高可靠性，每个 $chunk$ 都会被复制到多个 $chunkservers$ 上。</li>
+<li>默认情况下，我们使用 3 个存储复制节点，但用户可以为不同的文件命名空间设定不同的复制级别。</li>
 </ul>
-<h4 id="2-5-Chunk-Size"><a href="#2-5-Chunk-Size" class="headerlink" title="2.5 Chunk Size"></a>2.5 Chunk Size</h4><p>Chunk size 是关键设计参数之一。我们选择了 64MB，这比典型的文件系统块大小大得多。每个块副本都作为普通 Linux 文件存储在块服务器上，并且仅在需要时进行扩展。Lazy space allocation 避免了由于内部碎片而导致的空间浪费，这可能是对 suck a large chunk size 的最大 objection。</p>
-<p>Large chunk size 提供了几个重要的优点。</p>
+<p>master 节点管理所有文件系统的元数据。这包含</p>
 <ul>
-<li>首先，它减少了客户端与 master 交互的需要，因为在同一块上读取和写入只需要向 master 发出一个初始请求以获取块位置信息。这种减少对于我们的工作负载尤其重要，因为应用程序主要按顺序读取和写入大文件。即使对于小的随机读取，客户端也可以轻松地缓存多 TB 工作集的所有区块位置信息。</li>
-<li>其次，由于在大的块上，客户端更有可能在 given chunk 上执行许多操作，因此它可以通过在较长的一段时间内保持与块服务器的持久 TCP 连接来减少网络开销。</li>
-<li>第三，它减少了存储在主服务器上的元数据的大小。这使我们能够将元数据保存在内存中，这反过来又带来了我们将在第2.6.1节中讨论的其他优势。</li>
+<li>$the\ namespace$,</li>
+<li>$access\ control\ in\ formation$，</li>
+<li>$the\ mapping\ from\ files\ to\ chunks$，</li>
+<li>$the\ current\ locations\ of\ chunks$</li>
 </ul>
-<p>另一方面，即使有 Lazy 空间分配，大块大小也有其缺点。一个 small file 由少量块组成，可能只有一个。如果许多客户端正在访问同一文件，则存储这些块的块服务器可能会成为热点。在实践中，hot spots 并不是一个主要问题，因为我们的应用程序主要按顺序读取大型多块文件。</p>
-<p>然而，当批处理队列系统首次使用 GFS 时，hot spots 确实出现了：可执行文件作为单块文件写入 GFS，然后同时在数百台机器上启动。存储此可执行文件的少数块服务器被数百个并发请求重载。我们通过存储具有较高复制因子的此类可执行文件并使批处理队列系统错开应用程序启动时间来解决此问题。一个潜在的长期解决方案是允许客户端在这种情况下从其他客户端读取数据。</p>
-<h4 id="2-6-Metadata"><a href="#2-6-Metadata" class="headerlink" title="2.6 Metadata"></a>2.6 Metadata</h4><p>master 存储三种主要类型的元数据：</p>
+<p>master 节点管理系统范围的活动，例如</p>
 <ul>
-<li>文件和 chunk namespace、</li>
-<li>从文件到块的映射、</li>
-<li>以及每个块的副本的位置。</li>
+<li>$chunk\ lease\ management$，</li>
+<li>$garbage\ collection\ of\ orphaned\ chunks$，</li>
+<li>$chunk\ migration\ between\ chunkservers$</li>
 </ul>
-<p>所有元数据都保存在 master 的内存中。前两种类型（namespaces &amp; file-to-chunk mapping）也通过将突变记录到存储在 master 的本地磁盘上并复制到远程计算机上的操作日志来保持持久性。</p>
-<p>也通过将 mutations 记录到存储在 master 的本地磁盘上并复制到远程计算机上的操作日志来保持持久性。使用日志，我们可以简单、可靠地更新主状态，并且在发生主崩溃时不会有不一致的风险。master 不会永久存储区块位置信息。相反，它会在 master 启动时以及每当块服务器加入群集时询问每个块服务器有关其块的信息。</p>
-<h5 id="2-6-1-In-Memory-Data-Structures"><a href="#2-6-1-In-Memory-Data-Structures" class="headerlink" title="2.6.1 In-Memory Data Structures"></a>2.6.1 In-Memory Data Structures</h5><p>由于元数据存储在内存中，因此 master 操作速度很快。此外，母版在后台定期扫描其整个状态既简单又高效。此定期扫描用于实现块垃圾回收、在存在块服务器失败时重新复制以及块迁移，以平衡块服务器之间的负载和磁盘空间使用情况。第4.3和4.4节将进一步讨论这些活动。</p>
-<p>Since metadata is stored in memory, master operations are fast. Furthermore, it is easy and efficient for the master to periodically scan through its entire state in the background. This periodic scanning is used to implement chunk garbage collection, re-replication in the presence of chunkserver failures, and chunk migration to balance load and disk space usage across chunkservers. Sections 4.3 and 4.4 will discuss these activities further.</p>
-<p>One potential concern for this memory-only approach is that the number of chunks and hence the capacity of the whole system is limited by how much memory the master has. This is not a serious limitation in practice. The master maintains less than 64 bytes of metadata for each 64 MB chunk. Most chunks are full because most files contain many chunks, only the last of which may be partially filled. Similarly, the file namespace data typically requires less then 64 bytes per file because it stores file names compactly using prefix compression.</p>
-<p>If necessary to support even larger file systems, the cost of adding extra memory to the master is a small price to pay for the simplicity, reliability, performance, and flexibility we gain by storing the metadata in memory.</p>
-<h5 id="2-6-2-Chunk-Locations"><a href="#2-6-2-Chunk-Locations" class="headerlink" title="2.6.2 Chunk Locations"></a>2.6.2 Chunk Locations</h5><p>The master does not keep a persistent record of which chunkservers have a replica of a given chunk. It simply polls chunkservers for that information at startup. The master can keep itself up-to-date thereafter because it controls all chunk placement and monitors chunkserver status with regular HeartBeat messages.</p>
-<p>We initially attempted to keep chunk location information persistently at the master, but we decided that it was much simpler to request the data from chunkservers at startup, and periodically thereafter. This eliminated the problem of keeping the master and chunkservers in sync as chunkservers join and leave the cluster, change names, fail, restart, and so on. In a cluster with hundreds of servers, these events happen all too often.</p>
-<p>Another way to understand this design decision is to realize that a chunkserver has the final word over what chunks it does or does not have on its own disks. There is no point in trying to maintain a consistent view of this information on the master because errors on a chunkserver may cause chunks to vanish spontaneously (e.g., a disk may go bad and be disabled) or an operator may rename a chunkserver.</p>
-<h5 id="2-6-3-Operation-Log"><a href="#2-6-3-Operation-Log" class="headerlink" title="2.6.3 Operation Log"></a>2.6.3 Operation Log</h5><p>The operation log contains a historical record of critical metadata changes. It is central to GFS. Not only is it the only persistent record of metadata, but it also serves as a logical time line that defines the order of concurrent operations. Files and chunks, as well as their versions (see Section 4.5), are all uniquely and eternally identified by the logical times at which they were created.</p>
-<p>Since the operation log is critical, we must store it reliably and not make changes visible to clients until metadata changes are made persistent. Otherwise, we effectively lose the whole file system or recent client operations even if the chunks themselves survive. Therefore, we replicate it on multiple remote machines and respond to a client operation only after flushing the corresponding log record to disk both locally and remotely. The master batches several log records together before flushing thereby reducing the impact of flushing and replication on overall system throughput.</p>
-<p>The master recovers its file system state by replaying the operation log. To minimize startup time, we must keep the log small. The master checkpoints its state whenever the log grows beyond a certain size so that it can recover by loading the latest checkpoint from local disk and replaying only the limited number of log records after that. The checkpoint is in a compact B-tree like form that can be directly mapped into memory and used for namespace lookup without extra parsing. This further speeds up recovery and improves availability.</p>
-<p>Because building a checkpoint can take a while, the master’s internal state is structured in such a way that a new checkpoint can be created without delaying incoming mutations. The master switches to a new log file and creates the new checkpoint in a separate thread. The new checkpoint includes all mutations before the switch. It can be created in a minute or so for a cluster with a few million files. When completed, it is written to disk both locally and remotely.</p>
-<p>Recovery needs only the latest complete checkpoint and subsequent log files. Older checkpoints and log files can be freely deleted, though we keep a few around to guard against catastrophes. A failure during checkpointing does not affect correctness because the recovery code detects and skips incomplete checkpoints.</p>
-<h4 id="2-7-Consistency-Model"><a href="#2-7-Consistency-Model" class="headerlink" title="2.7 Consistency Model"></a>2.7 Consistency Model</h4><p>GFS has a relaxed consistency model that supports our highly distributed applications well but remains relatively simple and efficient to implement. We now discuss GFS’s guarantees and what they mean to applications. We also highlight how GFS maintains these guarantees but leave the details to other parts of the paper.</p>
-<h5 id="2-7-1-Guarantees-by-GFS"><a href="#2-7-1-Guarantees-by-GFS" class="headerlink" title="2.7.1 Guarantees by GFS"></a>2.7.1 Guarantees by GFS</h5><p>File namespace mutations (e.g., file creation) are atomic. They are handled exclusively by the master: namespace locking guarantees atomicity and correctness (Section 4.1); the master’s operation log defines a global total order of these operations (Section 2.6.3).</p>
+<p>$master$ 节点使用 $HeartBeat\ message$ 周期性地和每个 $chunkserver$ 通信，发送指令到各个 $chunkservers$ 并接收 $chunkservers$ 的状态信息。</p>
+<p>GFS $clients$ 代码以 $library$ 的形式被链接到客户程序里。</p>
+<ul>
+<li>客户端代码实现了 GFS 文件系统的 API 接口函数、应用程序与 $master$ 节点和 $chunkserver$ 通讯、以及对数据进行读写操作。</li>
+<li>客户端和 $master$ 节点的通信只获取元数据，所有的数据操作都是由客户端直接和 $chunkserver$ 进行交互的。</li>
+<li>我们不提供 POSIX 标准的 API 的功能，因此，GFS API 调用不需要深入到Linux vnode级别。</li>
+</ul>
+<p>客户端和 $chunkserver$ 都不需要缓存文件数据。</p>
+<ul>
+<li>客户端缓存几乎无用（但是，客户端会缓存元数据），因为大部分程序要么以流的方式读取巨大文件，要么工作集太大无法被缓存。无需考虑缓存相关问题可以通过消除缓存一致性问题来简化客户端和整个系统的实现。</li>
+<li>$chunkservers$ 不需要缓存文件数据，因为 $chunks$ 以本地文件方式存储，Linux 的文件系统缓存会把经常访问的数据缓存在内存中。</li>
+</ul>
+<h4 id="2-4-Single-Master"><a href="#2-4-Single-Master" class="headerlink" title="2.4 Single Master"></a>2.4 Single Master</h4><p>单一 $master$ 节点策略大大简化了 GFS 设计</p>
+<ul>
+<li>单一的 $master$ 节点可以通过全局的信息精确定位 Chunk的位置以及进行复制决策。</li>
+<li>但是，我们须减少它对 $master$ 节点的读写，以免 $master$ 节点成为系统瓶颈。</li>
+</ul>
+<p>客户端从不通过 $master$ 节点读写文件数据。相反，客户端会询问 $master$ 节点它应该联系哪些 $chunkserver$。它将此信息缓存一段 certain 时间，后续的操作将直接和 $chunkserver$ 进行数据读写操作。</p>
+<p>参考图 1 简单解释一次简单读取的流程。</p>
+<ul>
+<li><p>首先，客户端根据固定的 Chunk size，把文件名和程序指定的字节偏移 [转换] 成文件的 chunk index 。</p>
+</li>
+<li><p>然后，它把文件名和 chunk index 发送给 $master$ 节点。$master$ 节点将相应的  chunk handle 和副本的位置信息回复给客户端。客户端用文件名和 chunk index 作为 key 缓存这些 信息。</p>
+</li>
+<li><p>然后，客户端向其中一个副本（很可能是最近的副本）发送请求。请求信息包含了 $chunks\ handler$ 标识和字节范围。在对这个 $chunks$ 的后续读取操作中，客户端不必再和 $master$ 节点通讯了，除非缓存的元数据信息过期 或者文件被重新打开。</p>
+</li>
+<li><p>实际上，客户端通常在同一请求中请求多个 $chunks$ 信息， $master$ 节点的回应也可能包含了紧跟着这些被请求的 $chunks$ 后面的 $chunks$ 的信息。实际中，这些额外的信息避免了客户端和 $master$ 节点未来可能会发生的几次通讯，而几乎不需要额外的成本。</p>
+</li>
+</ul>
+<h4 id="2-5-Chunk-Size"><a href="#2-5-Chunk-Size" class="headerlink" title="2.5 Chunk Size"></a>2.5 Chunk Size</h4><p>Chunk size 是关键设计参数之一。我们选择了 64MB，远大于一般文件系统的 Block size。每个 $chunks$ 的副本都作为普通 Linux 文件存储在 $chunkserver$ 上，仅在需要时进行扩展。<strong>惰性空间分配策略</strong>避免了由于内部碎片导致的空间浪费，这可能是对 suck a large chunk size 的最大争议。</p>
+<p>Large  $chunk$  size 提供了几个重要的优点。</p>
+<ul>
+<li>首先，它减少了客户端和 $master$ 节点通讯的需求，因为仅需一次和 $master$ 节点的通信，就可以获取 $chunk$ 的位置信息，之后就可以对同一个 $chunk$ 进行多次的读写操作。这种方式对降低我们的工作负载来说效果显著，因为我们的应用程序通常是连续读写大文件。即使是小规模的随机读取，采用较大的 $chunk$ 尺寸也带来明显的好处，客户端可以轻松的缓存一个数TB的工作数据集所有的 $chunk$ 位置信息。</li>
+<li>其次，采用较大的 $chunk$ 尺寸，客户端能够对一个块进行多次操作，这样就可以通过与 $chunk$ 服务器保持较长时间的 TCP 连接来减少网络负载。</li>
+<li>第三，选用较大的 $chunk$ 尺寸减少了 $master$ 节点需要保存的元数据的数量。这就允许我们把元数据全部放在内存中，在2.6.1节我们会讨论元数据全部放在内存中带来的额外的好处。</li>
+</ul>
+<p>另一方面，即使有惰性空间分配，大的 $chunk\ size$也有其缺点：一个小文件包含较少的 $chunk$ ，甚至仅一个。当有许多的客户端对同一个小文件进行多次的访问时，存储这些 $chunk$ 的 $chunk\ server$ 会变成热点。</p>
+<p>在实际应用中，由于我们的程序通常是连续的读取包含多个 $chunk$ 的大文件，热点还不是主要的问题。</p>
+<p>然而，当我们第一次把 GFS 用于批处理队列系统的时候，热点的问题还是产生了：一个可执行文件在 GFS 上保存为 $single-chunk$ 文件，之后这个可执行文件在数百台机器上同时启动。存放这个可执行文件的几个 $chunk\ server$ 被数百个客户端的并发请求访问导致系统局部过载。我们通过使用更大的复制参数来保存可执行文件，以及错开批处理队列系统程序的启动时间的方法解决了这个问题。一个可能的长效解决方案是，在这种的情况下，允许客户端从其它客户端读取数据。</p>
+<h4 id="2-6-Metadata"><a href="#2-6-Metadata" class="headerlink" title="2.6 Metadata"></a>2.6 Metadata</h4><p>$master$ 节点存储三种主要类型的元数据：</p>
+<blockquote>
+<p>alex注:注意逻辑的 $master$ 节点和物理的 $master server$ 的区别。后续我们谈的是每个 $master server$ 的行为，如存储、内存等等，因此我们将全部使用物理名称</p>
+</blockquote>
+<ul>
+<li>文件和Chunk的命名空间</li>
+<li>从文件到 Chunk 的映射关系</li>
+<li>以及每个 Chunk 副本的存储位置</li>
+</ul>
+<p>所有元数据都保存在 $master server$ 的内存中。前两种类型的元数据 (namespaces &amp; file-to-chunkmapping) 同时也会以记录变更日志的方式记录在操作系统的系统日志文件中，日志文件存储在本地磁盘上，同时日志会被复制到其它的远程 $master server$ 上。采用保存变更日志的方式，我们能够简单可靠的更新 $master server$ 的状态，并且不用担心 $master server$ 崩溃导致数据不一致的风险。 $master server$ 不会持久保存Chunk位置信息。 $master server$ 在启动时，或者有新的Chunk服务器加入时，向各个 $master server$ 轮询它们所存储的Chunk的信息。</p>
+<h5 id="2-6-1-In-Memory-Data-Structures"><a href="#2-6-1-In-Memory-Data-Structures" class="headerlink" title="2.6.1 In-Memory Data Structures"></a>2.6.1 In-Memory Data Structures</h5><p>因为元数据保存在内存中，所以Master服务器的操作速度非常快。并且，Master服务器可以在后台简单而高效的周期性扫描自己保存的全部状态信息。这种周期性的状态扫描也用于实现Chunk垃圾收集、在Chunk服务器失效的时重新复制数据、通过Chunk的迁移实现跨Chunk服务器的负载均衡以及磁盘使用状况统计等功能。（4.3&amp;4.4深入讨论）</p>
+<p>将元数据全部保存在内存中的方法有潜在问题：Chunk的数量以及整个系统的承载能力都受限于Master服务器所拥有的内存大小。但是在实际应用中，这并不是一个严重的问题。Master服务器只需要不到64个字节的元数据就能够管理一个64MB的Chunk。由于大多数文件都包含多个Chunk，因此绝大多数Chunk都是满的，除了文件的最后一个Chunk是部分填充的。同样的，每个文件的在命名空间中的数据大小通常在64字节以下，因为保存的文件名是用前缀压缩算法压缩过的。</p>
+<p>即便是需要支持更大的文件系统，为Master服务器增加额外内存的费用是很少的，而通过增加有限的费用，我们就能够把元数据全部保存在内存里，增强了系统的简洁性、可靠性、高性能和灵活性。</p>
+<h5 id="2-6-2-Chunk-Locations"><a href="#2-6-2-Chunk-Locations" class="headerlink" title="2.6.2 Chunk Locations"></a>2.6.2 Chunk Locations</h5><p>Master服务器并不保存持久化保存哪个Chunk服务器存有指定Chunk的副本的信息。Master服务器只是在启动的时候轮询Chunk服务器以获取这些信息。Master服务器能够保证它持有的信息始终是最新的，因为它控制了所有的Chunk位置的分配，而且通过周期性的心跳信息监控Chunk服务器的状态。</p>
+<p>最初设计时，我们试图把Chunk的位置信息持久的保存在Master服务器上，但是后来我们发现在启动的时候轮询Chunk服务器，之后定期轮询更新的方式更简单。这种设计简化了在有Chunk服务器加入集群、离开集群、更名、失效、以及重启的时候，Master服务器和Chunk服务器数据同步的问题。在一个拥有数百台服务器的集群中，这类事件会频繁的发生。</p>
+<p>可以从另外一个角度去理解这个设计决策:只有Chunk服务器才能最终确定一个Chunk是否在它的硬盘上。我们从没有考虑过在Master服务器上维护一个这些信息的全局视图，因为Chunk服务器的错误可能会导致Chunk自动消失(比如，硬盘损坏了或者无法访问了)，亦或者操作人员可能会重命名一个Chunk服务器。</p>
+<h5 id="2-6-3-Operation-Log"><a href="#2-6-3-Operation-Log" class="headerlink" title="2.6.3 Operation Log"></a>2.6.3 Operation Log</h5><p>操作日志包含了关键的元数据变更历史记录。这对GFS非常重要。这不仅仅是因为操作日志是元数据唯一的持久化存储记录，它也作为判断同步操作顺序的逻辑时间基线(alex注:也就是通过逻辑日志的序号作为操作发生的逻辑时间，类似于事务系统中的LSN)。文件和Chunk，连同它们的版本(参考4.5节)，都由它们创建的逻辑时间唯一的、永久的标识。</p>
+<p>操作日志非常重要，我们必须确保日志文件的完整，确保只有在元数据的变化被持久化后，日志才对客户端是可见的。否则，即使Chunk本身没有出现任何问题，我们仍有可能丢失整个文件系统，或者丢失客户端最近的操作。所以，我们会把日志复制到多台远程机器，并且只有把相应的日志记录写入到本地以及远程机器的硬盘后，才会响应客户端的操作请求。Master服务器会收集多个日志记录后批量处理，以减少写入磁盘和复制对系统整体性能的影响。</p>
+<p>Master服务器在灾难恢复时，通过重演操作日志把文件系统恢复到最近的状态。为了缩短Master启动的时间，我们必须使日志足够小(alex注:即重演系统操作的日志量尽量的少)。Master服务器在日志增长到一定量时对系统状态做一次Checkpoint(alex注:Checkpoint是一种行为，一种对数据库状态作一次快照的行为)，将所有的状态数据写入一个Checkpoint文件(alex注:并删除之前的日志文件)。在灾难恢复的时候，Master服务器就通过从磁盘上读取这个Checkpoint文件，以及重演Checkpoint之后的有限个日志文件就能够恢复系统。Checkpoint文件以压缩B-树形势的数据结构存储，可以直接映射到内存，在用于命名空间查询时无需额外的解析。这大大提高了恢复速度，增强了可用性。</p>
+<p>由于创建一个Checkpoint文件需要一定的时间，所以Master服务器的内部状态被组织为一种格式，这种格式要确保在Checkpoint过程中不会阻塞正在进行的修改操作。Master服务器使用独立的线程切换到新的日志文件和创建新的Checkpoint文件。新的Checkpoint文件包括切换前所有的修改。对于一个包含数百万个文件的集群，创建一个Checkpoint文件需要1分钟左右的时间。创建完成后，Checkpoint文件会被写入在本地和远程的硬盘里。</p>
+<p>Master服务器恢复只需要最新的Checkpoint文件和后续的日志文件。旧的Checkpoint文件和日志文件可以被删除，但是为了应对灾难性的故障(alex注:catastrophes，数据备份相关文档中经常会遇到这个词，表示一种超出预期范围的灾难性事件)，我们通常会多保存一些历史文件。Checkpoint失败不会对正确性产生任何影响，因为恢复功能的代码可以检测并跳过没有完成的Checkpoint文件。</p>
+<h4 id="2-7-Consistency-Model"><a href="#2-7-Consistency-Model" class="headerlink" title="2.7 Consistency Model"></a>2.7 Consistency Model</h4><p>GFS支持一个宽松的一致性模型，这个模型能够很好的支撑我们的高度分布的应用，同时还保持了相对简单且容易实现的优点。本节我们讨论GFS的一致性的保障机制，以及对应用程序的意义。我们也着重描述了GFS如何管理这些一致性保障机制，但是实现的细节将在本论文的其它部分讨论。</p>
+<h5 id="2-7-1-Guarantees-by-GFS"><a href="#2-7-1-Guarantees-by-GFS" class="headerlink" title="2.7.1 Guarantees by GFS"></a>2.7.1 Guarantees by GFS</h5><p>文件命名空间的修改(例如，文件创建)是原子性的。它们仅由Master节点的控制:命名空间锁提供了原子性和正确性(4.1章)的保障;Master节点的操作日志定义了这些操作在全局的顺序(2.6.3章)。</p>
 <p>The state of a file region after a data mutation depends on the type of mutation, whether it succeeds or fails, and whether there are concurrent mutations. Table 1 summarizes the result.</p>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/01/6.824-GFS/t1.png" alt="t1"></p>
 <p>A file region is consistent if all clients will always see the same data, regardless of which replicas they read from. A region is defined after a file data mutation if it is consistent and clients will see what the mutation writes in its entirety. When a mutation succeeds without interference from concurrent writers, the affected region is defined (and by implication consistent): all clients will always see what the mutation has written. Concurrent successful mutations leave the region undefined but consistent: all clients see the same data, but it may not reflect what any one mutation has written. Typically, it consists of mingled fragments from multiple mutations. A failed mutation makes the region inconsistent (hence also undefined): different clients may see different data at different times. We describe below how our applications can distinguish defined regions from undefined regions. The applications do not need to further distinguish between different kinds of undefined regions.</p>
@@ -322,7 +368,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/07/01/6.824_mapreduce/">6.824 MapReduce<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/07/01/6.824-RPC&Threads/">6.824 RPC & Threads<span class="note">Newer</span></a></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/07/01/6.824-RPC&Threads/">6.824 RPC & Threads<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/07/07/6.824-VM-FT/">6.824 VM-FT<span class="note">Newer</span></a></section></div>
 
 
 
