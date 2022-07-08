@@ -30,8 +30,9 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2022/07/01/6.824-GFS/f-1.png">
 <meta property="og:image" content="http://example.com/2022/07/01/6.824-GFS/t1.png">
+<meta property="og:image" content="http://example.com/2022/07/01/6.824-GFS/f2.png">
 <meta property="article:published_time" content="2022-07-01T03:27:15.342Z">
-<meta property="article:modified_time" content="2022-07-07T09:49:14.162Z">
+<meta property="article:modified_time" content="2022-07-07T15:12:55.639Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="6.824">
 <meta name="twitter:card" content="summary">
@@ -156,7 +157,7 @@
 <p>master 节点管理所有文件系统的元数据。这包含</p>
 <ul>
 <li>$the\ namespace$,</li>
-<li>$access\ control\ in\ formation$，</li>
+<li>$access\ control\ information$，</li>
 <li>$the\ mapping\ from\ files\ to\ chunks$，</li>
 <li>$the\ current\ locations\ of\ chunks$</li>
 </ul>
@@ -175,12 +176,12 @@
 </ul>
 <p>客户端和 $chunkserver$ 都不需要缓存文件数据。</p>
 <ul>
-<li>客户端缓存几乎无用（但是，客户端会缓存元数据），因为大部分程序要么以流的方式读取巨大文件，要么工作集太大无法被缓存。无需考虑缓存相关问题可以通过消除缓存一致性问题来简化客户端和整个系统的实现。</li>
+<li>客户端缓存几乎无用（但是，客户端会缓存元数据），因为大部分程序要么以流的方式读取巨大文件，要么工作集太大无法被缓存。无需考虑缓存相关问题可以通过<strong>消除缓存一致性问题</strong>来简化客户端和整个系统的实现。</li>
 <li>$chunkservers$ 不需要缓存文件数据，因为 $chunks$ 以本地文件方式存储，Linux 的文件系统缓存会把经常访问的数据缓存在内存中。</li>
 </ul>
 <h4 id="2-4-Single-Master"><a href="#2-4-Single-Master" class="headerlink" title="2.4 Single Master"></a>2.4 Single Master</h4><p>单一 $master$ 节点策略大大简化了 GFS 设计</p>
 <ul>
-<li>单一的 $master$ 节点可以通过全局的信息精确定位 Chunk的位置以及进行复制决策。</li>
+<li>单一的 $master$ 节点可以通过全局的信息精确定位 $chunks$ 的位置以及进行复制决策。</li>
 <li>但是，我们须减少它对 $master$ 节点的读写，以免 $master$ 节点成为系统瓶颈。</li>
 </ul>
 <p>客户端从不通过 $master$ 节点读写文件数据。相反，客户端会询问 $master$ 节点它应该联系哪些 $chunkserver$。它将此信息缓存一段 certain 时间，后续的操作将直接和 $chunkserver$ 进行数据读写操作。</p>
@@ -190,7 +191,7 @@
 </li>
 <li><p>然后，它把文件名和 chunk index 发送给 $master$ 节点。$master$ 节点将相应的  chunk handle 和副本的位置信息回复给客户端。客户端用文件名和 chunk index 作为 key 缓存这些 信息。</p>
 </li>
-<li><p>然后，客户端向其中一个副本（很可能是最近的副本）发送请求。请求信息包含了 $chunks\ handler$ 标识和字节范围。在对这个 $chunks$ 的后续读取操作中，客户端不必再和 $master$ 节点通讯了，除非缓存的元数据信息过期 或者文件被重新打开。</p>
+<li><p>然后，客户端向其中一个副本（很可能是最近的副本）发送请求。请求信息包含了 $chunks\ handler$ 标识和字节范围。在对这个 $chunks$ 的后续读取操作中，客户端不必再和 $master$ 节点通讯了，除非缓存的元数据信息过期或者文件被重新打开。</p>
 </li>
 <li><p>实际上，客户端通常在同一请求中请求多个 $chunks$ 信息， $master$ 节点的回应也可能包含了紧跟着这些被请求的 $chunks$ 后面的 $chunks$ 的信息。实际中，这些额外的信息避免了客户端和 $master$ 节点未来可能会发生的几次通讯，而几乎不需要额外的成本。</p>
 </li>
@@ -200,71 +201,110 @@
 <ul>
 <li>首先，它减少了客户端和 $master$ 节点通讯的需求，因为仅需一次和 $master$ 节点的通信，就可以获取 $chunk$ 的位置信息，之后就可以对同一个 $chunk$ 进行多次的读写操作。这种方式对降低我们的工作负载来说效果显著，因为我们的应用程序通常是连续读写大文件。即使是小规模的随机读取，采用较大的 $chunk$ 尺寸也带来明显的好处，客户端可以轻松的缓存一个数TB的工作数据集所有的 $chunk$ 位置信息。</li>
 <li>其次，采用较大的 $chunk$ 尺寸，客户端能够对一个块进行多次操作，这样就可以通过与 $chunk$ 服务器保持较长时间的 TCP 连接来减少网络负载。</li>
-<li>第三，选用较大的 $chunk$ 尺寸减少了 $master$ 节点需要保存的元数据的数量。这就允许我们把元数据全部放在内存中，在2.6.1节我们会讨论元数据全部放在内存中带来的额外的好处。</li>
+<li>第三，选用较大的 $chunk$ 尺寸减少了 $master$ 节点需要保存的元数据的数量。这就允许我们把元数据全部放在内存中，在2.6.1节我们会讨论<strong>元数据全部放在内存中</strong>带来的额外的好处。</li>
 </ul>
-<p>另一方面，即使有惰性空间分配，大的 $chunk\ size$也有其缺点：一个小文件包含较少的 $chunk$ ，甚至仅一个。当有许多的客户端对同一个小文件进行多次的访问时，存储这些 $chunk$ 的 $chunk\ server$ 会变成热点。</p>
+<p>另一方面，即使有惰性空间分配，大的 $chunk\ size$ 也有其缺点：一个小文件包含较少的 $chunk$ ，甚至仅一个。当有许多的客户端对同一个小文件进行多次的访问时，存储这些 $chunk$ 的 $chunk\ server$ 会变成热点。</p>
 <p>在实际应用中，由于我们的程序通常是连续的读取包含多个 $chunk$ 的大文件，热点还不是主要的问题。</p>
-<p>然而，当我们第一次把 GFS 用于批处理队列系统的时候，热点的问题还是产生了：一个可执行文件在 GFS 上保存为 $single-chunk$ 文件，之后这个可执行文件在数百台机器上同时启动。存放这个可执行文件的几个 $chunk\ server$ 被数百个客户端的并发请求访问导致系统局部过载。我们通过使用更大的复制参数来保存可执行文件，以及错开批处理队列系统程序的启动时间的方法解决了这个问题。一个可能的长效解决方案是，在这种的情况下，允许客户端从其它客户端读取数据。</p>
+<p>然而，当我们第一次把 GFS 用于批处理队列系统的时候，热点的问题还是产生了：一个可执行文件在 GFS 上保存为 $single-chunk$ 文件，之后这个可执行文件在数百台机器上同时启动。存放这个可执行文件的几个 $chunk\ server$ 被数百个客户端的并发请求访问导致系统局部过载。｜我们通过使用更大的复制参数来保存可执行文件，以及错开批处理队列系统程序的启动时间的方法解决了这个问题。</p>
+<p>一个可能的长效解决方案是，在这种的情况下，允许客户端从其它客户端读取数据。</p>
 <h4 id="2-6-Metadata"><a href="#2-6-Metadata" class="headerlink" title="2.6 Metadata"></a>2.6 Metadata</h4><p>$master$ 节点存储三种主要类型的元数据：</p>
 <blockquote>
 <p>alex注:注意逻辑的 $master$ 节点和物理的 $master server$ 的区别。后续我们谈的是每个 $master server$ 的行为，如存储、内存等等，因此我们将全部使用物理名称</p>
 </blockquote>
 <ul>
-<li>文件和Chunk的命名空间</li>
-<li>从文件到 Chunk 的映射关系</li>
-<li>以及每个 Chunk 副本的存储位置</li>
+<li>文件和 $chunk$ 的命名空间</li>
+<li>从文件到 $chunk$ 的映射关系</li>
+<li>以及每个 $chunk$ 副本的存储位置</li>
 </ul>
-<p>所有元数据都保存在 $master server$ 的内存中。前两种类型的元数据 (namespaces &amp; file-to-chunkmapping) 同时也会以记录变更日志的方式记录在操作系统的系统日志文件中，日志文件存储在本地磁盘上，同时日志会被复制到其它的远程 $master server$ 上。采用保存变更日志的方式，我们能够简单可靠的更新 $master server$ 的状态，并且不用担心 $master server$ 崩溃导致数据不一致的风险。 $master server$ 不会持久保存Chunk位置信息。 $master server$ 在启动时，或者有新的Chunk服务器加入时，向各个 $master server$ 轮询它们所存储的Chunk的信息。</p>
-<h5 id="2-6-1-In-Memory-Data-Structures"><a href="#2-6-1-In-Memory-Data-Structures" class="headerlink" title="2.6.1 In-Memory Data Structures"></a>2.6.1 In-Memory Data Structures</h5><p>因为元数据保存在内存中，所以Master服务器的操作速度非常快。并且，Master服务器可以在后台简单而高效的周期性扫描自己保存的全部状态信息。这种周期性的状态扫描也用于实现Chunk垃圾收集、在Chunk服务器失效的时重新复制数据、通过Chunk的迁移实现跨Chunk服务器的负载均衡以及磁盘使用状况统计等功能。（4.3&amp;4.4深入讨论）</p>
-<p>将元数据全部保存在内存中的方法有潜在问题：Chunk的数量以及整个系统的承载能力都受限于Master服务器所拥有的内存大小。但是在实际应用中，这并不是一个严重的问题。Master服务器只需要不到64个字节的元数据就能够管理一个64MB的Chunk。由于大多数文件都包含多个Chunk，因此绝大多数Chunk都是满的，除了文件的最后一个Chunk是部分填充的。同样的，每个文件的在命名空间中的数据大小通常在64字节以下，因为保存的文件名是用前缀压缩算法压缩过的。</p>
+<p>所有元数据都保存在 $master server$ 的内存中。</p>
+<ul>
+<li>前两种类型的元数据 (namespaces &amp; file-to-chunkmapping) 同时也会以记录变更日志的方式记录在操作系统的系统日志文件中，日志文件存储在本地磁盘上，同时日志会被复制到其它的远程 $master server$ 上。</li>
+</ul>
+<p>采用保存变更日志的方式，我们能够简单可靠的更新 $master server$ 的状态，并且不用担心 $master server$ 崩溃导致数据不一致的风险。 $master server$ 不会持久保存 $chunk$ 位置信息。 $master server$ 在启动时，或者有新的 $chunk\ server$ 加入时，向各个 $master server$ 轮询它们所存储的 $chunk$ 的信息。</p>
+<h5 id="2-6-1-In-Memory-Data-Structures"><a href="#2-6-1-In-Memory-Data-Structures" class="headerlink" title="2.6.1 In-Memory Data Structures"></a>2.6.1 In-Memory Data Structures</h5><p>因为元数据保存在内存中，所以Master服务器的<strong>操作速度非常快</strong>。并且，Master服务器可以在后台简单而高效的<strong>周期性扫描</strong>自己保存的全部状态信息。这种周期性的状态扫描也用于实现Chunk垃圾收集、在Chunk服务器失效的时重新复制数据、通过Chunk的迁移实现跨Chunk服务器的负载均衡以及磁盘使用状况统计等功能。（4.3 &amp; 4.4深入讨论）</p>
+<p>将元数据全部保存在内存中的方法<strong>有潜在问题</strong>：</p>
+<ul>
+<li>Chunk的数量以及整个系统的承载能力都受限于Master服务器所拥有的内存大小。</li>
+<li>但在实际应用中，这并不是一个严重的问题。</li>
+<li>Master服务器只需要不到 64 个字节的元数据就能够管理一个 64MB 的 $chunk$ 。由于大多数文件都包含多个 $chunk$ ，因此绝大多数 $chunk$ 都是满的，除了文件的最后一个 $chunk$ 是部分填充的。同样的，每个文件的在命名空间中的数据大小通常在 64 字节以下，因为保存的文件名是用前缀压缩算法压缩过的。</li>
+</ul>
 <p>即便是需要支持更大的文件系统，为Master服务器增加额外内存的费用是很少的，而通过增加有限的费用，我们就能够把元数据全部保存在内存里，增强了系统的简洁性、可靠性、高性能和灵活性。</p>
-<h5 id="2-6-2-Chunk-Locations"><a href="#2-6-2-Chunk-Locations" class="headerlink" title="2.6.2 Chunk Locations"></a>2.6.2 Chunk Locations</h5><p>Master服务器并不保存持久化保存哪个Chunk服务器存有指定Chunk的副本的信息。Master服务器只是在启动的时候轮询Chunk服务器以获取这些信息。Master服务器能够保证它持有的信息始终是最新的，因为它控制了所有的Chunk位置的分配，而且通过周期性的心跳信息监控Chunk服务器的状态。</p>
-<p>最初设计时，我们试图把Chunk的位置信息持久的保存在Master服务器上，但是后来我们发现在启动的时候轮询Chunk服务器，之后定期轮询更新的方式更简单。这种设计简化了在有Chunk服务器加入集群、离开集群、更名、失效、以及重启的时候，Master服务器和Chunk服务器数据同步的问题。在一个拥有数百台服务器的集群中，这类事件会频繁的发生。</p>
-<p>可以从另外一个角度去理解这个设计决策:只有Chunk服务器才能最终确定一个Chunk是否在它的硬盘上。我们从没有考虑过在Master服务器上维护一个这些信息的全局视图，因为Chunk服务器的错误可能会导致Chunk自动消失(比如，硬盘损坏了或者无法访问了)，亦或者操作人员可能会重命名一个Chunk服务器。</p>
-<h5 id="2-6-3-Operation-Log"><a href="#2-6-3-Operation-Log" class="headerlink" title="2.6.3 Operation Log"></a>2.6.3 Operation Log</h5><p>操作日志包含了关键的元数据变更历史记录。这对GFS非常重要。这不仅仅是因为操作日志是元数据唯一的持久化存储记录，它也作为判断同步操作顺序的逻辑时间基线(alex注:也就是通过逻辑日志的序号作为操作发生的逻辑时间，类似于事务系统中的LSN)。文件和Chunk，连同它们的版本(参考4.5节)，都由它们创建的逻辑时间唯一的、永久的标识。</p>
-<p>操作日志非常重要，我们必须确保日志文件的完整，确保只有在元数据的变化被持久化后，日志才对客户端是可见的。否则，即使Chunk本身没有出现任何问题，我们仍有可能丢失整个文件系统，或者丢失客户端最近的操作。所以，我们会把日志复制到多台远程机器，并且只有把相应的日志记录写入到本地以及远程机器的硬盘后，才会响应客户端的操作请求。Master服务器会收集多个日志记录后批量处理，以减少写入磁盘和复制对系统整体性能的影响。</p>
-<p>Master服务器在灾难恢复时，通过重演操作日志把文件系统恢复到最近的状态。为了缩短Master启动的时间，我们必须使日志足够小(alex注:即重演系统操作的日志量尽量的少)。Master服务器在日志增长到一定量时对系统状态做一次Checkpoint(alex注:Checkpoint是一种行为，一种对数据库状态作一次快照的行为)，将所有的状态数据写入一个Checkpoint文件(alex注:并删除之前的日志文件)。在灾难恢复的时候，Master服务器就通过从磁盘上读取这个Checkpoint文件，以及重演Checkpoint之后的有限个日志文件就能够恢复系统。Checkpoint文件以压缩B-树形势的数据结构存储，可以直接映射到内存，在用于命名空间查询时无需额外的解析。这大大提高了恢复速度，增强了可用性。</p>
+<h5 id="2-6-2-Chunk-Locations"><a href="#2-6-2-Chunk-Locations" class="headerlink" title="2.6.2 Chunk Locations"></a>2.6.2 Chunk Locations</h5><p>Master服务器并不持久化保存哪个Chunk服务器存有指定Chunk的副本的信息。Master服务器仅在启动的时候轮询Chunk服务器以获取这些信息。Master服务器能够保证它持有的信息始终是最新的，因为它控制了所有的Chunk位置的分配，而且通过周期性的 $Heartbeat\ Message$ 监控Chunk服务器的状态。</p>
+<p>最初设计时，我们试图把Chunk的位置信息持久的保存在Master服务器上，但是后来我们发现在启动的时候轮询Chunk服务器，之后定期轮询更新的方式更简单。这种设计<u>简化了在有Chunk服务器加入集群、离开集群、更名、失效、以及重启的时候，Master服务器和Chunk服务器数据同步的问题</u>。在一个拥有数百台服务器的集群中，这类事件会频繁的发生。</p>
+<p>可以从另外一个角度去理解这个设计决策：<strong>只有Chunk服务器才能最终确定一个Chunk是否在它的硬盘上</strong>。</p>
+<p>我们从没有考虑过在Master服务器上维护一个这些信息的全局视图，因为Chunk服务器的错误可能会导致Chunk自动消失(比如，硬盘损坏了或者无法访问了)，亦或者操作人员可能会重命名一个Chunk服务器。</p>
+<h5 id="2-6-3-Operation-Log"><a href="#2-6-3-Operation-Log" class="headerlink" title="2.6.3 Operation Log"></a>2.6.3 Operation Log</h5><p>操作日志包含了关键的元数据变更历史记录。对 GFS 非常重要。</p>
+<ul>
+<li><p><strong>操作日志是元数据唯一的持久化存储记录</strong></p>
+</li>
+<li><p><strong>也作为判断同步操作顺序的逻辑时间基线</strong></p>
+<blockquote>
+<p>alex注:也就是通过逻辑日志的序号作为操作发生的逻辑时间，类似于事务系统中的 LSN</p>
+</blockquote>
+</li>
+</ul>
+<p>文件和Chunk，连同它们的版本(参考4.5节)，都由它们创建的逻辑时间唯一的、永久的标识。</p>
+<p><strong>必须确保日志文件的完整</strong>，确保只有在元数据的变化被持久化后，日志才对客户端是可见的。否则，即使Chunk本身没有出现任何问题，我们仍有可能丢失整个文件系统，或者丢失客户端最近的操作。所以，我们会把日志复制到多台远程机器，并且只有把相应的日志记录写入到本地以及远程机器的硬盘后，才会响应客户端的操作请求。Master服务器会收集多个日志记录后批量处理，以减少写入磁盘和复制对系统整体性能的影响。</p>
+<p>Master服务器在灾难恢复时，通过重演操作日志把文件系统恢复到最近的状态。为了缩短Master启动的时间，我们必须使日志足够小。<u>(alex注:即重演系统操作的日志量尽量的少)</u></p>
+<p>Master服务器在日志增长到一定量时对系统状态做一次Checkpoint<u>(alex注:Checkpoint是一种行为，一种对数据库状态作一次快照的行为)</u>，将所有的状态数据写入一个Checkpoint文件<u>(alex注:并删除之前的日志文件)</u>。在灾难恢复的时候，Master服务器就通过从磁盘上读取这个Checkpoint文件，以及重演Checkpoint之后的有限个日志文件就能够恢复系统。Checkpoint 文件以<strong>压缩B-树</strong>形式的数据结构存储，可以直接映射到内存，在用于命名空间查询时无需额外的解析。这大大提高了恢复速度，增强了可用性。</p>
 <p>由于创建一个Checkpoint文件需要一定的时间，所以Master服务器的内部状态被组织为一种格式，这种格式要确保在Checkpoint过程中不会阻塞正在进行的修改操作。Master服务器使用独立的线程切换到新的日志文件和创建新的Checkpoint文件。新的Checkpoint文件包括切换前所有的修改。对于一个包含数百万个文件的集群，创建一个Checkpoint文件需要1分钟左右的时间。创建完成后，Checkpoint文件会被写入在本地和远程的硬盘里。</p>
-<p>Master服务器恢复只需要最新的Checkpoint文件和后续的日志文件。旧的Checkpoint文件和日志文件可以被删除，但是为了应对灾难性的故障(alex注:catastrophes，数据备份相关文档中经常会遇到这个词，表示一种超出预期范围的灾难性事件)，我们通常会多保存一些历史文件。Checkpoint失败不会对正确性产生任何影响，因为恢复功能的代码可以检测并跳过没有完成的Checkpoint文件。</p>
-<h4 id="2-7-Consistency-Model"><a href="#2-7-Consistency-Model" class="headerlink" title="2.7 Consistency Model"></a>2.7 Consistency Model</h4><p>GFS支持一个宽松的一致性模型，这个模型能够很好的支撑我们的高度分布的应用，同时还保持了相对简单且容易实现的优点。本节我们讨论GFS的一致性的保障机制，以及对应用程序的意义。我们也着重描述了GFS如何管理这些一致性保障机制，但是实现的细节将在本论文的其它部分讨论。</p>
-<h5 id="2-7-1-Guarantees-by-GFS"><a href="#2-7-1-Guarantees-by-GFS" class="headerlink" title="2.7.1 Guarantees by GFS"></a>2.7.1 Guarantees by GFS</h5><p>文件命名空间的修改(例如，文件创建)是原子性的。它们仅由Master节点的控制:命名空间锁提供了原子性和正确性(4.1章)的保障;Master节点的操作日志定义了这些操作在全局的顺序(2.6.3章)。</p>
-<p>The state of a file region after a data mutation depends on the type of mutation, whether it succeeds or fails, and whether there are concurrent mutations. Table 1 summarizes the result.</p>
+<p>Master服务器恢复只需要最新的Checkpoint文件和后续的日志文件。旧的Checkpoint文件和日志文件可以被删除，但是为了应对灾难性的故障 <u>(alex注:catastrophes，数据备份相关文档中经常会遇到这个词，表示一种超出预期范围的灾难性事件)</u>，我们通常会多保存一些历史文件。Checkpoint失败不会对正确性产生任何影响，因为恢复功能的代码可以检测并跳过没有完成的Checkpoint文件。</p>
+<h4 id="2-7-Consistency-Model"><a href="#2-7-Consistency-Model" class="headerlink" title="2.7 Consistency Model"></a>2.7 Consistency Model</h4><p>GFS 支持一个宽松的一致性模型，这个模型能够很好的支撑我们的高度分布的应用，同时还保持了相对简单且容易实现的优点。本节我们讨论 GFS 的一致性的保障机制，以及对应用程序的意义。我们也着重描述了GFS如何管理这些一致性保障机制，但是实现的细节将在本论文的其它部分讨论。</p>
+<h5 id="2-7-1-Guarantees-by-GFS"><a href="#2-7-1-Guarantees-by-GFS" class="headerlink" title="2.7.1 Guarantees by GFS"></a>2.7.1 Guarantees by GFS</h5><p>文件命名空间的修改(例如，文件创建)是原子性的。它们仅由Master节点的控制：</p>
+<ul>
+<li>命名空间锁提供了原子性和正确性(4.1章)的保障；</li>
+<li>Master节点的操作日志定义了这些操作在全局的顺序(2.6.3章)。</li>
+</ul>
+<p>数据修改后文件region的状态取决于操作的类型、成功与否、以及是否同步修改。表1总结了各种操作的结果。</p>
+<blockquote>
+<p>alex注：region这个词用中文非常难以表达，我认为应该是修改操作所涉及的文件中的某个范围</p>
+</blockquote>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/01/6.824-GFS/t1.png" alt="t1"></p>
-<p>A file region is consistent if all clients will always see the same data, regardless of which replicas they read from. A region is defined after a file data mutation if it is consistent and clients will see what the mutation writes in its entirety. When a mutation succeeds without interference from concurrent writers, the affected region is defined (and by implication consistent): all clients will always see what the mutation has written. Concurrent successful mutations leave the region undefined but consistent: all clients see the same data, but it may not reflect what any one mutation has written. Typically, it consists of mingled fragments from multiple mutations. A failed mutation makes the region inconsistent (hence also undefined): different clients may see different data at different times. We describe below how our applications can distinguish defined regions from undefined regions. The applications do not need to further distinguish between different kinds of undefined regions.</p>
-<p>Data mutations may be writes or record appends. A write causes data to be written at an application-specified file offset. A record append causes data (the “record”) to be appended atomically at least once even in the presence of concurrent mutations, but at an offset of GFS’s choosing (Section 3.3). (In contrast, a “regular” append is merely a write at an offset that the client believes to be the current end of file.) The offset is returned to the client and marks the beginning of a defined region that contains the record. In addition, GFS may insert padding or record duplicates in between. They occupy regions considered to be inconsistent and are typically dwarfed by the amount of user data.</p>
-<p>After a sequence of successful mutations, the mutated file region is guaranteed to be defined and contain the data written by the last mutation. GFS achieves this by (a) applying mutations to a chunk in the same order on all its replicas (Section 3.1), and (b) using chunk version numbers to detect any replica that has become stale because it has missed mutations while its chunkserver was down (Section 4.5). Stale replicas will never be involved in a mutation or given to clients asking the master for chunk locations. They are garbage collected at the earliest opportunity.</p>
-<p>Since clients cache chunk locations, they may read from a stale replica before that information is refreshed. This window is limited by the cache entry’s timeout and the next open of the file, which purges from the cache all chunk information for that file. Moreover, as most of our files are append-only, a stale replica usually returns a premature end of chunk rather than outdated data. When a reader retries and contacts the master, it will immediately get current chunk locations.</p>
-<p>Long after a successful mutation, component failures can of course still corrupt or destroy data. GFS identifies failed chunkservers by regular handshakes between master and all chunkservers and detects data corruption by checksumming (Section 5.2). Once a problem surfaces, the data is restored from valid replicas as soon as possible (Section 4.3). A chunk is lost irreversibly only if all its replicas are lost before GFS can react, typically within minutes. Even in this case, it becomes unavailable, not corrupted: applications receive clear errors rather than corrupt data.</p>
-<h5 id="2-7-2-Implications-for-Applications"><a href="#2-7-2-Implications-for-Applications" class="headerlink" title="2.7.2 Implications for Applications"></a>2.7.2 Implications for Applications</h5><p>GFS applications can accommodate the relaxed consistency model with a few simple techniques already needed for other purposes: relying on appends rather than overwrites, checkpointing, and writing self-validating, self-identifying records.</p>
-<p>Practically all our applications mutate files by appending rather than overwriting. In one typical use, a writer generates a file from beginning to end. It atomically renames the file to a permanent name after writing all the data, or periodically checkpoints how much has been successfully written. Checkpoints may also include application-level checksums. Readers verify and process only the file region up to the last checkpoint, which is known to be in the defined state. Regardless of consistency and concurrency issues, this approach has served us well. Appending is far more efficient and more resilient to application failures than random writes. Checkpointing allows writers to restart incrementally and keeps readers from processing successfully written file data that is still incomplete from the application’s perspective.</p>
-<p>In the other typical use, many writers concurrently append to a file for merged results or as a producer-consumer queue. Record append’s append-at-least-once semantics preserves each writer’s output. Readers deal with the occasional padding and duplicates as follows. Each record prepared by the writer contains extra information like checksums so that its validity can be verified. A reader can identify and discard extra padding and record fragments using the checksums. If it cannot tolerate the occasional duplicates (e.g., if they would trigger non-idempotent operations), it can filter them out using unique identifiers in the records, which are often needed anyway to name corresponding application entities such as web documents. These functionalities for record I&#x2F;O (except duplicate removal) are in library code shared by our applications and applicable to other file interface implementations at Google. With that, the same sequence of records, plus rare duplicates, is always delivered to the record reader.</p>
-<h3 id="3-SYSTEM-INTERACTIONS"><a href="#3-SYSTEM-INTERACTIONS" class="headerlink" title="3 SYSTEM INTERACTIONS"></a>3 SYSTEM INTERACTIONS</h3><p>We designed the system to minimize the master’s involvement in all operations. With that background, we now describe how the client, master, and chunkservers interact to implement data mutations, atomic record append, and snapshot.</p>
-<h4 id="3-1-Leases-and-Mutation-Order"><a href="#3-1-Leases-and-Mutation-Order" class="headerlink" title="3.1 Leases and Mutation Order"></a>3.1 Leases and Mutation Order</h4><p>A mutation is an operation that changes the contents or metadata of a chunk such as a write or an append operation. Each mutation is performed at all the chunk’s replicas. We use leases to maintain a consistent mutation order across replicas. The master grants a chunk lease to one of the replicas, which we call the primary. The primary picks a serial order for all mutations to the chunk. All replicas follow this order when applying mutations. Thus, the global mutation order is defined first by the lease grant order chosen by the master, and within a lease by the serial numbers assigned by the primary.</p>
-<p>The lease mechanism is designed to minimize management overhead at the master. A lease has an initial timeout of 60 seconds. However, as long as the chunk is being mutated, the primary can request and typically receive extensions from the master indefinitely. These extension requests and grants are piggybacked on the HeartBeat messages regularly exchanged between the master and all chunkservers. The master may sometimes try to revoke a lease before it expires (e.g., when the master wants to disable mutations on a file that is being renamed). Even if the master loses communication with a primary, it can safely grant a new lease to another replica after the old lease expires.</p>
-<p>In Figure 2, we illustrate this process by following the control flow of a write through these numbered steps.</p>
+<p>如果所有客户端，无论从哪个副本读取，读到的数据都一样，那么我们认为文件region是“一致的”;如果对文件的数据修改之后，region是一致的，并且客户端能够看到写入操作全部的内容，那么这个region是“已定义的”。当一个数据修改操作成功执行，并且没有受到同时执行的其它写入操作的干扰，那么影响的region就是已定义的(隐含了一致性):所有的客户端都可以看到写入的内容。并行修改操作成功完成之后，region处于一致的、未定义的状态:所有的客户端看到同样的数据，但是无法读到任何一次写入操作写入的数据。通常情况下，文件region内包含了来自多个修改操作的、混杂的数据片段。失败的修改操作导致一个region处于不一致状态(同时也是未定义的):不同的客户在不同的时间会看到不同的数据。后面我们将描述应用如何区分已定义和未定义的region。应用程序没有必要再去细分未定义region的不同类型。</p>
+<p>数据修改操作分为写入或者记录追加两种。写入操作把数据写在应用程序指定的文件偏移位置上。即使有多个修改操作并行执行时，记录追加操作至少可以把数据原子性的追加到文件中一次，但是偏移位置是由GFS选择的(3.3章)。(相比而言，通常说的追加操作写的偏移位置是文件的尾部。)</p>
+<blockquote>
+<p>(alex注:这句话有点费解，其含义是所有的追加写入都会成功，但是有可能被执行了多次，而且每次追加的文件偏移量由GFS自己计算)</p>
+</blockquote>
+<p>GFS返回给客户端一个偏移量，表示了包含了写入记录的、已定义的region的起点。另外，GFS可能会在文件中间插入填充数据或者重复记录。这些数据占据的文件region被认定是不一致的，这些数据通常比用户数据小的多。</p>
+<p>经过了一系列的成功的修改操作之后，GFS确保被修改的文件region是已定义的，并且包含最后一次修改操作写入的数据。GFS通过以下措施确保上述行为:</p>
+<p>(a)对Chunk的所有副本的修改操作顺序一致(3.1章)，</p>
+<p>(b)使用Chunk的版本号来检测副本是否因为它所在的Chunk服务器宕机(4.5章)而错过了修改操作而导致其失效。失效的副本不会再进行任何修改操作，Master服务器也不再返回这个Chunk副本的位置信息给客户端。它们会被垃圾收集系统尽快回收。</p>
+<p>由于Chunk位置信息会被客户端缓存，所以在信息刷新前，客户端有可能从一个失效的副本读取了数据。在缓存的超时时间和文件下一次被打开的时间之间存在一个时间窗，文件再次被打开后会清除缓存中与该文件有关的所有Chunk位置信息。而且，由于我们的文件大多数都是只进行追加操作的，所以，一个失效的副本通常返回一个提前结束的Chunk而不是过期的数据。当一个Reader重新尝试并联络Master服务器时，它就会立刻得到最新的Chunk位置信息。</p>
+<blockquote>
+<p>(alex注:本文中将用到两个专有名词，Reader和Writer，分别表示执行GFS读取和写入操作的程序)</p>
+</blockquote>
+<p>即使在修改操作成功执行很长时间之后，组件的失效也可能损坏或者删除数据。GFS通过Master服务器和所有Chunk服务器的定期“握手”来找到失效的Chunk服务器，并且使用Checksum来校验数据是否损坏(5.2章)。一旦发现问题，数据要尽快利用有效的副本进行恢复(4.3章)。只有当一个Chunk的所有副本在GFS检测到错误并采取应对措施之前全部丢失，这个Chunk才会不可逆转的丢失。在一般情况下GFS的反应时间(alex注:指Master节点检测到错误并采取应对措施)是几分钟。即使在这种情况下，Chunk也只是不可用了，而不是损坏了:应用程序会收到明确的错误信息而不是损坏的数据。</p>
+<h5 id="2-7-2-Implications-for-Applications"><a href="#2-7-2-Implications-for-Applications" class="headerlink" title="2.7.2 Implications for Applications"></a>2.7.2 Implications for Applications</h5><p>使用GFS的应用程序可以利用一些简单技术实现这个宽松的一致性模型，这些技术也用来实现一些其它的<br>目标功能，包括:尽量采用追加写入而不是覆盖，Checkpoint，自验证的写入操作，自标识的记录。</p>
+<p>在实际应用中，我们所有的应用程序对文件的写入操作都是尽量采用数据追加方式，而不是覆盖方式。一种典型的应用，应用程序从头到尾写入数据，生成了一个文件。写入所有数据之后，应用程序自动将文件改名为一个永久保存的文件名，或者周期性的作Checkpoint，记录成功写入了多少数据。Checkpoint文件可以包含程序级别的校验和。Readers仅校验并处理上个Checkpoint之后产生的文件region，这些文件region的状态一定是已定义的。这个方法满足了我们一致性和并发处理的要求。追加写入比随机位置写入更加有效率，对应用程序的失败处理更具有弹性。Checkpoint可以让Writer以渐进的方式重新开始，并且可以防止Reader处理已经被成功写入，但是从应用程序的角度来看还并未完成的数据。</p>
+<p>我们再来分析另一种典型的应用。许多应用程序并行的追加数据到同一个文件，比如进行结果的合并或者是一个生产者-消费者队列。记录追加方式的“至少一次追加”的特性保证了Writer的输出。Readers使用下面的方法来处理偶然性的填充数据和重复内容。Writers在每条写入的记录中都包含了额外的信息，例如Checksum，用来验证它的有效性。Reader可以利用Checksum识别和抛弃额外的填充数据和记录片段。如果应用不能容忍偶尔的重复内容(比如，如果这些重复数据触发了非幂等操作)，可以用记录的唯一标识符来过滤它们，这些唯一标识符通常用于命名程序中处理的实体对象，例如web文档。这些记录I&#x2F;O功能(alex注:ThesefunctionalitiesforrecordI&#x2F;O)(除了剔除重复数据)都包含在我们的程序共享的库中，并且适用于Google内部的其它的文件接口实现。所以，相同序列的记录，加上一些偶尔出现的重复数据，都被分发到Reader了。</p>
+<h3 id="3-SYSTEM-INTERACTIONS"><a href="#3-SYSTEM-INTERACTIONS" class="headerlink" title="3 SYSTEM INTERACTIONS"></a>3 SYSTEM INTERACTIONS</h3><p>我们在设计这个系统时，一个重要的原则是最小化所有操作和Master节点的交互。带着这样的设计理念，我们现在描述一下客户机、Master服务器和Chunk服务器如何进行交互，以实现数据修改操作、原子的记录追加操作以及快照功能。</p>
+<h4 id="3-1-Leases-and-Mutation-Order"><a href="#3-1-Leases-and-Mutation-Order" class="headerlink" title="3.1 Leases and Mutation Order"></a>3.1 Leases and Mutation Order</h4><p>变更是一个会改变Chunk内容或者元数据的操作，比如写入操作或者记录追加操作。变更操作会在Chunk的所有副本上执行。我们使用租约(lease)机制来保持多个副本间变更顺序的一致性。Master节点为Chunk的一个副本建立一个租约，我们把这个副本叫做主Chunk。主Chunk对Chunk的所有更改操作进行序列化。所有的副本都遵从这个序列进行修改操作。因此，修改操作全局的顺序首先由Master节点选择的租约的顺序决定，然后由租约中主Chunk分配的序列号决定。</p>
+<p>设计租约机制的目的是为了最小化Master节点的管理负担。租约的初始超时设置为60秒。不过，只要Chunk被修改了，主Chunk就可以申请更长的租期，通常会得到Master节点的确认并收到租约延长的时间。这些租约延长请求和批准的信息通常都是附加在Master节点和Chunk服务器之间的心跳消息中来传递。有时Master节点会试图提前取消租约(例如，Master节点想取消在一个已经被改名的文件上的修改操作)。即使Master节点和主Chunk失去联系，它仍然可以安全地在旧的租约到期后和另外一个Chunk副本签订新的租约。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/01/6.824-GFS/f2.png" alt="f2"></p>
+<p>在图2中，我们依据步骤编号，展现写入操作的控制流程。</p>
 <ol>
-<li>The client asks the master which chunkserver holds the current lease for the chunk and the locations of the other replicas. If no one has a lease, the master grants one to a replica it chooses (not shown).</li>
-<li>The master replies with the identity of the primary and the locations of the other (secondary) replicas. The client caches this data for future mutations. It needs to contact the master again only when the primarybecomes unreachable or replies that it no longer holdsa lease.</li>
-<li>The client pushes the data to all the replicas. A client<br>  can do so in any order. Each chunkserver will store the data in an internal LRU buffer cache until the data is used or aged out. By decoupling the data flow from the control flow, we can improve performance by scheduling the expensive data flow based on the network topology regardless of which chunkserver is the primary. Section 3.2 discusses this further.</li>
-<li>Once all the replicas have acknowledged receiving the data, the client sends a write request to the primary. The request identifies the data pushed earlier to all of the replicas. The primary assigns consecutive serial numbers to all the mutations it receives, possibly from multiple clients, which provides the necessary serialization. It applies the mutation to its own local state in serial number order.</li>
-<li>The primary forwards the write request to all secondary replicas. Each secondary replica applies mutations in the same serial number order assigned by the primary.</li>
-<li>The secondaries all reply to the primary indicating that they have completed the operation.</li>
-<li>The primary replies to the client. Any errors encountered at any of the replicas are reported to the client. In case of errors, the write may have succeeded at the primary and an arbitrary subset of the secondary replicas. (If it had failed at the primary, it would not have been assigned a serial number and forwarded.) The client request is considered to have failed, and the modified region is left in an inconsistent state. Our client code handles such errors by retrying the failed mutation. It will make a few attempts at steps (3) through (7) before falling back to a retry from the beginning of the write.</li>
+<li>客户机向Master节点询问哪一个Chunk服务器持有当前的租约，以及其它副本的位置。如果没有一个Chunk持有租约，Master节点就选择其中一个副本建立一个租约(这个步骤在图上没有显示)。</li>
+<li>Master节点将主Chunk的标识符以及其它副本(又称为secondary副本、二级副本)的位置返回给客户机。客户机缓存这些数据以便后续的操作。只有在主Chunk不可用，或者主Chunk回复信息表明它已不再持有租约的时候，客户机才需要重新跟Master节点联系。</li>
+<li>客户机把数据推送到所有的副本上。客户机可以以任意的顺序推送数据。Chunk服务器接收到数据并保存在它的内部LRU缓存中，一直到数据被使用或者过期交换出去。由于数据流的网络传输负载非常高，通过分离数据流和控制流，我们可以基于网络拓扑情况对数据流进行规划，提高系统性能，而不用去理会哪个Chunk服务器保存了主Chunk。3.2章节会进一步讨论这点。</li>
+<li>当所有的副本都确认接收到了数据，客户机发送写请求到主Chunk服务器。这个请求标识了早前推送到所有副本的数据。主Chunk为接收到的所有操作分配连续的序列号，这些操作可能来自不同的客户机，序列号保证了操作顺序执行。它以序列号的顺序把操作应用到它自己的本地状态中(alex注:也就是在本地执行这些操作，这句话按字面翻译有点费解，也许应该翻译为“它顺序执行这些操作，并更新自己的状态”)。</li>
+<li>主Chunk把写请求传递到所有的二级副本。每个二级副本依照主Chunk分配的序列号以相同的顺序<br>执行这些操作。</li>
+<li>所有的二级副本回复主Chunk，它们已经完成了操作。</li>
+<li>主Chunk服务器(alex注:即主Chunk所在的Chunk服务器)回复客户机。任何副本产生的任何错<br>误都会返回给客户机。在出现错误的情况下，写入操作可能在主Chu	nk和一些二级副本执行成功。(如果操作在主Chunk上失败了，操作就不会被分配序列号，也不会被传递。)客户端的请求被确认为失败，被修改的region处于不一致的状态。我们的客户机代码通过重复执行失败的操作来处理这样的错误。在从头开始重复执行之前，客户机会先从步骤(3)到步骤(7)做几次尝试。</li>
 </ol>
-<p>If a write by the application is large or straddles a chunk boundary, GFS client code breaks it down into multiple write operations. They all follow the control flow described above but may be interleaved with and overwritten by concurrent operations from other clients. Therefore, the shared file region may end up containing fragments from different clients, although the replicas will be identical because the individual operations are completed successfully in the same order on all replicas. This leaves the file region in consistent but undefined state as noted in Section 2.7.</p>
-<h4 id="3-2-Data-Flow"><a href="#3-2-Data-Flow" class="headerlink" title="3.2 Data Flow"></a>3.2 Data Flow</h4><p>We decouple the flow of data from the flow of control to use the network efficiently. While control flows from the client to the primary and then to all secondaries, data is pushed linearly along a carefully picked chain of chunkservers in a pipelined fashion. Our goals are to fully utilize each machine’s network bandwidth, avoid network bottlenecks and high-latency links, and minimize the latency to push through all the data.</p>
-<p>To fully utilize each machine’s network bandwidth, the data is pushed linearly along a chain of chunkservers rather than distributed in some other topology (e.g., tree). Thus, each machine’s full outbound bandwidth is used to transfer the data as fast as possible rather than divided among multiple recipients.</p>
-<p>To avoid network bottlenecks and high-latency links (e.g., inter-switch links are often both) as much as possible, each machine forwards the data to the “closest” machine in the network topology that has not received it. Suppose the client is pushing data to chunkservers S1 through S4. It sends the data to the closest chunkserver, say S1. S1 forwards it to the closest chunkserver S2 through S4 closest to S1, say S2. Similarly, S2 forwards it to S3 or S4, whichever is closer to S2, and so on. Our network topology is simple enough that “distances” can be accurately estimated from IP addresses.</p>
-<p>Finally, we minimize latency by pipelining the data transfer over TCP connections. Once a chunkserver receives some data, it starts forwarding immediately. Pipelining is especially helpful to us because we use a switched network with full-duplex links. Sending the data immediately does not reduce the receive rate. Without network congestion, the ideal elapsed time for transferring B bytes to R replicas is B&#x2F;T + RL where T is the network throughput and L is latency to transfer bytes between two machines. Our network links are typically 100 Mbps (T), and L is far below 1 ms. Therefore, 1 MB can ideally be distributed in about 80 ms.</p>
-<h4 id="3-3-Atomic-Record-Appends"><a href="#3-3-Atomic-Record-Appends" class="headerlink" title="3.3 Atomic Record Appends"></a>3.3 Atomic Record Appends</h4><p>GFS provides an atomic append operation called record append. In a traditional write, the client specifies the offset at which data is to be written. Concurrent writes to the same region are not serializable: the region may end up containing data fragments from multiple clients. In a record append, however, the client specifies only the data. GFS appends it to the file at least once atomically (i.e., as one continuous sequence of bytes) at an offset of GFS’s choosing and returns that offset to the client. This is similar to writing to a file opened in O APPEND mode in Unix without the race conditions when multiple writers do so concurrently.</p>
-<p>Record append is heavily used by our distributed applications in which many clients on different machines append to the same file concurrently. Clients would need additional complicated and expensive synchronization, for example through a distributed lock manager, if they do so with traditional writes. In our workloads, such files often serve as multiple-producer&#x2F;single-consumer queues or contain merged results from many different clients.</p>
-<p>Record append is a kind of mutation and follows the control flow in Section 3.1 with only a little extra logic at the primary. The client pushes the data to all replicas of the last chunk of the file Then, it sends its request to the primary. The primary checks to see if appending the record to the current chunk would cause the chunk to exceed the maximum size (64 MB). If so, it pads the chunk to the maximum size, tells secondaries to do the same, and replies to the client indicating that the operation should be retried on the next chunk. (Record append is restricted to be at most one-fourth of the maximum chunk size to keep worstcase fragmentation at an acceptable level.) If the record fits within the maximum size, which is the common case, the primary appends the data to its replica, tells the secondaries to write the data at the exact offset where it has, and finally replies success to the client.</p>
-<p>If a record append fails at any replica, the client retries the operation. As a result, replicas of the same chunk may contain different data possibly including duplicates of the same record in whole or in part. GFS does not guarantee that all replicas are bytewise identical. It only guarantees that the data is written at least once as an atomic unit. This property follows readily from the simple observation that for the operation to report success, the data must have been written at the same offset on all replicas of some chunk. Furthermore, after this, all replicas are at least as long as the end of record and therefore any future record will be assigned a higher offset or a different chunk even if a different replica later becomes the primary. In terms of our consistency guarantees, the regions in which successful record append operations have written their data are defined (hence consistent), whereas intervening regions are inconsistent (hence undefined). Our applications can deal with inconsistent regions as we discussed in Section 2.7.2.</p>
-<h4 id="3-4-Snapshot"><a href="#3-4-Snapshot" class="headerlink" title="3.4 Snapshot"></a>3.4 Snapshot</h4><p>The snapshot operation makes a copy of a file or a directory tree (the “source”) almost instantaneously, while minimizing any interruptions of ongoing mutations. Our users use it to quickly create branch copies of huge data sets (and often copies of those copies, recursively), or to checkpoint the current state before experimenting with changes that can later be committed or rolled back easily.</p>
-<p>Like AFS [5], we use standard copy-on-write techniques to implement snapshots. When the master receives a snapshot request, it first revokes any outstanding leases on the chunks in the files it is about to snapshot. This ensures that any subsequent writes to these chunks will require an interaction with the master to find the lease holder. This will give the master an opportunity to create a new copy of the chunk first.</p>
-<p>After the leases have been revoked or have expired, the master logs the operation to disk. It then applies this log record to its in-memory state by duplicating the metadata for the source file or directory tree. The newly created snapshot files point to the same chunks as the source files.</p>
-<p>The first time a client wants to write to a chunk C after the snapshot operation, it sends a request to the master to find the current lease holder. The master notices that the reference count for chunk C is greater than one. It defers replying to the client request and instead picks a new chunk</p>
-<p>handle C’. It then asks each chunkserver that has a current replica of C to create a new chunk called C’. By creating the new chunk on the same chunkservers as the original, we ensure that the data can be copied locally, not over the network (our disks are about three times as fast as our 100 Mb Ethernet links). From this point, request handling is no different from that for any chunk: the master grants one of the replicas a lease on the new chunk C’ and replies to the client, which can write the chunk normally, not knowing that it has just been created from an existing chunk.</p>
+<p>如果应用程序一次写入的数据量很大，或者数据跨越了多个Chunk，GFS客户机代码会把它们分成多个写操作。这些操作都遵循前面描述的控制流程，但是可能会被其它客户机上同时进行的操作打断或者覆盖。因此，共享的文件region的尾部可能包含来自不同客户机的数据片段，尽管如此，由于这些分解后的写入操作在所有的副本上都以相同的顺序执行完成，Chunk的所有副本都是一致的。这使文件region处于2.7节描述的一致的、但是未定义的状态。</p>
+<h4 id="3-2-Data-Flow"><a href="#3-2-Data-Flow" class="headerlink" title="3.2 Data Flow"></a>3.2 Data Flow</h4><p>为了提高网络效率，我们采取了把数据流和控制流分开的措施。在控制流从客户机到主Chunk、然后再到所有二级副本的同时，数据以管道的方式，顺序的沿着一个精心选择的Chunk服务器链推送。我们的目标是充分利用每台机器的带宽，避免网络瓶颈和高延时的连接，最小化推送所有数据的延时。</p>
+<p>为了充分利用每台机器的带宽，数据沿着一个Chunk服务器链顺序的推送，而不是以其它拓扑形式分散推送(例如，树型拓扑结构)。线性推送模式下，每台机器所有的出口带宽都用于以最快的速度传输数据，而不是在多个接受者之间分配带宽。</p>
+<p>为了尽可能的避免出现网络瓶颈和高延迟的链接(eg，inter-switch最有可能出现类似问题)，每台机器都尽量的在网络拓扑中选择一台还没有接收到数据的、离自己最近的机器作为目标推送数据。假设客户机把数据从Chunk服务器S1推送到S4。它把数据推送到最近的Chunk服务器S1。S1把数据推送到S2，因为S2和S4中最接近的机器是S2。同样的，S2把数据传递给S3和S4之间更近的机器，依次类推推送下去。我们的网络拓扑非常简单，通过IP地址就可以计算出节点的“距离”。</p>
+<p>最后，我们利用基于TCP连接的、管道式数据推送方式来最小化延迟。Chunk服务器接收到数据后，马上开始向前推送。管道方式的数据推送对我们帮助很大，因为我们采用全双工的交换网络。接收到数据后立刻向前推送不会降低接收的速度。在没有网络拥塞的情况下，传送B字节的数据到R个副本的理想时间是B&#x2F;T+RL，T是网络的吞吐量，L是在两台机器数据传输的延迟。通常情况下，我们的网络连接速度是100Mbps(T)，L将远小于1ms。因此，1MB的数据在理想情况下80ms左右就能分发出去。</p>
+<h4 id="3-3-Atomic-Record-Appends"><a href="#3-3-Atomic-Record-Appends" class="headerlink" title="3.3 Atomic Record Appends"></a>3.3 Atomic Record Appends</h4><p>GFS提供了一种原子的数据追加操作–记录追加。传统方式的写入操作，客户程序会指定数据写入的偏移量。对同一个region的并行写入操作不是串行的:region尾部可能会包含多个不同客户机写入的数据片段。使用记录追加，客户机只需要指定要写入的数据。GFS保证至少有一次原子的写入操作成功执行(即写入一个顺序的byte流)，写入的数据追加到GFS指定的偏移位置上，之后GFS返回这个偏移量给客户机。这类似于在Unix操作系统编程环境中，对以O_APPEND模式打开的文件，多个并发写操作在没有竞态条件时的行为。</p>
+<p>记录追加在我们的分布应用中非常频繁的使用，在这些分布式应用中，通常有很多的客户机并行地对同一个文件追加写入数据。如果我们采用传统方式的文件写入操作，客户机需要额外的复杂、昂贵的同步机制，例如使用一个分布式的锁管理器。在我们的工作中，这样的文件通常用于多个生产者&#x2F;单一消费者的队列系统，或者是合并了来自多个客户机的数据的结果文件。</p>
+<p>记录追加是一种修改操作，它也遵循3.1节描述的控制流程，除了在主Chunk有些额外的控制逻辑。客户机把数据推送给文件最后一个Chunk的所有副本，之后发送请求给主Chunk。主Chunk会检查这次记录追加操作是否会使Chunk超过最大尺寸(64MB)。如果超过了最大尺寸，主Chunk首先将当前Chunk填充到最大尺寸，之后通知所有二级副本做同样的操作，然后回复客户机要求其对下一个Chunk重新进行记录追加操作。(记录追加的数据大小严格控制在Chunk最大尺寸的1&#x2F;4，这样即使在最坏情况下，数据碎片的数量仍然在可控的范围。)通常情况下追加的记录不超过Chunk的最大尺寸，主Chunk把数据追加到自己的副本内，然后通知二级副本把数据写在跟主Chunk一样的位置上，最后回复客户机操作成功。</p>
+<p>如果记录追加操作在任何一个副本上失败了，客户端就需要重新进行操作。重新进行记录追加的结果是，同一个Chunk的不同副本可能包含不同的数据–重复包含一个记录全部或者部分的数据。GFS并不保证Chunk的所有副本在字节级别是完全一致的。它只保证数据作为一个整体原子的被至少写入一次。这个特性可以通过简单观察推导出来:如果操作成功执行，数据一定已经写入到Chunk的所有副本的相同偏移位置上。这之后，所有的副本至少都到了记录尾部的长度，任何后续的记录都会追加到更大的偏移地址，或者是不同的Chunk上，即使其它的Chunk副本被Master节点选为了主Chunk。就我们的一致性保障模型而言，记录追加操作成功写入数据的region是已定义的(因此也是一致的)，反之则是不一致的(因此也就是未定义的)。正如我们在2.7.2节讨论的，我们的程序可以处理不一致的区域。</p>
+<h4 id="3-4-Snapshot"><a href="#3-4-Snapshot" class="headerlink" title="3.4 Snapshot"></a>3.4 Snapshot</h4><p>(alex注:这一节非常难以理解，总的来说依次讲述了什么是快照、快照使用的COW技术、快照如何不干扰当前操作)</p>
+<p>快照操作几乎可以瞬间完成对一个文件或者目录树(“源”)做一个拷贝，并且几乎不会对正在进行的其它操作造成任何干扰。我们的用户可以使用快照迅速的创建一个巨大的数据集的分支拷贝(而且经常是递归的拷贝拷贝)，或者是在做实验性的数据操作之前，使用快照操作备份当前状态，这样之后就可以轻松的提交或者回滚到备份时的状态。</p>
+<p>就像AFS(alex注:AFS，即AndrewFileSystem，一种分布式文件系统)，我们用标准的copy-on-write技术实现快照。当Master节点收到一个快照请求，它首先取消作快照的文件的所有Chunk的租约。这个措施保证了后续对这些Chunk的写操作都必须与Master交互交互以找到租约持有者。这就给Master节点一个率先创建Chunk的新拷贝的机会。</p>
+<p>租约取消或者过期之后，Master节点把这个操作以日志的方式记录到硬盘上。然后，Master节点通过复制源文件或者目录的元数据的方式，把这条日志记录的变化反映到保存在内存的状态中。新创建的快照文件和源文件指向完全相同的Chunk地址。</p>
+<p>在快照操作之后，当客户机第一次想写入数据到ChunkC，它首先会发送一个请求到Master节点查询当前的租约持有者。Master节点注意到ChunkeC的引用计数超过了1(alex注:不太明白为什么会大于1.难道是Snapshot没有释放引用计数?)。Master节点不会马上回复客户机的请求，而是选择一个新的Chunk句柄C<code>。之后，Master节点要求每个拥有ChunkC当前副本的Chunk服务器创建一个叫做C</code>的新Chunk。通过在源Chunk所在Chunk服务器上创建新的Chunk，我们确保数据在本地而不是通过网络复制(我们的硬盘比我们的100Mb以太网大约快3倍)。从这点来讲，请求的处理方式和任何其它Chunk没什么不同:Master节点确保新ChunkC&#96;的一个副本拥有租约，之后回复客户机，客户机得到回复后就可以正常的写这个Chunk，而不必理会它是从一个已存在的Chunk克隆出来的。</p>
 <h3 id="4-MASTER-OPERATION"><a href="#4-MASTER-OPERATION" class="headerlink" title="4 MASTER OPERATION"></a>4 MASTER OPERATION</h3><p>The master executes all namespace operations. In addition, it manages chunk replicas throughout the system: it makes placement decisions, creates new chunks and hence replicas, and coordinates various system-wide activities to keep chunks fully replicated, to balance load across all the chunkservers, and to reclaim unused storage. We now discuss each of these topics.</p>
 <h4 id="4-1-Namespace-Management-and-Locking"><a href="#4-1-Namespace-Management-and-Locking" class="headerlink" title="4.1 Namespace Management and Locking"></a>4.1 Namespace Management and Locking</h4><p>Many master operations can take a long time: for example, a snapshot operation has to revoke chunkserver leases on all chunks covered by the snapshot. We do not want to delay other master operations while they are running. Therefore, we allow multiple operations to be active and use locks over regions of the namespace to ensure proper serialization.</p>
 <p>Unlike many traditional file systems, GFS does not have a per-directory data structure that lists all the files in that directory. Nor does it support aliases for the same file or directory (i.e, hard or symbolic links in Unix terms). GFS logically represents its namespace as a lookup table mapping full pathnames to metadata. With prefix compression, this table can be efficiently represented in memory. Each node in the namespace tree (either an absolute file name or an absolute directory name) has an associated read-write lock.</p>
@@ -368,7 +408,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/07/01/6.824-RPC&Threads/">6.824 RPC & Threads<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/07/07/6.824-VM-FT/">6.824 VM-FT<span class="note">Newer</span></a></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/07/01/6.824_mapreduce/">6.824 MapReduce<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/07/01/6.824-RPC&Threads/">6.824 RPC & Threads<span class="note">Newer</span></a></section></div>
 
 
 
