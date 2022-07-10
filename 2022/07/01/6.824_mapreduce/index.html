@@ -21,12 +21,12 @@
   <title>6.824 MapReduce - zennlyu</title>
 
   
-    <meta name="description" content="MapReduceLecture 1Labs Lab 1: MapReduce Lab 2: replication for fault-tolerance using Raft Lab 3: fault-tolerant key&#x2F;value store Lab 4: sharded key&#x2F;value store  Main TopicsThis is a course ab">
+    <meta name="description" content="MapReduceLecture 1Labs Lab 1: MapReduce Lab 2: replication for fault-tolerance using Raft Lab 3: fault-tolerant key&#x2F;value store Lab 4: sharded key&#x2F;value store  Main TopicsThis is a course about infras">
 <meta property="og:type" content="article">
 <meta property="og:title" content="6.824 MapReduce">
 <meta property="og:url" content="http://example.com/2022/07/01/6.824_mapreduce/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="MapReduceLecture 1Labs Lab 1: MapReduce Lab 2: replication for fault-tolerance using Raft Lab 3: fault-tolerant key&#x2F;value store Lab 4: sharded key&#x2F;value store  Main TopicsThis is a course ab">
+<meta property="og:description" content="MapReduceLecture 1Labs Lab 1: MapReduce Lab 2: replication for fault-tolerance using Raft Lab 3: fault-tolerant key&#x2F;value store Lab 4: sharded key&#x2F;value store  Main TopicsThis is a course about infras">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2022/07/01/6.824_mapreduce/execution.jpg">
 <meta property="og:image" content="http://example.com/2022/07/01/6.824_mapreduce/figure2.png">
@@ -77,7 +77,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-1"><span class="toc-text">Lecture 1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Labs"><span class="toc-text">Labs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Main-Topics"><span class="toc-text">Main Topics</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-implementation"><span class="toc-text">Topic: implementation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-performance"><span class="toc-text">Topic: performance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-fault-tolerance"><span class="toc-text">Topic: fault tolerance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-consistency"><span class="toc-text">Topic: consistency</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-STUDY-MapReduce"><span class="toc-text">CASE STUDY: MapReduce</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-overview"><span class="toc-text">MapReduce overview</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Abstract-view-of-a-MapReduce-job"><span class="toc-text">Abstract view of a MapReduce job</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-scales-well"><span class="toc-text">MapReduce scales well:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-hides-many-details"><span class="toc-text">MapReduce hides many details:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#However-MapReduce-limits-what-apps-can-do"><span class="toc-text">However, MapReduce limits what apps can do:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Input-and-output-are-stored-on-the-GFS-cluster-file-system"><span class="toc-text">Input and output are stored on the GFS cluster file system</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#What-will-likely-limit-the-performance"><span class="toc-text">What will likely limit the performance?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Some-details-paper%E2%80%99s-Figure-1"><span class="toc-text">Some details (paper’s Figure 1):</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#How-does-MR-minimize-network-use"><span class="toc-text">How does MR minimize network use?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#How-does-MR-get-good-load-balance"><span class="toc-text">How does MR get good load balance?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#What-about-fault-tolerance"><span class="toc-text">What about fault tolerance?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Details-of-worker-crash-recovery"><span class="toc-text">Details of worker crash recovery:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Other-failures-x2F-problems"><span class="toc-text">Other failures&#x2F;problems:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Current-status"><span class="toc-text">Current status?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Conclusion"><span class="toc-text">Conclusion</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce-Paper-Read"><span class="toc-text">MapReduce Paper Read</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0-Abstract"><span class="toc-text">0 Abstract</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Introduction"><span class="toc-text">1 Introduction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Programming-Model"><span class="toc-text">2 Programming Model</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-Counting-Word"><span class="toc-text">2.1 Counting Word</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-Types"><span class="toc-text">2.2 Types</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-More-Examples"><span class="toc-text">2.3 More Examples</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Implementation"><span class="toc-text">3 Implementation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-Execution-Overview"><span class="toc-text">3.1 Execution Overview</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-Master-Data-Structure"><span class="toc-text">3.2 Master Data Structure</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-Fault-Tolerance"><span class="toc-text">3.3 Fault Tolerance</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#woker-failure"><span class="toc-text">woker failure</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#master-failure"><span class="toc-text">master failure</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#semantics-in-the-presence-of-failure"><span class="toc-text">semantics in the presence of failure</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-Locality"><span class="toc-text">3.4 Locality</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-Task-Granularity"><span class="toc-text">3.5 Task Granularity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-Backup-Tasks"><span class="toc-text">3.6 Backup Tasks</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%80%9Cstraggler%E2%80%9D%EF%BC%9A"><span class="toc-text">“straggler”：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Alleviation-%E9%80%9A%E7%94%A8%E6%9C%BA%E5%88%B6%EF%BC%9A"><span class="toc-text">Alleviation 通用机制：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Refinement"><span class="toc-text">4 Refinement</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-Partitoning-Function"><span class="toc-text">4.1 Partitoning Function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-Ordering-Guarantees"><span class="toc-text">4.2 Ordering Guarantees</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-Combiner-Function"><span class="toc-text">4.3 Combiner Function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-Input-and-Output-Types"><span class="toc-text">4.4 Input and Output Types</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-Side-effects"><span class="toc-text">4.5 Side-effects</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-6-Skipping-Bad-Records"><span class="toc-text">4.6 Skipping Bad Records</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-7-Local-Execution"><span class="toc-text">4.7 Local Execution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-8-Status-Information"><span class="toc-text">4.8 Status Information</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-9-Counters"><span class="toc-text">4.9 Counters</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Performance"><span class="toc-text">5 Performance</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-Cluster-Configuration"><span class="toc-text">5.1 Cluster Configuration</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-Grep"><span class="toc-text">5.2 Grep</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-Sort"><span class="toc-text">5.3 Sort</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-Effect-of-Backup-Tasks"><span class="toc-text">5.4 Effect of Backup Tasks</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-5-Machine-Failures"><span class="toc-text">5.5 Machine Failures</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Experience"><span class="toc-text">6 Experience</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-Large-Scale-Indexing"><span class="toc-text">6.1 Large-Scale Indexing</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Related-Work"><span class="toc-text">7 Related Work</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-Conclusions"><span class="toc-text">8 Conclusions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Acknowledgements"><span class="toc-text">Acknowledgements</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lab"><span class="toc-text">Lab</span></a></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-1"><span class="toc-text">Lecture 1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Labs"><span class="toc-text">Labs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Main-Topics"><span class="toc-text">Main Topics</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-implementation"><span class="toc-text">Topic: implementation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-performance"><span class="toc-text">Topic: performance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-fault-tolerance"><span class="toc-text">Topic: fault tolerance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-consistency"><span class="toc-text">Topic: consistency</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-STUDY-MapReduce"><span class="toc-text">CASE STUDY: MapReduce</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-overview"><span class="toc-text">MapReduce overview</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Abstract-view-of-a-MapReduce-job"><span class="toc-text">Abstract view of a MapReduce job</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-scales-well"><span class="toc-text">MapReduce scales well:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-hides-many-details"><span class="toc-text">MapReduce hides many details:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#However-MapReduce-limits-what-apps-can-do"><span class="toc-text">However, MapReduce limits what apps can do:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Input-and-output-are-stored-on-the-GFS-cluster-file-system"><span class="toc-text">Input and output are stored on the GFS cluster file system</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#What-will-likely-limit-the-performance"><span class="toc-text">What will likely limit the performance?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Some-details-paper%E2%80%99s-Figure-1"><span class="toc-text">Some details (paper’s Figure 1):</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#How-does-MR-minimize-network-use"><span class="toc-text">How does MR minimize network use?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#How-does-MR-get-good-load-balance"><span class="toc-text">How does MR get good load balance?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#What-about-fault-tolerance"><span class="toc-text">What about fault tolerance?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Details-of-worker-crash-recovery"><span class="toc-text">Details of worker crash recovery:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Other-failures-problems"><span class="toc-text">Other failures&#x2F;problems:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Current-status"><span class="toc-text">Current status?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Conclusion"><span class="toc-text">Conclusion</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce-Paper-Read"><span class="toc-text">MapReduce Paper Read</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0-Abstract"><span class="toc-text">0 Abstract</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Introduction"><span class="toc-text">1 Introduction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Programming-Model"><span class="toc-text">2 Programming Model</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-Counting-Word"><span class="toc-text">2.1 Counting Word</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-Types"><span class="toc-text">2.2 Types</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-More-Examples"><span class="toc-text">2.3 More Examples</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Implementation"><span class="toc-text">3 Implementation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-Execution-Overview"><span class="toc-text">3.1 Execution Overview</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-Master-Data-Structure"><span class="toc-text">3.2 Master Data Structure</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-Fault-Tolerance"><span class="toc-text">3.3 Fault Tolerance</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#woker-failure"><span class="toc-text">woker failure</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#master-failure"><span class="toc-text">master failure</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#semantics-in-the-presence-of-failure"><span class="toc-text">semantics in the presence of failure</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-Locality"><span class="toc-text">3.4 Locality</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-Task-Granularity"><span class="toc-text">3.5 Task Granularity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-Backup-Tasks"><span class="toc-text">3.6 Backup Tasks</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%80%9Cstraggler%E2%80%9D%EF%BC%9A"><span class="toc-text">“straggler”：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Alleviation-%E9%80%9A%E7%94%A8%E6%9C%BA%E5%88%B6%EF%BC%9A"><span class="toc-text">Alleviation 通用机制：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Refinement"><span class="toc-text">4 Refinement</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-Partitoning-Function"><span class="toc-text">4.1 Partitoning Function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-Ordering-Guarantees"><span class="toc-text">4.2 Ordering Guarantees</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-Combiner-Function"><span class="toc-text">4.3 Combiner Function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-Input-and-Output-Types"><span class="toc-text">4.4 Input and Output Types</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-Side-effects"><span class="toc-text">4.5 Side-effects</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-6-Skipping-Bad-Records"><span class="toc-text">4.6 Skipping Bad Records</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-7-Local-Execution"><span class="toc-text">4.7 Local Execution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-8-Status-Information"><span class="toc-text">4.8 Status Information</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-9-Counters"><span class="toc-text">4.9 Counters</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Performance"><span class="toc-text">5 Performance</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-Cluster-Configuration"><span class="toc-text">5.1 Cluster Configuration</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-Grep"><span class="toc-text">5.2 Grep</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-Sort"><span class="toc-text">5.3 Sort</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-Effect-of-Backup-Tasks"><span class="toc-text">5.4 Effect of Backup Tasks</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-5-Machine-Failures"><span class="toc-text">5.5 Machine Failures</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Experience"><span class="toc-text">6 Experience</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-Large-Scale-Indexing"><span class="toc-text">6.1 Large-Scale Indexing</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Related-Work"><span class="toc-text">7 Related Work</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-Conclusions"><span class="toc-text">8 Conclusions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Acknowledgements"><span class="toc-text">Acknowledgements</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lab"><span class="toc-text">Lab</span></a></li></ol></div></div></div>
 
 
 </div>
@@ -97,8 +97,8 @@
 <h1 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h1><h2 id="Lecture-1"><a href="#Lecture-1" class="headerlink" title="Lecture 1"></a>Lecture 1</h2><h3 id="Labs"><a href="#Labs" class="headerlink" title="Labs"></a>Labs</h3><ul>
 <li>Lab 1: MapReduce</li>
 <li>Lab 2: replication for fault-tolerance using Raft</li>
-<li>Lab 3: fault-tolerant key&#x2F;value store</li>
-<li>Lab 4: sharded key&#x2F;value store</li>
+<li>Lab 3: fault-tolerant key/value store</li>
+<li>Lab 4: sharded key/value store</li>
 </ul>
 <h3 id="Main-Topics"><a href="#Main-Topics" class="headerlink" title="Main Topics"></a>Main Topics</h3><p>This is a course about infrastructure for applications.</p>
 <ul>
@@ -114,12 +114,12 @@
 <li>Nx servers -&gt; Nx total throughput via parallel CPU, disk, net.</li>
 <li>[diagram: users, application servers, storage servers]</li>
 <li>So handling more load only requires buying more computers rather than re-design by expensive programmers.</li>
-<li>Effective when you can divide work w&#x2F;o much interaction.</li>
+<li>Effective when you can divide work w/o much interaction.</li>
 </ol>
 <h4 id="Topic-fault-tolerance"><a href="#Topic-fault-tolerance" class="headerlink" title="Topic: fault tolerance"></a>Topic: fault tolerance</h4><p>We often want:</p>
 <ul>
-<li><strong>Availability</strong> – app can make progress despite failures</li>
-<li><strong>Recoverability</strong> – app will come back to life when failures are repaired</li>
+<li><strong>Availability</strong> — app can make progress despite failures</li>
+<li><strong>Recoverability</strong> — app will come back to life when failures are repaired</li>
 </ul>
 <p>Big idea: replicated servers.</p>
 <ul>
@@ -130,8 +130,11 @@
 <blockquote>
 <p>E.g. “<code>Get(k)</code> yields the value from the most recent <code>Put(k,v)</code>.”</p>
 </blockquote>
-<p>$$<br>\begin{cases}<br>Put(k,v) \<br>Get(k)<br>\end{cases}<br>$$</p>
-<p>Achieving good behavior is hard!</p>
+<script type="math/tex; mode=display">
+\begin{cases} 
+Put(k,v) \\
+Get(k) 
+\end{cases}</script><p>Achieving good behavior is hard!</p>
 <ul>
 <li>“Replica” servers are hard to keep identical.</li>
 <li>Clients may crash midway through multi-step update.</li>
@@ -150,31 +153,30 @@
 </ul>
 <p>e.g. <code>Get()</code> does <em>not</em> yield the latest <code>Put()</code>!</p>
 <p>Painful for application programmers but may be a good trade-off.</p>
-<p>Many design points are possible in the consistency&#x2F;performance spectrum!</p>
+<p>Many design points are possible in the consistency/performance spectrum!</p>
 <h3 id="CASE-STUDY-MapReduce"><a href="#CASE-STUDY-MapReduce" class="headerlink" title="CASE STUDY: MapReduce"></a>CASE STUDY: MapReduce</h3><h4 id="MapReduce-overview"><a href="#MapReduce-overview" class="headerlink" title="MapReduce overview"></a>MapReduce overview</h4><p>context: multi-hour computations on multi-terabyte data-sets</p>
 <blockquote>
 <p>e.g. build search index, or sort, or analyze structure of web</p>
 </blockquote>
 <ul>
 <li>only practical with 1000s of computers</li>
-<li>applications not written by distributed systems experts</li>
+<li><p>applications not written by distributed systems experts</p>
+<p>overall goal: easy for non-specialist programmers</p>
+<p>programmer just defines Map and Reduce functions: often fairly simple sequential code</p>
+</li>
 </ul>
-<p> overall goal: easy for non-specialist programmers</p>
-<p> programmer just defines Map and Reduce functions: often fairly simple sequential code</p>
 <p>MR takes care of, and hides, all aspects of distribution!</p>
 <h4 id="Abstract-view-of-a-MapReduce-job"><a href="#Abstract-view-of-a-MapReduce-job" class="headerlink" title="Abstract view of a MapReduce job"></a>Abstract view of a MapReduce job</h4><p>input is (already) split into M files</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input1 -&gt; Map -&gt; a,1 b,1</span><br><span class="line">Input2 -&gt; Map -&gt;b,1</span><br><span class="line">Input3 -&gt; Map -&gt; a,1c,1</span><br><span class="line">            |||</span><br><span class="line">            ||-&gt; Reduce -&gt; c,1</span><br><span class="line">            |-----&gt; Reduce -&gt; b,2</span><br><span class="line">            ---------&gt; Reduce -&gt; a,2</span><br></pre></td></tr></table></figure>
-
-<p>MR calls <code>Map()</code> for each input file, produces set of $&lt;k2,v2&gt;$</p>
+<p>MR calls <code>Map()</code> for each input file, produces set of $<k2,v2>$</k2,v2></p>
 <ul>
 <li>“intermediate” data</li>
 <li>each <code>Map()</code> call is a “task”</li>
 </ul>
 <p>MR gathers all intermediate $v2$’s for a given $k2$, and passes each key + values to a Reduce call</p>
-<p>final output is set of $&lt;k2,v3&gt;$ pairs from <code>Reduce()</code>s</p>
+<p>final output is set of $<k2,v3>$ pairs from <code>Reduce()</code>s</k2,v3></p>
 <p>Example: word count : input is thousands of text files</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Map(k, v)</span><br><span class="line">split v into words</span><br><span class="line"><span class="keyword">for</span> each word w</span><br><span class="line"> <span class="title function_">emit</span><span class="params">(w, <span class="string">&quot;1&quot;</span>)</span></span><br><span class="line"><span class="title function_">Reduce</span><span class="params">(k, v)</span></span><br><span class="line">	<span class="title function_">emit</span><span class="params">(len(v))</span></span><br></pre></td></tr></table></figure>
-
 <h4 id="MapReduce-scales-well"><a href="#MapReduce-scales-well" class="headerlink" title="MapReduce scales well:"></a>MapReduce scales well:</h4><p>$N$ “worker” computers get you $Nx$ throughput.</p>
 <ul>
 <li>Maps()s can run in parallel, since they don’t interact.</li>
@@ -210,21 +212,23 @@
 </ul>
 <p>[diagram: servers, tree of network switches]</p>
 <p>In MR’s all-to-all shuffle, half of traffic goes through root switch.</p>
-<p>Paper’s root switch: 100 to 200 gigabits&#x2F;second, total</p>
+<p>Paper’s root switch: 100 to 200 gigabits/second, total</p>
 <ul>
-<li>1800 machines, so 55 megabits&#x2F;second&#x2F;machine.</li>
+<li>1800 machines, so 55 megabits/second/machine.</li>
 <li>55 is small, e.g. much less than disk or RAM speed.</li>
 </ul>
-<p>Today: networks and root switches are much faster relative to CPU&#x2F;disk.</p>
+<p>Today: networks and root switches are much faster relative to CPU/disk.</p>
 <h4 id="Some-details-paper’s-Figure-1"><a href="#Some-details-paper’s-Figure-1" class="headerlink" title="Some details (paper’s Figure 1):"></a>Some details (paper’s Figure 1):</h4><p>one master, that hands out tasks to workers and remembers progress.</p>
 <ol>
 <li><p>master gives Map tasks to workers until all Maps complete</p>
 <p>Maps write output (intermediate data) to local disk</p>
 <p>Maps split output, by hash, into one file per Reduce task</p>
-</li>
+<ol>
 <li><p>after all Maps have finished, master hands out Reduce tasks</p>
 <p>each Reduce fetches its intermediate output from (all) Map workers</p>
 <p>each Reduce task writes a separate output file on GFS</p>
+</li>
+</ol>
 </li>
 </ol>
 <h4 id="How-does-MR-minimize-network-use"><a href="#How-does-MR-minimize-network-use" class="headerlink" title="How does MR minimize network use?"></a>How does MR minimize network use?</h4><p>Master tries to run each Map task on GFS server that stores its input.</p>
@@ -259,7 +263,7 @@
 <li>Correctness requires re-execution to yield exactly the same output.</li>
 <li>So Map and Reduce must be pure deterministic functions:<ul>
 <li>they are only allowed to look at their arguments.</li>
-<li>no state, no file I&#x2F;O, no interaction, no external communication.</li>
+<li>no state, no file I/O, no interaction, no external communication.</li>
 </ul>
 </li>
 </ul>
@@ -279,12 +283,12 @@
 </ul>
 </li>
 <li>Reduce worker crashes.<ul>
-<li>finished tasks are OK – stored in GFS, with replicas.</li>
+<li>finished tasks are OK — stored in GFS, with replicas.</li>
 <li>master re-starts worker’s unfinished tasks on other workers.</li>
 </ul>
 </li>
 </ul>
-<h4 id="Other-failures-x2F-problems"><a href="#Other-failures-x2F-problems" class="headerlink" title="Other failures&#x2F;problems:"></a>Other failures&#x2F;problems:</h4><ul>
+<h4 id="Other-failures-problems"><a href="#Other-failures-problems" class="headerlink" title="Other failures/problems:"></a>Other failures/problems:</h4><ul>
 <li>What if the master gives two workers the same Map() task?<ul>
 <li>perhaps the master incorrectly thinks one worker died.</li>
 <li>it will tell Reduce workers about only one of them.</li>
@@ -295,12 +299,12 @@
 <li>atomic GFS rename prevents mixing; one complete file will be visible.</li>
 </ul>
 </li>
-<li>What if a single worker is very slow – a “straggler”?<ul>
+<li>What if a single worker is very slow — a “straggler”?<ul>
 <li>perhaps due to flakey hardware.</li>
 <li>master starts a second copy of last few tasks.</li>
 </ul>
 </li>
-<li>What if a worker computes incorrect output, due to broken h&#x2F;w or s&#x2F;w?<ul>
+<li>What if a worker computes incorrect output, due to broken h/w or s/w?<ul>
 <li>too bad! MR assumes “fail-stop” CPUs and software.</li>
 </ul>
 </li>
@@ -309,7 +313,7 @@
 <h4 id="Current-status"><a href="#Current-status" class="headerlink" title="Current status?"></a>Current status?</h4><ul>
 <li>Hugely influential (Hadoop, Spark, &amp;c).</li>
 <li>Probably no longer in use at Google.<ul>
-<li>Replaced by Flume &#x2F; FlumeJava (see paper by Chambers et al).</li>
+<li>Replaced by Flume / FlumeJava (see paper by Chambers et al).</li>
 <li>GFS replaced by Colossus (no good description), and BigTable.</li>
 </ul>
 </li>
@@ -317,12 +321,12 @@
 <h4 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h4><p>MapReduce single-handedly made big cluster computation popular.</p>
 <p>“-” Not the most efficient or flexible.</p>
 <p>“+” Scales well.</p>
-<p>“+” Easy to program – failures and data movement are hidden.</p>
+<p>“+” Easy to program — failures and data movement are hidden.</p>
 <p>These were good trade-offs in practice.</p>
 <h2 id="MapReduce-Paper-Read"><a href="#MapReduce-Paper-Read" class="headerlink" title="MapReduce Paper Read"></a>MapReduce Paper Read</h2><h3 id="0-Abstract"><a href="#0-Abstract" class="headerlink" title="0 Abstract"></a>0 Abstract</h3><p>Users specify </p>
 <ul>
-<li>a map function that processes a key&#x2F;value pair to generate a set of intermediate key&#x2F;value pairs, </li>
-<li>a reduce function that merges all intermediate values associated with the same intermediate key.</li>
+<li>a map function that processes a key/value pair to generate a set of intermediate key/value pairs, </li>
+<li>a reduce function that merges all intermediate values associated with the same intermediate key. </li>
 </ul>
 <p>Programs written in this functional style are automatically parallelized and executed on a large cluster of commodity machines. </p>
 <p><strong>Run-time system</strong> takes care of the details of </p>
@@ -330,16 +334,18 @@
 <li>partitioning the input data, </li>
 <li>scheduling the program’s execution across a set of machines, </li>
 <li>handling machine failures,</li>
-<li>managing the required intermachine communication.</li>
+<li>managing the required intermachine communication. </li>
 </ul>
-<h3 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1 Introduction"></a>1 Introduction</h3><table>
+<h3 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1 Introduction"></a>1 Introduction</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>Section</th>
 <th>Content</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>2</td>
 <td>basic programming model and gives several examples.</td>
 </tr>
@@ -363,9 +369,10 @@
 <td>7</td>
 <td>discusses related and future work.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="2-Programming-Model"><a href="#2-Programming-Model" class="headerlink" title="2 Programming Model"></a>2 Programming Model</h3><h4 id="2-1-Counting-Word"><a href="#2-1-Counting-Word" class="headerlink" title="2.1 Counting Word"></a>2.1 Counting Word</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">map</span>(String key, String value):</span><br><span class="line">  <span class="comment">// key: document name</span></span><br><span class="line">  <span class="comment">// value: document contents</span></span><br><span class="line">  <span class="keyword">for</span> each word w in value:</span><br><span class="line">    EmitIntermediate(w, “<span class="number">1</span>”);</span><br><span class="line"></span><br><span class="line">reduce(String key, Iterator values):</span><br><span class="line">  <span class="comment">// key: a word</span></span><br><span class="line">  <span class="comment">// values: a list of counts</span></span><br><span class="line">  <span class="type">int</span> result = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> each v in values:</span><br><span class="line">    result += ParseInt(v);</span><br><span class="line">  Emit(AsString(result));</span><br></pre></td></tr></table></figure>
-
 <blockquote>
 <ul>
 <li>The <code>map</code> function emits each word plus an associated count of occurrences (just ‘1’ in this simple example). </li>
@@ -388,7 +395,7 @@
 <li>作为输入的文件会被分为  $M$  个 Split，每个 Split 的大小通常在 16~64 MB 之间</li>
 <li>如此，整个 MapReduce 计算包含  $M$  个Map 任务和  $R$  个 Reduce 任务。Master 结点会从空闲的 Worker 结点中进行选取并为其分配 Map 任务和 Reduce 任务</li>
 <li>收到 Map 任务的 Worker 们（又称 Mapper）开始读入自己对应的 Split，将读入的内容解析为输入键值对并调用由用户定义的 Map 函数。由 Map 函数产生的中间结果键值对会被暂时存放在缓冲内存区中</li>
-<li>在 Map 阶段进行的同时，Mapper 们周期性地将放置在缓冲区中的中间结果存入到自己的本地磁盘中，同时根据用户指定的 Partition 函数（默认为 $hash(key){,}mod{,}R$)。 将产生的中间结果分为 $R$ 个部分。任务完成时，Mapper 便会将中间结果在其本地磁盘上的存放位置报告给 Master</li>
+<li>在 Map 阶段进行的同时，Mapper 们周期性地将放置在缓冲区中的中间结果存入到自己的本地磁盘中，同时根据用户指定的 Partition 函数（默认为 $hash(key){\,}mod{\,}R$)。 将产生的中间结果分为 $R$ 个部分。任务完成时，Mapper 便会将中间结果在其本地磁盘上的存放位置报告给 Master</li>
 <li>Mapper 上报的中间结果存放位置会被 Master 转发给 Reducer。当 Reducer 接收到这些信息后便会通过 RPC 读取存储在 Mapper 本地磁盘上属于对应 Partition 的中间结果。在读取完毕后，Reducer 会对读取到的数据进行排序以令拥有相同键的键值对能够连续分布</li>
 <li>之后，Reducer 会为每个键收集与其关联的值的集合，并以之调用用户定义的 Reduce 函数。Reduce 函数的结果会被放入到对应的 Reduce Partition 结果文件</li>
 </ol>
@@ -405,21 +412,21 @@
 <ul>
 <li>the <strong>master</strong> marks the <strong>worker</strong> as failed. </li>
 <li>Any map tasks completed by the worker are reset back to their initial idle state, therefore eligible for scheduling on other workers.</li>
-<li>Any map&#x2F;reduce task in progress on a failed worker is also reset to idle and eligible for rescheduling.</li>
+<li>Any map/reduce task in progress on a failed worker is also reset to idle and eligible for rescheduling.</li>
 <li>Completed map tasks are re-executed on a failure because their output is stored on the local disk(s) of the failed machine and is therefore inaccessible. </li>
 <li>Completed reduce tasks <strong>do not</strong> need to be re-executed since their output is stored in a global file system.</li>
 <li>When a map task is executed first by $worker A$ and then later executed by $worker B$ (because $A$ failed), all workers executing reduce tasks are notified of the re-execution. Any reduce task that has not already read the data from $worker A$ will read the data from $worker B$.</li>
 </ul>
 <p>MapReduce is resilient to large-scale worker failures. </p>
 <ul>
-<li>For example, during one MapReduce operation, network maintenance on a running cluster was causing groups of 80 machines at a time to become unreachable for several minutes.</li>
+<li>For example, during one MapReduce operation, network maintenance on a running cluster was causing groups of 80 machines at a time to become unreachable for several minutes. </li>
 </ul>
 <p>The MapReduce master simply re-executed the work done by the unreachable worker machines, and continued to make forward progress, eventually completing the MapReduce operation.</p>
 <ul>
-<li><p>任何分配给该 Worker 的 Map 任务，无论是正在运行还是已经完成，都需要由 Master 重新分配给其他 Worker，因为该 Worker 不可用也意味着存储在该 Worker 本地磁盘上的中间结果也不可用了。Master 也会将这次重试通知给所有 Reducer，没能从原本的 Mapper 上完整获取中间结果的 Reducer 便会开始从新的 Mapper 上获取数据。</p>
-</li>
-<li><p>如果有 Reduce 任务分配给该 Worker，Master 则会选取其中尚未完成的 Reduce 任务分配给其他 Worker。鉴于 Google MapReduce 的结果是存储在 Google File System 上的，已完成的 Reduce 任务的结果的可用性由 Google File System 提供，因此 MapReduce Master 只需要处理未完成的 Reduce 任务即可。</p>
-</li>
+<li>任何分配给该 Worker 的 Map 任务，无论是正在运行还是已经完成，都需要由 Master 重新分配给其他 Worker，因为该 Worker 不可用也意味着存储在该 Worker 本地磁盘上的中间结果也不可用了。Master 也会将这次重试通知给所有 Reducer，没能从原本的 Mapper 上完整获取中间结果的 Reducer 便会开始从新的 Mapper 上获取数据。</li>
+</ul>
+<ul>
+<li>如果有 Reduce 任务分配给该 Worker，Master 则会选取其中尚未完成的 Reduce 任务分配给其他 Worker。鉴于 Google MapReduce 的结果是存储在 Google File System 上的，已完成的 Reduce 任务的结果的可用性由 Google File System 提供，因此 MapReduce Master 只需要处理未完成的 Reduce 任务即可。</li>
 </ul>
 <h5 id="master-failure"><a href="#master-failure" class="headerlink" title="master failure"></a>master failure</h5><p>Master 结点在运行时会周期性地将集群的当前状态作为<strong>保存点（Checkpoint）</strong>写入到磁盘中。Master 进程终止后，重新启动的 Master 进程即可利用存储在磁盘中的数据恢复到上一次保存点的状态。</p>
 <blockquote>
@@ -441,7 +448,7 @@
 </ul>
 <p>我们的绝大多数 $map$ 和 $reduce$ operators 都是 Deterministic 的，在这种情况下</p>
 <ul>
-<li>我们的 semantics 等同于顺序执行的事实使得程序员很容易推断出他们的程序的 behavior。当 $map$ 和&#x2F;或 $reduce$ operators 是非确定性的时，我们提供较弱但仍然合理的语义。</li>
+<li>我们的 semantics 等同于顺序执行的事实使得程序员很容易推断出他们的程序的 behavior。当 $map$ 和/或 $reduce$ operators 是非确定性的时，我们提供较弱但仍然合理的语义。</li>
 <li>在存在 non-deterministic operators 的情况下，特定的 reduce 任务 R1 的输出等效于由 non-deterministic program 的 sequential execution 生成的 R1 的输出。</li>
 </ul>
 <p>然而，不同 reduce 任务 R2 的输出可以对应于由 non-deterministic program 的 different sequential execution 产生的 R2 的输出。考虑 Map 任务 $M$ 和 Reduce 任务 $R_1$ 和 $R_2$:</p>
@@ -459,13 +466,13 @@
 <p>当对集群中很大一部分 <code>wokers</code> 运行大型 MapReduce 操作时，<u>大多数</u>输入数据都是在<u>本地读取</u>的，并且<u>不消耗网络带宽</u>。</p>
 <h4 id="3-5-Task-Granularity"><a href="#3-5-Task-Granularity" class="headerlink" title="3.5 Task Granularity"></a>3.5 Task Granularity</h4><p>如上所述，我们将 <code>map</code> phase 细分为 $M$ 个部分，将 reduce phase 细分为 $R$ 个部分。</p>
 <p>理想情况下，$M$ 和 $R$ 应比 worker machine 的数量大得多。让每个 woker 执行许多不同的任务可以改善动态负载平衡 (dynamic load balancing)，还可以在一个 worker fails 时加快恢复速度：它已完成的许多 map 任务可以被分布在所有其他 worker machine 上。</p>
-<p>在我们的实现中，$M$ 和 $R$ 的大小是有实际限制的，因为 master 必须做出 $O(M+R)$ 调度决策，并将 $O(M<em>R)$ 状态保存在如上所述的内存中。（然而，constant factors for memory usage 很小：the $O(M</em>R)$  piece of the state consists of approximately one byte of data per map task&#x2F;reduce task pair)</p>
-<p>此外，$R$ 通常受到用户的约束，因为每个 reduce 任务的输出最终都位于单独的 output 文件中。在实践中，我们倾向于选择 $M$，以便每个单独的任务大约是 16 MB 到 64 MB 的输入数据（以便上面描述的 locality optimization 局部性优化是最有效的），并且我们使 $R$ 成为我们期望使用的 worker machine 数量的 small multiple。We often perform MapReduce computations with $M&#x3D;200,000$ and $R&#x3D;5,000$, using $2,000$ worker machines.</p>
+<p>在我们的实现中，$M$ 和 $R$ 的大小是有实际限制的，因为 master 必须做出 $O(M+R)$ 调度决策，并将 $O(M<em>R)$ 状态保存在如上所述的内存中。（然而，constant factors for memory usage 很小：the $O(M</em>R)$  piece of the state consists of approximately one byte of data per map task/reduce task pair)</p>
+<p>此外，$R$ 通常受到用户的约束，因为每个 reduce 任务的输出最终都位于单独的 output 文件中。在实践中，我们倾向于选择 $M$，以便每个单独的任务大约是 16 MB 到 64 MB 的输入数据（以便上面描述的 locality optimization 局部性优化是最有效的），并且我们使 $R$ 成为我们期望使用的 worker machine 数量的 small multiple。We often perform MapReduce computations with $M=200,000$ and $R=5,000$, using $2,000$ worker machines.</p>
 <h4 id="3-6-Backup-Tasks"><a href="#3-6-Backup-Tasks" class="headerlink" title="3.6 Backup Tasks"></a>3.6 Backup Tasks</h4><h5 id="“straggler”："><a href="#“straggler”：" class="headerlink" title="“straggler”："></a>“straggler”：</h5><ul>
 <li>一个需要非常长的时间才能完成计算中最后几个 map 或 reduce 任务之一的 machine。</li>
 <li>延长 MapReduce 操作所花费的总时间的常见原因之一</li>
 <li>出现原因：<ul>
-<li>例如，磁盘损坏的计算机可能会遇到频繁的 correctable errors，将其读取性能从 $30MB&#x2F;s$ 降低到 $1MB&#x2F;s$。</li>
+<li>例如，磁盘损坏的计算机可能会遇到频繁的 correctable errors，将其读取性能从 $30MB/s$ 降低到 $1MB/s$。</li>
 <li>集群调度系统可能已经在机器上调度了其他任务，导致它由于 CPU，内存，本地磁盘或网络工作带宽的竞争而执行 MapReduce 代码的速度更慢。</li>
 <li>machine initialization code 中的一个错误，导致 processor caches 被禁用：受影响的 machines上的计算速度减慢了一百倍以上。</li>
 </ul>
@@ -475,20 +482,20 @@
 <p>我们调整了此机制，使其通常将操作使用的计算资源增加不超过百分之几。我们发现这大大减少了完成大型MapReduce 操作的时间。</p>
 <p>作为一个例子，the sort program described in Section 5.3 takes 44% longer to complete when the backup task mechanism is disabled.</p>
 <h3 id="4-Refinement"><a href="#4-Refinement" class="headerlink" title="4 Refinement"></a>4 Refinement</h3><p>尽管简单编写 Map 和 Reduce 函数基本满足大多需求，但一些扩展很有用。</p>
-<h4 id="4-1-Partitoning-Function"><a href="#4-1-Partitoning-Function" class="headerlink" title="4.1 Partitoning Function"></a>4.1 Partitoning Function</h4><p>MapReduce 的用户指定他们想要的减少任务&#x2F;输出文件的数量 $(R)$。Data gets partitioned across these tasks using a partitioning function on the intermediate key. A default partitioning function is provided that uses hashing (e.g. “$hash(key) \mod R$”)。这往往会导致相当均衡的 partitions。但是，在某些情况下，some other function of the key 对数据进行分区是很有用的。例如，有时 the output keys 是 URLs，and 我们希望 a single host 的 all entries 最终都位于同一 output file 中。</p>
+<h4 id="4-1-Partitoning-Function"><a href="#4-1-Partitoning-Function" class="headerlink" title="4.1 Partitoning Function"></a>4.1 Partitoning Function</h4><p>MapReduce 的用户指定他们想要的减少任务/输出文件的数量 $(R)$。Data gets partitioned across these tasks using a partitioning function on the intermediate key. A default partitioning function is provided that uses hashing (e.g. “$hash(key) \mod R$”)。这往往会导致相当均衡的 partitions。但是，在某些情况下，some other function of the key 对数据进行分区是很有用的。例如，有时 the output keys 是 URLs，and 我们希望 a single host 的 all entries 最终都位于同一 output file 中。</p>
 <p>为了支持这种情况，MapReduce 库的用户可以提供 special partitioning function。例如，使用 “$hash(Hostname(urlkey))\mod R$” 作为 partitioning 函数会导致来自同一主机的所有 URLs 最终都位于同一输出文件中。</p>
-<h4 id="4-2-Ordering-Guarantees"><a href="#4-2-Ordering-Guarantees" class="headerlink" title="4.2 Ordering Guarantees"></a>4.2 Ordering Guarantees</h4><p>我们保证在给定分区中，中间键&#x2F;值对按递增键顺序处理。这种排序保证使得每个分区生成一个排序的输出文件变得容易，当输出文件格式需要支持按键进行高效的随机访问查找时，或者输出的用户发现对数据进行排序很方便时，很有用。</p>
-<h4 id="4-3-Combiner-Function"><a href="#4-3-Combiner-Function" class="headerlink" title="4.3 Combiner Function"></a>4.3 Combiner Function</h4><p>在某些情况下，每个 map 任务生成的 intermediate keys 都存在显著的重复，并且用户指定的 <code>Reduce</code> 函数是可交换和关联的。一个例子是字数统计示例。由于词频倾向于遵循 Zipf 分布，因此每个映射任务将生成数百或数千条 $&lt;the,1&gt;$ 形式的记录。所有这些计数将通过网络发送到单个 <code>reduce</code> 任务，然后通过 <code>Reduce</code> 函数相加以生成一个数字。我们允许用户指定一个可选的 <code>Combiner</code> 函数，该函数在通过网络发送数据之前对数据进行部分合并。</p>
+<h4 id="4-2-Ordering-Guarantees"><a href="#4-2-Ordering-Guarantees" class="headerlink" title="4.2 Ordering Guarantees"></a>4.2 Ordering Guarantees</h4><p>我们保证在给定分区中，中间键/值对按递增键顺序处理。这种排序保证使得每个分区生成一个排序的输出文件变得容易，当输出文件格式需要支持按键进行高效的随机访问查找时，或者输出的用户发现对数据进行排序很方便时，很有用。</p>
+<h4 id="4-3-Combiner-Function"><a href="#4-3-Combiner-Function" class="headerlink" title="4.3 Combiner Function"></a>4.3 Combiner Function</h4><p>在某些情况下，每个 map 任务生成的 intermediate keys 都存在显著的重复，并且用户指定的 <code>Reduce</code> 函数是可交换和关联的。一个例子是字数统计示例。由于词频倾向于遵循 Zipf 分布，因此每个映射任务将生成数百或数千条 $<the,1>$ 形式的记录。所有这些计数将通过网络发送到单个 <code>reduce</code> 任务，然后通过 <code>Reduce</code> 函数相加以生成一个数字。我们允许用户指定一个可选的 <code>Combiner</code> 函数，该函数在通过网络发送数据之前对数据进行部分合并。</the,1></p>
 <p><code>Combiner</code> 函数在每台执行 <code>map</code> 任务的计算机上执行。通常使用相同的代码来实现 <code>Combiner</code> 和 <code>reduce</code> 函数。<code>reduce</code> 函数和<code>Combiner</code> 函数之间的唯一区别是 MapReduce 库如何处理函数的输出。<code>reduce</code> 函数的输出将写入最终的输出文件。<code>Combiner</code> 函数的输出将写入将发送到 <code>reduce</code> 任务的中间文件。</p>
 <p><strong>Partial combining</strong> 显著加快了某些类别的 MapReduce 操作。附录 A 包含一个使用 <code>combiner</code> 的示例。</p>
 <h4 id="4-4-Input-and-Output-Types"><a href="#4-4-Input-and-Output-Types" class="headerlink" title="4.4 Input and Output Types"></a>4.4 Input and Output Types</h4><p>MapReduce 库支持以几种不同的格式读取输入数据。</p>
 <ul>
-<li>例如，“text” 模式输入将每行视为键&#x2F;值对：键是文件中的偏移量，值是行的内容。</li>
-<li>另一种常见的格式是存储按键排序的键&#x2F;值对序列。每个输入类型实现都知道如何将自身拆分为有意义的范围，以便作为单独的 <code>map</code> 任务进行处理（例如， text 模式的 range splitting 可确保 range splits 仅在行边界处发生）。</li>
+<li>例如，“text” 模式输入将每行视为键/值对：键是文件中的偏移量，值是行的内容。</li>
+<li>另一种常见的格式是存储按键排序的键/值对序列。每个输入类型实现都知道如何将自身拆分为有意义的范围，以便作为单独的 <code>map</code> 任务进行处理（例如， text 模式的 range splitting 可确保 range splits 仅在行边界处发生）。</li>
 </ul>
 <p>用户可以通过提供简单的 $x$ 接口的实现来添加对新输入类型的支持，尽管大多数用户只使用少量预定义输入类型中的一个。</p>
 <p>A <em>reader</em> 不一定需要提供从文件读取的数据。例如，很容易定义一个从数据库或内存中映射的数据结构读取记录的读取器。以类似的方式，我们支持一组输出类型来生成不同格式的数据，并且用户代码很容易添加对新输出类型的支持。</p>
-<h4 id="4-5-Side-effects"><a href="#4-5-Side-effects" class="headerlink" title="4.5 Side-effects"></a>4.5 Side-effects</h4><p>在某些情况下，MapReduce 的用户发现从他们的 <code>map</code> 和&#x2F;或 <code>reduce</code> 运算符生成辅助文件作为附加输出很方便。我们依靠应用程序编写器使这种副作用具有原子性和幂等性。通常，应用程序会写入临时文件，并在完全生成此文件后以原子方式重命名该文件。</p>
+<h4 id="4-5-Side-effects"><a href="#4-5-Side-effects" class="headerlink" title="4.5 Side-effects"></a>4.5 Side-effects</h4><p>在某些情况下，MapReduce 的用户发现从他们的 <code>map</code> 和/或 <code>reduce</code> 运算符生成辅助文件作为附加输出很方便。我们依靠应用程序编写器使这种副作用具有原子性和幂等性。通常，应用程序会写入临时文件，并在完全生成此文件后以原子方式重命名该文件。</p>
 <p>我们不为单个任务生成的多个输出文件的 atomic two-phase commits 提供支持。因此，生成具有跨文件一致性要求的多个输出文件的任务应具有确定性。这种限制在实践中从来都不是问题。</p>
 <h4 id="4-6-Skipping-Bad-Records"><a href="#4-6-Skipping-Bad-Records" class="headerlink" title="4.6 Skipping Bad Records"></a>4.6 Skipping Bad Records</h4><p>有时，用户代码中存在一些错误，导致 <code>Map</code> 或 <code>Reduce</code> 函数在某些记录上确定性地崩溃。这样的错误会阻止MapReduce 操作完成。通常的操作过程是修复错误，但有时这是不可行的；也许该错误位于源代码不可用的第三方库中。此外，有时忽略一些记录是可以接受的，例如在对大型数据集进行统计分析时。我们提供了一种可选的执行模式，其中 MapReduce 库检测哪些记录会导致确定性崩溃并跳过这些记录以 make forward progress.</p>
 <p>每个 <code>worker</code> 进程都安装一个 signal handler，用于捕获 segmentation violations 和 bus errors。在调用 User <code>Map</code> 或 <code>Reduce</code> 操作之前，MapReduce 库将参数的序列号存储在全局变量中。如果用户代码生成信号，信号处理程序会向MapReduce master 发送包含序列号的 “last gasp” UDP packet。当 mater 在特定记录上看到多个故障时，它指示在发出相应的 Map 或 Reduce 任务的下一次重新执行时应跳过该记录。</p>
@@ -497,12 +504,11 @@
 <h4 id="4-8-Status-Information"><a href="#4-8-Status-Information" class="headerlink" title="4.8 Status Information"></a>4.8 Status Information</h4><p>master 运行一个 internal HTTP 服务器，并导出一组状态页面供用户使用。状态页面 status pages 显示计算进度，例如已完成的任务数、正在进行的任务数、输入字节数、中间数据字节数、输出字节数、处理速率等。这些页面还包含指向每个任务生成的标准错误和标准输出文件的链接。用户可以使用此数据来预测计算将花费多长时间，以及是否应向计算添加更多资源。这些页面还可用于确定计算速度何时比预期的慢得多。</p>
 <p>此外，top-level status page  显示哪些 <code>worker</code> 已 failed，以及他们在 fail 时正在处理的 <code>map/reduce</code> 任务。在尝试诊断用户代码中的 bug 时，此信息非常有用。</p>
 <h4 id="4-9-Counters"><a href="#4-9-Counters" class="headerlink" title="4.9 Counters"></a>4.9 Counters</h4><p>MapReduce库提供了一个计数器工具来计算各种事件的发生次数。例如，用户代码可能希望计算处理的单词总数或索引的德语文档数等。</p>
-<p>若要使用此工具，用户代码将创建一个命名的计数器对象，然后在 Map 和&#x2F;或 Reduce 函数中相应地递增该计数器。例如：</p>
+<p>若要使用此工具，用户代码将创建一个命名的计数器对象，然后在 Map 和/或 Reduce 函数中相应地递增该计数器。例如：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Counter* uppercase;</span><br><span class="line">uppercase = GetCounter(<span class="string">&quot;uppercase&quot;</span>);</span><br><span class="line">map(String name, String contents):</span><br><span class="line">  <span class="keyword">for</span> each word w in contents:</span><br><span class="line">    <span class="keyword">if</span> (IsCapitalized(w)):</span><br><span class="line">      uppercase-&gt;Increment();</span><br><span class="line">    EmitIntermediate(w, <span class="string">&quot;1&quot;</span>);</span><br></pre></td></tr></table></figure>
-
 <p>来自单个工作计算机的计数器值定期传播到 master （piggybacked on the ping response）。主节点聚合成功 <code>map</code> 和 <code>reduce</code> 任务中的计数器值，并在 MapReduce 操作完成时将其返回到用户代码。当前计数器值也显示在主状态页面上，以便用户可以观察实时计算的进度。聚合计数器值时，master 会消除重复执行同一 map 或 reduce 任务的影响，以避免重复计数。（重复执行可能源于我们对备份任务的使用以及由于故障而重新执行任务。）</p>
 <blockquote>
-<p>一些计数器值由 MapReduce 库自动维护，例如处理的输入键&#x2F;值对的数量和生成的输出键&#x2F;值对的数量。</p>
+<p>一些计数器值由 MapReduce 库自动维护，例如处理的输入键/值对的数量和生成的输出键/值对的数量。</p>
 </blockquote>
 <p>用户发现计数器工具对于检查 MapReduce 操作行为的健全性非常有用。</p>
 <blockquote>
@@ -523,17 +529,17 @@
 <li>另一个计算对大约 1TB 的数据进行排序</li>
 </ul>
 <h4 id="5-1-Cluster-Configuration"><a href="#5-1-Cluster-Configuration" class="headerlink" title="5.1 Cluster Configuration"></a>5.1 Cluster Configuration</h4><p>所有程序都在由大约 1800 台计算机组成的集群上执行。每个机器都有两个启用了 Hyper-Threading 的 2GHz 英特尔至强处理器，4GB 内存，两个 160GB IDE 磁盘和一个千兆以太网link。这些机器被安排在一个两级树形交换网络中，根目录下可用的总带宽约为 100-200 Gbps。所有机器都在同一托管设施中，因此任何一对机器之间的往返时间不到一毫秒。在 4GB 内存中，大约 1-1.5GB 是由群集上运行的其他任务保留的。这些程序在周末下午执行，当时CPU，磁盘和网络大多处于空闲状态。</p>
-<h4 id="5-2-Grep"><a href="#5-2-Grep" class="headerlink" title="5.2 Grep"></a>5.2 Grep</h4><p><code>grep</code> 程序扫描 1010 条 $100-byte$ 记录，搜索相对罕见的三字符模式（该模式出现在 $92,337$ 条记录中）。输入被拆分为大约 64MB 的片段 $(M &#x3D; 15000)$，全部输出被放置在一个文件 $(R&#x3D;1)$  中。</p>
+<h4 id="5-2-Grep"><a href="#5-2-Grep" class="headerlink" title="5.2 Grep"></a>5.2 Grep</h4><p><code>grep</code> 程序扫描 1010 条 $100-byte$ 记录，搜索相对罕见的三字符模式（该模式出现在 $92,337$ 条记录中）。输入被拆分为大约 64MB 的片段 $(M = 15000)$，全部输出被放置在一个文件 $(R=1)$  中。</p>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/01/6.824_mapreduce/figure2.png" alt="figure2"></p>
-<p>图显示了计算随时间推移的进度。Y 轴显示扫描输入数据的速率。随着更多的机器被分配到这个 MapReduce 计算，速率逐渐回升，当分配了 1764 个 worker 时，速率的峰值超过 30 GB &#x2F; s。当 map 任务完成时，速率开始下降，并在计算中大约 80 秒处达到零。整个计算从开始到结束大约需要 150 秒。这包括大约一分钟的启动开销。开销是由于程序传播到所有 woker 机器，以及与 GFS 交互以打开 1000 个输入文件集和获取局部性优化所需信息的延迟。</p>
+<p>图显示了计算随时间推移的进度。Y 轴显示扫描输入数据的速率。随着更多的机器被分配到这个 MapReduce 计算，速率逐渐回升，当分配了 1764 个 worker 时，速率的峰值超过 30 GB / s。当 map 任务完成时，速率开始下降，并在计算中大约 80 秒处达到零。整个计算从开始到结束大约需要 150 秒。这包括大约一分钟的启动开销。开销是由于程序传播到所有 woker 机器，以及与 GFS 交互以打开 1000 个输入文件集和获取局部性优化所需信息的延迟。</p>
 <h4 id="5-3-Sort"><a href="#5-3-Sort" class="headerlink" title="5.3 Sort"></a>5.3 Sort</h4><p>排序程序对 1010 条 100-bytes 记录（大约 1TB 的数据）进行排序。该程序以 TeraSort 基准测试为蓝本。</p>
-<p>排序程序由少于 50 行的用户代码组成。三行 Map 函数从文本行中提取 10-bytes 排序键，并将该键和原始文本行作为中间键&#x2F;值对发出。我们使用内置的 identifty 函数作为 reduce 运算符。此函数将中间键&#x2F;值对作为输出键&#x2F;值对传递，保持不变。最终的排序输出被写入一组双向复制的 GFS 文件（i.e. 2TB 被写入为程序的输出）。</p>
-<p>与之前一样，输入数据被拆分为 64MB 的片段 $(M&#x3D;15000)$。我们将排序后的输出划分为 4000 个文件 $(R&#x3D;4000)$。分区函数使用密钥的初始字节将其隔离为 $R$ 的片段之一。</p>
+<p>排序程序由少于 50 行的用户代码组成。三行 Map 函数从文本行中提取 10-bytes 排序键，并将该键和原始文本行作为中间键/值对发出。我们使用内置的 identifty 函数作为 reduce 运算符。此函数将中间键/值对作为输出键/值对传递，保持不变。最终的排序输出被写入一组双向复制的 GFS 文件（i.e. 2TB 被写入为程序的输出）。</p>
+<p>与之前一样，输入数据被拆分为 64MB 的片段 $(M=15000)$。我们将排序后的输出划分为 4000 个文件 $(R=4000)$。分区函数使用密钥的初始字节将其隔离为 $R$ 的片段之一。</p>
 <p>我们针对此基准测试的分区功能内置了密钥分布知识。在常规排序程序中，我们将添加一个 pre-pass MapReduce 操作，该操作将收集键的样本，并使用 samples of the keys 的分布来计算最终排序传递的 split-points。</p>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/01/6.824_mapreduce/figure3.png" alt="figure3"></p>
-<p>Figure 3 (a) shows the progress of a normal execution of the sort program. The top-left graph shows the rate at which input is read. The rate peaks at about 13 GB&#x2F;s and dies off fairly quickly since all map tasks finish be- fore 200 seconds have elapsed. Note that the input rate is less than for grep. This is because the sort map tasks spend about half their time and I&#x2F;O bandwidth writing in- termediate output to their local disks. The corresponding intermediate output for grep had negligible size.</p>
+<p>Figure 3 (a) shows the progress of a normal execution of the sort program. The top-left graph shows the rate at which input is read. The rate peaks at about 13 GB/s and dies off fairly quickly since all map tasks finish be- fore 200 seconds have elapsed. Note that the input rate is less than for grep. This is because the sort map tasks spend about half their time and I/O bandwidth writing in- termediate output to their local disks. The corresponding intermediate output for grep had negligible size.</p>
 <p>The middle-left graph shows the rate at which data is sent over the network from the map tasks to the re- duce tasks. This shuffling starts as soon as the first map task completes. The first hump in the graph is for the first batch of approximately 1700 reduce tasks (the entire MapReduce was assigned about 1700 machines, and each machine executes at most one reduce task at a time). Roughly 300 seconds into the computation, some of these first batch of reduce tasks finish and we start shuffling data for the remaining reduce tasks. All of the shuffling is done about 600 seconds into the computation.</p>
-<p>The bottom-left graph shows the rate at which sorted data is written to the final output files by the reduce tasks. There is a delay between the end of the first shuffling pe- riod and the start of the writing period because the ma- chines are busy sorting the intermediate data. The writes continue at a rate of about 2-4 GB&#x2F;s for a while. All of the writes finish about 850 seconds into the computation. Including startup overhead, the entire computation takes 891 seconds. This is similar to the current best reported result of 1057 seconds for the TeraSort benchmark [18].</p>
+<p>The bottom-left graph shows the rate at which sorted data is written to the final output files by the reduce tasks. There is a delay between the end of the first shuffling pe- riod and the start of the writing period because the ma- chines are busy sorting the intermediate data. The writes continue at a rate of about 2-4 GB/s for a while. All of the writes finish about 850 seconds into the computation. Including startup overhead, the entire computation takes 891 seconds. This is similar to the current best reported result of 1057 seconds for the TeraSort benchmark [18].</p>
 <p>A few things to note: the input rate is higher than the shuffle rate and the output rate because of our locality optimization – most data is read from a local disk and bypasses our relatively bandwidth constrained network. The shuffle rate is higher than the output rate because the output phase writes two copies of the sorted data (we make two replicas of the output for reliability and avail- ability reasons). We write two replicas because that is the mechanism for reliability and availability provided by our underlying file system. Network bandwidth re- quirements for writing data would be reduced if the un- derlying file system used erasure coding [14] rather than replication.</p>
 <h4 id="5-4-Effect-of-Backup-Tasks"><a href="#5-4-Effect-of-Backup-Tasks" class="headerlink" title="5.4 Effect of Backup Tasks"></a>5.4 Effect of Backup Tasks</h4><p>In Figure 3(b), we show an execution of the sort pro- gram with backup tasks disabled. The execution flow is similar to that shown in Figure 3 (a), except that there is a very long tail where hardly any write activity occurs. After 960 seconds, all except 5 of the reduce tasks are completed. However these last few stragglers don’t fin- ish until 300 seconds later. The entire computation takes 1283 seconds, an increase of 44% in elapsed time.</p>
 <h4 id="5-5-Machine-Failures"><a href="#5-5-Machine-Failures" class="headerlink" title="5.5 Machine Failures"></a>5.5 Machine Failures</h4><p>In Figure 3 (c), we show an execution of the sort program where we intentionally killed 200 out of 1746 worker processes several minutes into the computation. The underlying cluster scheduler immediately restarted new worker processes on these machines (since only the pro- cesses were killed, the machines were still functioning properly).</p>
@@ -547,7 +553,7 @@
 <li>• large-scale graph computations.</li>
 </ul>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/01/6.824_mapreduce/figure4.png" alt="figure4"></p>
-<p>Figure 4 shows the significant growth in the number of separate MapReduce programs checked into our primary source code management system over time, from 0 in early 2003 to almost 900 separate instances as of late September 2004. MapReduce has been so successful be- cause it makes it possible to write a simple program and run it efficiently on a thousand machines in the course of half an hour, greatly speeding up the development and prototyping cycle. Furthermore, it allows programmers who have no experience with distributed and&#x2F;or parallel systems to exploit large amounts of resources easily.</p>
+<p>Figure 4 shows the significant growth in the number of separate MapReduce programs checked into our primary source code management system over time, from 0 in early 2003 to almost 900 separate instances as of late September 2004. MapReduce has been so successful be- cause it makes it possible to write a simple program and run it efficiently on a thousand machines in the course of half an hour, greatly speeding up the development and prototyping cycle. Furthermore, it allows programmers who have no experience with distributed and/or parallel systems to exploit large amounts of resources easily.</p>
 <p>At the end of each job, the MapReduce library logs statistics about the computational resources used by the job. In Table 1, we show some statistics for a subset of MapReduce jobs run at Google in August 2004.</p>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/07/01/6.824_mapreduce/table1.png" alt="table1"></p>
 <h4 id="6-1-Large-Scale-Indexing"><a href="#6-1-Large-Scale-Indexing" class="headerlink" title="6.1 Large-Scale Indexing"></a>6.1 Large-Scale Indexing</h4><p>One of our most significant uses of MapReduce to date has been a complete rewrite of the production index-ing system that produces the data structures used for the Google web search service. The indexing system takes as input a large set of documents that have been retrieved by our crawling system, stored as a set of GFS files. The raw contents for these documents are more than 20 ter- abytes of data. The indexing process runs as a sequence of five to ten MapReduce operations. Using MapReduce (instead of the ad-hoc distributed passes in the prior version of the indexing system) has provided several benefits:</p>
@@ -558,7 +564,7 @@
 </ul>
 <h3 id="7-Related-Work"><a href="#7-Related-Work" class="headerlink" title="7 Related Work"></a>7 Related Work</h3><p>Many systems have provided restricted programming models and used the restrictions to parallelize the com- putation automatically. For example, an associative func- tion can be computed over all prefixes of an N element array in log N time on N processors using parallel prefix computations [6, 9, 13]. MapReduce can be considered a simplification and distillation of some of these models based on our experience with large real-world compu- tations. More significantly, we provide a fault-tolerant implementation that scales to thousands of processors. In contrast, most of the parallel processing systems have only been implemented on smaller scales and leave the details of handling machine failures to the programmer.</p>
 <p>Bulk Synchronous Programming [17] and some MPI primitives [11] provide higher-level abstractions that make it easier for programmers to write parallel pro- grams. A key difference between these systems and MapReduce is that MapReduce exploits a restricted pro- gramming model to parallelize the user program auto- matically and to provide transparent fault-tolerance.</p>
-<p>Our locality optimization draws its inspiration from techniques such as active disks [12, 15], where compu- tation is pushed into processing elements that are close to local disks, to reduce the amount of data sent across I&#x2F;O subsystems or the network. We run on commodity processors to which a small number of disks are directly connected instead of running directly on disk controller processors, but the general approach is similar.</p>
+<p>Our locality optimization draws its inspiration from techniques such as active disks [12, 15], where compu- tation is pushed into processing elements that are close to local disks, to reduce the amount of data sent across I/O subsystems or the network. We run on commodity processors to which a small number of disks are directly connected instead of running directly on disk controller processors, but the general approach is similar.</p>
 <p>Our backup task mechanism is similar to the eager scheduling mechanism employed in the Charlotte Sys- tem [3]. One of the shortcomings of simple eager scheduling is that if a given task causes repeated failures, the entire computation fails to complete. We fix some in- stances of this problem with our mechanism for skipping bad records.</p>
 <p>The MapReduce implementation relies on an in-house cluster management system that is responsible for dis- tributing and running user tasks on a large collection of shared machines. Though not the focus of this paper, the cluster management system is similar in spirit to other systems such as Condor [16].</p>
 <p>The sorting facility that is a part of the MapReduce library is similar in operation to NOW-Sort [1]. Source machines (map workers) partition the data to be sorted and send it to one of R reduce workers. Each reduce worker sorts its data locally (in memory if possible). Of course NOW-Sort does not have the user-definable Map and Reduce functions that make our library widely applicable.</p>
@@ -575,7 +581,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/06/30/coursera-ANALYSIS%20OF%20ALGORITHMS/">coursera 1.4 ANALYSIS OF ALGORITHMS<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/07/01/6.824-GFS/">6.824 GFS<span class="note">Newer</span></a></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/06/30/coursera-ANALYSIS%20OF%20ALGORITHMS/">coursera 1.4 ANALYSIS OF ALGORITHMS<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/07/01/6.824-RPC&Threads/">6.824 RPC & Threads<span class="note">Newer</span></a></section></div>
 
 
 
