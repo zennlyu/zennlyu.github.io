@@ -117,6 +117,10 @@ convenient RPC
 type- and memory- safe
 garbage-collected (no use after freeing problems)
 threads + GC is particularly attra...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-07-01T03:27:15.342Z">2022-07-01</time></span><span class="cap breadcrumb">distributed system</span></div></article>
+</a><a class="post-card post " href="/2022/07/01/6.824-GFS/">
+<article class="md"><h2 class="post-title">6.824 GFS</h2><div class="excerpt"><p>Google File SystemPaper0 ABSTRACT适用于大型分布式数据密集型应用的可扩展分布式文件系统。它在廉价的商用硬件上运行的同时提供容错能力，并为大量客户端提供高聚合性能。
+在本文中，我们介绍了旨在支持分布式应用程序的文件系统接口扩展，讨论了我们设计的许多方面，并报告了微基准测试和实际使用的测量结果。
+1 INTRODUCTION性能、可扩展性、可靠性和可用性。但是，设...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-07-01T03:27:15.342Z">2022-07-01</time></span><span class="cap breadcrumb">distributed system</span></div></article>
 </a><a class="post-card post " href="/2022/07/01/6.824_mapreduce/">
 <article class="md"><h2 class="post-title">6.824 MapReduce</h2><div class="excerpt"><p>MapReduceLecture 1Labs
 Lab 1: MapReduce
@@ -125,10 +129,6 @@ Lab 3: fault-tolerant key&#x2F;value store
 Lab 4: sharded key&#x2F;value store
 
 Main TopicsThis is a course...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-07-01T03:27:15.342Z">2022-07-01</time></span><span class="cap breadcrumb">distributed system</span></div></article>
-</a><a class="post-card post " href="/2022/07/01/6.824-GFS/">
-<article class="md"><h2 class="post-title">6.824 GFS</h2><div class="excerpt"><p>Google File SystemPaper0 ABSTRACT适用于大型分布式数据密集型应用的可扩展分布式文件系统。它在廉价的商用硬件上运行的同时提供容错能力，并为大量客户端提供高聚合性能。
-在本文中，我们介绍了旨在支持分布式应用程序的文件系统接口扩展，讨论了我们设计的许多方面，并报告了微基准测试和实际使用的测量结果。
-1 INTRODUCTION性能、可扩展性、可靠性和可用性。但是，设...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-07-01T03:27:15.342Z">2022-07-01</time></span><span class="cap breadcrumb">distributed system</span></div></article>
 </a><a class="post-card post " href="/2022/06/30/coursera-ANALYSIS%20OF%20ALGORITHMS/">
 <article class="md"><h2 class="post-title">coursera 1.4 ANALYSIS OF ALGORITHMS</h2><div class="excerpt"><p>‣ IntroductionStake holder
 Programmer
@@ -175,14 +175,6 @@ Union command: connect two objects.
 Find&#x2F;connected query: is there a path connecting the two objects?
 
 Modeling the objectsApplications involve ...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-30T05:07:59.037Z">2022-06-30</time></span><span class="cap breadcrumb">algorithms</span></div></article>
-</a><a class="post-card post " href="/2022/06/13/CSAPP-Ch03%20Machine%20Level/">
-<article class="md"><h2 class="post-title">CSAPP-03 Machine Level Programming</h2><div class="excerpt"><p>1 历史观点2 程序编码1linux&gt; gcc -Og -o p p1.c p2.c
-
-实际上 gcc 命令调用了一整套的程序，将源代码转化成可执行代码。
-
-首先，C 预处理器扩展源代码，插入所有用#include 命令指定的文件，并扩展所有用#define 声明指定的宏。
-其次，编译器产生两个源文件的汇编代码，名字分别为 P1. S 和 p2. S。
-接下来，汇编器会将汇编代码转化成...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-13T05:25:58.062Z">2022-06-13</time></span><span class="cap breadcrumb">csapp</span></div></article>
 </a><a class="post-card post " href="/2022/06/13/CSAPP-Ch02_Bits/">
 <article class="md"><h2 class="post-title">CSAPP-Ch02_Bits & Bytes & Integer & Floating Point</h2><div class="excerpt"><p>3种重要的数字表示：
 
@@ -191,6 +183,14 @@ two’s complement
 floating point
 
 阅读技巧：首先给出以数学形式表示的属性，作为原理。然后，用例子和非形式化的讨论来解释这个原理。我们建议你反复阅读原理描述和它的示例与讨论，直到你对该属性的说明内容及其重要性有了牢固的直觉。对于更加复杂的属性，还会提供推导，其结构看上去将会像一个数学证明。虽然最终你应该尝试理解这些推导，...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-13T05:25:58.062Z">2022-06-13</time></span><span class="cap breadcrumb">csapp</span></div></article>
+</a><a class="post-card post " href="/2022/06/13/CSAPP-Ch03%20Machine%20Level/">
+<article class="md"><h2 class="post-title">CSAPP-03 Machine Level Programming</h2><div class="excerpt"><p>1 历史观点2 程序编码1linux&gt; gcc -Og -o p p1.c p2.c
+
+实际上 gcc 命令调用了一整套的程序，将源代码转化成可执行代码。
+
+首先，C 预处理器扩展源代码，插入所有用#include 命令指定的文件，并扩展所有用#define 声明指定的宏。
+其次，编译器产生两个源文件的汇编代码，名字分别为 P1. S 和 p2. S。
+接下来，汇编器会将汇编代码转化成...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-06-13T05:25:58.062Z">2022-06-13</time></span><span class="cap breadcrumb">csapp</span></div></article>
 </a></div>
   
   <div class='paginator-wrap dis-select'>
