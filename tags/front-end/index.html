@@ -18,12 +18,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>Categories - zennlyu</title>
+  <title>Tag: front-end - zennlyu</title>
 
   
     <meta property="og:type" content="website">
-<meta property="og:title" content="Categories">
-<meta property="og:url" content="http://example.com/categories/index.html">
+<meta property="og:title" content="zennlyu">
+<meta property="og:url" content="http://example.com/tags/front-end/index.html">
 <meta property="og:site_name" content="zennlyu">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="zennlyu">
@@ -53,7 +53,7 @@
 
 
   <div class='l_body' id='start'>
-    <aside class='l_left' layout='categories'>
+    <aside class='l_left' layout=''>
     
 
 
@@ -85,7 +85,8 @@
       
 
   
-  
+
+
   <div class='nav-wrap'>
   <nav class='sub post cap'>
     
@@ -93,12 +94,12 @@
     
     
       
-        <a class='active' href='/categories'>Categories</a>
+        <a href='/categories'>Categories</a>
       
     
     
       
-        <a href='/tags'>Tags</a>
+        <a class='active' href='/tags'>Tag: front-end</a>
       
     
     
@@ -109,67 +110,28 @@
   </nav>
 </div>
 
-  <div class='post-list'>
-    <article class='' id='cats'>
-      
-        <div>
-          <a class="cat" href="/categories/Hacks/">
-            <span class='name'>Hacks</span>
-            <span class='badge'>(1)</span>
-          </a>
-        </div>
-      
-        <div>
-          <a class="cat" href="/categories/algorithms/">
-            <span class='name'>algorithms</span>
-            <span class='badge'>(4)</span>
-          </a>
-        </div>
-      
-        <div>
-          <a class="cat" href="/categories/csapp/">
-            <span class='name'>csapp</span>
-            <span class='badge'>(6)</span>
-          </a>
-        </div>
-      
-        <div>
-          <a class="cat" href="/categories/devtools/">
-            <span class='name'>devtools</span>
-            <span class='badge'>(2)</span>
-          </a>
-        </div>
-      
-        <div>
-          <a class="cat" href="/categories/distributed-system/">
-            <span class='name'>distributed system</span>
-            <span class='badge'>(4)</span>
-          </a>
-        </div>
-      
-        <div>
-          <a class="cat" href="/categories/front-end/">
-            <span class='name'>front-end</span>
-            <span class='badge'>(4)</span>
-          </a>
-        </div>
-      
-        <div>
-          <a class="cat" href="/categories/java-backend/">
-            <span class='name'>java backend</span>
-            <span class='badge'>(1)</span>
-          </a>
-        </div>
-      
-        <div>
-          <a class="cat" href="/categories/operating-system/">
-            <span class='name'>operating system</span>
-            <span class='badge'>(3)</span>
-          </a>
-        </div>
-      
-    </article>
-  </div>
+  <div class="post-list post"><a class="post-card post " href="/2022/07/13/ES6-1/">
+<article class="md"><h2 class="post-title">ES6 标准 - 1</h2><div class="excerpt"><p>let&#x2F;constlet命令只在let命令所在的代码块内有效。for循环的计数器，就很合适使用let命令。
+1234567891011&#123;	let a = 10;	var b = 1;	&#125;a // ReferenceError: a is not defined.b // 1var a = [];for (var/let i = 0; i &lt; 10; i++...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-07-13T07:47:34.906Z">2022-07-13</time></span><span class="cap breadcrumb">front-end</span></div></article>
+</a><a class="post-card post " href="/2022/07/13/ES6-2/">
+<article class="md"><h2 class="post-title">ES6 标准 - 2</h2><div class="excerpt"><p>ES6 字符串的扩展ES6加强了对Unicode的支持，并且扩展了字符串对象。
+字符的Unicode表示法JavaScript允许采用\uxxxx形式表示一个字符，其中“xxxx”表示字符的码点。
+12&quot;\u0061&quot;// &quot;a&quot;
+
+但是，这种表示法只限于\u0000——\uFFFF之间的字符。超出这个范围的字符，必须用两个双字节的形式表达。
+1234...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-07-13T07:47:34.906Z">2022-07-13</time></span><span class="cap breadcrumb">front-end</span></div></article>
+</a><a class="post-card post " href="/2022/07/13/ES6-3/">
+<article class="md"><h2 class="post-title">ES6 标准 - 3</h2><div class="excerpt"><p>ES6 symbol概述ES5的对象属性名都是字符串，这容易造成属性名的冲突。比如，你使用了一个他人提供的对象，但又想为这个对象添加新的方法（mixin模式），新方法的名字就有可能与现有方法产生冲突。如果有一种机制，保证每个属性的名字都是独一无二的就好了，这样就从根本上防止属性名的冲突。这就是ES6引入Symbol的原因。
+ES6引入了一种新的原始数据类型Symbol，表示独一无二的值。它是...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-07-13T07:47:34.906Z">2022-07-13</time></span><span class="cap breadcrumb">front-end</span></div></article>
+</a><a class="post-card post " href="/2022/07/13/ES6-4/">
+<article class="md"><h2 class="post-title">ES6 标准 - 4</h2><div class="excerpt"><p>ES6 Generator 函数简介基本概念Generator函数是ES6提供的一种异步编程解决方案，语法行为与传统函数完全不同。本章详细介绍Generator函数的语法和API，它的异步编程应用请看《异步操作》一章。
+Generator函数有多种理解角度。从语法上，首先可以把它理解成，Generator函数是一个状态机，封装了多个内部状态。
+执行Generator函数会返回一个遍历器对象，...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-07-13T07:47:34.906Z">2022-07-13</time></span><span class="cap breadcrumb">front-end</span></div></article>
+</a></div>
+  
+
+
+
 
 
       
