@@ -18,12 +18,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>6.824 MapReduce - zennlyu</title>
+  <title>6.824 W1 MapReduce, RPC & threads - zennlyu</title>
 
   
     <meta name="description" content="MapReduceLecture 1Labs Lab 1: MapReduce Lab 2: replication for fault-tolerance using Raft Lab 3: fault-tolerant key&#x2F;value store Lab 4: sharded key&#x2F;value store  Main TopicsThis is a course about infras">
 <meta property="og:type" content="article">
-<meta property="og:title" content="6.824 MapReduce">
+<meta property="og:title" content="6.824 W1 MapReduce, RPC &amp; threads">
 <meta property="og:url" content="http://example.com/2022/07/01/6.824_mapreduce/index.html">
 <meta property="og:site_name" content="zennlyu">
 <meta property="og:description" content="MapReduceLecture 1Labs Lab 1: MapReduce Lab 2: replication for fault-tolerance using Raft Lab 3: fault-tolerant key&#x2F;value store Lab 4: sharded key&#x2F;value store  Main TopicsThis is a course about infras">
@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://example.com/2022/07/01/6.824_mapreduce/figure4.png">
 <meta property="og:image" content="http://example.com/2022/07/01/6.824_mapreduce/table1.png">
 <meta property="article:published_time" content="2022-07-01T03:27:15.342Z">
-<meta property="article:modified_time" content="2022-07-07T05:12:57.453Z">
+<meta property="article:modified_time" content="2022-07-23T13:39:01.595Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="6.824">
 <meta name="twitter:card" content="summary">
@@ -77,7 +77,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-1"><span class="toc-text">Lecture 1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Labs"><span class="toc-text">Labs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Main-Topics"><span class="toc-text">Main Topics</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-implementation"><span class="toc-text">Topic: implementation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-performance"><span class="toc-text">Topic: performance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-fault-tolerance"><span class="toc-text">Topic: fault tolerance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-consistency"><span class="toc-text">Topic: consistency</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-STUDY-MapReduce"><span class="toc-text">CASE STUDY: MapReduce</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-overview"><span class="toc-text">MapReduce overview</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Abstract-view-of-a-MapReduce-job"><span class="toc-text">Abstract view of a MapReduce job</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-scales-well"><span class="toc-text">MapReduce scales well:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-hides-many-details"><span class="toc-text">MapReduce hides many details:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#However-MapReduce-limits-what-apps-can-do"><span class="toc-text">However, MapReduce limits what apps can do:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Input-and-output-are-stored-on-the-GFS-cluster-file-system"><span class="toc-text">Input and output are stored on the GFS cluster file system</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#What-will-likely-limit-the-performance"><span class="toc-text">What will likely limit the performance?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Some-details-paper%E2%80%99s-Figure-1"><span class="toc-text">Some details (paper’s Figure 1):</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#How-does-MR-minimize-network-use"><span class="toc-text">How does MR minimize network use?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#How-does-MR-get-good-load-balance"><span class="toc-text">How does MR get good load balance?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#What-about-fault-tolerance"><span class="toc-text">What about fault tolerance?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Details-of-worker-crash-recovery"><span class="toc-text">Details of worker crash recovery:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Other-failures-problems"><span class="toc-text">Other failures&#x2F;problems:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Current-status"><span class="toc-text">Current status?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Conclusion"><span class="toc-text">Conclusion</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce-Paper-Read"><span class="toc-text">MapReduce Paper Read</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0-Abstract"><span class="toc-text">0 Abstract</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Introduction"><span class="toc-text">1 Introduction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Programming-Model"><span class="toc-text">2 Programming Model</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-Counting-Word"><span class="toc-text">2.1 Counting Word</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-Types"><span class="toc-text">2.2 Types</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-More-Examples"><span class="toc-text">2.3 More Examples</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Implementation"><span class="toc-text">3 Implementation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-Execution-Overview"><span class="toc-text">3.1 Execution Overview</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-Master-Data-Structure"><span class="toc-text">3.2 Master Data Structure</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-Fault-Tolerance"><span class="toc-text">3.3 Fault Tolerance</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#woker-failure"><span class="toc-text">woker failure</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#master-failure"><span class="toc-text">master failure</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#semantics-in-the-presence-of-failure"><span class="toc-text">semantics in the presence of failure</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-Locality"><span class="toc-text">3.4 Locality</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-Task-Granularity"><span class="toc-text">3.5 Task Granularity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-Backup-Tasks"><span class="toc-text">3.6 Backup Tasks</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%80%9Cstraggler%E2%80%9D%EF%BC%9A"><span class="toc-text">“straggler”：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Alleviation-%E9%80%9A%E7%94%A8%E6%9C%BA%E5%88%B6%EF%BC%9A"><span class="toc-text">Alleviation 通用机制：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Refinement"><span class="toc-text">4 Refinement</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-Partitoning-Function"><span class="toc-text">4.1 Partitoning Function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-Ordering-Guarantees"><span class="toc-text">4.2 Ordering Guarantees</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-Combiner-Function"><span class="toc-text">4.3 Combiner Function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-Input-and-Output-Types"><span class="toc-text">4.4 Input and Output Types</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-Side-effects"><span class="toc-text">4.5 Side-effects</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-6-Skipping-Bad-Records"><span class="toc-text">4.6 Skipping Bad Records</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-7-Local-Execution"><span class="toc-text">4.7 Local Execution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-8-Status-Information"><span class="toc-text">4.8 Status Information</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-9-Counters"><span class="toc-text">4.9 Counters</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Performance"><span class="toc-text">5 Performance</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-Cluster-Configuration"><span class="toc-text">5.1 Cluster Configuration</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-Grep"><span class="toc-text">5.2 Grep</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-Sort"><span class="toc-text">5.3 Sort</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-Effect-of-Backup-Tasks"><span class="toc-text">5.4 Effect of Backup Tasks</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-5-Machine-Failures"><span class="toc-text">5.5 Machine Failures</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Experience"><span class="toc-text">6 Experience</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-Large-Scale-Indexing"><span class="toc-text">6.1 Large-Scale Indexing</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Related-Work"><span class="toc-text">7 Related Work</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-Conclusions"><span class="toc-text">8 Conclusions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Acknowledgements"><span class="toc-text">Acknowledgements</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lab"><span class="toc-text">Lab</span></a></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-1"><span class="toc-text">Lecture 1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Labs"><span class="toc-text">Labs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Main-Topics"><span class="toc-text">Main Topics</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-implementation"><span class="toc-text">Topic: implementation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-performance"><span class="toc-text">Topic: performance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-fault-tolerance"><span class="toc-text">Topic: fault tolerance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Topic-consistency"><span class="toc-text">Topic: consistency</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-STUDY-MapReduce"><span class="toc-text">CASE STUDY: MapReduce</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-overview"><span class="toc-text">MapReduce overview</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Abstract-view-of-a-MapReduce-job"><span class="toc-text">Abstract view of a MapReduce job</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-scales-well"><span class="toc-text">MapReduce scales well:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-hides-many-details"><span class="toc-text">MapReduce hides many details:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#However-MapReduce-limits-what-apps-can-do"><span class="toc-text">However, MapReduce limits what apps can do:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Input-and-output-are-stored-on-the-GFS-cluster-file-system"><span class="toc-text">Input and output are stored on the GFS cluster file system</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#What-will-likely-limit-the-performance"><span class="toc-text">What will likely limit the performance?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Some-details-paper%E2%80%99s-Figure-1"><span class="toc-text">Some details (paper’s Figure 1):</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#How-does-MR-minimize-network-use"><span class="toc-text">How does MR minimize network use?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#How-does-MR-get-good-load-balance"><span class="toc-text">How does MR get good load balance?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#What-about-fault-tolerance"><span class="toc-text">What about fault tolerance?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Details-of-worker-crash-recovery"><span class="toc-text">Details of worker crash recovery:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Other-failures-problems"><span class="toc-text">Other failures&#x2F;problems:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Current-status"><span class="toc-text">Current status?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Conclusion"><span class="toc-text">Conclusion</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lecture-2-Infrastructure-RPC-and-threads"><span class="toc-text">Lecture 2: Infrastructure: RPC and threads</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Why-Go"><span class="toc-text">Why Go?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Threads"><span class="toc-text">Threads</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thread-%E2%80%9Cthread-of-execution%E2%80%9D"><span class="toc-text">Thread &#x3D; “thread of execution”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why-threads"><span class="toc-text">Why threads?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#I-O-concurrency"><span class="toc-text">I&#x2F;O concurrency</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Multicore-performance"><span class="toc-text">Multicore performance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Convenience"><span class="toc-text">Convenience</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Is-there-an-alternative-to-threads"><span class="toc-text">Is there an alternative to threads?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%80%9Cevent-driven-%E2%80%9D"><span class="toc-text">“event-driven.”</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Threading-challenges"><span class="toc-text">Threading challenges:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#sharing-data-safely"><span class="toc-text">sharing data safely</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#coordination-between-threads"><span class="toc-text">coordination between threads</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#deadlock"><span class="toc-text">deadlock</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-a-web-crawler"><span class="toc-text">What is a web crawler?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Crawler-challenges"><span class="toc-text">Crawler challenges</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Exploit-I-O-concurrency"><span class="toc-text">Exploit I&#x2F;O concurrency</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Fetch-each-URL-only-once"><span class="toc-text">Fetch each URL only once</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Know-when-finished"><span class="toc-text">Know when finished</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Serial-crawler"><span class="toc-text">Serial crawler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Concurrent-Mutex-crawler"><span class="toc-text">Concurrent Mutex crawler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ConcurrentMutex-crawler"><span class="toc-text">ConcurrentMutex crawler</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-Go-channel"><span class="toc-text">a Go channel:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ConcurrentChannel-coordinator"><span class="toc-text">ConcurrentChannel coordinator()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#At-what-line-does-the-coordinator-wait"><span class="toc-text">At what line does the coordinator wait?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Note-there-is-no-recursion-here-instead-there%E2%80%99s-a-work-list"><span class="toc-text">Note: there is no recursion here; instead there’s a work list.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Note-no-need-to-lock-the-fetched-map-because-it-isn%E2%80%99t-shared"><span class="toc-text">Note: no need to lock the fetched map, because it isn’t shared!</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#How-does-the-coordinator-know-it-is-done"><span class="toc-text">How does the coordinator know it is done?</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Remote-Procedure-Call-RPC"><span class="toc-text">Remote Procedure Call (RPC)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RPC-message-diagram"><span class="toc-text">RPC message diagram:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Software-structure"><span class="toc-text">Software structure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Go-example-kv-go-on-schedule-page"><span class="toc-text">Go example: kv.go on schedule page</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A-few-details"><span class="toc-text">A few details:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RPC-problem-what-to-do-about-failures"><span class="toc-text">RPC problem: what to do about failures?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-does-a-failure-look-like-to-the-client-RPC-library"><span class="toc-text">What does a failure look like to the client RPC library?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Simplest-failure-handling-scheme-%E2%80%9Cbest-effort-RPC%E2%80%9D"><span class="toc-text">Simplest failure-handling scheme: “best-effort RPC”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-is-%E2%80%9Cbest-effort%E2%80%9D-easy-for-applications-to-cope-with"><span class="toc-text">Q: is “best effort” easy for applications to cope with?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A-particularly-bad-situation"><span class="toc-text">A particularly bad situation:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-is-best-effort-ever-OK"><span class="toc-text">Q: is best effort ever OK?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Better-RPC-behavior-%E2%80%9Cat-most-once-RPC%E2%80%9D"><span class="toc-text">Better RPC behavior: “at-most-once RPC”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#some-at-most-once-complexities"><span class="toc-text">some at-most-once complexities</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-if-an-at-most-once-server-crashes-and-re-starts"><span class="toc-text">What if an at-most-once server crashes and re-starts?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Go-RPC-is-a-simple-form-of-%E2%80%9Cat-most-once%E2%80%9D"><span class="toc-text">Go RPC is a simple form of “at-most-once”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-about-%E2%80%9Cexactly-once%E2%80%9D"><span class="toc-text">What about “exactly once”?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce-Paper-Read"><span class="toc-text">MapReduce Paper Read</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0-Abstract"><span class="toc-text">0 Abstract</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Introduction"><span class="toc-text">1 Introduction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Programming-Model"><span class="toc-text">2 Programming Model</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-Counting-Word"><span class="toc-text">2.1 Counting Word</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-Types"><span class="toc-text">2.2 Types</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-More-Examples"><span class="toc-text">2.3 More Examples</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Implementation"><span class="toc-text">3 Implementation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-Execution-Overview"><span class="toc-text">3.1 Execution Overview</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-Master-Data-Structure"><span class="toc-text">3.2 Master Data Structure</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-Fault-Tolerance"><span class="toc-text">3.3 Fault Tolerance</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#woker-failure"><span class="toc-text">woker failure</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#master-failure"><span class="toc-text">master failure</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#semantics-in-the-presence-of-failure"><span class="toc-text">semantics in the presence of failure</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-Locality"><span class="toc-text">3.4 Locality</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-Task-Granularity"><span class="toc-text">3.5 Task Granularity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-Backup-Tasks"><span class="toc-text">3.6 Backup Tasks</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%80%9Cstraggler%E2%80%9D%EF%BC%9A"><span class="toc-text">“straggler”：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Alleviation-%E9%80%9A%E7%94%A8%E6%9C%BA%E5%88%B6%EF%BC%9A"><span class="toc-text">Alleviation 通用机制：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Refinement"><span class="toc-text">4 Refinement</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-Partitoning-Function"><span class="toc-text">4.1 Partitoning Function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-Ordering-Guarantees"><span class="toc-text">4.2 Ordering Guarantees</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-Combiner-Function"><span class="toc-text">4.3 Combiner Function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-Input-and-Output-Types"><span class="toc-text">4.4 Input and Output Types</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-Side-effects"><span class="toc-text">4.5 Side-effects</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-6-Skipping-Bad-Records"><span class="toc-text">4.6 Skipping Bad Records</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-7-Local-Execution"><span class="toc-text">4.7 Local Execution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-8-Status-Information"><span class="toc-text">4.8 Status Information</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-9-Counters"><span class="toc-text">4.9 Counters</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Performance"><span class="toc-text">5 Performance</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-Cluster-Configuration"><span class="toc-text">5.1 Cluster Configuration</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-Grep"><span class="toc-text">5.2 Grep</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-Sort"><span class="toc-text">5.3 Sort</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-Effect-of-Backup-Tasks"><span class="toc-text">5.4 Effect of Backup Tasks</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-5-Machine-Failures"><span class="toc-text">5.5 Machine Failures</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Experience"><span class="toc-text">6 Experience</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-Large-Scale-Indexing"><span class="toc-text">6.1 Large-Scale Indexing</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Related-Work"><span class="toc-text">7 Related Work</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-Conclusions"><span class="toc-text">8 Conclusions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Acknowledgements"><span class="toc-text">Acknowledgements</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lab"><span class="toc-text">Lab</span></a></li></ol></div></div></div>
 
 
 </div>
@@ -93,7 +93,7 @@
 <div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/distributed-system/">distributed system</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2022-07-01T03:27:15.342Z">2022-07-01</time></div></div>
 
 <article class='content md post'>
-<h1 class="article-title"><span>6.824 MapReduce</span></h1>
+<h1 class="article-title"><span>6.824 W1 MapReduce, RPC & threads</span></h1>
 <h1 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h1><h2 id="Lecture-1"><a href="#Lecture-1" class="headerlink" title="Lecture 1"></a>Lecture 1</h2><h3 id="Labs"><a href="#Labs" class="headerlink" title="Labs"></a>Labs</h3><ul>
 <li>Lab 1: MapReduce</li>
 <li>Lab 2: replication for fault-tolerance using Raft</li>
@@ -323,6 +323,450 @@ Get(k)
 <p>“+” Scales well.</p>
 <p>“+” Easy to program — failures and data movement are hidden.</p>
 <p>These were good trade-offs in practice.</p>
+<h2 id="Lecture-2-Infrastructure-RPC-and-threads"><a href="#Lecture-2-Infrastructure-RPC-and-threads" class="headerlink" title="Lecture 2: Infrastructure: RPC and threads"></a>Lecture 2: Infrastructure: RPC and threads</h2><h3 id="Why-Go"><a href="#Why-Go" class="headerlink" title="Why Go?"></a>Why Go?</h3><ul>
+<li>good support for threads</li>
+<li>convenient RPC</li>
+<li>type- and memory- safe</li>
+<li>garbage-collected (no use after freeing problems)</li>
+<li>threads + GC is particularly attractive!</li>
+<li>not too complex</li>
+</ul>
+<p>After the tutorial, use <a target="_blank" rel="noopener" href="https://golang.org/doc/effective_go.html">https://golang.org/doc/effective_go.html</a></p>
+<h3 id="Threads"><a href="#Threads" class="headerlink" title="Threads"></a>Threads</h3><ul>
+<li>a useful structuring tool, but can be tricky</li>
+<li>Go calls them goroutines; everyone else calls them threads</li>
+</ul>
+<h3 id="Thread-“thread-of-execution”"><a href="#Thread-“thread-of-execution”" class="headerlink" title="Thread = “thread of execution”"></a>Thread = “thread of execution”</h3><ul>
+<li>threads allow one program to do many things at once</li>
+<li>each thread executes serially, just like an ordinary non-threaded program</li>
+<li>the threads share memory</li>
+<li>each thread includes some per-thread state:<ul>
+<li>program counter,</li>
+<li>registers, </li>
+<li>stack,</li>
+<li>what it’s waiting for</li>
+</ul>
+</li>
+</ul>
+<h3 id="Why-threads"><a href="#Why-threads" class="headerlink" title="Why threads?"></a>Why threads?</h3><h4 id="I-O-concurrency"><a href="#I-O-concurrency" class="headerlink" title="I/O concurrency"></a>I/O concurrency</h4><ul>
+<li>Client sends requests to many servers in parallel and waits for replies.</li>
+<li>Server processes multiple client requests; each request may block.</li>
+<li>While waiting for the disk to read data for client X, <ul>
+<li>process a request from client Y.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Multicore-performance"><a href="#Multicore-performance" class="headerlink" title="Multicore performance"></a>Multicore performance</h4><ul>
+<li>Execute code in parallel on several cores.</li>
+</ul>
+<h4 id="Convenience"><a href="#Convenience" class="headerlink" title="Convenience"></a>Convenience</h4><ul>
+<li>In background, once per second, check whether each worker is still alive.</li>
+</ul>
+<h3 id="Is-there-an-alternative-to-threads"><a href="#Is-there-an-alternative-to-threads" class="headerlink" title="Is there an alternative to threads?"></a>Is there an alternative to threads?</h3><h4 id="“event-driven-”"><a href="#“event-driven-”" class="headerlink" title="“event-driven.”"></a>“event-driven.”</h4><ul>
+<li>write code that explicitly interleaves activities, in a single thread. Usually called “event-driven.”</li>
+<li>Keep a table of state about each activity, e.g. each client request.</li>
+<li><p>One “event” loop that:</p>
+<ul>
+<li>checks for new input for each activity (e.g. arrival of reply from server),</li>
+<li>does the next step for each activity,</li>
+<li>updates state.</li>
+</ul>
+</li>
+<li><p>Event-driven gets you I/O concurrency, and eliminates thread costs (which can be substantial), but doesn’t get multi-core speedup, and is painful to program.</p>
+</li>
+</ul>
+<h3 id="Threading-challenges"><a href="#Threading-challenges" class="headerlink" title="Threading challenges:"></a>Threading challenges:</h3><h4 id="sharing-data-safely"><a href="#sharing-data-safely" class="headerlink" title="sharing data safely"></a>sharing data safely</h4><ul>
+<li><p>what if two threads do n = n + 1 at the same time?</p>
+<ul>
+<li>or one thread reads while another increments?</li>
+</ul>
+</li>
+<li><p>this is a “race” — and is often a bug</p>
+</li>
+<li>-&gt; use locks (Go’s sync.Mutex)</li>
+<li>-&gt; or avoid sharing mutable data</li>
+</ul>
+<h4 id="coordination-between-threads"><a href="#coordination-between-threads" class="headerlink" title="coordination between threads"></a>coordination between threads</h4><ul>
+<li><p>one thread is producing data, another thread is consuming it</p>
+<ul>
+<li>how can the consumer wait (and release the CPU)?</li>
+<li>how can the producer wake up the consumer?</li>
+</ul>
+</li>
+<li><p>-&gt; use Go channels or sync.Cond or sync.WaitGroup</p>
+</li>
+</ul>
+<h4 id="deadlock"><a href="#deadlock" class="headerlink" title="deadlock"></a>deadlock</h4><p>cycles via locks and/or communication (e.g. RPC or Go channels)</p>
+<p>Let’s look at the tutorial’s web crawler as a threading example.</p>
+<h3 id="What-is-a-web-crawler"><a href="#What-is-a-web-crawler" class="headerlink" title="What is a web crawler?"></a>What is a web crawler?</h3><ul>
+<li>goal: fetch all web pages, e.g. to feed to an indexer</li>
+<li>you give it a starting web page</li>
+<li>it recursively follows all links</li>
+<li>but don’t fetch a given page more than once<ul>
+<li>and don’t get stuck in cycles</li>
+</ul>
+</li>
+</ul>
+<h3 id="Crawler-challenges"><a href="#Crawler-challenges" class="headerlink" title="Crawler challenges"></a>Crawler challenges</h3><h4 id="Exploit-I-O-concurrency"><a href="#Exploit-I-O-concurrency" class="headerlink" title="Exploit I/O concurrency"></a>Exploit I/O concurrency</h4><ul>
+<li>Network latency is more limiting than network capacity</li>
+<li>Fetch many URLs at the same time<ul>
+<li>To increase URLs fetched per second</li>
+</ul>
+</li>
+<li>=&gt; Use threads for concurrency</li>
+</ul>
+<h4 id="Fetch-each-URL-only-once"><a href="#Fetch-each-URL-only-once" class="headerlink" title="Fetch each URL only once"></a>Fetch each URL only <em>once</em></h4><ul>
+<li>avoid wasting network bandwidth</li>
+<li>be nice to remote servers</li>
+<li>=&gt; Need to remember which URLs visited </li>
+</ul>
+<h4 id="Know-when-finished"><a href="#Know-when-finished" class="headerlink" title="Know when finished"></a>Know when finished</h4><p>We’ll look at three styles of solution [crawler.go on schedule page]</p>
+<h3 id="Serial-crawler"><a href="#Serial-crawler" class="headerlink" title="Serial crawler"></a>Serial crawler</h3><ul>
+<li>performs depth-first exploration via recursive Serial calls </li>
+<li>the “fetched” map avoids repeats, breaks cycles<ul>
+<li>a single map, passed by reference, caller sees callee’s updates</li>
+</ul>
+</li>
+<li>but: fetches only one page at a time — slow<ul>
+<li>can we just put a “go” in front of the Serial() call?</li>
+<li>let’s try it… what happened?</li>
+</ul>
+</li>
+</ul>
+<h3 id="Concurrent-Mutex-crawler"><a href="#Concurrent-Mutex-crawler" class="headerlink" title="Concurrent Mutex crawler"></a>Concurrent Mutex crawler</h3><ul>
+<li>Creates a thread for each page fetch<ul>
+<li>Many concurrent fetches, higher fetch rate</li>
+</ul>
+</li>
+<li>the “go func” creates a goroutine and starts it running<ul>
+<li>func… is an “anonymous function”</li>
+</ul>
+</li>
+<li>The threads share the “fetched” map<ul>
+<li>So only one thread will fetch any given page</li>
+</ul>
+</li>
+<li>Why the Mutex (Lock() and Unlock())?<ul>
+<li>One reason:<ul>
+<li>Two threads make simultaneous calls to ConcurrentMutex() with same URL<ul>
+<li>Due to two different pages containing link to same URL</li>
+</ul>
+</li>
+<li>T1 reads fetched[url], T2 reads fetched[url]</li>
+<li>Both see that url hasn’t been fetched (already == false)</li>
+<li>Both fetch, which is wrong</li>
+<li>The mutex causes one to wait while the other does both check and set<ul>
+<li>So only one thread sees already==false</li>
+</ul>
+</li>
+<li>We say “the lock protects the data”<ul>
+<li>But not Go does not enforce any relationship between locks and data!</li>
+</ul>
+</li>
+<li>The code between lock/unlock is often called a “critical section”</li>
+</ul>
+</li>
+<li>Another reason:<ul>
+<li>Internally, map is a complex data structure (tree? expandable hash?)</li>
+<li>Concurrent update/update may wreck internal invariants</li>
+<li>Concurrent update/read may crash the read</li>
+</ul>
+</li>
+<li>What if I comment out Lock() / Unlock()?<ul>
+<li>go run crawler.go<ul>
+<li>Why does it work?</li>
+</ul>
+</li>
+<li>go run -race crawler.go<ul>
+<li>Detects races even when output is correct!</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>How does the ConcurrentMutex crawler decide it is done?<ul>
+<li>sync.WaitGroup</li>
+<li>Wait() waits for all Add()s to be balanced by Done()s<ul>
+<li>i.e. waits for all child threads to finish</li>
+</ul>
+</li>
+<li>[diagram: tree of goroutines, overlaid on cyclic URL graph]</li>
+<li>there’s a WaitGroup per node in the tree</li>
+</ul>
+</li>
+<li>How many concurrent threads might this crawler create?</li>
+</ul>
+<h3 id="ConcurrentMutex-crawler"><a href="#ConcurrentMutex-crawler" class="headerlink" title="ConcurrentMutex crawler"></a>ConcurrentMutex crawler</h3><h4 id="a-Go-channel"><a href="#a-Go-channel" class="headerlink" title="a Go channel:"></a>a Go channel:</h4><ul>
+<li><p>a channel is an object</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>a channel lets one thread send an object to another thread</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ch &lt;- x</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>the sender waits until some goroutine receives, a receiver waits until some goroutine sends</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y := &lt;- ch</span><br><span class="line"><span class="keyword">for</span> y := <span class="keyword">range</span> ch</span><br></pre></td></tr></table></figure>
+<ul>
+<li>channels both communicate and synchronize</li>
+<li>several threads can send and receive on a channel</li>
+<li>channels are cheap</li>
+<li>remember: sender blocks until the receiver receives!<ul>
+<li>“synchronous”</li>
+<li>watch out for deadlock</li>
+</ul>
+</li>
+</ul>
+<h4 id="ConcurrentChannel-coordinator"><a href="#ConcurrentChannel-coordinator" class="headerlink" title="ConcurrentChannel coordinator()"></a>ConcurrentChannel coordinator()</h4><ul>
+<li>coordinator() creates a worker goroutine to fetch each page</li>
+<li>woker() sends slice of page’s URLs on a channel<ul>
+<li>multiple workers send on the single channel</li>
+</ul>
+</li>
+<li>coordinator() reads URL slices from the channel</li>
+</ul>
+<h4 id="At-what-line-does-the-coordinator-wait"><a href="#At-what-line-does-the-coordinator-wait" class="headerlink" title="At what line does the coordinator wait?"></a>At what line does the coordinator wait?</h4><ul>
+<li>Does the coordinator use CPU time while it waits?</li>
+</ul>
+<h4 id="Note-there-is-no-recursion-here-instead-there’s-a-work-list"><a href="#Note-there-is-no-recursion-here-instead-there’s-a-work-list" class="headerlink" title="Note: there is no recursion here; instead there’s a work list."></a>Note: there is no recursion here; instead there’s a work list.</h4><h4 id="Note-no-need-to-lock-the-fetched-map-because-it-isn’t-shared"><a href="#Note-no-need-to-lock-the-fetched-map-because-it-isn’t-shared" class="headerlink" title="Note: no need to lock the fetched map, because it isn’t shared!"></a>Note: no need to lock the fetched map, because it isn’t shared!</h4><h4 id="How-does-the-coordinator-know-it-is-done"><a href="#How-does-the-coordinator-know-it-is-done" class="headerlink" title="How does the coordinator know it is done?"></a>How does the coordinator know it is done?</h4><ul>
+<li>Keeps count of workers in n.</li>
+<li>Each worker sends exactly one item on channel.</li>
+</ul>
+<p>Why is it safe for multiple threads use the same channel?</p>
+<p>Worker thread writes url slice, coordinator reads it, is that a race?</p>
+<ul>
+<li>worker only writes slice <em>before</em> sending</li>
+<li>coordinator only reads slice <em>after</em> receiving<br>So they can’t use the slice at the same time.</li>
+</ul>
+<p>Why does ConcurrentChannel() create a goroutine just for “ch &lt;- …”?</p>
+<ul>
+<li>Let’s get rid of the goroutine…</li>
+</ul>
+<p>When to use sharing and locks, versus channels?</p>
+<ul>
+<li>Most problems can be solved in either style</li>
+<li>What makes the most sense depends on how the programmer thinks<ul>
+<li>state — sharing and locks</li>
+<li>communication — channels</li>
+</ul>
+</li>
+<li>For the 6.824 labs, I recommend sharing+locks for state,<ul>
+<li>and <code>sync.Cond</code> or channels or <code>time.Sleep()</code> for waiting/notification.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Remote-Procedure-Call-RPC"><a href="#Remote-Procedure-Call-RPC" class="headerlink" title="Remote Procedure Call (RPC)"></a>Remote Procedure Call (RPC)</h3><ul>
+<li>a key piece of distributed system machinery; all the labs use RPC</li>
+<li>goal: easy-to-program client/server communication</li>
+<li>hide details of network protocols</li>
+<li>convert data (strings, arrays, maps, &amp;c) to “wire format”</li>
+<li>portability / interoperability</li>
+</ul>
+<h3 id="RPC-message-diagram"><a href="#RPC-message-diagram" class="headerlink" title="RPC message diagram:"></a>RPC message diagram:</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Client</th>
+<th></th>
+<th>Server</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>request</td>
+<td>—-&gt;</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>&lt;—-</td>
+<td>response</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Software-structure"><a href="#Software-structure" class="headerlink" title="Software structure"></a>Software structure</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>client app</th>
+<th></th>
+<th>handler fns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stub fns</td>
+<td>—-&gt;</td>
+<td>dispatcher</td>
+</tr>
+<tr>
+<td>RPC lib</td>
+<td></td>
+<td>RPC lib</td>
+</tr>
+<tr>
+<td>net</td>
+<td>———</td>
+<td>net</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Go-example-kv-go-on-schedule-page"><a href="#Go-example-kv-go-on-schedule-page" class="headerlink" title="Go example: kv.go on schedule page"></a>Go example: kv.go on schedule page</h3><ul>
+<li>A toy key/value storage server — Put(key,value), Get(key)-&gt;value</li>
+<li>Uses Go’s RPC library</li>
+<li>Common:<ul>
+<li>Declare Args and Reply struct for each server handler.</li>
+</ul>
+</li>
+<li>Client:<ul>
+<li>connect()’s Dial() creates a TCP connection to the server</li>
+<li>get() and put() are client “stubs”</li>
+<li>Call() asks the RPC library to perform the call<ul>
+<li>you specify server function name, arguments, place to put reply</li>
+<li>library marshalls args, sends request, waits, unmarshalls reply</li>
+<li>return value from Call() indicates whether it got a reply</li>
+<li>usually you’ll also have a reply.Err indicating service-level failure</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Server:<ul>
+<li>Go requires server to declare an object with methods as RPC handlers</li>
+<li>Server then registers that object with the RPC library</li>
+<li>Server accepts TCP connections, gives them to RPC library</li>
+<li>The RPC library<ul>
+<li>reads each request</li>
+<li>creates a new goroutine for this request</li>
+<li>unmarshalls request</li>
+<li>looks up the named object (in table create by Register())</li>
+<li>calls the object’s named method (dispatch)</li>
+<li>marshalls reply</li>
+<li>writes reply on TCP connection</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The server’s Get() and Put() handlers<ul>
+<li>Must lock, since RPC library creates a new goroutine for each request</li>
+<li>read args; modify reply</li>
+</ul>
+</li>
+</ul>
+<h3 id="A-few-details"><a href="#A-few-details" class="headerlink" title="A few details:"></a>A few details:</h3><ul>
+<li>Binding: how does client know what server computer to talk to?<ul>
+<li>For Go’s RPC, server name/port is an argument to Dial</li>
+<li>Big systems have some kind of name or configuration server</li>
+</ul>
+</li>
+<li>Marshalling: format data into packets<ul>
+<li>Go’s RPC library can pass strings, arrays, objects, maps, &amp;c</li>
+<li>Go passes pointers by copying the pointed-to data</li>
+<li>Cannot pass channels or functions</li>
+</ul>
+</li>
+</ul>
+<h3 id="RPC-problem-what-to-do-about-failures"><a href="#RPC-problem-what-to-do-about-failures" class="headerlink" title="RPC problem: what to do about failures?"></a>RPC problem: what to do about failures?</h3><p>e.g. lost packet, broken network, slow server, crashed server</p>
+<h3 id="What-does-a-failure-look-like-to-the-client-RPC-library"><a href="#What-does-a-failure-look-like-to-the-client-RPC-library" class="headerlink" title="What does a failure look like to the client RPC library?"></a>What does a failure look like to the client RPC library?</h3><ul>
+<li>Client never sees a response from the server</li>
+<li>Client does <em>not</em> know if the server saw the request!<ul>
+<li>[diagram of losses at various points]</li>
+<li>Maybe server never saw the request</li>
+<li>Maybe server executed, crashed just before sending reply</li>
+<li>Maybe server executed, but network died just before delivering reply</li>
+</ul>
+</li>
+</ul>
+<h3 id="Simplest-failure-handling-scheme-“best-effort-RPC”"><a href="#Simplest-failure-handling-scheme-“best-effort-RPC”" class="headerlink" title="Simplest failure-handling scheme: “best-effort RPC”"></a>Simplest failure-handling scheme: “best-effort RPC”</h3><ul>
+<li><code>Call()</code> waits for response for a while</li>
+<li>If none arrives, re-send the request</li>
+<li>Do this a few times</li>
+<li>Then give up and return an error</li>
+</ul>
+<h3 id="Q-is-“best-effort”-easy-for-applications-to-cope-with"><a href="#Q-is-“best-effort”-easy-for-applications-to-cope-with" class="headerlink" title="Q: is “best effort” easy for applications to cope with?"></a>Q: is “best effort” easy for applications to cope with?</h3><h3 id="A-particularly-bad-situation"><a href="#A-particularly-bad-situation" class="headerlink" title="A particularly bad situation:"></a>A particularly bad situation:</h3><ul>
+<li>client executes<ul>
+<li><code>Put(&quot;k&quot;, 10)</code>;</li>
+<li><code>Put(&quot;k&quot;, 20)</code>;</li>
+</ul>
+</li>
+<li>both succeed</li>
+<li>what will Get(“k”) yield?</li>
+<li>[diagram, timeout, re-send, original arrives late]</li>
+</ul>
+<h3 id="Q-is-best-effort-ever-OK"><a href="#Q-is-best-effort-ever-OK" class="headerlink" title="Q: is best effort ever OK?"></a>Q: is best effort ever OK?</h3><ul>
+<li>read-only operations</li>
+<li>operations that do nothing if repeated<ul>
+<li>e.g. DB checks if record has already been inserted</li>
+</ul>
+</li>
+</ul>
+<h3 id="Better-RPC-behavior-“at-most-once-RPC”"><a href="#Better-RPC-behavior-“at-most-once-RPC”" class="headerlink" title="Better RPC behavior: “at-most-once RPC”"></a>Better RPC behavior: “at-most-once RPC”</h3><ul>
+<li><p>idea: client re-sends if no answer;</p>
+<ul>
+<li>server RPC code detects duplicate requests,</li>
+<li>returns previous reply instead of re-running handler</li>
+</ul>
+</li>
+<li><p>Q: how to detect a duplicate request?</p>
+</li>
+<li><p>client includes unique ID (XID) with each request</p>
+<ul>
+<li>uses same XID for re-send</li>
+</ul>
+</li>
+<li><p>server:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> seen[xid]:</span><br><span class="line">r = old[xid]</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">r = handler()</span><br><span class="line">old[xid] = r</span><br><span class="line">seen[xid] = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="some-at-most-once-complexities"><a href="#some-at-most-once-complexities" class="headerlink" title="some at-most-once complexities"></a>some at-most-once complexities</h3><ul>
+<li>this will come up in lab 3</li>
+<li>what if two clients use the same XID?<ul>
+<li>big random number?</li>
+</ul>
+</li>
+<li>how to avoid a huge seen[xid] table?<ul>
+<li>idea:<ul>
+<li>each client has a unique ID (perhaps a big random number)</li>
+<li>per-client RPC sequence numbers</li>
+<li>client includes “seen all replies &lt;= X” with every RPC</li>
+<li>much like TCP sequence #s and acks</li>
+</ul>
+</li>
+<li>then server can keep O(# clients) state, rather than O(# XIDs)</li>
+</ul>
+</li>
+<li>server must eventually discard info about old RPCs or old clients<ul>
+<li>when is discard safe?</li>
+</ul>
+</li>
+<li>how to handle dup req while original is still executing?<ul>
+<li>server doesn’t know reply yet</li>
+<li>idea: “pending” flag per executing RPC; wait or ignore</li>
+</ul>
+</li>
+</ul>
+<h3 id="What-if-an-at-most-once-server-crashes-and-re-starts"><a href="#What-if-an-at-most-once-server-crashes-and-re-starts" class="headerlink" title="What if an at-most-once server crashes and re-starts?"></a>What if an at-most-once server crashes and re-starts?</h3><ul>
+<li>if at-most-once duplicate info in memory, server will forget</li>
+<li>and accept duplicate requests after re-start</li>
+<li>maybe it should write the duplicate info to disk</li>
+<li>maybe replica server should also replicate duplicate info</li>
+</ul>
+<h3 id="Go-RPC-is-a-simple-form-of-“at-most-once”"><a href="#Go-RPC-is-a-simple-form-of-“at-most-once”" class="headerlink" title="Go RPC is a simple form of “at-most-once”"></a>Go RPC is a simple form of “at-most-once”</h3><ul>
+<li>open TCP connection</li>
+<li>write request to TCP connection</li>
+<li>Go RPC never re-sends a request<ul>
+<li>So server won’t see duplicate requests</li>
+</ul>
+</li>
+<li>Go RPC code returns an error if it doesn’t get a reply<ul>
+<li>perhaps after a timeout (from TCP)</li>
+<li>perhaps server didn’t see request</li>
+<li>perhaps server processed request but server/net failed before reply came back</li>
+</ul>
+</li>
+</ul>
+<h3 id="What-about-“exactly-once”"><a href="#What-about-“exactly-once”" class="headerlink" title="What about “exactly once”?"></a>What about “exactly once”?</h3><p>unbounded retries plus duplicate detection plus fault-tolerant service<br>Lab 3</p>
 <h2 id="MapReduce-Paper-Read"><a href="#MapReduce-Paper-Read" class="headerlink" title="MapReduce Paper Read"></a>MapReduce Paper Read</h2><h3 id="0-Abstract"><a href="#0-Abstract" class="headerlink" title="0 Abstract"></a>0 Abstract</h3><p>Users specify </p>
 <ul>
 <li>a map function that processes a key/value pair to generate a set of intermediate key/value pairs, </li>
