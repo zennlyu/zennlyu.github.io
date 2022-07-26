@@ -18,18 +18,18 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>Some Spring Glitchs During Dev - zennlyu</title>
+  <title>spring-dev glitches records - zennlyu</title>
 
   
     <meta name="description" content="Non-resolvable import POM12345678910111213141516mac@macdeMacBook-Pro WX-Fleas-Market-Demo % mvn clean package -Dmaven.test.skip&#x3D;true[INFO] Scanning for projects...[ERROR] [ERROR] Some problems were en">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Some Spring Glitchs During Dev">
+<meta property="og:title" content="spring-dev glitches records">
 <meta property="og:url" content="http://example.com/2022/07/13/spring%20%E5%BC%80%E5%8F%91/index.html">
 <meta property="og:site_name" content="zennlyu">
 <meta property="og:description" content="Non-resolvable import POM12345678910111213141516mac@macdeMacBook-Pro WX-Fleas-Market-Demo % mvn clean package -Dmaven.test.skip&#x3D;true[INFO] Scanning for projects...[ERROR] [ERROR] Some problems were en">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-13T15:25:24.863Z">
-<meta property="article:modified_time" content="2022-07-14T11:34:29.115Z">
+<meta property="article:modified_time" content="2022-07-26T13:25:07.868Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="springboot">
 <meta name="twitter:card" content="summary">
@@ -87,7 +87,7 @@
 <div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/java-backend/">java backend</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2022-07-13T15:25:24.863Z">2022-07-13</time></div></div>
 
 <article class='content md post'>
-<h1 class="article-title"><span>Some Spring Glitchs During Dev</span></h1>
+<h1 class="article-title"><span>spring-dev glitches records</span></h1>
 <h2 id="Non-resolvable-import-POM"><a href="#Non-resolvable-import-POM" class="headerlink" title="Non-resolvable import POM"></a><code>Non-resolvable import POM</code></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">mac@macdeMacBook-Pro WX-Fleas-Market-Demo % mvn clean package -Dmaven.test.skip=true</span><br><span class="line">[INFO] Scanning for projects...</span><br><span class="line">[ERROR] [ERROR] Some problems were encountered while processing the POMs:</span><br><span class="line">[ERROR] Non-resolvable import POM: org.springframework.cloud:spring-cloud-dependencies:pom:Greenwich.M1 was not found in https://maven.aliyun.com/repository/public during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of aliyunmaven has elapsed or updates are forced @ line 44, column 25</span><br><span class="line"> @ </span><br><span class="line">[ERROR] The build could not read 1 project -&gt; [Help 1]</span><br><span class="line">[ERROR]   </span><br><span class="line">[ERROR]   The project io.github.nnkwrik:fangxianyu:0.0.1-SNAPSHOT (/Users/mac/github/WX-Fleas-Market-Demo/pom.xml) has 1 error</span><br><span class="line">[ERROR]     Non-resolvable import POM: org.springframework.cloud:spring-cloud-dependencies:pom:Greenwich.M1 was not found in https://maven.aliyun.com/repository/public during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of aliyunmaven has elapsed or updates are forced @ line 44, column 25 -&gt; [Help 2]</span><br><span class="line">[ERROR] </span><br><span class="line">[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.</span><br><span class="line">[ERROR] Re-run Maven using the -X switch to enable full debug logging.</span><br><span class="line">[ERROR] </span><br><span class="line">[ERROR] For more information about the errors and possible solutions, please read the following articles:</span><br><span class="line">[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/ProjectBuildingException</span><br><span class="line">[ERROR] [Help 2] http://cwiki.apache.org/confluence/display/MAVEN/UnresolvableModelException</span><br></pre></td></tr></table></figure>
 
 <p>转到发现</p>
