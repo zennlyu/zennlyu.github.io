@@ -4,7 +4,7 @@
 
 # Site
 title: zennlyu
-avatar: https://github.com/zennlyu/zennlyu.github.io/blob/main/avatar.png
+avatar: https://i.imgtg.com/2022/07/09/eTtVL.jpg
 subtitle: ''
 description: ''
 keywords:
@@ -41,7 +41,11 @@ external_link:
   exclude: ''
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
+marked:
+  prependRoot: true
+  postAsset: true
+
 relative_link: false
 future: true
 highlight:

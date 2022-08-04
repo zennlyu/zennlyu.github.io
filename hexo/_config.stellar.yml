@@ -18,6 +18,10 @@ sidebar:
     # welcome
     welcome:
       layout: markdown
-      title: 欢迎
+      title: About me
       content: |
-        Hello, world!
+        😉 Ciao~ 这里是 [zennlyu](https://github.com/zennlyu) 的个人小站 😉
+        ～ 政府在册环保义工，长期活跃并探索环境问题的规模化技术解决方案(like [Ocean Cleanup](https://theoceancleanup.com/)) 🌊
+        ～ 内容以技术积累为主，也不排除开辟些许生活与审美的空间 🌹
+        ～ 欢迎通过 [twitter](https://twitter.com/zennryu616) 或者 [telegram](https://t.me/s081z) 联系我 🥳
+        📮：[zennlyu@gmail.com](zennlyu@gmail.com)
