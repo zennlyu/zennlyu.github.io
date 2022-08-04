@@ -21,12 +21,12 @@
   <title>coursera 1.5 UNION_FIND - zennlyu</title>
 
   
-    <meta name="description" content="‣ DYNAMIC CONNECTIVITYGiven a set of N objects. Union command: connect two objects. Find&#x2F;connected query: is there a path connecting the two objects?  Modeling the objectsApplications involve man">
+    <meta name="description" content="‣ DYNAMIC CONNECTIVITYGiven a set of N objects. Union command: connect two objects. Find&#x2F;connected query: is there a path connecting the two objects?  Modeling the objectsApplications involve manipula">
 <meta property="og:type" content="article">
 <meta property="og:title" content="coursera 1.5 UNION_FIND">
 <meta property="og:url" content="http://example.com/2022/06/30/alg-Union%20Find/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="‣ DYNAMIC CONNECTIVITYGiven a set of N objects. Union command: connect two objects. Find&#x2F;connected query: is there a path connecting the two objects?  Modeling the objectsApplications involve man">
+<meta property="og:description" content="‣ DYNAMIC CONNECTIVITYGiven a set of N objects. Union command: connect two objects. Find&#x2F;connected query: is there a path connecting the two objects?  Modeling the objectsApplications involve manipula">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2022/06/30/alg-Union%20Find/UF.png">
 <meta property="og:image" content="http://example.com/2022/06/30/alg-Union%20Find/weight.png">
@@ -106,7 +106,7 @@
 <h1 class="article-title"><span>coursera 1.5 UNION_FIND</span></h1>
 <h2 id="‣-DYNAMIC-CONNECTIVITY"><a href="#‣-DYNAMIC-CONNECTIVITY" class="headerlink" title="‣ DYNAMIC CONNECTIVITY"></a>‣ DYNAMIC CONNECTIVITY</h2><h3 id="Given-a-set-of-N-objects"><a href="#Given-a-set-of-N-objects" class="headerlink" title="Given a set of N objects."></a>Given a set of N objects.</h3><ul>
 <li>Union command: connect two objects.</li>
-<li>Find&#x2F;connected query: is there a path connecting the two objects?</li>
+<li>Find/connected query: is there a path connecting the two objects?</li>
 </ul>
 <h3 id="Modeling-the-objects"><a href="#Modeling-the-objects" class="headerlink" title="Modeling the objects"></a>Modeling the objects</h3><p>Applications involve manipulating objects of all types.</p>
 <ul>
@@ -154,11 +154,7 @@
 </li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> StdIn.readInt(); </span><br><span class="line">	<span class="type">UF</span> <span class="variable">uf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UF</span>(N);</span><br><span class="line">	<span class="keyword">while</span> (!StdIn.isEmpty()) &#123;</span><br><span class="line">		<span class="type">int</span> <span class="variable">p</span> <span class="operator">=</span> StdIn.readInt(); </span><br><span class="line">		<span class="type">int</span> <span class="variable">q</span> <span class="operator">=</span> StdIn.readInt(); </span><br><span class="line">		<span class="keyword">if</span> (!uf.connected(p, q)) &#123;</span><br><span class="line">			uf.union(p, q);</span><br><span class="line">			StdOut.println(p + <span class="string">&quot; &quot;</span> + q); </span><br><span class="line">		&#125;</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
 <h2 id="‣-QUICK-FIND"><a href="#‣-QUICK-FIND" class="headerlink" title="‣ QUICK-FIND"></a>‣ QUICK-FIND</h2><h3 id="Eager-approach"><a href="#Eager-approach" class="headerlink" title="Eager approach"></a>Eager approach</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">QuickFindUF</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span>[] id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">QuickFindUF</span><span class="params">(<span class="type">int</span> N)</span></span><br><span class="line">    &#123;</span><br><span class="line">        id = <span class="keyword">new</span> <span class="title class_">int</span>[N];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">            id[i] = i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">connected</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> q)</span></span><br><span class="line">    &#123;   <span class="keyword">return</span> id[p] == id[q];  &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">union</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> q)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">pid</span> <span class="operator">=</span> id[p];</span><br><span class="line">        <span class="type">int</span> <span class="variable">qid</span> <span class="operator">=</span> id[q];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; id.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (id[i] == pid)</span><br><span class="line">                id[i] = qid;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h4 id="Data-Structure"><a href="#Data-Structure" class="headerlink" title="Data Structure"></a>Data Structure</h4><ul>
 <li>Integer array <code>id[]</code> of length N.</li>
 <li>Interpretation: <code>p</code> and <code>q</code> are connected <code>iff</code> they have the same id.</li>
@@ -167,6 +163,7 @@
 <h4 id="Union"><a href="#Union" class="headerlink" title="Union."></a>Union.</h4><p>To merge components containing <code>p</code> and <code>q</code>, change all entries whose id equals <code>id[p]</code> to <code>id[q]</code>.</p>
 <h3 id="Quick-Find-is-too-slow"><a href="#Quick-Find-is-too-slow" class="headerlink" title="Quick-Find is too slow"></a>Quick-Find is too slow</h3><p><strong>Cost model.</strong> Number of array accesses (for read or write).</p>
 <p><strong>order of growth of number of array accesses</strong>:</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -176,16 +173,18 @@
 <th>Find</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Quick-find</td>
 <td>N</td>
 <td>N</td>
 <td>1</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p><strong>Union is too expensive</strong> :It takes $N^2$ array accesses to process a sequence of $N$ union commands on $N$ objects.</p>
 <h4 id="Quadratic-algorithms-do-not-scale"><a href="#Quadratic-algorithms-do-not-scale" class="headerlink" title="Quadratic algorithms do not scale"></a>Quadratic algorithms do not scale</h4><h2 id="‣-QUICK-UNION"><a href="#‣-QUICK-UNION" class="headerlink" title="‣ QUICK-UNION"></a>‣ QUICK-UNION</h2><h3 id="Lazy-approach"><a href="#Lazy-approach" class="headerlink" title="Lazy approach"></a>Lazy approach</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">QuickUnionUF</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span>[] id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">QuickUnionUF</span><span class="params">(<span class="type">int</span> N)</span></span><br><span class="line">    &#123;		<span class="comment">// set id of each object to itself (N array accesses)</span></span><br><span class="line">        id = <span class="keyword">new</span> <span class="title class_">int</span>[N];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++) id[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">root</span><span class="params">(<span class="type">int</span> i)</span></span><br><span class="line">    &#123;		<span class="comment">// chase parent pointers until reach root (depth of i array accesses)</span></span><br><span class="line">        <span class="keyword">while</span> (i != id[i])  i = id[i];</span><br><span class="line">        <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">connected</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> q)</span></span><br><span class="line">    <span class="comment">// check if p and q have same root (depth of p and q array accesses)</span></span><br><span class="line">    &#123;   <span class="keyword">return</span> root[p] == root[q];  &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">union</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> q)</span></span><br><span class="line">    &#123;		<span class="comment">// change root of p to point to root of q (depth of p and q array accesses)</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> root(p);</span><br><span class="line">        <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> root(q);</span><br><span class="line">        id[i] = j;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h4 id="Data-structure"><a href="#Data-structure" class="headerlink" title="Data structure"></a>Data structure</h4><ul>
 <li>Integer array <code>id[]</code> of length <code>N</code>. </li>
 <li>Interpretation: <code>id[i]</code> is parent of <code>i</code>. </li>
@@ -194,6 +193,7 @@
 <h4 id="Find-1"><a href="#Find-1" class="headerlink" title="Find."></a><strong>Find.</strong></h4><p>Check if p and q have the same root.</p>
 <h4 id="Union-1"><a href="#Union-1" class="headerlink" title="Union."></a><strong>Union.</strong></h4><p>To merge components containing p and q, set the id of p’s root to the id of q’s root.</p>
 <h3 id="Quick-union-is-also-too-slow"><a href="#Quick-union-is-also-too-slow" class="headerlink" title="Quick-union is also too slow"></a>Quick-union is also too slow</h3><p>Cost model. Number of array accesses (for read or write).</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -203,7 +203,8 @@
 <th>Find</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Quick-find</td>
 <td>N</td>
 <td>N</td>
@@ -215,7 +216,9 @@
 <td>$N^†$($†$ includes cost of finding roots)</td>
 <td>N</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h4 id="Quick-find-defect"><a href="#Quick-find-defect" class="headerlink" title="Quick-find defect."></a>Quick-find defect.</h4><ul>
 <li>Union too expensive ( $N$ array accesses).</li>
 <li>Trees are flat, but too expensive to keep them flat.</li>
@@ -240,19 +243,17 @@
 <h4 id="Weighted-quick-union-Java-implementation"><a href="#Weighted-quick-union-Java-implementation" class="headerlink" title="Weighted quick-union: Java implementation"></a>Weighted quick-union: Java implementation</h4><h5 id="Data-structure-1"><a href="#Data-structure-1" class="headerlink" title="Data structure."></a>Data structure.</h5><p>Same as quick-union, but maintain extra array <code>sz[i]</code> to count number of objects in the tree rooted at <code>i</code>.</p>
 <h5 id="Find-2"><a href="#Find-2" class="headerlink" title="Find."></a>Find.</h5><p>Identical to quick-union. </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> root(p) == root(q);</span><br></pre></td></tr></table></figure>
-
 <h5 id="Union-2"><a href="#Union-2" class="headerlink" title="Union."></a>Union.</h5><p>Modify quick-union to:</p>
 <ul>
 <li>Link root of smaller tree to root of larger tree. </li>
 <li>Update the <code>sz[]</code> array.</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> root(p);</span><br><span class="line"><span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> root(q);</span><br><span class="line"><span class="keyword">if</span> (i == j) <span class="keyword">return</span>;</span><br><span class="line"><span class="keyword">if</span> (sz[i] &lt; sz[j])  &#123;   id[i] = j; sz[j] += sz[i];    &#125;</span><br><span class="line"><span class="keyword">else</span>                &#123;   id[j] = i; sz[i] += sz[j];    &#125;</span><br></pre></td></tr></table></figure>
-
 <h4 id="Weighted-quick-union-analysis"><a href="#Weighted-quick-union-analysis" class="headerlink" title="Weighted quick-union analysis"></a>Weighted quick-union analysis</h4><h5 id="Running-time"><a href="#Running-time" class="headerlink" title="Running time."></a>Running time.</h5><ul>
 <li>Find: takes time proportional to depth of <em>p</em> and <em>q</em>. </li>
 <li>Union: takes constant time, given roots.</li>
 </ul>
-<h5 id="Proposition"><a href="#Proposition" class="headerlink" title="Proposition."></a>Proposition.</h5><p>($lg&#x3D;base-2$ logarithm) Depth of any node $x$ is at most $lgN$</p>
+<h5 id="Proposition"><a href="#Proposition" class="headerlink" title="Proposition."></a>Proposition.</h5><p>($lg=base-2$ logarithm) Depth of any node $x$ is at most $lgN$</p>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/alg-Union%20Find/log.png" alt="log"></p>
 <h5 id="Pf-When-does-depth-of-x-increase"><a href="#Pf-When-does-depth-of-x-increase" class="headerlink" title="Pf. When does depth of x increase?"></a>Pf. When does depth of <em>x</em> increase?</h5><p>Increases by $1$ when tree $T_1$ containing $x$ is merged into another tree $T_2$.</p>
 <ul>
@@ -262,6 +263,7 @@
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/alg-Union%20Find/log.png" alt="log"></p>
 </li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -271,7 +273,8 @@
 <th>Find</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Quick-find</td>
 <td>N</td>
 <td>N</td>
@@ -289,7 +292,9 @@
 <td>$lgN^†$</td>
 <td>$lgN$</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>Q. Stop at guaranteed acceptable performance? </p>
 <p>A. No, easy to improve further.</p>
 <h3 id="Improvement-2-path-compression"><a href="#Improvement-2-path-compression" class="headerlink" title="Improvement 2: path compression"></a>Improvement 2: path compression</h3><h4 id="Quick-union-with-path-compression"><a href="#Quick-union-with-path-compression" class="headerlink" title="Quick union with path compression."></a>Quick union with path compression.</h4><p>Just after computing the root of <em>p</em>, set the id of each examined node to point to that root.</p>
@@ -297,14 +302,14 @@
 <h4 id="Path-compression-Java-implementation"><a href="#Path-compression-Java-implementation" class="headerlink" title="Path compression: Java implementation"></a>Path compression: Java implementation</h4><h5 id="Two-pass-implementation"><a href="#Two-pass-implementation" class="headerlink" title="Two-pass implementation:"></a>Two-pass implementation:</h5><p>add second loop to root() to set the id[] of each examined node to the root.</p>
 <h5 id="Simpler-one-pass-variant"><a href="#Simpler-one-pass-variant" class="headerlink" title="Simpler one-pass variant:"></a>Simpler one-pass variant:</h5><p>Make every other node in path point to its grandparent (thereby halving path length).</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">root</span><span class="params">(<span class="type">int</span> i)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span> (i != id[i]) </span><br><span class="line">    &#123;</span><br><span class="line">        id[i] = id[id[i]];  <span class="comment">// only one extra line of code !</span></span><br><span class="line">        i = id[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> i; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h5 id="In-practice"><a href="#In-practice" class="headerlink" title="In practice."></a>In practice.</h5><p>No reason not to! Keeps tree almost completely flat.</p>
-<h4 id="Weighted-quick-union-with-path-compression-amortized-analysis"><a href="#Weighted-quick-union-with-path-compression-amortized-analysis" class="headerlink" title="Weighted quick-union with path compression: amortized analysis"></a>Weighted quick-union with path compression: amortized analysis</h4><h5 id="Proposition-Hopcroft-Ulman-Tarjan"><a href="#Proposition-Hopcroft-Ulman-Tarjan" class="headerlink" title="Proposition. |[Hopcroft-Ulman, Tarjan]"></a>Proposition. |[Hopcroft-Ulman, Tarjan]</h5><p>Starting from an empty data structure, any sequence of $M$ union-find ops on $N$ objects makes  $≤c;(N+M;lg*N)$ array accesses.</p>
+<h4 id="Weighted-quick-union-with-path-compression-amortized-analysis"><a href="#Weighted-quick-union-with-path-compression-amortized-analysis" class="headerlink" title="Weighted quick-union with path compression: amortized analysis"></a>Weighted quick-union with path compression: amortized analysis</h4><h5 id="Proposition-Hopcroft-Ulman-Tarjan"><a href="#Proposition-Hopcroft-Ulman-Tarjan" class="headerlink" title="Proposition. |[Hopcroft-Ulman, Tarjan]"></a>Proposition. |[Hopcroft-Ulman, Tarjan]</h5><p>Starting from an empty data structure, any sequence of $M$ union-find ops on $N$ objects makes  $≤c\;(N+M\;lg*N)$ array accesses.</p>
 <ul>
-<li>Analysis can be improved to $N+M;α(M,N)$. </li>
+<li>Analysis can be improved to $N+M\;α(M,N)$. </li>
 <li>Simple algorithm with fascinating mathematics.</li>
 </ul>
 <p><strong>iterate log function</strong>:</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -312,7 +317,8 @@
 <th>lg* N</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>1</td>
 <td>0</td>
 </tr>
@@ -336,7 +342,9 @@
 <td>$2^{65536}$</td>
 <td>5</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h5 id="Linear-time-algorithm-for-M-union-find-ops-on-N-objects"><a href="#Linear-time-algorithm-for-M-union-find-ops-on-N-objects" class="headerlink" title="Linear-time algorithm for M union-find ops on N objects?"></a>Linear-time algorithm for <em>M</em> union-find ops on <em>N</em> objects?</h5><ul>
 <li>Cost within constant factor of reading in the data.</li>
 <li>In theory, WQUPC is not quite linear.</li>
@@ -419,7 +427,6 @@
 </blockquote>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/alg-Union%20Find/perco.png" alt="perco"></p>
 <h3 id="Percolation-Exercise"><a href="#Percolation-Exercise" class="headerlink" title="Percolation Exercise"></a>Percolation Exercise</h3><h4 id="Java-Environment"><a href="#Java-Environment" class="headerlink" title="Java Environment"></a>Java Environment</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> edu.princeton.cs.algs4.StdRandom;</span><br><span class="line"><span class="keyword">import</span> edu.princeton.cs.algs4.StdStats;</span><br><span class="line"><span class="keyword">import</span> edu.princeton.cs.algs4.WeightedQuickUnionUF;</span><br></pre></td></tr></table></figure>
-
 <p>Note that <em>your</em> code must be in the <em>default package</em>; if you use a <code>package</code> statement, the autograder will reject your submission.</p>
 <h4 id="Percolation-1"><a href="#Percolation-1" class="headerlink" title="Percolation."></a>Percolation.</h4><p>Given a composite systems comprised of randomly distributed insulating and metallic materials: what fraction of the materials need to be metallic so that the composite system is an electrical conductor? </p>
 <p>Given a porous landscape with water on the surface (or oil below), under what conditions will the water be able to drain through to the bottom (or the oil to gush through to the surface)? </p>
@@ -427,17 +434,16 @@
 <h4 id="The-model"><a href="#The-model" class="headerlink" title="The model."></a>The model.</h4><p>We model a percolation system using an <em>n</em>-by-<em>n</em> grid of <em>sites</em>.</p>
 <p>Each site is either <em>open</em> or <em>blocked</em>. </p>
 <p>A <em>full</em> site is an open site that can be connected to an open site in the top row via a chain of neighboring (left, right, up, down) open sites. We say the system <em>percolates</em> if there is a full site in the bottom row. </p>
-<p>In other words, a system percolates if we fill all open sites connected to the top row and that process fills some open site on the bottom row. (For the insulating&#x2F;metallic materials example, the open sites correspond to metallic materials, so that a system that percolates has a metallic path from top to bottom, with full sites conducting. </p>
+<p>In other words, a system percolates if we fill all open sites connected to the top row and that process fills some open site on the bottom row. (For the insulating/metallic materials example, the open sites correspond to metallic materials, so that a system that percolates has a metallic path from top to bottom, with full sites conducting. </p>
 <p>For the porous substance example, the open sites correspond to empty space through which water might flow, so that a system that percolates lets water fill open sites, flowing from top to bottom.)</p>
 <h4 id="The-problem"><a href="#The-problem" class="headerlink" title="The problem."></a>The problem.</h4><p>In a famous scientific problem, researchers are interested in the following question: </p>
 <p>if sites are independently set to be open with probability $p$ (and therefore blocked with probability $1−p$), what is the probability that the system percolates? When $p$ equals 0, the system does not percolate; when $p$ equals 1, the system percolates. </p>
 <p>The plots below show the site vacancy probability $p$ versus the percolation probability for 20-by-20 random grid (left) and 100-by-100 random grid (right).</p>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/alg-Union%20Find/site-vacancy.png" alt="site-vacancy"></p>
-<p>When <em>n</em> is sufficiently large, there is a <em>threshold</em> value $p^*$ such that when $p&lt;p^*$ a random <em>n*-by-<em>n</em> grid almost never percolates, and when $p&gt;p^</em>$, a random <em>n</em>-by-<em>n</em> grid almost always percolates.</p>
-<p>No mathematical solution for determining the percolation threshold $p^*$ has yet been derived. Your task is to write a computer program to estimate $p^*$.</p>
+<p>When <em>n</em> is sufficiently large, there is a <em>threshold</em> value $p^<em>$ such that when $p&lt;p^</em>$ a random <em>n</em>-by-<em>n</em> grid almost never percolates, and when $p&gt;p^<em>$, a random </em>n<em>-by-</em>n* grid almost always percolates.</p>
+<p>No mathematical solution for determining the percolation threshold $p^<em>$ has yet been derived. Your task is to write a computer program to estimate $p^</em>$.</p>
 <h4 id="Percolation-data-type"><a href="#Percolation-data-type" class="headerlink" title="Percolation data type."></a>Percolation data type.</h4><p>To model a percolation system, create a data type <code>Percolation</code> with the following API:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Percolation</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// creates n-by-n grid, with all sites initially blocked</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Percolation</span><span class="params">(<span class="type">int</span> n)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// opens the site (row, col) if it is not open already</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">open</span><span class="params">(<span class="type">int</span> row, <span class="type">int</span> col)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// is the site (row, col) open?</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isOpen</span><span class="params">(<span class="type">int</span> row, <span class="type">int</span> col)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// is the site (row, col) full?</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isFull</span><span class="params">(<span class="type">int</span> row, <span class="type">int</span> col)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// returns the number of open sites</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">numberOfOpenSites</span><span class="params">()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// does the system percolate?</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">percolates</span><span class="params">()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// test client (optional)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h5 id="Corner-cases"><a href="#Corner-cases" class="headerlink" title="Corner cases."></a>Corner cases.</h5><p>By convention, the row and column indices are integers between 1 and $n$, where $(1,1)$ is the upper-left site: Throw an <code>IllegalArgumentException</code> if any argument to <code>open()</code>, <code>isOpen()</code>, or <code>isFull()</code> is outside its prescribed range. </p>
 <p>Throw an <code>IllegalArgumentException</code> in the constructor if $n≤0$.</p>
 <h5 id="Performance-requirements"><a href="#Performance-requirements" class="headerlink" title="Performance requirements."></a>Performance requirements.</h5><p>The constructor must take time proportional to <em>n</em>2; all instance methods must take constant time plus a constant number of calls to <code>union()</code> and <code>find()</code>.</p>
@@ -449,34 +455,27 @@
 <li>Open the site.</li>
 <li>The fraction of sites that are opened when the system percolates provides an estimate of the percolation threshold.</li>
 </ul>
-<p>For example, if sites are opened in a 20-by-20 lattice according to the snapshots below, then our estimate of the percolation threshold is 204&#x2F;400 &#x3D; 0.51 because the system percolates when the 204th site is opened.</p>
+<p>For example, if sites are opened in a 20-by-20 lattice according to the snapshots below, then our estimate of the percolation threshold is 204/400 = 0.51 because the system percolates when the 204th site is opened.</p>
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/06/30/alg-Union%20Find/opensites.png" alt="opensites"></p>
 <p>By repeating this computation experiment <em>T</em> times and averaging the results, we obtain a more accurate estimate of the percolation threshold. Let <em>xt</em> be the fraction of open sites in computational experiment <em>t</em>. The sample mean x⎯⎯⎯x¯ provides an estimate of the percolation threshold; the sample standard deviation <em>s</em>; measures the sharpness of the threshold.</p>
-<p>$$\begin{align} \overline{x}&#x3D;\frac{x_1+x_2+…+x_T}{T}, \tag{1}s^2&#x3D;\frac{(x_1-\overline{x})^2+(x_2-\overline{x})^2+…+(x_T-\overline{x})^2}{T-1} \end{align}$$</p>
-<p>Assuming <em>T</em> is sufficiently large (say, at least 30), the following provides a 95% confidence interval for the percolation threshold:</p>
-<p>$$\begin{align} \overline{x}-\frac{1.96s}{\sqrt{T}}, \tag{2}\overline{x}+\frac{1.96s}{\sqrt{T}}, \end{align}$$</p>
-<p>To perform a series of computational experiments, create a data type <code>PercolationStats</code> with the following API.</p>
+<script type="math/tex; mode=display">\begin{align} \overline{x}=\frac{x_1+x_2+...+x_T}{T}, \tag{1}s^2=\frac{(x_1-\overline{x})^2+(x_2-\overline{x})^2+...+(x_T-\overline{x})^2}{T-1} \end{align}</script><p>Assuming <em>T</em> is sufficiently large (say, at least 30), the following provides a 95% confidence interval for the percolation threshold:</p>
+<script type="math/tex; mode=display">\begin{align} \overline{x}-\frac{1.96s}{\sqrt{T}}, \tag{2}\overline{x}+\frac{1.96s}{\sqrt{T}}, \end{align}</script><p>To perform a series of computational experiments, create a data type <code>PercolationStats</code> with the following API.</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PercolationStats</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// perform independent trials on an n-by-n grid</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PercolationStats</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> trials)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// sample mean of percolation threshold</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">mean</span><span class="params">()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// sample standard deviation of percolation threshold</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">stddev</span><span class="params">()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// low endpoint of 95% confidence interval</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">confidenceLo</span><span class="params">()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// high endpoint of 95% confidence interval</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">confidenceHi</span><span class="params">()</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">// test client (see below)</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>Throw an <code>IllegalArgumentException</code> in the constructor if either <em>n</em> ≤ 0 or <em>trials</em> ≤ 0.</p>
 <p>Also, include a <code>main()</code> method that takes two <em>command-line arguments</em> <em>n</em> and <em>T</em>, performs <em>T</em> independent computational experiments (discussed above) on an <em>n</em>-by-<em>n</em> grid, and prints the sample mean, sample standard deviation, and the <strong>95% confidence interval</strong> for the percolation threshold. Use <a target="_blank" rel="noopener" href="https://algs4.cs.princeton.edu/code/javadoc/edu/princeton/cs/algs4/StdRandom.html"><code>StdRandom</code></a> to generate random numbers; use <a target="_blank" rel="noopener" href="https://algs4.cs.princeton.edu/code/javadoc/edu/princeton/cs/algs4/StdStats.html"><code>StdStats</code></a> to compute the sample mean and sample standard deviation.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~/Desktop/percolation&gt; </span><span class="language-bash">java-algs4 PercolationStats 200 100</span></span><br><span class="line">mean                    = 0.5929934999999997</span><br><span class="line">stddev                  = 0.00876990421552567</span><br><span class="line"><span class="meta prompt_">95% </span><span class="language-bash">confidence interval = [0.5912745987737567, 0.5947124012262428]</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">~/Desktop/percolation&gt; </span><span class="language-bash">java-algs4 PercolationStats 200 100</span></span><br><span class="line">mean                    = 0.592877</span><br><span class="line">stddev                  = 0.009990523717073799</span><br><span class="line"><span class="meta prompt_">95% </span><span class="language-bash">confidence interval = [0.5909188573514536, 0.5948351426485464]</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">~/Desktop/percolation&gt; </span><span class="language-bash">java-algs4 PercolationStats 2 10000</span></span><br><span class="line">mean                    = 0.666925</span><br><span class="line">stddev                  = 0.11776536521033558</span><br><span class="line"><span class="meta prompt_">95% </span><span class="language-bash">confidence interval = [0.6646167988418774, 0.6692332011581226]</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">~/Desktop/percolation&gt; </span><span class="language-bash">java-algs4 PercolationStats 2 100000</span></span><br><span class="line">mean                    = 0.6669475</span><br><span class="line">stddev                  = 0.11775205263262094</span><br><span class="line"><span class="meta prompt_">95% </span><span class="language-bash">confidence interval = [0.666217665216461, 0.6676773347835391]</span></span><br></pre></td></tr></table></figure>
-
 <h4 id="Analysis-of-running-time-and-memory-usage-optional-and-not-graded"><a href="#Analysis-of-running-time-and-memory-usage-optional-and-not-graded" class="headerlink" title="Analysis of running time and memory usage (optional and not graded)."></a>Analysis of running time and memory usage (optional and not graded).</h4><blockquote>
 <p>Implement the Percolation data type using the quick find algorithm in QuickFindUF.</p>
 </blockquote>
 <p>Use Stopwatch to measure the total running time of PercolationStats for various values of n and T. </p>
 <ul>
-<li><p>How does doubling n affect the total running time? </p>
-</li>
+<li>How does doubling n affect the total running time? </li>
 <li><p>How does doubling T affect the total running time? </p>
 </li>
 <li><p>Give a formula (using tilde notation) of the total running time on your computer (in seconds) as a single function of both n and T.</p>
 </li>
-<li><p>Using the 64-bit memory-cost model from lecture, give the total memory usage in bytes (using tilde notation) that a Percolation object uses to model an n-by-n percolation system.</p>
-</li>
-<li><p>Count all memory that is used, including memory for the union–find data structure.</p>
-</li>
+<li>Using the 64-bit memory-cost model from lecture, give the total memory usage in bytes (using tilde notation) that a Percolation object uses to model an n-by-n percolation system.</li>
+<li>Count all memory that is used, including memory for the union–find data structure.</li>
 </ul>
 <p>Now, implement the Percolation data type using the weighted quick union algorithm in WeightedQuickUnionUF. Answer the questions in the previous paragraph.</p>
 
