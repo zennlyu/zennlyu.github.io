@@ -90,6 +90,7 @@
 <h1 class="article-title"><span>Some random daily notes</span></h1>
 <h2 id="Catalina-quarantine-for-corrupted-apps"><a href="#Catalina-quarantine-for-corrupted-apps" class="headerlink" title="Catalina quarantine for corrupted apps"></a>Catalina quarantine for corrupted apps</h2><p>低于 <code>Big Sur</code> 系统版本的 <code>macOS</code> 或 <code>m1</code> 芯片机器在安装一些未适配软件时候可能会出现 <code>安装包损坏, 打不开“XXX”,因为它来自身份不明的开发者</code> 等报错，在此状态下可以尝试以下做法。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo spctl --master-disable</span><br><span class="line">sudo xattr -r -d com.apple.quarantine /Applications/Sketch.app/</span><br><span class="line">// 输入 sudo xattr -r -d com.apple.quarantine 后将应用程序拖入 teminal 中</span><br></pre></td></tr></table></figure>
+
 <p>（以及 Catalina 真的好耐看啊！）</p>
 <h2 id="SS7-Attack"><a href="#SS7-Attack" class="headerlink" title="SS7 Attack"></a>SS7 Attack</h2>
 
