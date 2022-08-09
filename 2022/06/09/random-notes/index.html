@@ -29,7 +29,7 @@
 <meta property="og:description" content="Catalina quarantine for corrupted apps低于 Big Sur 系统版本的 macOS 或 m1 芯片机器在安装一些未适配软件时候可能会出现 安装包损坏, 打不开“XXX”,因为它来自身份不明的开发者 等报错，在此状态下可以尝试以下做法。 123sudo spctl --master-disablesudo xattr -r -d com.apple.quaran">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-09T05:59:03.000Z">
-<meta property="article:modified_time" content="2022-07-26T13:26:23.990Z">
+<meta property="article:modified_time" content="2022-08-09T07:26:23.019Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="random-notes">
 <meta name="twitter:card" content="summary">
@@ -71,7 +71,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Catalina-quarantine-for-corrupted-apps"><span class="toc-text">Catalina quarantine for corrupted apps</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SS7-Attack"><span class="toc-text">SS7 Attack</span></a></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Catalina-quarantine-for-corrupted-apps"><span class="toc-text">Catalina quarantine for corrupted apps</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SS7-Attack"><span class="toc-text">SS7 Attack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dev-Util"><span class="toc-text">Dev-Util</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Google-Maps-API"><span class="toc-text">Google Maps API</span></a></li></ol></div></div></div>
 
 
 </div>
@@ -92,7 +92,31 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo spctl --master-disable</span><br><span class="line">sudo xattr -r -d com.apple.quarantine /Applications/Sketch.app/</span><br><span class="line">// 输入 sudo xattr -r -d com.apple.quarantine 后将应用程序拖入 teminal 中</span><br></pre></td></tr></table></figure>
 
 <p>（以及 Catalina 真的好耐看啊！）</p>
-<h2 id="SS7-Attack"><a href="#SS7-Attack" class="headerlink" title="SS7 Attack"></a>SS7 Attack</h2>
+<h2 id="SS7-Attack"><a href="#SS7-Attack" class="headerlink" title="SS7 Attack"></a>SS7 Attack</h2><h2 id="Dev-Util"><a href="#Dev-Util" class="headerlink" title="Dev-Util"></a>Dev-Util</h2><h2 id="Google-Maps-API"><a href="#Google-Maps-API" class="headerlink" title="Google Maps API"></a>Google Maps API</h2><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a target="_blank" rel="noopener" href="https://snazzymaps.com/">https://snazzymaps.com/</a></td>
+<td>带有 JSON 代码和可下载示例的 Google 地图配色方案的存储库</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a target="_blank" rel="noopener" href="https://googlemapsmania.blogspot.com/search/label/Styled%20Maps">https://googlemapsmania.blogspot.com/search/label/Styled%20Maps</a></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td><a target="_blank" rel="noopener" href="https://mapstyle.withgoogle.com/">https://mapstyle.withgoogle.com/</a></td>
+<td></td>
+</tr>
+</tbody></table>
+
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
 </div></section></div>
