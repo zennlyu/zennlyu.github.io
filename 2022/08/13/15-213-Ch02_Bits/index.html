@@ -43,7 +43,7 @@
 <meta property="og:image" content="http://example.com/2022/08/13/15-213-Ch02_Bits/2-15.png">
 <meta property="og:image" content="http://example.com/2022/08/13/15-213-Ch02_Bits/2-17.png">
 <meta property="article:published_time" content="2022-08-13T14:30:11.954Z">
-<meta property="article:modified_time" content="2022-08-14T09:52:23.151Z">
+<meta property="article:modified_time" content="2022-08-14T09:56:49.195Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="csapp">
 <meta name="twitter:card" content="summary">
@@ -438,7 +438,7 @@
 <h4 id="原理：检测无符号数加法中的溢出"><a href="#原理：检测无符号数加法中的溢出" class="headerlink" title="原理：检测无符号数加法中的溢出"></a>原理：检测无符号数加法中的溢出</h4><p>对在范围 $0≤x,y≤UMax_w$ 中的 x 和 y，令 $s≐x+^u_wy$。则对计算 s，当且仅当 $s&lt;x$（或者等价地 $s&lt;y$）时，发生了溢出。</p>
 <p>作为说明，在前面的示例中，我们看到 $9+^u_412&#x3D;5$。由于 5 &lt;9，我们可以看出发生了溢出。</p>
 <h5 id="推导：检测无符号数加法中的溢出"><a href="#推导：检测无符号数加法中的溢出" class="headerlink" title="推导：检测无符号数加法中的溢出"></a>推导：检测无符号数加法中的溢出</h5><p>通过观察发现 $x+y≥x$，因此如果 s 没有溢出，我们能够肯定 $s≥x$。另一方面，如果 s 确实溢出了，我们就有 $s&#x3D;x+y-2^w$。假设 $y&lt;2^w$，我们就有 $y-2^w&lt;0$，因此 $s&#x3D;x+(y-2^w)&lt;x$。</p>
-<p>模数加法形成了一种数学结构，称为<strong>阿贝尔群（Abelian group）</strong>，这是以丹麦数学家 Niels Henrik Abel (1802~1829) 的名字命名。也就说，它是可交换的（这就是为什么叫“abelian”的地方）和可结合的。它有一个单位元 0，并且每个元素有一个加法逆元。让我们考虑 w 位的无符号数的集合，执行加法运算十 u。对于每个值 x，必然有某个值一 x 满足一 ux+ux&#x3D;0。该加法的逆操作可以表述如下：</p>
+<p>模数加法形成了一种数学结构，称为**阿贝尔群(Abelian group)**，也就说，它是可交换的和可结合的。它有一个单位元 0，并且每个元素有一个加法逆元。让我们考虑 w 位的无符号数的集合，执行加法运算十 u。对于每个值 x，必然有某个值一 x 满足一 ux+ux&#x3D;0。该加法的逆操作可以表述如下：</p>
 <h4 id="原理：无符号数求反"><a href="#原理：无符号数求反" class="headerlink" title="原理：无符号数求反"></a>原理：无符号数求反</h4><p>对满足 0≤x &lt;2“的任意 x，其 w 位的无符号逆元一 x 由下式给出：</p>
 <p>该结果可以很容易地通过案例分析推导出来：</p>
 <h5 id="推导：无符号数求反"><a href="#推导：无符号数求反" class="headerlink" title="推导：无符号数求反"></a>推导：无符号数求反</h5><p>当 x&#x3D;0 时，加法逆元显然是 0。对于 x&gt;0, 考虑值 2w 一 x。我们观察到这个数字在 0 &lt;2w 一 x &lt;2w 范围之内，并且（x 十 2“一 x) mod2w&#x3D;2“mod2w&#x3D;0。因此，它就是 x 在十下的逆元。</p>
