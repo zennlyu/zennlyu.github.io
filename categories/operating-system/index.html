@@ -84,53 +84,10 @@
 
       
 
-  
-
-
-  <div class='nav-wrap'>
-  <nav class='sub post cap'>
-    
-      <a href='/'>Recent</a>
-    
-    
-      
-        <a class='active' href='/categories'>Category: operating system</a>
-      
-    
-    
-      
-        <a href='/tags'>Tags</a>
-      
-    
-    
-      
-        <a href='/archives'>Archives</a>
-      
-    
-  </nav>
-</div>
-
-  <div class="post-list post"><a class="post-card post " href="/2022/08/13/6.828-Syscall/">
-<article class="md"><h2 class="post-title">S081 Syscalls</h2><div class="excerpt"><p></p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-08-13T12:32:44.777Z">2022-08-13</time></span><span class="cap breadcrumb">operating system</span></div></article>
-</a><a class="post-card post " href="/2022/08/13/6.828%20xv6-book/">
-<article class="md"><h2 class="post-title">S081 xv6-book</h2><div class="excerpt"><p>Chapter 1 Operating System Interfaces1.1 Processes and MemoryAn xv6 process consists of
-
-用户空间内存(指令、数据和堆栈)
-内核私有的进程状态
-
-Xv6 time-shares processes:
-
-进程共享 cpu，它透明地切换当前 cpu 正在执行的进程。
-当一个进程暂时不使用 cpu 时， xv6...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-08-13T12:32:44.767Z">2022-08-13</time></span><span class="cap breadcrumb">operating system</span></div></article>
-</a><a class="post-card post " href="/2022/08/13/6.828-Utilities/">
-<article class="md"><h2 class="post-title">S081 Utilities</h2><div class="excerpt"><p>Install xv6 on Catalina配置 S081 实验环境的时候，官网对于 macOS 的安装方法 brew install riscv-tools 等包管理无法在 Catalina 及以下的系统版本上安装成功，需要进行手动编译。编译项如下
-
-RISC-V工具链： 包括一系列交叉编译的工具，用于把源码编译成机器码，如 gcc，binutils，glibc 等
-QEMU模拟器： 用...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-08-13T12:32:44.762Z">2022-08-13</time></span><span class="cap breadcrumb">operating system</span></div></article>
-</a></div>
-  
-
-
+  @import 'partial/*'
+@import 'tag-plugins/*'
+@import 'sidebar/*'
+@import 'pages/*'
 
 
 
