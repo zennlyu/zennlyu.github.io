@@ -90,9 +90,9 @@
 <h1 class="article-title"><span>Some random daily notes</span></h1>
 <h2 id="Catalina-quarantine-for-corrupted-apps"><a href="#Catalina-quarantine-for-corrupted-apps" class="headerlink" title="Catalina quarantine for corrupted apps"></a>Catalina quarantine for corrupted apps</h2><p>低于 <code>Big Sur</code> 系统版本的 <code>macOS</code> 或 <code>m1</code> 芯片机器在安装一些未适配软件时候可能会出现 <code>安装包损坏, 打不开“XXX”,因为它来自身份不明的开发者</code> 等报错，在此状态下可以尝试以下做法。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo spctl --master-disable</span><br><span class="line">sudo xattr -r -d com.apple.quarantine /Applications/Sketch.app/</span><br><span class="line">// 输入 sudo xattr -r -d com.apple.quarantine 后将应用程序拖入 teminal 中</span><br></pre></td></tr></table></figure>
+
 <p>（以及 Catalina 真的好耐看啊！）</p>
-<h2 id="SS7-Attack"><a href="#SS7-Attack" class="headerlink" title="SS7 Attack"></a>SS7 Attack</h2><h2 id="Dev-Util"><a href="#Dev-Util" class="headerlink" title="Dev-Util"></a>Dev-Util</h2><h2 id="Google-Maps-API"><a href="#Google-Maps-API" class="headerlink" title="Google Maps API"></a>Google Maps API</h2><div class="table-container">
-<table>
+<h2 id="SS7-Attack"><a href="#SS7-Attack" class="headerlink" title="SS7 Attack"></a>SS7 Attack</h2><h2 id="Dev-Util"><a href="#Dev-Util" class="headerlink" title="Dev-Util"></a>Dev-Util</h2><h2 id="Google-Maps-API"><a href="#Google-Maps-API" class="headerlink" title="Google Maps API"></a>Google Maps API</h2><table>
 <thead>
 <tr>
 <th></th>
@@ -100,8 +100,7 @@
 <th></th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>1</td>
 <td><a target="_blank" rel="noopener" href="https://snazzymaps.com/">https://snazzymaps.com/</a></td>
 <td>带有 JSON 代码和可下载示例的 Google 地图配色方案的存储库</td>
@@ -114,10 +113,9 @@
 <tr>
 <td>3</td>
 <td><a target="_blank" rel="noopener" href="https://mapstyle.withgoogle.com/">https://mapstyle.withgoogle.com/</a></td>
+<td></td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
