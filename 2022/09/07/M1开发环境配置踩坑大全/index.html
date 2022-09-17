@@ -21,15 +21,15 @@
   <title>M1开发环境配置踩坑大全 - zennlyu</title>
 
   
-    <meta name="description" content="Dev-UtilGoogle Maps API           1 https:&#x2F;&#x2F;snazzymaps.com&#x2F; 带有 JSON 代码和可下载示例的 Google 地图配色方案的存储库   2 https:&#x2F;&#x2F;googlemapsmania.blogspot.com&#x2F;search&#x2F;label&#x2F;Styled%20Maps    3 https:&#x2F;&#x2F;mapstyle.withgoogle.com">
+    <meta name="description" content="Dev-UtilGoogle Maps API         1 https:&#x2F;&#x2F;snazzymaps.com&#x2F; 带有 JSON 代码和可下载示例的 Google 地图配色方案的存储库   2 https:&#x2F;&#x2F;googlemapsmania.blogspot.com&#x2F;search&#x2F;label&#x2F;Styled%20Maps    3 https:&#x2F;&#x2F;mapstyle.withgoogle.com&#x2F;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="M1开发环境配置踩坑大全">
 <meta property="og:url" content="http://example.com/2022/09/07/M1%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%B8%A9%E5%9D%91%E5%A4%A7%E5%85%A8/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="Dev-UtilGoogle Maps API           1 https:&#x2F;&#x2F;snazzymaps.com&#x2F; 带有 JSON 代码和可下载示例的 Google 地图配色方案的存储库   2 https:&#x2F;&#x2F;googlemapsmania.blogspot.com&#x2F;search&#x2F;label&#x2F;Styled%20Maps    3 https:&#x2F;&#x2F;mapstyle.withgoogle.com">
+<meta property="og:description" content="Dev-UtilGoogle Maps API         1 https:&#x2F;&#x2F;snazzymaps.com&#x2F; 带有 JSON 代码和可下载示例的 Google 地图配色方案的存储库   2 https:&#x2F;&#x2F;googlemapsmania.blogspot.com&#x2F;search&#x2F;label&#x2F;Styled%20Maps    3 https:&#x2F;&#x2F;mapstyle.withgoogle.com&#x2F;">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-09-07T02:33:50.442Z">
-<meta property="article:modified_time" content="2022-09-15T09:48:37.640Z">
+<meta property="article:modified_time" content="2022-09-16T03:29:32.048Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="devtools">
 <meta name="twitter:card" content="summary">
@@ -71,7 +71,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dev-Util"><span class="toc-text">Dev-Util</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Google-Maps-API"><span class="toc-text">Google Maps API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#M1%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%B8%A9%E5%9D%91%E5%A4%A7%E5%85%A8"><span class="toc-text">M1开发环境配置踩坑大全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-m1-GPU-%E8%AE%AD%E7%BB%83-Tensorflow"><span class="toc-text">使用 m1 GPU 训练 Tensorflow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#M1-%E5%AE%89%E8%A3%85-pytorch"><span class="toc-text">M1 安装 pytorch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#m1-%E5%AE%89%E8%A3%85-qemu-%E5%8D%A1%E6%AD%BB%E9%97%AE%E9%A2%98"><span class="toc-text">m1 安装 qemu 卡死问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Catalina-quarantine-for-corrupted-apps"><span class="toc-text">Catalina quarantine for corrupted apps</span></a></li></ol></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dev-Util"><span class="toc-text">Dev-Util</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Google-Maps-API"><span class="toc-text">Google Maps API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#M1%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%B8%A9%E5%9D%91%E5%A4%A7%E5%85%A8"><span class="toc-text">M1开发环境配置踩坑大全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-m1-GPU-%E8%AE%AD%E7%BB%83-Tensorflow"><span class="toc-text">使用 m1 GPU 训练 Tensorflow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C-TensorFlow-%E6%8A%A5%E9%94%99"><span class="toc-text">运行 TensorFlow 报错</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#M1-%E5%AE%89%E8%A3%85-pytorch"><span class="toc-text">M1 安装 pytorch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#m1-%E5%AE%89%E8%A3%85-qemu-%E5%8D%A1%E6%AD%BB%E9%97%AE%E9%A2%98"><span class="toc-text">m1 安装 qemu 卡死问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Catalina-quarantine-for-corrupted-apps"><span class="toc-text">Catalina quarantine for corrupted apps</span></a></li></ol></li></ol></div></div></div>
 
 
 </div>
@@ -88,8 +88,7 @@
 
 <article class='content md post'>
 <h1 class="article-title"><span>M1开发环境配置踩坑大全</span></h1>
-<h2 id="Dev-Util"><a href="#Dev-Util" class="headerlink" title="Dev-Util"></a>Dev-Util</h2><h3 id="Google-Maps-API"><a href="#Google-Maps-API" class="headerlink" title="Google Maps API"></a>Google Maps API</h3><div class="table-container">
-<table>
+<h2 id="Dev-Util"><a href="#Dev-Util" class="headerlink" title="Dev-Util"></a>Dev-Util</h2><h3 id="Google-Maps-API"><a href="#Google-Maps-API" class="headerlink" title="Google Maps API"></a>Google Maps API</h3><table>
 <thead>
 <tr>
 <th></th>
@@ -97,8 +96,7 @@
 <th></th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>1</td>
 <td><a target="_blank" rel="noopener" href="https://snazzymaps.com/">https://snazzymaps.com/</a></td>
 <td>带有 JSON 代码和可下载示例的 Google 地图配色方案的存储库</td>
@@ -111,26 +109,53 @@
 <tr>
 <td>3</td>
 <td><a target="_blank" rel="noopener" href="https://mapstyle.withgoogle.com/">https://mapstyle.withgoogle.com/</a></td>
+<td></td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <h2 id="M1开发环境配置踩坑大全"><a href="#M1开发环境配置踩坑大全" class="headerlink" title="M1开发环境配置踩坑大全"></a>M1开发环境配置踩坑大全</h2><h3 id="使用-m1-GPU-训练-Tensorflow"><a href="#使用-m1-GPU-训练-Tensorflow" class="headerlink" title="使用 m1 GPU 训练 Tensorflow"></a>使用 m1 GPU 训练 Tensorflow</h3><p>Please try the same after creating a virtual environment.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python3 -m venv ~/tensorflow-metal</span><br><span class="line">source ~/tensorflow-metal/bin/activate</span><br><span class="line">python -m pip install -U pip</span><br><span class="line">python -m pip install tensorflow-macos</span><br><span class="line">python -m pip install tensorflow-metal</span><br></pre></td></tr></table></figure>
+
+
+
 <p>使用 <code>bench.py</code> 测试 m1 性能，运行时间为 108.47s（作为对比，24 核 gpu m1max 运行时间为 58s)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> tensorflow_datasets <span class="keyword">as</span> tfds</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;TensorFlow version:&quot;</span>, tf.__version__)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Num GPUs Available: &quot;</span>, <span class="built_in">len</span>(tf.config.experimental.list_physical_devices(<span class="string">&#x27;GPU&#x27;</span>)))</span><br><span class="line">start_time = time.time()</span><br><span class="line"><span class="comment"># tf.config.list_physical_devices(&#x27;GPU&#x27;)</span></span><br><span class="line"></span><br><span class="line">(ds_train, ds_test), ds_info = tfds.load(</span><br><span class="line">    <span class="string">&#x27;mnist&#x27;</span>,</span><br><span class="line">    split=[<span class="string">&#x27;train&#x27;</span>, <span class="string">&#x27;test&#x27;</span>],</span><br><span class="line">    shuffle_files=<span class="literal">True</span>,</span><br><span class="line">    as_supervised=<span class="literal">True</span>,</span><br><span class="line">    with_info=<span class="literal">True</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">normalize_img</span>(<span class="params">image, label</span>):</span><br><span class="line">  <span class="string">&quot;&quot;&quot;Normalizes images: `uint8` -&gt; `float32`.&quot;&quot;&quot;</span></span><br><span class="line">  <span class="keyword">return</span> tf.cast(image, tf.float32) / <span class="number">255.</span>, label</span><br><span class="line"></span><br><span class="line">batch_size = <span class="number">128</span></span><br><span class="line">ds_train = ds_train.<span class="built_in">map</span>(</span><br><span class="line">    normalize_img, num_parallel_calls=tf.data.experimental.AUTOTUNE)</span><br><span class="line">ds_train = ds_train.cache()</span><br><span class="line">ds_train = ds_train.shuffle(ds_info.splits[<span class="string">&#x27;train&#x27;</span>].num_examples)</span><br><span class="line">ds_train = ds_train.batch(batch_size)</span><br><span class="line">ds_train = ds_train.prefetch(tf.data.experimental.AUTOTUNE)</span><br><span class="line">ds_test = ds_test.<span class="built_in">map</span>(</span><br><span class="line">    normalize_img, num_parallel_calls=tf.data.experimental.AUTOTUNE)</span><br><span class="line">ds_test = ds_test.batch(batch_size)</span><br><span class="line">ds_test = ds_test.cache()</span><br><span class="line">ds_test = ds_test.prefetch(tf.data.experimental.AUTOTUNE)</span><br><span class="line"></span><br><span class="line">model = tf.keras.models.Sequential([</span><br><span class="line">  tf.keras.layers.Conv2D(<span class="number">32</span>, kernel_size=(<span class="number">3</span>, <span class="number">3</span>),</span><br><span class="line">                 activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">  tf.keras.layers.Conv2D(<span class="number">64</span>, kernel_size=(<span class="number">3</span>, <span class="number">3</span>),</span><br><span class="line">                 activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">  tf.keras.layers.MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>)),</span><br><span class="line"><span class="comment">#   tf.keras.layers.Dropout(0.25),</span></span><br><span class="line">  tf.keras.layers.Flatten(),</span><br><span class="line">  tf.keras.layers.Dense(<span class="number">128</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line"><span class="comment">#   tf.keras.layers.Dropout(0.5),</span></span><br><span class="line">  tf.keras.layers.Dense(<span class="number">10</span>, activation=<span class="string">&#x27;softmax&#x27;</span>)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">model.<span class="built_in">compile</span>(</span><br><span class="line">    loss=<span class="string">&#x27;sparse_categorical_crossentropy&#x27;</span>,</span><br><span class="line">    optimizer=tf.keras.optimizers.Adam(<span class="number">0.001</span>),</span><br><span class="line">    metrics=[<span class="string">&#x27;accuracy&#x27;</span>],</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">model.fit(</span><br><span class="line">    ds_train,</span><br><span class="line">    epochs=<span class="number">12</span>,</span><br><span class="line">    validation_data=ds_test,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">end_time = time.time()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Time consumed: &#123;:.2f&#125;秒&quot;</span>.<span class="built_in">format</span>(end_time - start_time))</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="运行-TensorFlow-报错"><a href="#运行-TensorFlow-报错" class="headerlink" title="运行 TensorFlow 报错"></a>运行 TensorFlow 报错</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR: Could not find a version that satisfies the requirement tensorflow (from versions: none)</span><br><span class="line">ERROR: No matching distribution found for tensorflow</span><br></pre></td></tr></table></figure>
+
+<p>原因：Python的版本过高。使用指令：python –version 查看当前使用的Python版本。TensorFlow支持的Python版本只到python3.5。</p>
+<p>解决方案：</p>
+<ol>
+<li>把当前的Python卸载掉，安装python3.5</li>
+<li>指定安装支持高版本Python的TensorFlow</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m pip install --upgrade https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-0.12.0-py3-none-any.whl</span><br></pre></td></tr></table></figure>
+
+
+
 <h3 id="M1-安装-pytorch"><a href="#M1-安装-pytorch" class="headerlink" title="M1 安装 pytorch"></a>M1 安装 pytorch</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">torch create virtual environment</span></span><br><span class="line">conda create -n torch_nightly_env python=3.8</span><br><span class="line">conda activate torch_nightly_env</span><br><span class="line">conda install PyTorch torchvision -c pytorch-nightly</span><br></pre></td></tr></table></figure>
+
+
+
 <h3 id="m1-安装-qemu-卡死问题"><a href="#m1-安装-qemu-卡死问题" class="headerlink" title="m1 安装 qemu 卡死问题"></a>m1 安装 qemu 卡死问题</h3><p>按照官网步骤使用 brew 安装 qemu 之后，<code>make install</code> 会卡死在第一步，在这一 issue 中找到了解决方案:</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/BASARANOMO/xv6-labs-2020/issues/1">https://github.com/BASARANOMO/xv6-labs-2020/issues/1</a></p>
 <p>Then, download the qemu-5.1.0 and unzip the downloaded <code>.tar.xz</code> file:</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://download.qemu.org/qemu-5.1.0.tar.xz</span></span><br></pre></td></tr></table></figure>
+
 <p>Two patches are needed:<br><a target="_blank" rel="noopener" href="https://patchwork.kernel.org/project/qemu-devel/patch/20210103145055.11074-1-r.bolshakov@yadro.com/">patch1</a>: just download it and <code>cd</code> to the qemu directory, then:</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">patch -p1 &lt; ../patch/v2-tcg-Fix-execution-on-Apple-Silicon.patch</span></span><br></pre></td></tr></table></figure>
+
 <p><a target="_blank" rel="noopener" href="https://gist.github.com/stefannilsson/8a083e07f4103af2520e87fdb1f50efc/revisions">patch2</a>: Two lines only. Find the file in qemu directory and modify it.<br>Then run configure with:</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure --disable-kvm --disable-werror --prefix=/usr/local --target-list=<span class="string">&quot;riscv64-softmmu&quot;</span></span></span><br></pre></td></tr></table></figure>
+
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make install</span></span><br></pre></td></tr></table></figure>
+
+
+
 <h3 id="Catalina-quarantine-for-corrupted-apps"><a href="#Catalina-quarantine-for-corrupted-apps" class="headerlink" title="Catalina quarantine for corrupted apps"></a>Catalina quarantine for corrupted apps</h3><p>低于 <code>Big Sur</code> 系统版本的 <code>macOS</code> 或 <code>m1</code> 芯片机器在安装一些未适配软件时候可能会出现 <code>安装包损坏, 打不开“XXX”,因为它来自身份不明的开发者</code> 等报错，在此状态下可以尝试以下做法。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo spctl --master-disable</span><br><span class="line">sudo xattr -r -d com.apple.quarantine /Applications/Sketch.app/</span><br><span class="line">// 输入 sudo xattr -r -d com.apple.quarantine 后将应用程序拖入 teminal 中</span><br></pre></td></tr></table></figure>
+
 <p>（以及 Catalina 真的好耐看啊！）</p>
 
 
