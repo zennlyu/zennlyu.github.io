@@ -1,22 +1,20 @@
 ---
-title: Flutter Animation
-categories: [flutter]
-tags: [flutter]
+title: Flutter 开发配置踩坑记录
+categories: [devissue]
+tags: [devissue]
 ---
 
-
+## Flutter 动画
 
 | https://github.com/diegoveloper/flutter-samples |             |                       |
 | ----------------------------------------------- | ----------- | --------------------- |
 | ![1](1.gif)                                     | ![2](2.gif) | ![lianyi](lianyi.gif) |
 
-
-
 使用引导高亮：https://juejin.cn/post/6894108615540473870
 
 Dialog 组件 https://juejin.cn/post/7036915754607837192
 
-### 实现涟漪和雷达效果：
+### 实现涟漪和雷达效果
 
 https://blog.csdn.net/mengks1987/article/details/108232372
 
@@ -119,3 +117,8 @@ class WaterRipplePage extends StatelessWidget {
 }
 ```
 
+
+
+### Flutter iOS 联调踩坑
+
+![1](1.png)

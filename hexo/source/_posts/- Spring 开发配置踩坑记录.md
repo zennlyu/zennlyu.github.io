@@ -1,7 +1,7 @@
 ---
-title: some spring dev bugs i ran into
-categories: [java backend]
-tags: [springboot]
+title: Spring 开发配置踩坑记录
+categories: [devissue]
+tags: [devissue]
 ---
 
 ## `Non-resolvable import POM`
@@ -27,7 +27,7 @@ mac@macdeMacBook-Pro WX-Fleas-Market-Demo % mvn clean package -Dmaven.test.skip=
 
 转到发现
 
-```
+```xml
 <dependencies>
   <dependency>
     <groupId>org.springframework.cloud</groupId>
@@ -45,10 +45,11 @@ mac@macdeMacBook-Pro WX-Fleas-Market-Demo % mvn clean package -Dmaven.test.skip=
 
 D、E版本：二者均基于SpringBoot的1.5.x版本，但支持其他组件的版本不同，如以 Dalston.SR4 和 Edgware.RELEASE 来对比：
 
-pring-cloud-config 分别对应 1.3.3和 1.4.0；
-spring-cloud-netflix 分别对应 1.3.5和 1.4.0；
-spring-cloud-consul 分别对应 1.2.1和 1.3.0；
-spring-cloud-gateway 前者不支持，后者 1.0.0。
+- spring-cloud-config 分别对应 1.3.3和 1.4.0；
+- spring-cloud-netflix 分别对应 1.3.5和 1.4.0；
+- spring-cloud-consul 分别对应 1.2.1和 1.3.0；
+- spring-cloud-gateway 前者不支持，后者 1.0.0。
+
 F版本：F版本是个绝对的大版本，几乎所有组件，全部同步变更版本号为2.x；
 
 SNAPSHOT： 小版本，快照版本，随时可能修改；
@@ -59,7 +60,7 @@ SR： Service Release，小版本，SR1表示第1个正式版本，一般同时�
 
 ## `jar missing problem`
 
-```
+```sh
 [ERROR] [ERROR] Some problems were encountered while processing the POMs:
 [ERROR] 'dependencies.dependency.version' for org.springframework.cloud:spring-cloud-starter-gateway:jar is missing. @ line 29, column 21
  @ 
@@ -79,7 +80,7 @@ SR： Service Release，小版本，SR1表示第1个正式版本，一般同时�
 
 还有写项目的时候突然报了这个错误：`Error:java:java.lang.ExceptionInInitializerError: com.sun.tools.javac.code.TypeTags`
 
-```
+```sh
 WARNING: All illegal access operations will be denied in a future release
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Summary for fangxianyu 0.0.1-SNAPSHOT:
@@ -100,21 +101,20 @@ WARNING: All illegal access operations will be denied in a future release
 [INFO] Finished at: 2022-07-13T23:39:33+08:00
 [INFO] ------------------------------------------------------------------------
 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.0:compile (default-compile) on project common: Fatal error compiling: java.lang.ExceptionInInitializerError: com.sun.tools.javac.code.TypeTags -> [Help 1]
-然后当时就很懵逼，后来通过排错，发现是使用的lombok版本过低，我使用的springboot的版本是:: Spring Boot :: (v2.2.1.RELEASE)
 ```
 
-## package org.springframework.cloud.openfeign does not exist
+然后当时就很懵逼，后来通过排错，发现是使用的lombok版本过低，我使用的springboot的版本是:: Spring Boot :: (v2.2.1.RELEASE)
+
+## `package org.springframework.cloud.openfeign does not exist`
 
 1. 没有添加版本号
 
 2. 没有添加以下依赖
 
-   ```
+   ```xml
    <dependency>
      <groupId>org.springframework.cloud</groupId>
      <artifactId>spring-cloud-starter-openfeign</artifactId>
      <version>2.1.3.RELEASE</version>
    </dependency>
    ```
-
-   
