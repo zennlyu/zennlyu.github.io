@@ -98,6 +98,7 @@
 </ul>
 <p>因此每次交换，都是将左指针的零与右指针的非零数交换，且非零数的相对顺序并未改变。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">moveZeroes</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line">        left = right = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> right &lt; n:</span><br><span class="line">            <span class="keyword">if</span> nums[right] != <span class="number">0</span>:</span><br><span class="line">                nums[left], nums[right] = nums[right], nums[left]</span><br><span class="line">                left += <span class="number">1</span></span><br><span class="line">            right += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
 <p><strong>复杂度分析</strong></p>
 <ul>
 <li>时间复杂度：O(n)，其中 n 为序列长度。每个位置至多被遍历两次。</li>
@@ -105,9 +106,12 @@
 </ul>
 <h4 id="一次遍历"><a href="#一次遍历" class="headerlink" title="一次遍历"></a>一次遍历</h4><p>这里参考了快速排序的思想，快速排序首先要确定一个待分割的元素做中间点x，然后把所有小于等于x的元素放到x的左边，大于x的元素放到其右边。</p>
 <p>这里我们可以用0当做这个中间点，把不等于0(注意题目没说不能有负数)的放到中间点的左边，等于0的放到其右边。</p>
-<p>这的中间点就是0本身，所以实现起来比快速排序简单很多，我们使用两个指针i和j，只要nums[i]!=0，我们就交换nums[i]和nums[j]。</p>
+<p>这的中间点就是0本身，所以实现起来比快速排序简单很多，我们使用两个指针i和j，只要nums[i]!&#x3D;0，我们就交换nums[i]和nums[j]。</p>
 <p>时间复杂度: O(n)<br>空间复杂度: O(1)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">moveZeroes</span>(<span class="params">self, nums</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">		:type nums: List[int]</span></span><br><span class="line"><span class="string">		:rtype: None Do not return anything, modify nums in-place instead.</span></span><br><span class="line"><span class="string">		&quot;&quot;&quot;</span></span><br><span class="line">		<span class="keyword">if</span> <span class="keyword">not</span> nums:</span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">		<span class="comment"># 两个指针i和j</span></span><br><span class="line">		j = <span class="number">0</span></span><br><span class="line">		<span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="built_in">len</span>(nums)):</span><br><span class="line">			<span class="comment"># 当前元素!=0，就把其交换到左边，等于0的交换到右边</span></span><br><span class="line">			<span class="keyword">if</span> nums[i]:</span><br><span class="line">				nums[j],nums[i] = nums[i],nums[j]</span><br><span class="line">				j += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+
 <h3 id="27-移除元素"><a href="#27-移除元素" class="headerlink" title="27 移除元素"></a>27 移除元素</h3><h3 id="26-删除排序数组中的重复项"><a href="#26-删除排序数组中的重复项" class="headerlink" title="26 删除排序数组中的重复项"></a>26 删除排序数组中的重复项</h3><h3 id="80-删除排序数组中的重复项-II"><a href="#80-删除排序数组中的重复项-II" class="headerlink" title="80 删除排序数组中的重复项 II"></a>80 删除排序数组中的重复项 II</h3><h3 id="75-颜色分类"><a href="#75-颜色分类" class="headerlink" title="75 颜色分类"></a>75 颜色分类</h3><h3 id="215-数组中的第-k-个最大元素"><a href="#215-数组中的第-k-个最大元素" class="headerlink" title="215 数组中的第 k 个最大元素"></a>215 数组中的第 k 个最大元素</h3><h3 id="88-合并两个有序数组"><a href="#88-合并两个有序数组" class="headerlink" title="88 合并两个有序数组"></a>88 合并两个有序数组</h3><h3 id="167-两数之和-II-输入有序数组"><a href="#167-两数之和-II-输入有序数组" class="headerlink" title="167 两数之和 II - 输入有序数组"></a>167 两数之和 II - 输入有序数组</h3>
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
@@ -115,7 +119,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/08/13/leetcode/%E6%95%B0%E7%BB%84/">Leetcode Diary 1<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/08/13/leetcode/%E9%93%BE%E8%A1%A8/">Leetcode Diary 1<span class="note">Newer</span></a></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/08/13/leetcode/%E9%93%BE%E8%A1%A8/">Leetcode Diary 1<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/08/13/leetcode/%E6%95%B0%E7%BB%84/">Leetcode Diary 1<span class="note">Newer</span></a></section></div>
 
 
 
