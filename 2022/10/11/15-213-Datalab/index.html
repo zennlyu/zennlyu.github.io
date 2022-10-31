@@ -28,17 +28,17 @@
 <meta property="og:site_name" content="zennlyu">
 <meta property="og:description" content="Datalab 笔记旧版本bitAnd(x,y)12345678910&#x2F;*  * bitAnd - x&amp;y using only ~ and |  *   Example: bitAnd(6, 5) &#x3D; 4 *   Legal ops: ~ | *   Max ops: 8 *   Rating: 1 *&#x2F;int bitAnd(int x, int y) &amp;#123;  return ~(">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/Users/mac/Desktop/2-14.png">
+<meta property="og:image" content="http://example.com/2022/10/11/15-213-Datalab/2-14.png">
 <meta property="og:image" content="http://example.com/2022/10/11/15-213-Datalab/float.png">
 <meta property="og:image" content="http://example.com/2022/10/11/15-213-Datalab/2-32.png">
 <meta property="og:image" content="http://example.com/2022/10/11/15-213-Datalab/2-33.png">
 <meta property="og:image" content="http://example.com/2022/10/11/15-213-Datalab/prac.png">
 <meta property="article:published_time" content="2022-10-11T10:51:30.611Z">
-<meta property="article:modified_time" content="2022-10-11T10:56:09.750Z">
+<meta property="article:modified_time" content="2022-10-31T14:49:40.828Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="csapp">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/Users/mac/Desktop/2-14.png">
+<meta name="twitter:image" content="http://example.com/2022/10/11/15-213-Datalab/2-14.png">
   
   
 
@@ -155,7 +155,7 @@
 <p>这题计算浮点数的两倍，无穷大和 NaN 时直接返回，然后分规格化和非规格化两种讨论：<br>规格化的情况，阶码值直接加 1 ，但是有个特殊情况就是加一后阶码为 255 时，应返回无穷大；<br>非规格化的情况，排除符号位左移一位就可以了，因为这时阶码值为 0 ,两倍就相当于小数字段左移一位，不用担心溢出的情况，溢出时阶码值加 1,小数字段左移一位，相当于整体左移了。</p>
 <h2 id="新版本"><a href="#新版本" class="headerlink" title="新版本"></a>新版本</h2><h3 id="bitXor-x-y-只使用-和-amp-实现"><a href="#bitXor-x-y-只使用-和-amp-实现" class="headerlink" title="bitXor(x,y) 只使用 ~ 和 &amp; 实现 ^"></a>bitXor(x,y) 只使用 ~ 和 &amp; 实现 ^</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * bitXor - x^y using only ~ and &amp; </span></span><br><span class="line"><span class="comment"> *   Example: bitXor(4, 5) = 1</span></span><br><span class="line"><span class="comment"> *   Legal ops: ~ &amp;</span></span><br><span class="line"><span class="comment"> *   Max ops: 14</span></span><br><span class="line"><span class="comment"> *   Rating: 1</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">bitXor</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> &#123;</span><br><span class="line">    <span class="comment">// 直接推公式，^可以使用~、&amp;和|表示，而|又可以用~和&amp;表示</span></span><br><span class="line">    <span class="keyword">return</span> ~(~x&amp;~y)&amp;~(x&amp;y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="tmin-返回最小补码"><a href="#tmin-返回最小补码" class="headerlink" title="tmin() 返回最小补码"></a>tmin() 返回最小补码</h3><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/mac/Desktop/2-14.png" alt="2-14"></p>
+<h3 id="tmin-返回最小补码"><a href="#tmin-返回最小补码" class="headerlink" title="tmin() 返回最小补码"></a>tmin() 返回最小补码</h3><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/10/11/15-213-Datalab/2-14.png" alt="2-14"></p>
 <p>有符号数是用补码来表示的，Tmin表示最小补码数，对于1个字节大小的补码，最小补码数形式为1000 0000（最小的有符号数，符号位为1，其余都是0），C语言中int类型占4字节，即32位，所以对1左移31位来构造最小补码。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * tmin - return minimum two&#x27;s complement integer </span></span><br><span class="line"><span class="comment"> *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;</span></span><br><span class="line"><span class="comment"> *   Max ops: 4</span></span><br><span class="line"><span class="comment"> *   Rating: 1</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">tmin</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>&lt;&lt;<span class="number">31</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
