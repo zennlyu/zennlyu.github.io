@@ -18,21 +18,24 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>Leetcode Diary 1 - zennlyu</title>
+  <title>前端踩坑合集 - zennlyu</title>
 
   
-    <meta name="description" content="链表707 设计链表141 环形链表142 环形链表 II160 相交链表19 删除链表的倒数第 N 个节点206 反转链表">
+    <meta name="description" content="前端踩坑合集@sentry&#x2F;cli 安装错误的问题In case of @sentry-cli problem, create .yarnrc and write the source below into it.  123registry: https:&#x2F;&#x2F;registry.npm.taobao.orgENTRYCLI_CDNURL: https:&#x2F;&#x2F;cdn.npm.taobao.or">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Leetcode Diary 1">
-<meta property="og:url" content="http://example.com/2022/08/13/leetcode/%E9%93%BE%E8%A1%A8/index.html">
+<meta property="og:title" content="前端踩坑合集">
+<meta property="og:url" content="http://example.com/2022/11/13/%E5%89%8D%E7%AB%AF%E8%B8%A9%E5%9D%91%E5%90%88%E9%9B%86/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="链表707 设计链表141 环形链表142 环形链表 II160 相交链表19 删除链表的倒数第 N 个节点206 反转链表">
+<meta property="og:description" content="前端踩坑合集@sentry&#x2F;cli 安装错误的问题In case of @sentry-cli problem, create .yarnrc and write the source below into it.  123registry: https:&#x2F;&#x2F;registry.npm.taobao.orgENTRYCLI_CDNURL: https:&#x2F;&#x2F;cdn.npm.taobao.or">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-08-13T12:32:44.773Z">
-<meta property="article:modified_time" content="2022-09-07T03:33:58.000Z">
+<meta property="og:image" content="http://example.com/2022/11/13/%E5%89%8D%E7%AB%AF%E8%B8%A9%E5%9D%91%E5%90%88%E9%9B%86/sentry1.png">
+<meta property="og:image" content="http://example.com/2022/11/13/%E5%89%8D%E7%AB%AF%E8%B8%A9%E5%9D%91%E5%90%88%E9%9B%86/sentry2.png">
+<meta property="article:published_time" content="2022-11-13T05:20:10.000Z">
+<meta property="article:modified_time" content="2022-11-13T05:47:19.300Z">
 <meta property="article:author" content="zennlyu">
-<meta property="article:tag" content="leetcode">
+<meta property="article:tag" content="front-end">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/11/13/%E5%89%8D%E7%AB%AF%E8%B8%A9%E5%9D%91%E5%90%88%E9%9B%86/sentry1.png">
   
   
 
@@ -71,7 +74,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8"><span class="toc-text">链表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#707-%E8%AE%BE%E8%AE%A1%E9%93%BE%E8%A1%A8"><span class="toc-text">707 设计链表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#141-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8"><span class="toc-text">141 环形链表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#142-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8-II"><span class="toc-text">142 环形链表 II</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#160-%E7%9B%B8%E4%BA%A4%E9%93%BE%E8%A1%A8"><span class="toc-text">160 相交链表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#19-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%AC-N-%E4%B8%AA%E8%8A%82%E7%82%B9"><span class="toc-text">19 删除链表的倒数第 N 个节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#206-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8"><span class="toc-text">206 反转链表</span></a></li></ol></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E8%B8%A9%E5%9D%91%E5%90%88%E9%9B%86"><span class="toc-text">前端踩坑合集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sentry-x2F-cli-%E5%AE%89%E8%A3%85%E9%94%99%E8%AF%AF%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">@sentry&#x2F;cli 安装错误的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node16-%E4%BB%A5%E4%B8%8A%E7%9A%84%E5%8A%A0%E5%AF%86%E9%83%A8%E4%BB%B6%E9%97%AE%E9%A2%98"><span class="toc-text">node16 以上的加密部件问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%A1%88-1"><span class="toc-text">方案 1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%A1%88-2"><span class="toc-text">方案 2</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-nvm"><span class="toc-text">安装 nvm</span></a></li></ol></li></ol></div></div></div>
 
 
 </div>
@@ -84,18 +87,58 @@
       
 
 
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/algorithms/">algorithms</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2022-08-13T12:32:44.773Z">2022-08-13</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/front-end/">front-end</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2022-11-13T05:20:10.000Z">2022-11-13</time></div></div>
 
 <article class='content md post'>
-<h1 class="article-title"><span>Leetcode Diary 1</span></h1>
-<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h3 id="707-设计链表"><a href="#707-设计链表" class="headerlink" title="707 设计链表"></a>707 设计链表</h3><h3 id="141-环形链表"><a href="#141-环形链表" class="headerlink" title="141 环形链表"></a>141 环形链表</h3><h3 id="142-环形链表-II"><a href="#142-环形链表-II" class="headerlink" title="142 环形链表 II"></a>142 环形链表 II</h3><h3 id="160-相交链表"><a href="#160-相交链表" class="headerlink" title="160 相交链表"></a>160 相交链表</h3><h3 id="19-删除链表的倒数第-N-个节点"><a href="#19-删除链表的倒数第-N-个节点" class="headerlink" title="19 删除链表的倒数第 N 个节点"></a>19 删除链表的倒数第 N 个节点</h3><h3 id="206-反转链表"><a href="#206-反转链表" class="headerlink" title="206 反转链表"></a>206 反转链表</h3>
+<h1 class="article-title"><span>前端踩坑合集</span></h1>
+<h2 id="前端踩坑合集"><a href="#前端踩坑合集" class="headerlink" title="前端踩坑合集"></a>前端踩坑合集</h2><h3 id="sentry-x2F-cli-安装错误的问题"><a href="#sentry-x2F-cli-安装错误的问题" class="headerlink" title="@sentry&#x2F;cli 安装错误的问题"></a>@sentry&#x2F;cli 安装错误的问题</h3><p>In case of @sentry-cli problem, create <code>.yarnrc</code> and write the source below into it.</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/11/13/%E5%89%8D%E7%AB%AF%E8%B8%A9%E5%9D%91%E5%90%88%E9%9B%86/sentry1.png" alt="sentry1"></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">registry: https://registry.npm.taobao.org</span><br><span class="line">ENTRYCLI_CDNURL: https://cdn.npm.taobao.org/dist/sentry-cli</span><br><span class="line">sentrycli_cdnurl: https://cdn.npm.taobao.org/dist/sentry-cli</span><br></pre></td></tr></table></figure>
+
+<p>Then u will see the source is edited and show as below</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2022/11/13/%E5%89%8D%E7%AB%AF%E8%B8%A9%E5%9D%91%E5%90%88%E9%9B%86/sentry2.png" alt="sentry2"></p>
+<h3 id="node16-以上的加密部件问题"><a href="#node16-以上的加密部件问题" class="headerlink" title="node16 以上的加密部件问题"></a>node16 以上的加密部件问题</h3><p>使用 node18 跑新项目时出现了这一错误</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error/0308010C/digital envelope routines//unsupported</span><br></pre></td></tr></table></figure>
+
+<p>看错误报告里讲<code>node17.0</code>以上的版本会出现这个情况。<br><a target="_blank" rel="noopener" href="https://github.com/webpack/webpack/issues/14532">nodejs 17: digital envelope routines::unsupported #14532</a></p>
+<h4 id="方案-1"><a href="#方案-1" class="headerlink" title="方案 1"></a>方案 1</h4><p>环境变量里面加个变量，将<code>OpenSSL</code>降回到老策略去：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export NODE_OPTIONS=--openssl-legacy-provider</span><br></pre></td></tr></table></figure>
+
+<h4 id="方案-2"><a href="#方案-2" class="headerlink" title="方案 2"></a>方案 2</h4><p>版本回退到<code>Node.js 16</code>。<br>如果平时工作的项目所使用的<code>node</code>版本不一样，通过全局频繁卸载安装的方式显然效率低下。推荐使用<code>nvm</code>来安装管理<code>node</code>版本，并且<code>node</code>版本间的切换也非常方便。<br><code>nvm</code>切换<code>node</code>版本步骤：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 安装 node 16.13.0 版本</span><br><span class="line">nvm install 16.13.0</span><br><span class="line"># 设置默认使用 node 版本</span><br><span class="line">nvm alias default v16.13.0</span><br><span class="line"># 确认切换是否成功</span><br><span class="line">node -v</span><br><span class="line">v16.13.0</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="安装-nvm"><a href="#安装-nvm" class="headerlink" title="安装 nvm"></a>安装 nvm</h3><p>运行 curl 命令时会出现以下错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl: (7) Failed to connect to raw.githubusercontent.com port 443 after 14 ms: Connection refused</span><br></pre></td></tr></table></figure>
+
+<p>github 的一些域名的 DNS 解析被污染，导致DNS 解析过程无法通过域名取得正确的IP地址。</p>
+<p>因此我们要找到正确的这个raw.githubusercontent.com网站正确的ip地址</p>
+<ul>
+<li><p>打开ip地址查询网站：<a target="_blank" rel="noopener" href="https://www.ipaddress.com/">https://www.ipaddress.com/</a></p>
+</li>
+<li><p>输入需要查询的网站名称raw.githubusercontent.com</p>
+</li>
+<li><p>网站上会显示该网站的存在的ipv4以及ipv6地址，这里可以选取一个ipv4地址来进行设置</p>
+</li>
+</ul>
+<p>打开系统host文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>在host文件中添加一行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">185.199.108.133 raw.githubusercontent.com</span><br></pre></td></tr></table></figure>
+
+<p>最后执行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
 </div></section></div>
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/08/13/alg-Union%20Find/">coursera 1.5 UNION_FIND<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2022/08/13/leetcode/%E6%95%B0%E7%BB%841/">leetcode - Arrays<span class="note">Newer</span></a></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/10/11/15-213-LabData/">15-213 Datalab<span class="note">Older</span></a><div class="line"></div></section></div>
 
 
 
