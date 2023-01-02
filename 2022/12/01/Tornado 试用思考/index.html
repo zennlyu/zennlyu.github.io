@@ -21,15 +21,15 @@
   <title>Tornado 试用思考 - zennlyu</title>
 
   
-    <meta name="description" content="Tornado 试用思考Tornado 在物联网上结合twisted 是无敌的 tornado主要是用于websocket&#x2F;tcp这些长连接数据流的场景，结合async非常好用，python语言里暂时应该没有更好的替代框架，如果是CRUD的web或 者restful接口，那确实跟django&#x2F;django-rest-framework那些比完全没有优势。感觉这几个python框">
+    <meta name="description" content="Tornado 试用思考Tornado 在物联网上结合 twisted 蛮好用的。tornado 主要用于 websocket&#x2F;tcp 这些长连接数据流的场景，结合 async 很有效，python 生态里暂时应该没有更好的替代框架。tornado支持把底层事件循环换成 asyncio 的循环。接着 gevent 还可以把 asyncio 的循环再 patch掉。这样 tornado 可">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tornado 试用思考">
 <meta property="og:url" content="http://example.com/2022/12/01/Tornado%20%E8%AF%95%E7%94%A8%E6%80%9D%E8%80%83/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="Tornado 试用思考Tornado 在物联网上结合twisted 是无敌的 tornado主要是用于websocket&#x2F;tcp这些长连接数据流的场景，结合async非常好用，python语言里暂时应该没有更好的替代框架，如果是CRUD的web或 者restful接口，那确实跟django&#x2F;django-rest-framework那些比完全没有优势。感觉这几个python框">
+<meta property="og:description" content="Tornado 试用思考Tornado 在物联网上结合 twisted 蛮好用的。tornado 主要用于 websocket&#x2F;tcp 这些长连接数据流的场景，结合 async 很有效，python 生态里暂时应该没有更好的替代框架。tornado支持把底层事件循环换成 asyncio 的循环。接着 gevent 还可以把 asyncio 的循环再 patch掉。这样 tornado 可">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-12-01T07:11:08.666Z">
-<meta property="article:modified_time" content="2022-12-01T07:11:29.338Z">
+<meta property="article:modified_time" content="2023-01-02T09:48:24.867Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="front-end">
 <meta name="twitter:card" content="summary">
@@ -88,9 +88,7 @@
 
 <article class='content md post'>
 <h1 class="article-title"><span>Tornado 试用思考</span></h1>
-<h1 id="Tornado-试用思考"><a href="#Tornado-试用思考" class="headerlink" title="Tornado 试用思考"></a>Tornado 试用思考</h1><p>Tornado 在物联网上结合twisted 是无敌的</p>
-<p>tornado主要是用于websocket&#x2F;tcp这些长连接数据流的场景，结合async非常好用，python语言里暂时应该没有更好的替代框架，如果是CRUD的web或 者restful接口，那确实跟django&#x2F;django-rest-framework那些比完全没有优势。感觉这几个python框架更多的是互补关系，不是竞争关系。</p>
-<p>tornado支持把底层事件循环换成asyncio的循环。接着gevent还可以把asyncio的循环再 patch掉。这样tornado可以轻松异步调用任何支持asyncio或gevent的库。同时在Windows上使用gevent (IOCP） 的tornado会有非常恐怖的并发能力。</p>
+<h1 id="Tornado-试用思考"><a href="#Tornado-试用思考" class="headerlink" title="Tornado 试用思考"></a>Tornado 试用思考</h1><p>Tornado 在物联网上结合 twisted 蛮好用的。tornado 主要用于 websocket&#x2F;tcp 这些长连接数据流的场景，结合 async 很有效，python 生态里暂时应该没有更好的替代框架。tornado支持把底层事件循环换成 asyncio 的循环。接着 gevent 还可以把 asyncio 的循环再 patch掉。这样 tornado 可以轻松异步调用任何支持 asyncio 或 gevent 的库。同时在 Windows 上使用 gevent (IOCP) 的 tornado 会有非常恐怖的并发能力。如果供 web CRUD 或者 restful 接口设计，优势不大。几个主流 python 框架更多是互补关系，不是竞争关系。</p>
 
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
