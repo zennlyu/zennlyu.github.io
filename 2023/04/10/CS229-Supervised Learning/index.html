@@ -18,20 +18,20 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>Dev 碎碎念 - zennlyu</title>
+  <title>CS229-Supervised Learning - zennlyu</title>
 
   
-    <meta name="description" content="Tornado 试用思考Tornado 在物联网上结合 twisted 蛮好用的。tornado 主要用于 websocket&#x2F;tcp 这些长连接数据流的场景，结合 async 很有效，python 生态里暂时应该没有更好的替代框架。tornado支持把底层事件循环换成 asyncio 的循环。接着 gevent 还可以把 asyncio 的循环再 patch掉。这样 tornado 可">
+    <meta name="description" content="Supervised Learning Terms Regression Classification Terms: input Features: $x^{(i)}$ output Target: $y^{(i)}$ Training sample: a pair $(x^{(i)},y^{(i)})$ Training set: a list of $n$ training examples">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dev 碎碎念">
-<meta property="og:url" content="http://example.com/2022/12/01/Tornado%20%E7%A2%8E%E7%A2%8E%E5%BF%B5/index.html">
+<meta property="og:title" content="CS229-Supervised Learning">
+<meta property="og:url" content="http://example.com/2023/04/10/CS229-Supervised%20Learning/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="Tornado 试用思考Tornado 在物联网上结合 twisted 蛮好用的。tornado 主要用于 websocket&#x2F;tcp 这些长连接数据流的场景，结合 async 很有效，python 生态里暂时应该没有更好的替代框架。tornado支持把底层事件循环换成 asyncio 的循环。接着 gevent 还可以把 asyncio 的循环再 patch掉。这样 tornado 可">
+<meta property="og:description" content="Supervised Learning Terms Regression Classification Terms: input Features: $x^{(i)}$ output Target: $y^{(i)}$ Training sample: a pair $(x^{(i)},y^{(i)})$ Training set: a list of $n$ training examples">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-12-01T07:11:08.666Z">
-<meta property="article:modified_time" content="2023-04-10T07:06:56.905Z">
+<meta property="article:published_time" content="2023-04-10T05:36:47.960Z">
+<meta property="article:modified_time" content="2023-04-10T15:03:14.253Z">
 <meta property="article:author" content="zennlyu">
-<meta property="article:tag" content="journal">
+<meta property="article:tag" content="machine learning">
 <meta name="twitter:card" content="summary">
   
   
@@ -71,7 +71,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Supervised-Learning-Terms"><span class="toc-text">Supervised Learning Terms</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Housing-Example-Jump-Start"><span class="toc-text">Housing Example Jump Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-LMS-Algorithms"><span class="toc-text">1. LMS Algorithms</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-The-normal-equation"><span class="toc-text">2.The normal equation</span></a></li></ol></li></ol></div></div></div>
 
 
 </div>
@@ -84,19 +84,82 @@
       
 
 
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/dev-stories/">dev stories</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2022-12-01T07:11:08.666Z">2022-12-01</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/machine-learning/">machine learning</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2023-04-10T05:36:47.960Z">2023-04-10</time></div></div>
 
 <article class='content md post'>
-<h1 class="article-title"><span>Dev 碎碎念</span></h1>
-<h1 id="Tornado-试用思考"><a href="#Tornado-试用思考" class="headerlink" title="Tornado 试用思考"></a>Tornado 试用思考</h1><p>Tornado 在物联网上结合 twisted 蛮好用的。tornado 主要用于 websocket&#x2F;tcp 这些长连接数据流的场景，结合 async 很有效，python 生态里暂时应该没有更好的替代框架。tornado支持把底层事件循环换成 asyncio 的循环。接着 gevent 还可以把 asyncio 的循环再 patch掉。这样 tornado 可以轻松异步调用任何支持 asyncio 或 gevent 的库。同时在 Windows 上使用 gevent (IOCP) 的 tornado 会有非常恐怖的并发能力。如果供 web CRUD 或者 restful 接口设计，优势不大。几个主流 python 框架更多是互补关系，不是竞争关系。</p>
-
+<h1 class="article-title"><span>CS229-Supervised Learning</span></h1>
+<h2 id="Supervised-Learning-Terms"><a href="#Supervised-Learning-Terms" class="headerlink" title="Supervised Learning Terms"></a>Supervised Learning Terms</h2><ul>
+<li>Regression</li>
+<li>Classification</li>
+<li>Terms:<ul>
+<li>input <strong>Features</strong>: $x^{(i)}$</li>
+<li>output <strong>Target</strong>: $y^{(i)}$</li>
+<li><strong>Training sample</strong>: a pair $(x^{(i)},y^{(i)})$</li>
+<li><strong>Training set</strong>: a list of $n$ training examples {$(x^{(i)},y^{(i)});i&#x3D;1,…,n$}</li>
+<li>$\chi$ denote the space of input values, and $\gamma$ the space of output values. In this example, $\chi$ &#x3D; $\gamma$ &#x3D; R.</li>
+<li><strong>Hypothesis</strong>: $h: \chi \mapsto \gamma$ so that $h(x)$ is a “good” predictor for the corresponding value of y</li>
+</ul>
+</li>
+</ul>
+<h2 id="Housing-Example-Jump-Start"><a href="#Housing-Example-Jump-Start" class="headerlink" title="Housing Example Jump Start"></a>Housing Example Jump Start</h2><p>First approximate y as a linear function of x:<br>$$<br>\begin{align}<br>h_\theta (x)&#x3D;\theta_0+\theta_1x_1+\theta_2x_2<br>\end{align}<br>$$</p>
+<ul>
+<li><p>$\theta_i’s$: <strong>Parameters&#x2F;Weights</strong>, parameterizing the space of linear functions mapping from $\Chi$ to $\Upsilon$ </p>
+</li>
+<li><p>$h(x)$: No risk of confusion, then drop the $\theta$</p>
+</li>
+</ul>
+<p>Let $x_0$ &#x3D;1, that $$h(x)&#x3D;\begin{align}\sum_{i&#x3D;0}^{d}\theta_ix_i\end{align} &#x3D; \theta^Tx$$ </p>
+<ul>
+<li>where on the right-hand side above we are viewing θ and x both as vectors, and here d is the number of input variables (not counting x0).</li>
+</ul>
+<p>Then how to pick parameters $\theta$ :</p>
+<ul>
+<li><p>make $h(x)$ close to $y$, at least for the training examples we have. </p>
+</li>
+<li><p>To formalize this, we will define a function that measures, for each value of the $θ’$s, how close the $h(x^{(i)})$’s are to the corresponding $y^{(i)}$’s. We define the <strong>cost function</strong>: $\begin{align} J(\theta)&#x3D;\tfrac{1}{2}\sum_{i&#x3D;1}^{n}(h_\theta(x^{(i)})- y^{i})^2\end{align}$</p>
+</li>
+<li><p><strong>ordinary least squares regression model</strong></p>
+</li>
+</ul>
+<h3 id="1-LMS-Algorithms"><a href="#1-LMS-Algorithms" class="headerlink" title="1. LMS Algorithms"></a>1. LMS Algorithms</h3><p><strong>choose $\theta$ to minimize $J(\theta)$:</strong> search algorithm starts “initial guesses” for θ, and that repeatedly changes $θ$ to make $J(θ)$ smaller, until hopefully converge to a value of $θ$ that minimizes $J(θ)$.</p>
+<p>Specifically, let’s consider the <strong>gradient descent algorithm</strong>, which starts with some initial $θ$, and repeatedly performs the update:<br>$$<br>\begin{align}<br>\theta_j :&#x3D; \theta_j-\alpha\tfrac{\partial}{\partial\theta_j}J_\theta.<br>\end{align}<br>$$</p>
+<p>This update is simultaneously performed for all values of $j&#x3D;0,…,d$</p>
+<ul>
+<li>$\alpha$: Learning rate</li>
+</ul>
+<p>To implement the algorithm: <strong>work out what is the partial derivative term</strong> on the right hand side. </p>
+<ul>
+<li>Let’s first work it out for the case of if we have only one training example (x,y), so that we can neglect the sum in the definition of J. We have:</li>
+</ul>
+<p>$$<br>\begin{aligned}<br>\tfrac{\partial}{\partial\theta_j}J_\theta &amp;&#x3D; \tfrac{\partial}{\partial\theta_j}\tfrac{1}{2}(h_\theta(x)-y)^2 \<br>&amp; &#x3D;2\cdot\tfrac{1}{2}(h_\theta(x)-y)\cdot\tfrac{\partial}{\partial\theta_j}(h_\theta(x)-y) \<br>&amp; &#x3D; (h_\theta(x)-y)\cdot\tfrac{\partial}{\partial\theta_j}(\sum_{i&#x3D;0}^{d}\theta_ix_i-y) \<br>&amp; &#x3D; (h_\theta(x)-y)\cdot x_j<br>\end{aligned}<br>$$</p>
+<p>For a single training example, this gives the update rule:1<br>$$<br>\theta_j :&#x3D; \theta_j+\alpha(y^{(i)}-h_\theta(x^{(i)}))x^{(i)}_{j}<br>$$<br>The rule : <strong>LMS update rule</strong> (“least mean squares”), and is also known as the <strong>Widrow-Hoff learning rule</strong>. </p>
+<ul>
+<li>This rule has several properties that seem natural and intuitive. </li>
+<li>For instance, the magnitude of the update is proportional to the error term (y(i) − hθ(x(i))); thus, for instance, if we are encountering a training example on which our prediction nearly matches the actual value of y(i), then we find that there is little need to change the parameters; </li>
+<li>in contrast, a larger change to the parameters will be made if our prediction hθ(x(i)) has a large error (i.e., if it is very far from y(i)).</li>
+</ul>
+<p>Derived the LMS rule:  only a single training example.  There are two ways to modify this method for a training set of more than one example.</p>
+<p><strong>1st</strong> <strong>batch gradient descent</strong>. </p>
+<ul>
+<li>_ replace it with the following algorithm: Repeat Until Convergence —</li>
+</ul>
+<p>$$<br>Repeat: Until: Convergence - {<br>\theta_j :&#x3D; \theta_j+\alpha\sum_{i&#x3D;1}^{n}(y^{(i)}-h_\theta(x^{(i)}))x_j^{(i)},(for:every:j)<br>}<br>$$</p>
+<ul>
+<li>By grouping the updates of the coordinates into an update of the vector θ, rewrite:</li>
+</ul>
+<p>$$<br>\theta :&#x3D; \theta+\alpha\sum_{i&#x3D;1}^{n}(y^{(i)}-h_\theta(x^{(i)}))x^{(i)}<br>$$</p>
+<ul>
+<li>can easily verify the quantity in the summation in the update rule above is just $\tfrac{∂J(θ)}{∂θ_j}$(for the original definition of $J$). So, this is simply gradient descent on the original cost function$J$. This method looks at every example in the entire training set on every step, and is called <strong>batch gradient descent</strong>. Note that, while gradient descent can be susceptible to local minima in general, the optimization problem we have posed here</li>
+</ul>
+<p><strong>2nd stochastic gradient descent &#x2F; incremental gradient descent</strong><br>$$<br>\begin{aligned}<br>Loop: { for: i&#x3D;1: to: n {\<br>\theta_j :&#x3D; \theta_j+\alpha(y^{(i)}-h_\theta(x^{(i)}))x_j^{(i)} \<br>(for:every:j)  } \<br>}<br>\end{aligned}<br>$$<br>By grouping the updates of the coordinates into an update of the vector θ, we can rewrite update (2) in a slightly more succinct way:<br>$$<br>\theta :&#x3D; \theta+\alpha(y^{(i)}-h_\theta(x^{(i)}))x^{(i)}<br>$$</p>
+<h3 id="2-The-normal-equation"><a href="#2-The-normal-equation" class="headerlink" title="2.The normal equation"></a>2.The normal equation</h3>
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
 </div></section></div>
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2022/11/13/-%20%E8%B8%A9%E5%9D%91%E5%90%88%E9%9B%86/">踩坑合集/(不定时补充)<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2023/04/10/What-open-courses-I-plan-to-take/">Fever's Notes on Open Courses<span class="note">Newer</span></a></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2023/04/10/What-open-courses-I-plan-to-take/">Fever's Notes on Open Courses<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2023/04/10/CS229-Courses-Note/">CS229 Courses Note<span class="note">Newer</span></a></section></div>
 
 
 
