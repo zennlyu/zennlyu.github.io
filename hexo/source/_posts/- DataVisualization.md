@@ -1,5 +1,5 @@
 ---
-title: Data Visualization References
+title: Data Visualization 优秀案例-合集记录
 categories: [Data Visualization]
 tags: [Data Visualization]
 ---
@@ -40,8 +40,6 @@ tags: [Data Visualization]
 
 - [《对话电影》](http://polygraph.cool/films/)探讨了性别、社会背景、票房数据等因素对于电影的影响。通过数据鲜明反映出了当今电影的多元化趋势。
 - [《音乐品味的变革》](http://polygraph.cool/history/)通过研究1958年至2015年公告牌歌曲的排名变化，展现各个时代音乐的流行趋势。
-
-
 
 7. 最佳团队奖（Outstanding Team）[FiveThirtyEight](https://fivethirtyeight.com) 网站
 
