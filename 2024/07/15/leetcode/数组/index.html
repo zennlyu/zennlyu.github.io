@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>Leetcode Diary 1 - zennlyu</title>
+
+  
+    <meta name="description" content="数组26. 删除排序数组中的重复项121. 买卖股票的最佳时机189. 旋转数组给你一个数组，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。 输入: nums &#x3D; [1,2,3,4,5,6,7], k &#x3D; 3输出: [5,6,7,1,2,3,4] 方法一：使用额外的数组我们可以使用额外的数组来将每个元素放至正确的位置。用 $n$ 表示数组的长度，我们遍历原数组，将原数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode Diary 1">
+<meta property="og:url" content="http://example.com/2024/07/15/leetcode/%E6%95%B0%E7%BB%84/index.html">
+<meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="数组26. 删除排序数组中的重复项121. 买卖股票的最佳时机189. 旋转数组给你一个数组，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。 输入: nums &#x3D; [1,2,3,4,5,6,7], k &#x3D; 3输出: [5,6,7,1,2,3,4] 方法一：使用额外的数组我们可以使用额外的数组来将每个元素放至正确的位置。用 $n$ 表示数组的长度，我们遍历原数组，将原数">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-15T03:58:26.070Z">
+<meta property="article:modified_time" content="2024-07-15T03:58:26.070Z">
+<meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="leetcode">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/09/eTtVL.jpg" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84"><span class="toc-text">数组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#26-%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9"><span class="toc-text">26. 删除排序数组中的重复项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#121-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA"><span class="toc-text">121. 买卖股票的最佳时机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#189-%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84"><span class="toc-text">189. 旋转数组</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E4%BD%BF%E7%94%A8%E9%A2%9D%E5%A4%96%E7%9A%84%E6%95%B0%E7%BB%84"><span class="toc-text">方法一：使用额外的数组</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="toc-text">复杂度分析</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E7%8E%AF%E7%8A%B6%E6%9B%BF%E6%8D%A2"><span class="toc-text">方法二：环状替换</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90-1"><span class="toc-text">复杂度分析</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%89%EF%BC%9A%E6%95%B0%E7%BB%84%E7%BF%BB%E8%BD%AC"><span class="toc-text">方法三：数组翻转</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90-2"><span class="toc-text">复杂度分析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#217-%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0"><span class="toc-text">217. 存在重复元素</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E6%8E%92%E5%BA%8F"><span class="toc-text">方法一：排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="toc-text">方法二：哈希表</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#136-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97I"><span class="toc-text">136.  只出现一次的数字I</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E4%BD%8D%E8%BF%90%E7%AE%97"><span class="toc-text">方法一：位运算</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#137-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97II"><span class="toc-text">137 只出现一次的数字II</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0349-%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E7%9A%84%E4%BA%A4%E9%9B%86-II"><span class="toc-text">0349 两个数组的交集 II</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E4%B8%A4%E4%B8%AA%E9%9B%86%E5%90%88"><span class="toc-text">方法一：两个集合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E6%8E%92%E5%BA%8F-%E5%8F%8C%E6%8C%87%E9%92%88"><span class="toc-text">方法二：排序 + 双指针</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0066-%E5%8A%A0%E4%B8%80"><span class="toc-text">0066 加一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0283-%E7%A7%BB%E5%8A%A8"><span class="toc-text">0283 移动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0001-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C"><span class="toc-text">0001 两数之和</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0036-%E6%9C%89%E6%95%88%E7%9A%84%E6%95%B0%E7%8B%AC"><span class="toc-text">0036 有效的数独</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0048-%E6%97%8B%E8%BD%AC%E5%9B%BE%E5%83%8F"><span class="toc-text">0048 旋转图像</span></a></li></ol></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/algorithms/">algorithms</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2024-07-15T03:58:26.070Z">2024-07-15</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>Leetcode Diary 1</span></h1>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h3 id="26-删除排序数组中的重复项"><a href="#26-删除排序数组中的重复项" class="headerlink" title="26. 删除排序数组中的重复项"></a>26. 删除排序数组中的重复项</h3><h3 id="121-买卖股票的最佳时机"><a href="#121-买卖股票的最佳时机" class="headerlink" title="121. 买卖股票的最佳时机"></a>121. 买卖股票的最佳时机</h3><h3 id="189-旋转数组"><a href="#189-旋转数组" class="headerlink" title="189. 旋转数组"></a>189. 旋转数组</h3><p>给你一个数组，将数组中的元素向右轮转 <code>k</code> 个位置，其中 <code>k</code> 是非负数。</p>
+<p>输入: nums &#x3D; [1,2,3,4,5,6,7], k &#x3D; 3<br>输出: [5,6,7,1,2,3,4]</p>
+<h4 id="方法一：使用额外的数组"><a href="#方法一：使用额外的数组" class="headerlink" title="方法一：使用额外的数组"></a>方法一：使用额外的数组</h4><p>我们可以使用额外的数组来将每个元素放至正确的位置。用 $n$ 表示数组的长度，我们遍历原数组，将原数组下标为 $i$ 的元素放至新数组下标为 $(i+k)\mod n$ 的位置，最后将新数组拷贝至原数组即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rotate</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">        <span class="type">int</span>[] newArr = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            newArr[(i + k) % n] = nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">        System.arraycopy(newArr, <span class="number">0</span>, nums, <span class="number">0</span>, n);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> rotate = <span class="keyword">function</span>(<span class="params">nums, k</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> n = nums.<span class="property">length</span>;</span><br><span class="line">    <span class="keyword">const</span> newArr = <span class="keyword">new</span> <span class="title class_">Array</span>(n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">        newArr[(i + k) % n] = nums[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">        nums[i] = newArr[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h5><ul>
+<li>时间复杂度： O(n)<em>O</em>(<em>n</em>)，其中 n<em>n</em> 为数组的长度。</li>
+<li>空间复杂度： O(n)<em>O</em>(<em>n</em>)。</li>
+</ul>
+<h4 id="方法二：环状替换"><a href="#方法二：环状替换" class="headerlink" title="方法二：环状替换"></a>方法二：环状替换</h4><p>方法一中使用额外数组的原因在于如果我们直接将每个数字放至它最后的位置，这样被放置位置的元素会被覆盖从而丢失。因此，从另一个角度，我们可以将被替换的元素保存在变量 $temp$ 中，从而避免了额外数组的开销。</p>
+<p>我们从位置 0 开始，最初令 $temp&#x3D;nums[0]$。根据规则，位置 0 的元素会放至 $(0+k) modn$ 的位置，令 $x&#x3D;(0+k)modn$，此时交换 temp 和 $nums[x]$，完成位置 $x$ 的更新。然后，我们考察位置 $x$，并交换 temp 和 $nums [(x+k) modn]$，从而完成下一个位置的更新。不断进行上述过程，直至回到初始位置。</p>
+<p>容易发现，当回到初始位置时，有些数字可能还没有遍历到，此时我们应该从下一个数字开始重复的过程，可是这个时候怎么才算遍历结束呢？我们不妨先考虑这样一个问题：从 0 开始不断遍历，最终回到起点 0 的过程中，我们遍历了多少个元素？</p>
+<p>由于最终回到了起点，故该过程恰好走了整数数量的圈，不妨设为 a 圈；再设该过程总共遍历了 b 个元素。因此，我们有 $an&#x3D;bk$，即 an 一定为 n, k 的公倍数。又因为我们在第一次回到起点时就结束，因此 a要尽可能小，故an就是n,k的最 小公倍数 $lcm(n,k)$,因此 b就为$lcm(n,k) &#x2F;k$。</p>
+<p>这说明单次遍历会访问到 $lcm(n,k)&#x2F;k$ 个元素。为了访问到所有的元素，我们需要进行遍历的次数为</p>
+<p>$\frac{n}{lcm(n,k)&#x2F;k}&#x3D;\frac{nk}{lcm(n,k)}&#x3D;gcd(n,k)$</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rotate</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">        k = k % n;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> gcd(k, n);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span> <span class="number">0</span>; start &lt; count; ++start) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">current</span> <span class="operator">=</span> start;</span><br><span class="line">            <span class="type">int</span> <span class="variable">prev</span> <span class="operator">=</span> nums[start];</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">next</span> <span class="operator">=</span> (current + k) % n;</span><br><span class="line">                <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> nums[next];</span><br><span class="line">                nums[next] = prev;</span><br><span class="line">                prev = temp;</span><br><span class="line">                current = next;</span><br><span class="line">            &#125; <span class="keyword">while</span> (start != current);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">gcd</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> y &gt; <span class="number">0</span> ? gcd(y, x % y) : x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">gcd</span> = (<span class="params">x, y</span>) =&gt; y ? <span class="title function_">gcd</span>(y, x % y) : x;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> rotate = <span class="keyword">function</span>(<span class="params">nums, k</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> n = nums.<span class="property">length</span>;</span><br><span class="line">    k = k % n;</span><br><span class="line">    <span class="keyword">let</span> count = <span class="title function_">gcd</span>(k, n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> start = <span class="number">0</span>; start &lt; count; ++start) &#123;</span><br><span class="line">        <span class="keyword">let</span> current = start;</span><br><span class="line">        <span class="keyword">let</span> prev = nums[start];</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> next = (current + k) % n;</span><br><span class="line">            <span class="keyword">const</span> temp = nums[next];</span><br><span class="line">            nums[next] = prev;</span><br><span class="line">            prev = temp;</span><br><span class="line">            current = next;</span><br><span class="line">        &#125; <span class="keyword">while</span> (start !== current);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="复杂度分析-1"><a href="#复杂度分析-1" class="headerlink" title="复杂度分析"></a>复杂度分析</h5><ul>
+<li>时间复杂度：O(n)，其中 n<em>n</em> 为数组的长度。每个元素只会被遍历一次。</li>
+<li>空间复杂度：O(1)。我们只需常数空间存放若干变量。</li>
+</ul>
+<h4 id="方法三：数组翻转"><a href="#方法三：数组翻转" class="headerlink" title="方法三：数组翻转"></a>方法三：数组翻转</h4><p>该方法基于如下的事实：当我们将数组的元素向右移动 k 次后，尾部 $k \mod n$ 个元素会移动至数组头部，其余元素向后移动 $k \mod n$ 个位置。</p>
+<p>该方法为数组的翻转：我们可以先将所有元素翻转，这样尾部的 k modn 个元素就被移至数组头部，然后我们再翻转 $[0, k \mod n 一 1]$ 区间的元素和 $[k\mod n, n-1]$ 区间的元素即能得到最后的答案。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rotate</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">        k %= nums.length;</span><br><span class="line">        reverse(nums, <span class="number">0</span>, nums.length - <span class="number">1</span>);</span><br><span class="line">        reverse(nums, <span class="number">0</span>, k - <span class="number">1</span>);</span><br><span class="line">        reverse(nums, k, nums.length - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">reverse</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> start, <span class="type">int</span> end)</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (start &lt; end) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> nums[start];</span><br><span class="line">            nums[start] = nums[end];</span><br><span class="line">            nums[end] = temp;</span><br><span class="line">            start += <span class="number">1</span>;</span><br><span class="line">            end -= <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">reverse</span> = (<span class="params">nums, start, end</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">while</span> (start &lt; end) &#123;</span><br><span class="line">        <span class="keyword">const</span> temp = nums[start];</span><br><span class="line">        nums[start] = nums[end];</span><br><span class="line">        nums[end] = temp;</span><br><span class="line">        start += <span class="number">1</span>;</span><br><span class="line">        end -= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> rotate = <span class="keyword">function</span>(<span class="params">nums, k</span>) &#123;</span><br><span class="line">    k %= nums.<span class="property">length</span>;</span><br><span class="line">    <span class="title function_">reverse</span>(nums, <span class="number">0</span>, nums.<span class="property">length</span> - <span class="number">1</span>);</span><br><span class="line">    <span class="title function_">reverse</span>(nums, <span class="number">0</span>, k - <span class="number">1</span>);</span><br><span class="line">    <span class="title function_">reverse</span>(nums, k, nums.<span class="property">length</span> - <span class="number">1</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="复杂度分析-2"><a href="#复杂度分析-2" class="headerlink" title="复杂度分析"></a>复杂度分析</h5><ul>
+<li>时间复杂度：O(n)，其中 n 为数组的长度。每个元素被翻转两次，一共 n 个元素，因此总时间复杂度为 O(2n) &#x3D; O(n)。</li>
+<li>空间复杂度：O(1)</li>
+</ul>
+<h3 id="217-存在重复元素"><a href="#217-存在重复元素" class="headerlink" title="217. 存在重复元素"></a>217. 存在重复元素</h3><p>给你一个整数数组 <code>nums</code> 。如果任一值在数组中出现 <strong>至少两次</strong> ，返回 <code>true</code> ；如果数组中每个元素互不相同，返回 <code>false</code> 。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1,2,3,1]</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1,2,3,4]</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1,1,1,3,3,4,3,2,4,2]</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= nums.length &lt;= 105</code></li>
+<li><code>-109 &lt;= nums[i] &lt;= 109</code></li>
+</ul>
+<h4 id="方法一：排序"><a href="#方法一：排序" class="headerlink" title="方法一：排序"></a>方法一：排序</h4><p>在对数字从小到大排序之后，数组的重复元素一定出现在相邻位置中。因此，我们可以扫描已排序的数组，每次判断相邻的两个元素是否相等，如果相等则说明存在重复的元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">containsDuplicate</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (nums[i] == nums[i + <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>复杂度分析</p>
+<ul>
+<li>时间复杂度：$O(NlogN)$，其中 N 为数组的长度。需要对数组进行排序。</li>
+<li>空间复杂度：$O(logN)$，其中 N 为数组的长度。注意我们在这里应当考虑递归调用栈的深度。</li>
+</ul>
+<h4 id="方法二：哈希表"><a href="#方法二：哈希表" class="headerlink" title="方法二：哈希表"></a>方法二：哈希表</h4><p>对于数组中每个元素，我们将它插入到哈希表中。如果插入一个元素时发现该元素已经存在于哈希表中，则说明存在重复的元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">containsDuplicate</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        Set&lt;Integer&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> x : nums) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!set.add(x)) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：O(N)，其中 N 为数组的长度。</li>
+<li>空间复杂度：O(N)，其中 N 为数组的长度。</li>
+</ul>
+<h3 id="136-只出现一次的数字I"><a href="#136-只出现一次的数字I" class="headerlink" title="136.  只出现一次的数字I"></a>136.  只出现一次的数字I</h3><p>给定一个<strong>非空</strong>整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<p><strong>说明：</strong></p>
+<p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
+
+<h4 id="方法一：位运算"><a href="#方法一：位运算" class="headerlink" title="方法一：位运算"></a>方法一：位运算</h4><p>如果不考虑时间复杂度和空间复杂度的限制，这道题有很多种解法，可能的解法有如下几种。</p>
+<ul>
+<li>使用集合存储数字。遍历数组中的每个数字，如果集合中没有该数字，则将该数字加入集合，如果集合中已经有该数字，则将该数字从集合中删除，最后剩下的数字就是只出现一次的数字。</li>
+<li>使用哈希表存储每个数字和该数字出现的次数。遍历数组即可得到每个数字出现的次数，并更新哈希表，最后遍历哈希表，得到只出现一次的数字。</li>
+<li>使用集合存储数组中出现的所有数字，并计算数组中的元素之和。由于集合保证元素无重复，因此计算集合中的所有元素之和的两倍，即为每个元素出现两次的情况下的元素之和。由于数组中只有一个元素出现一次，其余元素都出现两次，因此用集合中的元素之和的两倍减去数组中的元素之和，剩下的数就是数组中只出现一次的数字。</li>
+</ul>
+<p>上述三种解法都需要额外使用 O(n) 的空间，其中 n 是数组长度。</p>
+<p>如何才能做到线性时间复杂度和常数空间复杂度呢？</p>
+<p>答案是使用位运算。对于这道题，可使用异或运算 ⊕。异或运算有以下三个性质。</p>
+<ol>
+<li>任何数和 0 做异或运算，结果仍然是原来的数，即 a⊕0&#x3D;a</li>
+<li>任何数和其自身做异或运算，结果是 0，即 a⊕a&#x3D;0</li>
+<li>异或运算满足交换律和结合律，即 $a⊕b⊕a&#x3D;b⊕a⊕a&#x3D;b⊕(a⊕a)&#x3D;b⊕0&#x3D;b$</li>
+</ol>
+<p>利用异或的性质</p>
+<p><code>x ^ x = 0</code>, <code>0 ^ x = x</code>，相同为0，相异为1，通过异或相同的数抵消掉了，剩下一个多余的数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">singleNumber</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> res=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> num:nums)&#123;</span><br><span class="line">            res ^= num;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="137-只出现一次的数字II"><a href="#137-只出现一次的数字II" class="headerlink" title="137 只出现一次的数字II"></a>137 只出现一次的数字II</h3><p>给定一个<strong>非空</strong>整数数组，除了某个元素只出现一次以外，其余每个元素均出现了三次。找出那个只出现了一次的元素。</p>
+<p>说明: 你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
+<p>方法一：统计所有数字中每个位中1出现的总数，那么对于某个位，1出现的次数一定是3的倍数+1或0，那么对这个数%3得到的结果就是目的数字在该位上的值。</p>
+<p>方法二：为了区分出现一次的数字和出现三次的数字，使用两个位掩码：<code>seen_once</code> 和 <code>seen_twice</code>。</p>
+<p>思路是：</p>
+<ul>
+<li>仅当 <code>seen_twice</code> 未变时，改变 <code>seen_once</code>。</li>
+<li>仅当 <code>seen_once</code> 未变时，改变<code>seen_twice</code>。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方法一</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">singleNumber</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> res=<span class="number">0</span>;</span><br><span class="line">        <span class="comment">//依次考虑每一位</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">32</span>;i++)&#123;</span><br><span class="line">            <span class="type">int</span> count=<span class="number">0</span>;</span><br><span class="line">            <span class="comment">//统计该位1的总个数</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> num:nums)&#123;</span><br><span class="line">                <span class="keyword">if</span>((num&gt;&gt;i &amp; <span class="number">1</span>)==<span class="number">1</span>)</span><br><span class="line">                    count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(count%<span class="number">3</span>!=<span class="number">0</span>)</span><br><span class="line">                res = res | (<span class="number">1</span>&lt;&lt;i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//方法二：</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">singleNumber</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">seenOnce</span> <span class="operator">=</span> <span class="number">0</span>, seenTwice = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> num : nums) &#123;</span><br><span class="line">      <span class="comment">// first appearence: </span></span><br><span class="line">      <span class="comment">// add num to seen_once </span></span><br><span class="line">      <span class="comment">// don&#x27;t add to seen_twice because of presence in seen_once</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">// second appearance: </span></span><br><span class="line">      <span class="comment">// remove num from seen_once </span></span><br><span class="line">      <span class="comment">// add num to seen_twice</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">// third appearance: </span></span><br><span class="line">      <span class="comment">// don&#x27;t add to seen_once because of presence in seen_twice</span></span><br><span class="line">      <span class="comment">// remove num from seen_twice</span></span><br><span class="line">      seenOnce = ~seenTwice &amp; (seenOnce ^ num);</span><br><span class="line">      seenTwice = ~seenOnce &amp; (seenTwice ^ num);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> seenOnce;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="0349-两个数组的交集-II"><a href="#0349-两个数组的交集-II" class="headerlink" title="0349 两个数组的交集 II"></a>0349 两个数组的交集 II</h3><p>给定两个数组 <code>nums1</code> 和 <code>nums2</code> ，返回 <em>它们的交集</em> 。输出结果中的每个元素一定是 <strong>唯一</strong> 的。我们可以 <strong>不考虑输出结果的顺序</strong> 。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums1 = [1,2,2,1], nums2 = [2,2]</span><br><span class="line">输出：[2]</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums1 = [4,9,5], nums2 = [9,4,9,8,4]</span><br><span class="line">输出：[9,4]</span><br><span class="line">解释：[4,9] 也是可通过的 </span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= nums1.length, nums2.length &lt;= 1000</code></li>
+<li><code>0 &lt;= nums1[i], nums2[i] &lt;= 1000</code></li>
+</ul>
+<h4 id="方法一：两个集合"><a href="#方法一：两个集合" class="headerlink" title="方法一：两个集合"></a>方法一：两个集合</h4><p>计算两个数组的交集，直观的方法是遍历数组 <code>nums1</code>，对于其中的每个元素，遍历数组 <code>nums2</code>判断该元素是否在数组 <code>nums2</code> 中，如果存在，则将该元素添加到返回值。假设数组 <code>nums1</code> 和 <code>nums2</code> 的长度分别是 m 和 n，则遍历数组 <code>nums1</code> 需要 O(m) 的时间，判断 <code>nums1</code> 中的每个元素是否在数组 <code>nums2</code> 中需要 O(n) 的时间，因此总时间复杂度是 O(mn)</p>
+<p>如果使用哈希集合存储元素，则可以在 O(1) 的时间内判断一个元素是否在集合中，从而降低时间复杂度。</p>
+<p>首先使用两个集合分别存储两个数组中的元素，然后遍历较小的集合，判断其中的每个元素是否在另一个集合中，如果元素也在另一个集合中，则将该元素添加到返回值。该方法的时间复杂度可以降低到 O(m+n)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] intersection(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2) &#123;</span><br><span class="line">        Set&lt;Integer&gt; set1 = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;Integer&gt;();</span><br><span class="line">        Set&lt;Integer&gt; set2 = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> num : nums1) &#123;</span><br><span class="line">            set1.add(num);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> num : nums2) &#123;</span><br><span class="line">            set2.add(num);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> getIntersection(set1, set2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] getIntersection(Set&lt;Integer&gt; set1, Set&lt;Integer&gt; set2) &#123;</span><br><span class="line">        <span class="keyword">if</span> (set1.size() &gt; set2.size()) &#123;</span><br><span class="line">            <span class="keyword">return</span> getIntersection(set2, set1);</span><br><span class="line">        &#125;</span><br><span class="line">        Set&lt;Integer&gt; intersectionSet = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> num : set1) &#123;</span><br><span class="line">            <span class="keyword">if</span> (set2.contains(num)) &#123;</span><br><span class="line">                intersectionSet.add(num);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span>[] intersection = <span class="keyword">new</span> <span class="title class_">int</span>[intersectionSet.size()];</span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> num : intersectionSet) &#123;</span><br><span class="line">            intersection[index++] = num;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> intersection;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：O(m+n)，其中 m 和 n 分别是两个数组的长度。使用两个集合分别存储两个数组中的元素需要 O(m+n) 的时间，遍历较小的集合并判断元素是否在另一个集合中需要 O(min⁡(m,n)) 的时间，因此总时间复杂度是 O(m+n)。</li>
+<li>空间复杂度：O(m+n)，其中 m 和 n 分别是两个数组的长度。空间复杂度主要取决于两个集合。</li>
+</ul>
+<h4 id="方法二：排序-双指针"><a href="#方法二：排序-双指针" class="headerlink" title="方法二：排序 + 双指针"></a>方法二：排序 + 双指针</h4><p>如果两个数组是有序的，则可以使用双指针的方法得到两个数组的交集。</p>
+<p>首先对两个数组进行排序，然后使用两个指针遍历两个数组。可以预见的是加入答案的数组的元素一定是递增的，为了保证加入元素的唯一性，我们需要额外记录变量 pre 表示上一次加入答案数组的元素。</p>
+<p>初始时，两个指针分别指向两个数组的头部。每次比较两个指针指向的两个数组中的数字，如果两个数字不相等，则将指向较小数字的指针右移一位，如果两个数字相等，且该数字不等于 pre ，将该数字添加到答案并更新 pre 变量，同时将两个指针都右移一位。当至少有一个指针超出数组范围时，遍历结束。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] intersect(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2) &#123;</span><br><span class="line">        Arrays.sort(nums1);</span><br><span class="line">        Arrays.sort(nums2);</span><br><span class="line">        <span class="type">int</span> <span class="variable">length1</span> <span class="operator">=</span> nums1.length, length2 = nums2.length;</span><br><span class="line">        <span class="type">int</span>[] intersection = <span class="keyword">new</span> <span class="title class_">int</span>[length1 + length2];</span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>, index1 = <span class="number">0</span>, index2 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (index1 &lt; length1 &amp;&amp; index2 &lt; length2) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">num1</span> <span class="operator">=</span> nums1[index1], num2 = nums2[index2];</span><br><span class="line">            <span class="keyword">if</span> (num1 == num2) &#123;</span><br><span class="line">                <span class="comment">// 保证加入元素的唯一性</span></span><br><span class="line">                <span class="keyword">if</span> (index == <span class="number">0</span> || num1 != intersection[index - <span class="number">1</span>]) &#123;</span><br><span class="line">                    intersection[index++] = num1;</span><br><span class="line">                &#125;</span><br><span class="line">                index1++;</span><br><span class="line">                index2++;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (num1 &lt; num2) &#123;</span><br><span class="line">                index1++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                index2++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Arrays.copyOfRange(intersection, <span class="number">0</span>, index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：$O(mlog⁡m+nlog⁡n)$，其中 m 和 n 分别是两个数组的长度。对两个数组排序的时间复杂度分别是 $O(mlog⁡m)$ 和 $O(nlog⁡n)$，双指针寻找交集元素的时间复杂度是 $O(m+n)$，因此总时间复杂度是 $O(mlog⁡m+nlog⁡n)$。</li>
+<li>空间复杂度：$O(log⁡m+log⁡n)$，其中 m 和 n 分别是两个数组的长度。空间复杂度主要取决于排序使用的额外空间。</li>
+</ul>
+<h3 id="0066-加一"><a href="#0066-加一" class="headerlink" title="0066 加一"></a>0066 加一</h3><h3 id="0283-移动"><a href="#0283-移动" class="headerlink" title="0283 移动"></a>0283 移动</h3><h3 id="0001-两数之和"><a href="#0001-两数之和" class="headerlink" title="0001 两数之和"></a>0001 两数之和</h3><h3 id="0036-有效的数独"><a href="#0036-有效的数独" class="headerlink" title="0036 有效的数独"></a>0036 有效的数独</h3><h3 id="0048-旋转图像"><a href="#0048-旋转图像" class="headerlink" title="0048 旋转图像"></a>0048 旋转图像</h3>
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/07/15/leetcode/%E9%93%BE%E8%A1%A8/">Leetcode Diary 1<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/07/15/leetcode/designpattern/">设计模式总结<span class="note">Newer</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="http://example.com/">@zennlyu</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

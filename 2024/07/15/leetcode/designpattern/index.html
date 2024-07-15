@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>设计模式总结 - zennlyu</title>
+
+  
+    <meta name="description" content="设计模式总结设计模式：在某些场景下，针对某类问题的某种通用的解决方案。  场景：项目所在的环境 问题：约束条件，项目目标等 解决方案：通用、可复用的设计，解决约束达到目标。  类型：  创建型模式：对象实例化的模式，创建型模式用于解耦对象的实例化过程。 结构型模式：把类或对象结合在一起形成一个更大的结构。 行为型模式：类和对象如何交互，及划分责任和算法。  原则 单一职责原则 开闭原则 里氏代换原">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式总结">
+<meta property="og:url" content="http://example.com/2024/07/15/leetcode/designpattern/index.html">
+<meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="设计模式总结设计模式：在某些场景下，针对某类问题的某种通用的解决方案。  场景：项目所在的环境 问题：约束条件，项目目标等 解决方案：通用、可复用的设计，解决约束达到目标。  类型：  创建型模式：对象实例化的模式，创建型模式用于解耦对象的实例化过程。 结构型模式：把类或对象结合在一起形成一个更大的结构。 行为型模式：类和对象如何交互，及划分责任和算法。  原则 单一职责原则 开闭原则 里氏代换原">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.runoob.com/wp-content/uploads/2014/08/62576915-36E0-4B67-B078-704699CA980A.jpg">
+<meta property="og:image" content="http://example.com/Users/kedae/Desktop/designpattern/3abstractfactory.jpg">
+<meta property="article:published_time" content="2024-07-15T03:58:26.070Z">
+<meta property="article:modified_time" content="2024-07-15T03:58:26.070Z">
+<meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="oop">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.runoob.com/wp-content/uploads/2014/08/62576915-36E0-4B67-B078-704699CA980A.jpg">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/09/eTtVL.jpg" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93"><span class="toc-text">设计模式总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%88%99"><span class="toc-text">原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%82%B9"><span class="toc-text">关键点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">单例模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-1"><span class="toc-text">步骤 1</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#SingleObject-java"><span class="toc-text">SingleObject.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-2"><span class="toc-text">步骤 2</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#SingletonPatternDemo-java"><span class="toc-text">SingletonPatternDemo.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-3"><span class="toc-text">步骤 3</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%87%A0%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-text">单例模式的几种实现方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E6%87%92%E6%B1%89%E5%BC%8F%EF%BC%8C%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8"><span class="toc-text">1、懒汉式，线程不安全</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B"><span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E6%87%92%E6%B1%89%E5%BC%8F%EF%BC%8C%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-text">2、懒汉式，线程安全</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B-1"><span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81%E9%A5%BF%E6%B1%89%E5%BC%8F"><span class="toc-text">3、饿汉式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B-2"><span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E3%80%81%E5%8F%8C%E6%A3%80%E9%94%81-x2F-%E5%8F%8C%E9%87%8D%E6%A0%A1%E9%AA%8C%E9%94%81%EF%BC%88DCL%EF%BC%8C%E5%8D%B3-double-checked-locking%EF%BC%89"><span class="toc-text">4、双检锁&#x2F;双重校验锁（DCL，即 double-checked locking）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B-3"><span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5%E3%80%81%E7%99%BB%E8%AE%B0%E5%BC%8F-x2F-%E9%9D%99%E6%80%81%E5%86%85%E9%83%A8%E7%B1%BB"><span class="toc-text">5、登记式&#x2F;静态内部类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B-4"><span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6%E3%80%81%E6%9E%9A%E4%B8%BE"><span class="toc-text">6、枚举</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B-5"><span class="toc-text">实例</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-text">工厂模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D-1"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-1"><span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-1-1"><span class="toc-text">步骤 1</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Shape-java"><span class="toc-text">Shape.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-2-1"><span class="toc-text">步骤 2</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Rectangle-java"><span class="toc-text">Rectangle.java</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Square-java"><span class="toc-text">Square.java</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Circle-java"><span class="toc-text">Circle.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-3-1"><span class="toc-text">步骤 3</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ShapeFactory-java"><span class="toc-text">ShapeFactory.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-4"><span class="toc-text">步骤 4</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#FactoryPatternDemo-java"><span class="toc-text">FactoryPatternDemo.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-5"><span class="toc-text">步骤 5</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-text">抽象工厂模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D-2"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-2"><span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-1-2"><span class="toc-text">步骤 1</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Shape-java-1"><span class="toc-text">Shape.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-2-2"><span class="toc-text">步骤 2</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Rectangle-java-1"><span class="toc-text">Rectangle.java</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Square-java-1"><span class="toc-text">Square.java</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Circle-java-1"><span class="toc-text">Circle.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-3-2"><span class="toc-text">步骤 3</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Color-java"><span class="toc-text">Color.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A44"><span class="toc-text">步骤4</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Red-java"><span class="toc-text">Red.java</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Green-java"><span class="toc-text">Green.java</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Blue-java"><span class="toc-text">Blue.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-5-1"><span class="toc-text">步骤 5</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#AbstractFactory-java"><span class="toc-text">AbstractFactory.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-6"><span class="toc-text">步骤 6</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ShapeFactory-java-1"><span class="toc-text">ShapeFactory.java</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ColorFactory-java"><span class="toc-text">ColorFactory.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-7"><span class="toc-text">步骤 7</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#FactoryProducer-java"><span class="toc-text">FactoryProducer.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-8"><span class="toc-text">步骤 8</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#AbstractFactoryPatternDemo-java"><span class="toc-text">AbstractFactoryPatternDemo.java</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-9"><span class="toc-text">步骤 9</span></a></li></ol></li></ol></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/oop/">oop</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2024-07-15T03:58:26.070Z">2024-07-15</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>设计模式总结</span></h1>
+<h2 id="设计模式总结"><a href="#设计模式总结" class="headerlink" title="设计模式总结"></a>设计模式总结</h2><p>设计模式：在某些场景下，针对某类问题的某种通用的解决方案。</p>
+<ul>
+<li>场景：项目所在的环境</li>
+<li>问题：约束条件，项目目标等</li>
+<li>解决方案：通用、可复用的设计，解决约束达到目标。</li>
+</ul>
+<p>类型：</p>
+<ul>
+<li>创建型模式：对象实例化的模式，创建型模式用于解耦对象的实例化过程。</li>
+<li>结构型模式：把类或对象结合在一起形成一个更大的结构。</li>
+<li>行为型模式：类和对象如何交互，及划分责任和算法。</li>
+</ul>
+<h2 id="原则"><a href="#原则" class="headerlink" title="原则"></a>原则</h2><ul>
+<li>单一职责原则</li>
+<li>开闭原则</li>
+<li>里氏代换原则</li>
+<li>依赖倒转原则</li>
+<li>接口隔离原则</li>
+<li>合成复用原则</li>
+<li>迪米特法则</li>
+</ul>
+<h2 id="关键点"><a href="#关键点" class="headerlink" title="关键点"></a>关键点</h2><ul>
+<li><p>单例模式：某个类只能有一个实例，提供一个全局的访问点。</p>
+</li>
+<li><p>简单工厂：一个工厂类根据传入的参量决定创建出那一种产品类的实例。</p>
+</li>
+<li><p>工厂方法：定义一个创建对象的接口，让子类决定实例化那个类。</p>
+</li>
+<li><p>抽象工厂：创建相关或依赖对象的家族，而无需明确指定具体类。</p>
+</li>
+<li><p>建造者模式：封装一个复杂对象的构建过程，并可以按步骤构造。</p>
+</li>
+<li><p>原型模式：通过复制现有的实例来创建新的实例。</p>
+</li>
+<li><p>适配器模式：将一个类的方法接口转换成客户希望的另外一个接口。</p>
+</li>
+<li><p>组合模式：将对象组合成树形结构以表示“”部分-整体“”的层次结构。</p>
+</li>
+<li><p>装饰模式：动态的给对象添加新的功能。</p>
+</li>
+<li><p>代理模式：为其他对象提供一个代理以便控制这个对象的访问。</p>
+</li>
+<li><p>亨元（蝇量）模式：通过共享技术来有效的支持大量细粒度的对象。</p>
+</li>
+<li><p>外观模式：对外提供一个统一的方法，来访问子系统中的一群接口。</p>
+</li>
+<li><p>桥接模式：将抽象部分和它的实现部分分离，使它们都可以独立的变化。</p>
+</li>
+<li><p>模板模式：定义一个算法结构，而将一些步骤延迟到子类实现。</p>
+</li>
+<li><p>解释器模式：给定一个语言，定义它的文法的一种表示，并定义一个解释器。</p>
+</li>
+<li><p>策略模式：定义一系列算法，把他们封装起来，并且使它们可以相互替换。</p>
+</li>
+<li><p>状态模式：允许一个对象在其对象内部状态改变时改变它的行为。</p>
+</li>
+<li><p>观察者模式：对象间的一对多的依赖关系。</p>
+</li>
+<li><p>备忘录模式：在不破坏封装的前提下，保持对象的内部状态。</p>
+</li>
+<li><p>中介者模式：用一个中介对象来封装一系列的对象交互。</p>
+</li>
+<li><p>命令模式：将命令请求封装为一个对象，使得可以用不同的请求来进行参数化。</p>
+</li>
+<li><p>访问者模式：在不改变数据结构的前提下，增加作用于一组对象元素的新功能。</p>
+</li>
+<li><p>责任链模式：将请求的发送者和接收者解耦，使的多个对象都有处理这个请求的机会。</p>
+</li>
+<li><p>迭代器模式：一种遍历访问聚合对象中各个元素的方法，不暴露该对象的内部结构。</p>
+</li>
+</ul>
+<h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p>单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。</p>
+<p>这种模式涉及到一个单一的类，该类负责创建自己的对象，同时确保只有单个对象被创建。这个类提供了一种访问其唯一的对象的方式，可以直接访问，不需要实例化该类的对象。</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>1、单例类只能有一个实例。</li>
+<li>2、单例类必须自己创建自己的唯一实例。</li>
+<li>3、单例类必须给所有其他对象提供这一实例。</li>
+</ul>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p><strong>意图：</strong>保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
+<p><strong>主要解决：</strong>一个全局使用的类频繁地创建与销毁。</p>
+<p><strong>何时使用：</strong>当您想控制实例数目，节省系统资源的时候。</p>
+<p><strong>如何解决：</strong>判断系统是否已经有这个单例，如果有则返回，如果没有则创建。</p>
+<p><strong>关键代码：</strong>构造函数是私有的。</p>
+<p><strong>应用实例：</strong></p>
+<ul>
+<li>1、一个班级只有一个班主任。</li>
+<li>2、Windows 是多进程多线程的，在操作一个文件的时候，就不可避免地出现多个进程或线程同时操作一个文件的现象，所以所有文件的处理必须通过唯一的实例来进行。</li>
+<li>3、一些设备管理器常常设计为单例模式，比如一个电脑有两台打印机，在输出的时候就要处理不能两台打印机打印同一个文件。</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ul>
+<li>1、在内存里只有一个实例，减少了内存的开销，尤其是频繁的创建和销毁实例（比如管理学院首页页面缓存）。</li>
+<li>2、避免对资源的多重占用（比如写文件操作）。</li>
+</ul>
+<p><strong>缺点：</strong>没有接口，不能继承，与单一职责原则冲突，一个类应该只关心内部逻辑，而不关心外面怎么样来实例化。</p>
+<p><strong>使用场景：</strong></p>
+<ul>
+<li>1、要求生产唯一序列号。 </li>
+<li>2、WEB 中的计数器，不用每次刷新都在数据库里加一次，用单例先缓存起来。</li>
+<li>3、创建的一个对象需要消耗的资源过多，比如 I&#x2F;O 与数据库的连接等。</li>
+</ul>
+<p><strong>注意事项：</strong>getInstance() 方法中需要使用同步锁 synchronized (Singleton.class) 防止多线程同时进入造成 instance 被多次实例化。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>我们将创建一个 <em>SingleObject</em> 类。<em>SingleObject</em> 类有它的私有构造函数和本身的一个静态实例。 </p>
+<p><em>SingleObject</em> 类提供了一个静态方法，供外界获取它的静态实例。<em>SingletonPatternDemo</em> 类使用 <em>SingleObject</em> 类来获取 <em>SingleObject</em> 对象。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://www.runoob.com/wp-content/uploads/2014/08/62576915-36E0-4B67-B078-704699CA980A.jpg" alt="单例模式的 UML 图"></p>
+<h4 id="步骤-1"><a href="#步骤-1" class="headerlink" title="步骤 1"></a>步骤 1</h4><p>创建一个 Singleton 类。</p>
+<h5 id="SingleObject-java"><a href="#SingleObject-java" class="headerlink" title="SingleObject.java"></a>SingleObject.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingleObject</span> &#123;</span><br><span class="line"> </span><br><span class="line">   <span class="comment">//创建 SingleObject 的一个对象</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">SingleObject</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SingleObject</span>();</span><br><span class="line"> </span><br><span class="line">   <span class="comment">//让构造函数为 private，这样该类就不会被实例化</span></span><br><span class="line">   <span class="keyword">private</span> <span class="title function_">SingleObject</span><span class="params">()</span>&#123;&#125;</span><br><span class="line"> </span><br><span class="line">   <span class="comment">//获取唯一可用的对象</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> SingleObject <span class="title function_">getInstance</span><span class="params">()</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> instance;</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">showMessage</span><span class="params">()</span>&#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Hello World!&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="步骤-2"><a href="#步骤-2" class="headerlink" title="步骤 2"></a>步骤 2</h4><p>从 singleton 类获取唯一的对象。</p>
+<h5 id="SingletonPatternDemo-java"><a href="#SingletonPatternDemo-java" class="headerlink" title="SingletonPatternDemo.java"></a>SingletonPatternDemo.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonPatternDemo</span> &#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//不合法的构造函数</span></span><br><span class="line">      <span class="comment">//编译时错误：构造函数 SingleObject() 是不可见的</span></span><br><span class="line">      <span class="comment">//SingleObject object = new SingleObject();</span></span><br><span class="line"> </span><br><span class="line">      <span class="comment">//获取唯一可用的对象</span></span><br><span class="line">      <span class="type">SingleObject</span> <span class="variable">object</span> <span class="operator">=</span> SingleObject.getInstance();</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//显示消息</span></span><br><span class="line">      object.showMessage();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="步骤-3"><a href="#步骤-3" class="headerlink" title="步骤 3"></a>步骤 3</h4><p>执行程序，输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello World!</span><br></pre></td></tr></table></figure>
+
+<h3 id="单例模式的几种实现方式"><a href="#单例模式的几种实现方式" class="headerlink" title="单例模式的几种实现方式"></a>单例模式的几种实现方式</h3><p>单例模式的实现有多种方式，如下所示：</p>
+<h4 id="1、懒汉式，线程不安全"><a href="#1、懒汉式，线程不安全" class="headerlink" title="1、懒汉式，线程不安全"></a>1、懒汉式，线程不安全</h4><p><strong>是否 Lazy 初始化：</strong>是</p>
+<p><strong>是否多线程安全：</strong>否</p>
+<p><strong>实现难度：</strong>易</p>
+<p><strong>描述：</strong>这种方式是最基本的实现方式，这种实现最大的问题就是不支持多线程。因为没有加锁 synchronized，所以严格意义上它并不算单例模式。<br>这种方式 lazy loading 很明显，不要求线程安全，在多线程不能正常工作。</p>
+<h5 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;  </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span> <span class="params">()</span>&#123;&#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;  </span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;  </span><br><span class="line">            instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">return</span> instance;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>接下来介绍的几种实现方式都支持多线程，但是在性能上有所差异。</strong></p>
+<h4 id="2、懒汉式，线程安全"><a href="#2、懒汉式，线程安全" class="headerlink" title="2、懒汉式，线程安全"></a>2、懒汉式，线程安全</h4><p><strong>是否 Lazy 初始化：</strong>是</p>
+<p><strong>是否多线程安全：</strong>是</p>
+<p><strong>实现难度：</strong>易</p>
+<p><strong>描述：</strong>这种方式具备很好的 lazy loading，能够在多线程中很好的工作，但是，效率很低，99% 情况下不需要同步。<br>优点：第一次调用才初始化，避免内存浪费。<br>缺点：必须加锁 synchronized 才能保证单例，但加锁会影响效率。<br>getInstance() 的性能对应用程序不是很关键（该方法使用不太频繁）。</p>
+<h5 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;  </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span> <span class="params">()</span>&#123;&#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;  </span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;  </span><br><span class="line">            instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">return</span> instance;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="3、饿汉式"><a href="#3、饿汉式" class="headerlink" title="3、饿汉式"></a>3、饿汉式</h4><p><strong>是否 Lazy 初始化：</strong>否</p>
+<p><strong>是否多线程安全：</strong>是</p>
+<p><strong>实现难度：</strong>易</p>
+<p><strong>描述：</strong>这种方式比较常用，但容易产生垃圾对象。<br>优点：没有加锁，执行效率会提高。<br>缺点：类加载时就初始化，浪费内存。<br>它基于 classloader 机制避免了多线程的同步问题，不过，instance 在类装载时就实例化，虽然导致类装载的原因有很多种，在单例模式中大多数都是调用 getInstance 方法， 但是也不能确定有其他的方式（或者其他的静态方法）导致类装载，这时候初始化 instance 显然没有达到 lazy loading 的效果。</p>
+<h5 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();  </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span> <span class="params">()</span>&#123;&#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> instance;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4、双检锁-x2F-双重校验锁（DCL，即-double-checked-locking）"><a href="#4、双检锁-x2F-双重校验锁（DCL，即-double-checked-locking）" class="headerlink" title="4、双检锁&#x2F;双重校验锁（DCL，即 double-checked locking）"></a>4、双检锁&#x2F;双重校验锁（DCL，即 double-checked locking）</h4><p><strong>JDK 版本：</strong>JDK1.5 起</p>
+<p><strong>是否 Lazy 初始化：</strong>是</p>
+<p><strong>是否多线程安全：</strong>是</p>
+<p><strong>实现难度：</strong>较复杂</p>
+<p><strong>描述：</strong>这种方式采用双锁机制，安全且在多线程情况下能保持高性能。<br>getInstance() 的性能对应用程序很关键。</p>
+<h5 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton singleton;  </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span> <span class="params">()</span>&#123;&#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getSingleton</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;  </span><br><span class="line">        <span class="keyword">synchronized</span> (Singleton.class) &#123;  </span><br><span class="line">            <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;  </span><br><span class="line">                singleton = <span class="keyword">new</span> <span class="title class_">Singleton</span>();  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> singleton;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="5、登记式-x2F-静态内部类"><a href="#5、登记式-x2F-静态内部类" class="headerlink" title="5、登记式&#x2F;静态内部类"></a>5、登记式&#x2F;静态内部类</h4><p><strong>是否 Lazy 初始化：</strong>是</p>
+<p><strong>是否多线程安全：</strong>是</p>
+<p><strong>实现难度：</strong>一般</p>
+<p><strong>描述：</strong>这种方式能达到双检锁方式一样的功效，但实现更简单。对静态域使用延迟初始化，应使用这种方式而不是双检锁方式。这种方式只适用于静态域的情况，双检锁方式可在实例域需要延迟初始化时使用。<br>这种方式同样利用了 classloader 机制来保证初始化 instance 时只有一个线程，它跟第 3 种方式不同的是：第 3 种方式只要 Singleton 类被装载了，那么 instance 就会被实例化（没有达到 lazy loading 效果），而这种方式是 Singleton 类被装载了，instance 不一定被初始化。因为 SingletonHolder 类没有被主动使用，只有通过显式调用 getInstance 方法时，才会显式装载 SingletonHolder 类，从而实例化 instance。想象一下，如果实例化 instance 很消耗资源，所以想让它延迟加载，另外一方面，又不希望在 Singleton 类加载时就实例化，因为不能确保 Singleton 类还可能在其他的地方被主动使用从而被加载，那么这个时候实例化 instance 显然是不合适的。这个时候，这种方式相比第 3 种方式就显得很合理。</p>
+<h5 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SingletonHolder</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span> <span class="params">()</span>&#123;&#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.INSTANCE;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="6、枚举"><a href="#6、枚举" class="headerlink" title="6、枚举"></a>6、枚举</h4><p><strong>JDK 版本：</strong>JDK1.5 起</p>
+<p><strong>是否 Lazy 初始化：</strong>否</p>
+<p><strong>是否多线程安全：</strong>是</p>
+<p><strong>实现难度：</strong>易</p>
+<p><strong>描述：</strong>这种实现方式还没有被广泛采用，但这是实现单例模式的最佳方法。它更简洁，自动支持序列化机制，绝对防止多次实例化。<br>这种方式是 Effective Java 作者 Josh Bloch 提倡的方式，它不仅能避免多线程同步问题，而且还自动支持序列化机制，防止反序列化重新创建新的对象，绝对防止多次实例化。不过，由于 JDK1.5 之后才加入 enum 特性，用这种方式写不免让人感觉生疏，在实际工作中，也很少用。<br>不能通过 reflection attack 来调用私有构造方法。</p>
+<h5 id="实例-5"><a href="#实例-5" class="headerlink" title="实例"></a>实例</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    INSTANCE;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">whateverMethod</span><span class="params">()</span> &#123;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>经验之谈：</strong>一般情况下，不建议使用第 1 种和第 2 种懒汉方式，建议使用第 3 种饿汉方式。只有在要明确实现 lazy loading 效果时，才会使用第 5 种登记方式。如果涉及到反序列化创建对象时，可以尝试使用第 6 种枚举方式。如果有其他特殊的需求，可以考虑使用第 4 种双检锁方式。</p>
+<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p>工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。</p>
+<p>在工厂模式中，我们在创建对象时不会对客户端暴露创建逻辑，并且是通过使用一个共同的接口来指向新创建的对象。</p>
+<h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p><strong>意图：</strong>定义一个创建对象的接口，让其子类自己决定实例化哪一个工厂类，工厂模式使其创建过程延迟到子类进行。</p>
+<p><strong>主要解决：</strong>主要解决接口选择的问题。</p>
+<p><strong>何时使用：</strong>我们明确地计划不同条件下创建不同实例时。</p>
+<p><strong>如何解决：</strong>让其子类实现工厂接口，返回的也是一个抽象的产品。</p>
+<p><strong>关键代码：</strong>创建过程在其子类执行。</p>
+<p><strong>应用实例：</strong> 1、您需要一辆汽车，可以直接从工厂里面提货，而不用去管这辆汽车是怎么做出来的，以及这个汽车里面的具体实现。 2、Hibernate 换数据库只需换方言和驱动就可以。</p>
+<p><strong>优点：</strong> 1、一个调用者想创建一个对象，只要知道其名称就可以了。 2、扩展性高，如果想增加一个产品，只要扩展一个工厂类就可以。 3、屏蔽产品的具体实现，调用者只关心产品的接口。</p>
+<p><strong>缺点：</strong>每次增加一个产品时，都需要增加一个具体类和对象实现工厂，使得系统中类的个数成倍增加，在一定程度上增加了系统的复杂度，同时也增加了系统具体类的依赖。这并不是什么好事。</p>
+<p><strong>使用场景：</strong> 1、日志记录器：记录可能记录到本地硬盘、系统事件、远程服务器等，用户可以选择记录日志到什么地方。 2、数据库访问，当用户不知道最后系统采用哪一类数据库，以及数据库可能有变化时。 3、设计一个连接服务器的框架，需要三个协议，”POP3”、”IMAP”、”HTTP”，可以把这三个作为产品类，共同实现一个接口。</p>
+<p><strong>注意事项：</strong>作为一种创建类模式，在任何需要生成复杂对象的地方，都可以使用工厂方法模式。有一点需要注意的地方就是复杂对象适合使用工厂模式，而简单对象，特别是只需要通过 new 就可以完成创建的对象，无需使用工厂模式。如果使用工厂模式，就需要引入一个工厂类，会增加系统的复杂度。</p>
+<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>我们将创建一个 <em>Shape</em> 接口和实现 <em>Shape</em> 接口的实体类。下一步是定义工厂类 <em>ShapeFactory</em>。</p>
+<p><em>FactoryPatternDemo</em> 类使用 <em>ShapeFactory</em> 来获取 <em>Shape</em> 对象。它将向 <em>ShapeFactory</em> 传递信息（<em>CIRCLE &#x2F; RECTANGLE &#x2F; SQUARE</em>），以便获取它所需对象的类型。</p>
+<h4 id="步骤-1-1"><a href="#步骤-1-1" class="headerlink" title="步骤 1"></a>步骤 1</h4><p>创建一个接口:</p>
+<h5 id="Shape-java"><a href="#Shape-java" class="headerlink" title="Shape.java"></a>Shape.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line">	<span class="keyword">void</span> <span class="title function_">draw</span><span class="params">()</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="步骤-2-1"><a href="#步骤-2-1" class="headerlink" title="步骤 2"></a>步骤 2</h4><p>创建实现接口的实体类。</p>
+<h5 id="Rectangle-java"><a href="#Rectangle-java" class="headerlink" title="Rectangle.java"></a>Rectangle.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Rectangle</span> <span class="keyword">implements</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line"> </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">()</span> &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Inside Rectangle::draw() method.&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Square-java"><a href="#Square-java" class="headerlink" title="Square.java"></a>Square.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Square</span> <span class="keyword">implements</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line"> </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">()</span> &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Inside Square::draw() method.&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Circle-java"><a href="#Circle-java" class="headerlink" title="Circle.java"></a>Circle.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Circle</span> <span class="keyword">implements</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line"> </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">()</span> &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Inside Circle::draw() method.&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="步骤-3-1"><a href="#步骤-3-1" class="headerlink" title="步骤 3"></a>步骤 3</h4><p>创建一个工厂，生成基于给定信息的实体类的对象。</p>
+<h5 id="ShapeFactory-java"><a href="#ShapeFactory-java" class="headerlink" title="ShapeFactory.java"></a>ShapeFactory.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ShapeFactory</span> &#123;</span><br><span class="line">    </span><br><span class="line">   <span class="comment">//使用 getShape 方法获取形状类型的对象</span></span><br><span class="line">   <span class="keyword">public</span> Shape <span class="title function_">getShape</span><span class="params">(String shapeType)</span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(shapeType == <span class="literal">null</span>)&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">      &#125;        </span><br><span class="line">      <span class="keyword">if</span>(shapeType.equalsIgnoreCase(<span class="string">&quot;CIRCLE&quot;</span>))&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Circle</span>();</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span>(shapeType.equalsIgnoreCase(<span class="string">&quot;RECTANGLE&quot;</span>))&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Rectangle</span>();</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span>(shapeType.equalsIgnoreCase(<span class="string">&quot;SQUARE&quot;</span>))&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Square</span>();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="步骤-4"><a href="#步骤-4" class="headerlink" title="步骤 4"></a>步骤 4</h4><p>使用该工厂，通过传递类型信息来获取实体类的对象。</p>
+<h5 id="FactoryPatternDemo-java"><a href="#FactoryPatternDemo-java" class="headerlink" title="FactoryPatternDemo.java"></a>FactoryPatternDemo.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FactoryPatternDemo</span> &#123;</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">      <span class="type">ShapeFactory</span> <span class="variable">shapeFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ShapeFactory</span>();</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//获取 Circle 的对象，并调用它的 draw 方法</span></span><br><span class="line">      <span class="type">Shape</span> <span class="variable">shape1</span> <span class="operator">=</span> shapeFactory.getShape(<span class="string">&quot;CIRCLE&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//调用 Circle 的 draw 方法</span></span><br><span class="line">      shape1.draw();</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//获取 Rectangle 的对象，并调用它的 draw 方法</span></span><br><span class="line">      <span class="type">Shape</span> <span class="variable">shape2</span> <span class="operator">=</span> shapeFactory.getShape(<span class="string">&quot;RECTANGLE&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//调用 Rectangle 的 draw 方法</span></span><br><span class="line">      shape2.draw();</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//获取 Square 的对象，并调用它的 draw 方法</span></span><br><span class="line">      <span class="type">Shape</span> <span class="variable">shape3</span> <span class="operator">=</span> shapeFactory.getShape(<span class="string">&quot;SQUARE&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//调用 Square 的 draw 方法</span></span><br><span class="line">      shape3.draw();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="步骤-5"><a href="#步骤-5" class="headerlink" title="步骤 5"></a>步骤 5</h4><p>执行程序，输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Inside Circle::draw() method.</span><br><span class="line">Inside Rectangle::draw() method.</span><br><span class="line">Inside Square::draw() method.</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h2><p>抽象工厂模式（Abstract Factory Pattern）是围绕一个超级工厂创建其他工厂。该超级工厂又称为其他工厂的工厂。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。</p>
+<p>在抽象工厂模式中，接口是负责创建一个相关对象的工厂，不需要显式指定它们的类。每个生成的工厂都能按照工厂模式提供对象。</p>
+<h3 id="介绍-2"><a href="#介绍-2" class="headerlink" title="介绍"></a>介绍</h3><p><strong>意图：</strong>提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们具体的类。</p>
+<p><strong>主要解决：</strong>主要解决接口选择的问题。</p>
+<p><strong>何时使用：</strong>系统的产品有多于一个的产品族，而系统只消费其中某一族的产品。</p>
+<p><strong>如何解决：</strong>在一个产品族里面，定义多个产品。</p>
+<p><strong>关键代码：</strong>在一个工厂里聚合多个同类产品。</p>
+<p><strong>应用实例：</strong>工作了，为了参加一些聚会，肯定有两套或多套衣服吧，比如说有商务装（成套，一系列具体产品）、时尚装（成套，一系列具体产品），甚至对于一个家庭来说，可能有商务女装、商务男装、时尚女装、时尚男装，这些也都是成套的，即一系列具体产品。假设一种情况（现实中是不存在的，要不然，没法进入共产主义了，但有利于说明抽象工厂模式），在您的家中，某一个衣柜（具体工厂）只能存放某一种这样的衣服（成套，一系列具体产品），每次拿这种成套的衣服时也自然要从这个衣柜中取出了。用 OOP 的思想去理解，所有的衣柜（具体工厂）都是衣柜类的（抽象工厂）某一个，而每一件成套的衣服又包括具体的上衣（某一具体产品），裤子（某一具体产品），这些具体的上衣其实也都是上衣（抽象产品），具体的裤子也都是裤子（另一个抽象产品）。</p>
+<p><strong>优点：</strong>当一个产品族中的多个对象被设计成一起工作时，它能保证客户端始终只使用同一个产品族中的对象。</p>
+<p><strong>缺点：</strong>产品族扩展非常困难，要增加一个系列的某一产品，既要在抽象的 Creator 里加代码，又要在具体的里面加代码。</p>
+<p><strong>使用场景：</strong> 1、QQ 换皮肤，一整套一起换。 2、生成不同操作系统的程序。</p>
+<p><strong>注意事项：</strong>产品族难扩展，产品等级易扩展。</p>
+<h3 id="实现-2"><a href="#实现-2" class="headerlink" title="实现"></a>实现</h3><p>我们将创建 <em>Shape</em> 和 <em>Color</em> 接口和实现这些接口的实体类。下一步是创建抽象工厂类 <em>AbstractFactory</em>。接着定义工厂类 <em>ShapeFactory</em> 和 <em>ColorFactory</em>，这两个工厂类都是扩展了 <em>AbstractFactory</em>。然后创建一个工厂创造器&#x2F;生成器类 <em>FactoryProducer</em>。</p>
+<p><em>AbstractFactoryPatternDemo</em> 类使用 <em>FactoryProducer</em> 来获取 <em>AbstractFactory</em> 对象。它将向 <em>AbstractFactory</em> 传递形状信息 <em>Shape</em>（<em>CIRCLE &#x2F; RECTANGLE &#x2F; SQUARE</em>），以便获取它所需对象的类型。同时它还向 <em>AbstractFactory</em> 传递颜色信息 <em>Color</em>（<em>RED &#x2F; GREEN &#x2F; BLUE</em>），以便获取它所需对象的类型。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/kedae/Desktop/designpattern/3abstractfactory.jpg" alt="3abstractfactory"></p>
+<h4 id="步骤-1-2"><a href="#步骤-1-2" class="headerlink" title="步骤 1"></a>步骤 1</h4><p>为形状创建一个接口。</p>
+<h5 id="Shape-java-1"><a href="#Shape-java-1" class="headerlink" title="Shape.java"></a>Shape.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Shape</span> &#123;   </span><br><span class="line">	<span class="keyword">void</span> <span class="title function_">draw</span><span class="params">()</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="步骤-2-2"><a href="#步骤-2-2" class="headerlink" title="步骤 2"></a>步骤 2</h4><p>创建实现接口的实体类。</p>
+<h5 id="Rectangle-java-1"><a href="#Rectangle-java-1" class="headerlink" title="Rectangle.java"></a>Rectangle.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Rectangle</span> <span class="keyword">implements</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line"> </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">()</span> &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Inside Rectangle::draw() method.&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="Square-java-1"><a href="#Square-java-1" class="headerlink" title="Square.java"></a>Square.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Square</span> <span class="keyword">implements</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line"> </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">()</span> &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Inside Square::draw() method.&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="Circle-java-1"><a href="#Circle-java-1" class="headerlink" title="Circle.java"></a>Circle.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Circle</span> <span class="keyword">implements</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line"> </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">()</span> &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Inside Circle::draw() method.&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="步骤-3-2"><a href="#步骤-3-2" class="headerlink" title="步骤 3"></a>步骤 3</h4><p>为颜色创建一个接口。</p>
+<h5 id="Color-java"><a href="#Color-java" class="headerlink" title="Color.java"></a>Color.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Color</span> &#123;   </span><br><span class="line">	<span class="keyword">void</span> <span class="title function_">fill</span><span class="params">()</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="步骤4"><a href="#步骤4" class="headerlink" title="步骤4"></a>步骤4</h4><p>创建实现接口的实体类。</p>
+<h5 id="Red-java"><a href="#Red-java" class="headerlink" title="Red.java"></a>Red.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Red</span> <span class="keyword">implements</span> <span class="title class_">Color</span> &#123;</span><br><span class="line"> </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fill</span><span class="params">()</span> &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Inside Red::fill() method.&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="Green-java"><a href="#Green-java" class="headerlink" title="Green.java"></a>Green.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Green</span> <span class="keyword">implements</span> <span class="title class_">Color</span> &#123;</span><br><span class="line"> </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fill</span><span class="params">()</span> &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Inside Green::fill() method.&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="Blue-java"><a href="#Blue-java" class="headerlink" title="Blue.java"></a>Blue.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Blue</span> <span class="keyword">implements</span> <span class="title class_">Color</span> &#123;</span><br><span class="line"> </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fill</span><span class="params">()</span> &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Inside Blue::fill() method.&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="步骤-5-1"><a href="#步骤-5-1" class="headerlink" title="步骤 5"></a>步骤 5</h4><p>为 Color 和 Shape 对象创建抽象类来获取工厂。</p>
+<h5 id="AbstractFactory-java"><a href="#AbstractFactory-java" class="headerlink" title="AbstractFactory.java"></a>AbstractFactory.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">abstract</span> Color <span class="title function_">getColor</span><span class="params">(String color)</span>;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">abstract</span> Shape <span class="title function_">getShape</span><span class="params">(String shape)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="步骤-6"><a href="#步骤-6" class="headerlink" title="步骤 6"></a>步骤 6</h4><p>创建扩展了 AbstractFactory 的工厂类，基于给定的信息生成实体类的对象。</p>
+<h5 id="ShapeFactory-java-1"><a href="#ShapeFactory-java-1" class="headerlink" title="ShapeFactory.java"></a>ShapeFactory.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ShapeFactory</span> <span class="keyword">extends</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line">    </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> Shape <span class="title function_">getShape</span><span class="params">(String shapeType)</span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(shapeType == <span class="literal">null</span>)&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">      &#125;        </span><br><span class="line">      <span class="keyword">if</span>(shapeType.equalsIgnoreCase(<span class="string">&quot;CIRCLE&quot;</span>))&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Circle</span>();</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span>(shapeType.equalsIgnoreCase(<span class="string">&quot;RECTANGLE&quot;</span>))&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Rectangle</span>();</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span>(shapeType.equalsIgnoreCase(<span class="string">&quot;SQUARE&quot;</span>))&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Square</span>();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> Color <span class="title function_">getColor</span><span class="params">(String color)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="ColorFactory-java"><a href="#ColorFactory-java" class="headerlink" title="ColorFactory.java"></a>ColorFactory.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ColorFactory</span> <span class="keyword">extends</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line">    </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> Shape <span class="title function_">getShape</span><span class="params">(String shapeType)</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> Color <span class="title function_">getColor</span><span class="params">(String color)</span> &#123;</span><br><span class="line">      <span class="keyword">if</span>(color == <span class="literal">null</span>)&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">      &#125;        </span><br><span class="line">      <span class="keyword">if</span>(color.equalsIgnoreCase(<span class="string">&quot;RED&quot;</span>))&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Red</span>();</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span>(color.equalsIgnoreCase(<span class="string">&quot;GREEN&quot;</span>))&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Green</span>();</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span>(color.equalsIgnoreCase(<span class="string">&quot;BLUE&quot;</span>))&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Blue</span>();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="步骤-7"><a href="#步骤-7" class="headerlink" title="步骤 7"></a>步骤 7</h4><p>创建一个工厂创造器&#x2F;生成器类，通过传递形状或颜色信息来获取工厂。</p>
+<h5 id="FactoryProducer-java"><a href="#FactoryProducer-java" class="headerlink" title="FactoryProducer.java"></a>FactoryProducer.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FactoryProducer</span> &#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> AbstractFactory <span class="title function_">getFactory</span><span class="params">(String choice)</span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(choice.equalsIgnoreCase(<span class="string">&quot;SHAPE&quot;</span>))&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ShapeFactory</span>();</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span>(choice.equalsIgnoreCase(<span class="string">&quot;COLOR&quot;</span>))&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ColorFactory</span>();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="步骤-8"><a href="#步骤-8" class="headerlink" title="步骤 8"></a>步骤 8</h4><p>使用 FactoryProducer 来获取 AbstractFactory，通过传递类型信息来获取实体类的对象。</p>
+<h5 id="AbstractFactoryPatternDemo-java"><a href="#AbstractFactoryPatternDemo-java" class="headerlink" title="AbstractFactoryPatternDemo.java"></a>AbstractFactoryPatternDemo.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AbstractFactoryPatternDemo</span> &#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//获取形状工厂</span></span><br><span class="line">      <span class="type">AbstractFactory</span> <span class="variable">shapeFactory</span> <span class="operator">=</span> FactoryProducer.getFactory(<span class="string">&quot;SHAPE&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//获取形状为 Circle 的对象</span></span><br><span class="line">      <span class="type">Shape</span> <span class="variable">shape1</span> <span class="operator">=</span> shapeFactory.getShape(<span class="string">&quot;CIRCLE&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//调用 Circle 的 draw 方法</span></span><br><span class="line">      shape1.draw();</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//获取形状为 Rectangle 的对象</span></span><br><span class="line">      <span class="type">Shape</span> <span class="variable">shape2</span> <span class="operator">=</span> shapeFactory.getShape(<span class="string">&quot;RECTANGLE&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//调用 Rectangle 的 draw 方法</span></span><br><span class="line">      shape2.draw();</span><br><span class="line">      </span><br><span class="line">      <span class="comment">//获取形状为 Square 的对象</span></span><br><span class="line">      <span class="type">Shape</span> <span class="variable">shape3</span> <span class="operator">=</span> shapeFactory.getShape(<span class="string">&quot;SQUARE&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//调用 Square 的 draw 方法</span></span><br><span class="line">      shape3.draw();</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//获取颜色工厂</span></span><br><span class="line">      <span class="type">AbstractFactory</span> <span class="variable">colorFactory</span> <span class="operator">=</span> FactoryProducer.getFactory(<span class="string">&quot;COLOR&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//获取颜色为 Red 的对象</span></span><br><span class="line">      <span class="type">Color</span> <span class="variable">color1</span> <span class="operator">=</span> colorFactory.getColor(<span class="string">&quot;RED&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//调用 Red 的 fill 方法</span></span><br><span class="line">      color1.fill();</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//获取颜色为 Green 的对象</span></span><br><span class="line">      <span class="type">Color</span> <span class="variable">color2</span> <span class="operator">=</span> colorFactory.getColor(<span class="string">&quot;GREEN&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//调用 Green 的 fill 方法</span></span><br><span class="line">      color2.fill();</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//获取颜色为 Blue 的对象</span></span><br><span class="line">      <span class="type">Color</span> <span class="variable">color3</span> <span class="operator">=</span> colorFactory.getColor(<span class="string">&quot;BLUE&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//调用 Blue 的 fill 方法</span></span><br><span class="line">      color3.fill();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="步骤-9"><a href="#步骤-9" class="headerlink" title="步骤 9"></a>步骤 9</h4><p>执行程序，输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Inside Circle::draw() method.</span><br><span class="line">Inside Rectangle::draw() method.</span><br><span class="line">Inside Square::draw() method.</span><br><span class="line">Inside Red::fill() method.</span><br><span class="line">Inside Green::fill() method.</span><br><span class="line">Inside Blue::fill() method.</span><br></pre></td></tr></table></figure>
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/07/15/leetcode/%E6%95%B0%E7%BB%84/">Leetcode Diary 1<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/07/15/leetcode/%E4%BA%8C%E5%88%86%E4%B8%93%E9%A2%98/">Leetcode Diary 1<span class="note">Newer</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="http://example.com/">@zennlyu</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

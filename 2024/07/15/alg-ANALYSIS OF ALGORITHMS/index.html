@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>coursera 1.4 ANALYSIS OF ALGORITHMS - zennlyu</title>
+
+  
+    <meta name="description" content="‣ IntroductionStake holder Programmer Client Theoretician  Blocking and tackling  SuccessesFFT algorithm: Discrete Fourier transform. Break down waveform of N samples into periodic components.  Applic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="coursera 1.4 ANALYSIS OF ALGORITHMS">
+<meta property="og:url" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/index.html">
+<meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="‣ IntroductionStake holder Programmer Client Theoretician  Blocking and tackling  SuccessesFFT algorithm: Discrete Fourier transform. Break down waveform of N samples into periodic components.  Applic">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/standard_plot.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/log-log.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/hyp.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/double-hyp1.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/double-hyp2.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/exp-anly.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/mathmodel.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/dscrtmath.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/orderofgrowth.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/classification.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/notation.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/dataobj.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/virgin-string.png">
+<meta property="article:published_time" content="2024-07-15T03:58:26.049Z">
+<meta property="article:modified_time" content="2024-07-15T03:58:26.050Z">
+<meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="princeton-alg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/standard_plot.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/09/eTtVL.jpg" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-Introduction"><span class="toc-text">‣ Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Stake-holder"><span class="toc-text">Stake holder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Successes"><span class="toc-text">Successes</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#FFT-algorithm-Discrete-Fourier-transform"><span class="toc-text">FFT algorithm: Discrete Fourier transform.</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Barnes-Hut-algorithm-N-Body-Stimulation"><span class="toc-text">Barnes-Hut algorithm: N-Body Stimulation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Scientific-method"><span class="toc-text">Scientific method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Principles"><span class="toc-text">Principles</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example-3-SUM-Brute-force-Algorithm"><span class="toc-text">Example 3-SUM : Brute-force Algorithm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Messure-Running-Time"><span class="toc-text">Messure Running Time</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Empirical-analysis"><span class="toc-text">Empirical analysis</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Data-analysis"><span class="toc-text">Data analysis</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Prediction-and-validation"><span class="toc-text">Prediction and validation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Doubling-hypothesis-Quick-way-to-estimate-b-in-a-power-law-relationship"><span class="toc-text">Doubling hypothesis - Quick way to estimate b in a power-law relationship</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Experimental-algorithmics"><span class="toc-text">Experimental algorithmics</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%A3-Mathematical-models-for-running-time"><span class="toc-text">‣ Mathematical models for running time</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Example-1-SUM"><span class="toc-text">Example 1-SUM:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Example-2-SUM"><span class="toc-text">Example 2-SUM</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Q-How-many-instructions-as-a-function-of-input-size-N"><span class="toc-text">Q. How many instructions as a function of input size N ?</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Simplification-of-calculation%EF%BC%9A"><span class="toc-text">Simplification of calculation：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Q-Approximately-how-many-array-accesses-as-a-function-of-input-size-N"><span class="toc-text">Q. Approximately how many array accesses as a function of input size N ?</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Example-3-SUM"><span class="toc-text">Example 3-SUM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Estimating-a-discrete-sum"><span class="toc-text">Estimating a discrete sum</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%A3-Order-of-growth-classifications"><span class="toc-text">‣ Order-of-growth classifications</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%A3-theory-of-algorithms"><span class="toc-text">‣ theory of algorithms</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Type-of-analyses"><span class="toc-text">Type of analyses</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Goals"><span class="toc-text">Goals:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Approach"><span class="toc-text">Approach.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Optimal-algorithm"><span class="toc-text">Optimal algorithm.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Commonly-used-notations"><span class="toc-text">Commonly-used notations</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Algorithm-design-approach"><span class="toc-text">Algorithm design approach</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Start"><span class="toc-text">Start.</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Gap"><span class="toc-text">Gap?</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Golden-Age-of-Algorithm-Design"><span class="toc-text">Golden Age of Algorithm Design.</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Caveats"><span class="toc-text">Caveats.</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%A3-memory"><span class="toc-text">‣ memory</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Basics"><span class="toc-text">Basics</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Typical-memory-usage-for-primitive-types-and-arrays"><span class="toc-text">Typical memory usage for primitive types and arrays</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#for-primitive-types"><span class="toc-text">for primitive types</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#for-one-dimensional-arrays"><span class="toc-text">for one-dimensional arrays</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#for-two-dimensional-arrays"><span class="toc-text">for two-dimensional arrays</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Typical-memory-usage-for-objects-in-Java"><span class="toc-text">Typical memory usage for objects in Java</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Memory-Usage-Summary"><span class="toc-text">Memory Usage Summary</span></a></li></ol></li></ol></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/algorithms/">algorithms</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2024-07-15T03:58:26.049Z">2024-07-15</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>coursera 1.4 ANALYSIS OF ALGORITHMS</span></h1>
+<h2 id="‣-Introduction"><a href="#‣-Introduction" class="headerlink" title="‣ Introduction"></a>‣ Introduction</h2><h3 id="Stake-holder"><a href="#Stake-holder" class="headerlink" title="Stake holder"></a>Stake holder</h3><ul>
+<li>Programmer</li>
+<li>Client</li>
+<li>Theoretician </li>
+<li>Blocking and tackling</li>
+</ul>
+<h3 id="Successes"><a href="#Successes" class="headerlink" title="Successes"></a>Successes</h3><h5 id="FFT-algorithm-Discrete-Fourier-transform"><a href="#FFT-algorithm-Discrete-Fourier-transform" class="headerlink" title="FFT algorithm: Discrete Fourier transform."></a>FFT algorithm: Discrete Fourier transform.</h5><ul>
+<li>Break down waveform of N samples into periodic components. </li>
+<li>Applications: DVD, JPEG, MRI, astrophysics, ….</li>
+<li>Brute force: N<sup>2</sup> steps.</li>
+<li>FFT algorithm: <code>NlogN</code> steps, enables new technology.</li>
+</ul>
+<h5 id="Barnes-Hut-algorithm-N-Body-Stimulation"><a href="#Barnes-Hut-algorithm-N-Body-Stimulation" class="headerlink" title="Barnes-Hut algorithm: N-Body Stimulation"></a>Barnes-Hut algorithm: N-Body Stimulation</h5><ul>
+<li>Simulate gravitational interactions among N bodies. </li>
+<li>Brute force: N<sup>2</sup> steps.</li>
+<li>Barnes-Hut algorithm: <code>NlogN</code> steps, enables new research</li>
+</ul>
+<h3 id="Scientific-method"><a href="#Scientific-method" class="headerlink" title="Scientific method"></a>Scientific method</h3><blockquote>
+<p>A framework for predicting performance and comparing algorithms.</p>
+</blockquote>
+<ul>
+<li><strong>Observe</strong> some feature of the natural world.</li>
+<li><strong>Hypothesize</strong> a model that is consistent with the observations. Predict events using the hypothesis.</li>
+<li><strong>Verify</strong> the predictions by making further observations.</li>
+<li><strong>Validate</strong> by repeating until the hypothesis and observations agree.</li>
+</ul>
+<h3 id="Principles"><a href="#Principles" class="headerlink" title="Principles"></a>Principles</h3><ul>
+<li>Experiments must be reproducible.</li>
+<li>Hypotheses must be falsifiable.</li>
+</ul>
+<h3 id="Example-3-SUM-Brute-force-Algorithm"><a href="#Example-3-SUM-Brute-force-Algorithm" class="headerlink" title="Example 3-SUM : Brute-force Algorithm"></a>Example 3-SUM : Brute-force Algorithm</h3><p>Given <em>N</em> distinct integers, how many triples sum to exactly zero —- Deeply related to problems in computational geometry.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ThreeSum</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">count</span><span class="params">(<span class="type">int</span>[] a)</span> &#123;</span><br><span class="line">		<span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> a.length;</span><br><span class="line">		<span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;N; i++) </span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i+<span class="number">1</span>; j &lt; N; j++) </span><br><span class="line">				<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> j+<span class="number">1</span>; k &lt; N; k++) <span class="comment">// check each triple</span></span><br><span class="line">					<span class="keyword">if</span> (a[i] + a[j] + a[k] == <span class="number">0</span>) <span class="comment">// for simplicity, ignore integer overflow</span></span><br><span class="line">						count++;</span><br><span class="line">		<span class="keyword">return</span> count;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		<span class="type">int</span>[] a = In.readInts(args[<span class="number">0</span>]);</span><br><span class="line">		StdOut.println(count(a));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Messure-Running-Time"><a href="#Messure-Running-Time" class="headerlink" title="Messure Running Time"></a>Messure Running Time</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span>[] a = In.readInts(args[<span class="number">0</span>]);</span><br><span class="line">	<span class="type">Stopwatch</span> <span class="variable">stopwatch</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Stopwatch</span>();</span><br><span class="line">	StdOut.println(ThreeSum.count(a)); </span><br><span class="line">	<span class="type">double</span> <span class="variable">time</span> <span class="operator">=</span> stopwatch.elapsedTime();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Empirical-analysis"><a href="#Empirical-analysis" class="headerlink" title="Empirical analysis"></a>Empirical analysis</h4><h4 id="Data-analysis"><a href="#Data-analysis" class="headerlink" title="Data analysis"></a>Data analysis</h4><h6 id="Standard-plot"><a href="#Standard-plot" class="headerlink" title="Standard plot."></a>Standard plot.</h6><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/standard_plot.png" alt="standard_plot"></p>
+<h6 id="Log-log-plot"><a href="#Log-log-plot" class="headerlink" title="Log-log plot."></a>Log-log plot.</h6><p>Plot running time <em>T</em>(<em>N</em>) vs. input size <em>N</em> using <strong>log-log scale.</strong></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/log-log.png" alt="log-log"></p>
+<h6 id="Regression"><a href="#Regression" class="headerlink" title="Regression."></a>Regression.</h6><h6 id="Hypothesis"><a href="#Hypothesis" class="headerlink" title="Hypothesis."></a>Hypothesis.</h6><h4 id="Prediction-and-validation"><a href="#Prediction-and-validation" class="headerlink" title="Prediction and validation"></a>Prediction and validation</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/hyp.png" alt="log-log"></p>
+<h4 id="Doubling-hypothesis-Quick-way-to-estimate-b-in-a-power-law-relationship"><a href="#Doubling-hypothesis-Quick-way-to-estimate-b-in-a-power-law-relationship" class="headerlink" title="Doubling hypothesis - Quick way to estimate b in a power-law relationship"></a>Doubling hypothesis - Quick way to estimate <em>b</em> in a power-law relationship</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/double-hyp1.png" alt="log-log"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/double-hyp2.png" alt="log-log"></p>
+<h4 id="Experimental-algorithmics"><a href="#Experimental-algorithmics" class="headerlink" title="Experimental algorithmics"></a>Experimental algorithmics</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/exp-anly.png" alt="exp-anly"></p>
+<h3 id="‣-Mathematical-models-for-running-time"><a href="#‣-Mathematical-models-for-running-time" class="headerlink" title="‣ Mathematical models for running time"></a>‣ Mathematical models for running time</h3><p>Total running time: sum of cost × frequency for all operations.</p>
+<ul>
+<li>Need to analyze program to determine set of operations.</li>
+<li>Cost depends on machine, compiler.</li>
+<li>Frequency depends on algorithm, input data.</li>
+</ul>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/mathmodel.png" alt="log-log"></p>
+<h4 id="Example-1-SUM"><a href="#Example-1-SUM" class="headerlink" title="Example 1-SUM:"></a>Example 1-SUM:</h4><blockquote>
+<p>Q. How many instructions as a function of input size <em>N</em> ?</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">   <span class="keyword">if</span> (a[i] == <span class="number">0</span>)</span><br><span class="line">      count++;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>operation</th>
+<th>Frequency</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>variable declaration</td>
+<td>2</td>
+</tr>
+<tr>
+<td>assignment statement</td>
+<td>2</td>
+</tr>
+<tr>
+<td>less than compare</td>
+<td>N +1</td>
+</tr>
+<tr>
+<td>equal to compare</td>
+<td>N</td>
+</tr>
+<tr>
+<td>array access</td>
+<td>N</td>
+</tr>
+<tr>
+<td>increment</td>
+<td>N to 2 N</td>
+</tr>
+</tbody></table>
+<h4 id="Example-2-SUM"><a href="#Example-2-SUM" class="headerlink" title="Example 2-SUM"></a>Example 2-SUM</h4><h5 id="Q-How-many-instructions-as-a-function-of-input-size-N"><a href="#Q-How-many-instructions-as-a-function-of-input-size-N" class="headerlink" title="Q. How many instructions as a function of input size N ?"></a>Q. How many instructions as a function of input size <em>N</em> ?</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">   <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i+<span class="number">1</span>; j &lt; N; j++)</span><br><span class="line">      <span class="keyword">if</span> (a[i] + a[j] == <span class="number">0</span>)</span><br><span class="line">				count++;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>operation</th>
+<th>Frequency</th>
+<th>Tilde Notation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>variable declaration</td>
+<td>N+2</td>
+<td>~$N$</td>
+</tr>
+<tr>
+<td>assignment statement</td>
+<td>N+2</td>
+<td>~$N$</td>
+</tr>
+<tr>
+<td>less than compare</td>
+<td>1&#x2F;2(N+1)(N+2)</td>
+<td>~$\frac{1}{2}N^2$</td>
+</tr>
+<tr>
+<td>equal to compare</td>
+<td>1&#x2F;2 N(N-1)</td>
+<td>~$\frac{1}{2}N^2$</td>
+</tr>
+<tr>
+<td>array access</td>
+<td>N(N-1)</td>
+<td>~$N^2$</td>
+</tr>
+<tr>
+<td>increment</td>
+<td>1⁄2 N (N − 1) to N (N − 1)</td>
+<td>~$\frac{1}{2}N^2$ to ~$N^2$</td>
+</tr>
+</tbody></table>
+<h5 id="Simplification-of-calculation："><a href="#Simplification-of-calculation：" class="headerlink" title="Simplification of calculation："></a>Simplification of calculation：</h5><ol>
+<li><p>cost model: Use some basic operation as a proxy for running time.</p>
+</li>
+<li><p>tilde notation</p>
+<blockquote>
+<p>Technical definition: $f(N)$~$g(N)$ means $$ \lim_{N \to \infty} \frac{f(N)}{g(N)}&#x3D;1 $$</p>
+</blockquote>
+<ul>
+<li>Estimate running time (or memory) as a function of input size <em>N</em>. </li>
+<li>Ignore lower order terms.<ul>
+<li>when <em>N</em> is large, terms are negligible </li>
+<li>when <em>N</em> is small, we don’t care</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h5 id="Q-Approximately-how-many-array-accesses-as-a-function-of-input-size-N"><a href="#Q-Approximately-how-many-array-accesses-as-a-function-of-input-size-N" class="headerlink" title="Q. Approximately how many array accesses as a function of input size N ?"></a>Q. Approximately how many array accesses as a function of input size <em>N</em> ?</h5><p>A. ~$N^2$ array accesses.</p>
+<p><strong>Bottom line</strong>. Use cost model and tilde notation to simplify counts</p>
+<h4 id="Example-3-SUM"><a href="#Example-3-SUM" class="headerlink" title="Example 3-SUM"></a>Example 3-SUM</h4><blockquote>
+<p>Q. Approximately how many array accesses as a function of input size <em>N</em> ?</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">   <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i+<span class="number">1</span>; j &lt; N; j++)</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> j+<span class="number">1</span>; k &lt; N; k++)</span><br><span class="line">         <span class="keyword">if</span> (a[i] + a[j] + a[k] == <span class="number">0</span>)</span><br><span class="line">            count++;</span><br></pre></td></tr></table></figure>
+
+<p>A. ~$\frac{1}{2}N^3$ array accesses.</p>
+<h4 id="Estimating-a-discrete-sum"><a href="#Estimating-a-discrete-sum" class="headerlink" title="Estimating a discrete sum"></a>Estimating a discrete sum</h4><p>Q. How to estimate a discrete sum?</p>
+<p>A1. Take discrete mathematics course.</p>
+<p>A2. Replace the sum with an integral, and use calculus!</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/dscrtmath.png" alt="log-log"></p>
+<h3 id="‣-Order-of-growth-classifications"><a href="#‣-Order-of-growth-classifications" class="headerlink" title="‣ Order-of-growth classifications"></a>‣ Order-of-growth classifications</h3><p>the small set of functions suffices to describe order-of-growth of typical algorithms. —— $1$, $logN$, $N$, $NlogN$, $N^2$, $N^3$, $2^N$</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/orderofgrowth.png" alt="log-log"></p>
+<p>Bottom line. Need linear or linearithmic alg to keep pace with Moore’s law.</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/classification.png" alt="log-log"></p>
+<h3 id="‣-theory-of-algorithms"><a href="#‣-theory-of-algorithms" class="headerlink" title="‣ theory of algorithms"></a>‣ theory of algorithms</h3><h4 id="Type-of-analyses"><a href="#Type-of-analyses" class="headerlink" title="Type of analyses"></a>Type of analyses</h4><ul>
+<li>Best case. Lower bound on cost.</li>
+</ul>
+<blockquote>
+<p>Determined by “easiest” input. </p>
+<p>Provides a goal for all inputs.</p>
+</blockquote>
+<ul>
+<li>Worst case. Upper bound on cost.</li>
+</ul>
+<blockquote>
+<p>Determined by “most difficult” input.</p>
+<p>Provides a guarantee for all inputs.</p>
+</blockquote>
+<ul>
+<li>Average case. Expected cost for random input.</li>
+</ul>
+<blockquote>
+<p>Need a model for “random” input. </p>
+<p>Provides a way to predict performance.</p>
+</blockquote>
+<p>Actual data might not match input model?</p>
+<ul>
+<li><p>Need to understand input to effectively process it. </p>
+</li>
+<li><p>Approach 1: design for the worst case.</p>
+</li>
+<li><p>Approach 2: randomize, depend on probabilistic guarantee.</p>
+</li>
+</ul>
+<h4 id="Goals"><a href="#Goals" class="headerlink" title="Goals:"></a><strong>Goals:</strong></h4><ul>
+<li>Establish “difficulty” of a problem. </li>
+<li>Develop “optimal” algorithms.</li>
+</ul>
+<h4 id="Approach"><a href="#Approach" class="headerlink" title="Approach."></a><strong>Approach.</strong></h4><ul>
+<li>Suppress details in analysis: analyze “to within a constant factor”. </li>
+<li>Eliminate variability in input model by focusing on the worst case.</li>
+</ul>
+<h4 id="Optimal-algorithm"><a href="#Optimal-algorithm" class="headerlink" title="Optimal algorithm."></a><strong>Optimal algorithm.</strong></h4><ul>
+<li>Performance guarantee (to within a constant factor) for any input. </li>
+<li>No algorithm can provide a better performance guarantee.</li>
+</ul>
+<h4 id="Commonly-used-notations"><a href="#Commonly-used-notations" class="headerlink" title="Commonly-used notations"></a><strong>Commonly-used notations</strong></h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/notation.png" alt="log-log"></p>
+<h4 id="Algorithm-design-approach"><a href="#Algorithm-design-approach" class="headerlink" title="Algorithm design approach"></a>Algorithm design approach</h4><h5 id="Start"><a href="#Start" class="headerlink" title="Start."></a>Start.</h5><ul>
+<li>Develop an algorithm. </li>
+<li>Prove a lower bound.</li>
+</ul>
+<h5 id="Gap"><a href="#Gap" class="headerlink" title="Gap?"></a>Gap?</h5><ul>
+<li>Lower the upper bound (discover a new algorithm). </li>
+<li>Raise the lower bound (more difficult).</li>
+</ul>
+<h5 id="Golden-Age-of-Algorithm-Design"><a href="#Golden-Age-of-Algorithm-Design" class="headerlink" title="Golden Age of Algorithm Design."></a>Golden Age of Algorithm Design.</h5><ul>
+<li>1970s-. Steadily decreasing upper bounds for many important problems. </li>
+<li>Many known optimal algorithms.</li>
+</ul>
+<h5 id="Caveats"><a href="#Caveats" class="headerlink" title="Caveats."></a>Caveats.</h5><ul>
+<li>Overly pessimistic to focus on worst case?</li>
+<li>Need better than “to within a constant factor” to predict performance.</li>
+</ul>
+<h3 id="‣-memory"><a href="#‣-memory" class="headerlink" title="‣ memory"></a>‣ memory</h3><h4 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h4><ul>
+<li>Bit. 0 or 1. </li>
+<li>Byte. 8 bits.</li>
+<li>Megabyte (MB). 1 million or 220 bytes. </li>
+<li>Gigabyte (GB). 1 billion or 230 bytes.</li>
+<li>64-bit machine. We assume a 64-bit machine with 8 byte pointers.<ul>
+<li>Can address more memory. </li>
+<li>Pointers use more space.（some JVMs “compress” ordinary object pointers to 4 bytes to avoid this cost）</li>
+</ul>
+</li>
+</ul>
+<h4 id="Typical-memory-usage-for-primitive-types-and-arrays"><a href="#Typical-memory-usage-for-primitive-types-and-arrays" class="headerlink" title="Typical memory usage for primitive types and arrays"></a>Typical memory usage for primitive types and arrays</h4><h5 id="for-primitive-types"><a href="#for-primitive-types" class="headerlink" title="for primitive types"></a>for primitive types</h5><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Bytes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean</td>
+<td>1</td>
+</tr>
+<tr>
+<td>bytes</td>
+<td>1</td>
+</tr>
+<tr>
+<td>char</td>
+<td>2</td>
+</tr>
+<tr>
+<td>int</td>
+<td>4</td>
+</tr>
+<tr>
+<td>float</td>
+<td>4</td>
+</tr>
+<tr>
+<td>long</td>
+<td>8</td>
+</tr>
+<tr>
+<td>double</td>
+<td>8</td>
+</tr>
+</tbody></table>
+<h5 id="for-one-dimensional-arrays"><a href="#for-one-dimensional-arrays" class="headerlink" title="for one-dimensional arrays"></a>for one-dimensional arrays</h5><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>bytes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>char[]</td>
+<td>2N + 24</td>
+</tr>
+<tr>
+<td>int[]</td>
+<td>4N + 24</td>
+</tr>
+<tr>
+<td>double[]</td>
+<td>8N + 24</td>
+</tr>
+</tbody></table>
+<h5 id="for-two-dimensional-arrays"><a href="#for-two-dimensional-arrays" class="headerlink" title="for two-dimensional arrays"></a>for two-dimensional arrays</h5><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>bytes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>char[][]</code></td>
+<td>~ 2 M N</td>
+</tr>
+<tr>
+<td><code>int[][]</code></td>
+<td>~ 4 M N</td>
+</tr>
+<tr>
+<td><code>double[][]</code></td>
+<td>~ 8 M N</td>
+</tr>
+</tbody></table>
+<h4 id="Typical-memory-usage-for-objects-in-Java"><a href="#Typical-memory-usage-for-objects-in-Java" class="headerlink" title="Typical memory usage for objects in Java"></a>Typical memory usage for objects in Java</h4><ul>
+<li>Object overhead. 16 bytes.</li>
+<li>Reference. 8 bytes.</li>
+<li>Padding. Each object uses a multiple of 8 bytes.</li>
+</ul>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/dataobj.png" alt="log-log"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/virgin-string.png" alt="log-log"></p>
+<h4 id="Memory-Usage-Summary"><a href="#Memory-Usage-Summary" class="headerlink" title="Memory Usage Summary"></a>Memory Usage Summary</h4><p>Total memory usage for a data type value:</p>
+<ul>
+<li>Primitive type: 4 bytes for int, 8 bytes for double, … </li>
+<li>Object reference: 8 bytes.</li>
+<li>Array: 24 bytes + memory for each array entry. </li>
+<li>Object: 16 bytes + memory for each instance variable + 8 bytes if inner class (for pointer to enclosing class). </li>
+<li>Padding: round up to multiple of 8 bytes.</li>
+</ul>
+<p><strong>Shallow memory usage:</strong> Don’t count referenced objects.</p>
+<p><strong>Deep memory usage:</strong> If array entry or instance variable is a reference, add memory (recursively) for referenced object.</p>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/07/15/CS229-Supervised%20Learning/">CS229-Supervised Learning<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/07/15/What-open-courses-I-plan-to-take/">Fever's Notes on Open Courses<span class="note">Newer</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="http://example.com/">@zennlyu</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

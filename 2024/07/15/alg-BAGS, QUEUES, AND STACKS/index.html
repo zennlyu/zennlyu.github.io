@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>coursera 1.3 BAGS, QUEUES, AND STACKS - zennlyu</title>
+
+  
+    <meta name="description" content="Stacks and queues Fundamental data types.    DATA STRUCTURE ORDER    stack LIFO   queue FIFO    Value: collection of objects. Operations: insert, remove, iterate, test if empty.  Intent is clear when">
+<meta property="og:type" content="article">
+<meta property="og:title" content="coursera 1.3 BAGS, QUEUES, AND STACKS">
+<meta property="og:url" content="http://example.com/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/index.html">
+<meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="Stacks and queues Fundamental data types.    DATA STRUCTURE ORDER    stack LIFO   queue FIFO    Value: collection of objects. Operations: insert, remove, iterate, test if empty.  Intent is clear when">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/sq.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/warmapi.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/bytes.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/array.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/push.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/trace.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/resize.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/one-quarter.png">
+<meta property="og:image" content="http://example.com/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/linked-list.png">
+<meta property="article:published_time" content="2024-07-15T03:58:26.058Z">
+<meta property="article:modified_time" content="2024-07-15T03:58:26.058Z">
+<meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="princeton-alg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/sq.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/09/eTtVL.jpg" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Client-implementation-interface"><span class="toc-text">Client, implementation, interface</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Benefits"><span class="toc-text">Benefits.</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-stacks"><span class="toc-text">‣ stacks</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Warmup-API-Stack-of-strings-data-type"><span class="toc-text">Warmup API. Stack of strings data type.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Warmup-client-Reverse-sequence-of-strings-from-standard-input"><span class="toc-text">Warmup client. Reverse sequence of strings from standard input</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stack-linked-list-representation"><span class="toc-text">Stack: linked-list representation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stack-linked-list-implementation-performance"><span class="toc-text">Stack: linked-list implementation performance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stack-array-implementation"><span class="toc-text">Stack: array implementation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Array-implementation-of-a-stack"><span class="toc-text">Array implementation of a stack.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Defect"><span class="toc-text">Defect.</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stack-considerations"><span class="toc-text">Stack considerations</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Overflow-and-underflow"><span class="toc-text">Overflow and underflow.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Null-items-We-allow-null-items-to-be-inserted"><span class="toc-text">Null items: We allow null items to be inserted.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Loitering-Holding-a-reference-to-an-object-when-it-is-no-longer-needed"><span class="toc-text">Loitering: Holding a reference to an object when it is no longer needed.</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-resizing-arrays"><span class="toc-text">‣ resizing arrays</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Stack-resizing-array-implementation"><span class="toc-text">Stack: resizing-array implementation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Q-How-to-grow-and-shrink-array"><span class="toc-text">Q. How to grow and shrink array?</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#First-try"><span class="toc-text">First try.</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Too-expensive"><span class="toc-text">Too expensive.</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Challenge-Ensure-that-array-resizing-happens-infrequently"><span class="toc-text">Challenge: Ensure that array resizing happens infrequently.</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q-How-to-grow-array"><span class="toc-text">Q. How to grow array?</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#A"><span class="toc-text">A.</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Consequence"><span class="toc-text">Consequence.</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q-How-to-shrink-array"><span class="toc-text">Q. How to shrink array?</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#First-try%EF%BC%9AToo-expensive-in-worst-case"><span class="toc-text">First try：Too expensive in worst case.</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Efficient-try"><span class="toc-text">Efficient try.</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#performance"><span class="toc-text">performance</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Amortized-analysis"><span class="toc-text">Amortized analysis.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Proposition"><span class="toc-text">Proposition.</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#memory-usage"><span class="toc-text">memory usage</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Proposition-1"><span class="toc-text">Proposition.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#resizing-array-vs-linked-list"><span class="toc-text">resizing array vs. linked list</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Tradeoffs"><span class="toc-text">Tradeoffs.</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Linked-list-implementation"><span class="toc-text">Linked-list implementation.</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Resizing-array-implementation"><span class="toc-text">Resizing-array implementation.</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-queues"><span class="toc-text">‣ queues</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-generics"><span class="toc-text">‣ generics</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-iterators"><span class="toc-text">‣ iterators</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Design-challenge"><span class="toc-text">Design challenge</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Iterators"><span class="toc-text">Iterators</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stack-iterator-linked-list-implementation"><span class="toc-text">Stack iterator: linked-list implementation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stack-iterator-array-implementation"><span class="toc-text">Stack iterator: array implementation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bag-API"><span class="toc-text">Bag API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-applications"><span class="toc-text">‣ applications</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-collections-library"><span class="toc-text">Java collections library</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#List-interface"><span class="toc-text">List interface.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Implementations"><span class="toc-text">Implementations.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#java-util-Stack"><span class="toc-text">java.util.Stack</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#War-story-from-Assignment-1"><span class="toc-text">War story (from Assignment 1)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Generate-random-open-sites-in-an-N-by-N-percolation-system"><span class="toc-text">Generate random open sites in an N-by-N percolation system.</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Stack-applications"><span class="toc-text">Stack applications</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Function-Calls"><span class="toc-text">Function Calls</span></a></li></ol></li></ol></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/algorithms/">algorithms</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2024-07-15T03:58:26.058Z">2024-07-15</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>coursera 1.3 BAGS, QUEUES, AND STACKS</span></h1>
+<h1 id="Stacks-and-queues"><a href="#Stacks-and-queues" class="headerlink" title="Stacks and queues"></a>Stacks and queues</h1><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/sq.png" alt="sq"></p>
+<p>Fundamental data types.</p>
+<table>
+<thead>
+<tr>
+<th>DATA STRUCTURE</th>
+<th>ORDER</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>stack</td>
+<td>LIFO</td>
+</tr>
+<tr>
+<td>queue</td>
+<td>FIFO</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Value: collection of objects.</li>
+<li>Operations: insert, remove, iterate, test if empty. </li>
+<li>Intent is clear when we insert.</li>
+<li>Which item do we remove?</li>
+</ul>
+<h2 id="Client-implementation-interface"><a href="#Client-implementation-interface" class="headerlink" title="Client, implementation, interface"></a>Client, implementation, interface</h2><h3 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits."></a>Benefits.</h3><table>
+<thead>
+<tr>
+<th>DATA STRUCTURE</th>
+<th>ORDER</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>client</td>
+<td>program using operations defined in interface.</td>
+</tr>
+<tr>
+<td>implementation</td>
+<td>actual code implementing operations.</td>
+</tr>
+<tr>
+<td>interface</td>
+<td>description of data type, basic operations.</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>Client can’t know details of implementation ⇒</p>
+<p>client has many implementation from which to choose.</p>
+</li>
+<li><p>Implementation can’t know details of client needs ⇒</p>
+<p>many clients can re-use the same implementation.</p>
+</li>
+<li><p><strong>Design:</strong> creates modular, reusable libraries.</p>
+</li>
+<li><p><strong>Performance:</strong> use optimized implementation where it matters.</p>
+</li>
+</ul>
+<h2 id="‣-stacks"><a href="#‣-stacks" class="headerlink" title="‣ stacks"></a>‣ stacks</h2><h3 id="Warmup-API-Stack-of-strings-data-type"><a href="#Warmup-API-Stack-of-strings-data-type" class="headerlink" title="Warmup API. Stack of strings data type."></a>Warmup API. Stack of strings data type.</h3><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/warmapi.png" alt="warmapi"></p>
+<h3 id="Warmup-client-Reverse-sequence-of-strings-from-standard-input"><a href="#Warmup-client-Reverse-sequence-of-strings-from-standard-input" class="headerlink" title="Warmup client. Reverse sequence of strings from standard input"></a>Warmup client. Reverse sequence of strings from standard input</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">StackOfStrings</span> <span class="variable">stack</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StackOfStrings</span>();</span><br><span class="line">    <span class="keyword">while</span> (!StdIn.isEmpty()) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> StdIn.readString();</span><br><span class="line">        <span class="keyword">if</span> (s.equals(<span class="string">&quot;-&quot;</span>))  StdOut.print(stack.pop()); </span><br><span class="line">        <span class="keyword">else</span>                stack.push(s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Stack-linked-list-representation"><a href="#Stack-linked-list-representation" class="headerlink" title="Stack: linked-list representation"></a>Stack: linked-list representation</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LinkedStackOfStrings</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">Node</span> <span class="variable">first</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">        <span class="comment">// private inner class (access modifiers don&#x27;t matter)</span></span><br><span class="line">        String item;</span><br><span class="line">        Node next; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span></span><br><span class="line">    &#123;  <span class="type">return</span> <span class="variable">first</span> <span class="operator">=</span>= <span class="literal">null</span>;  &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(String item)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">Node</span> <span class="variable">oldfirst</span> <span class="operator">=</span> first;</span><br><span class="line">        first = <span class="keyword">new</span> <span class="title class_">Node</span>();</span><br><span class="line">        first.item = item;</span><br><span class="line">        first.next = oldfirst;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">pop</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">item</span> <span class="operator">=</span> first.item;</span><br><span class="line">        first = first.next;</span><br><span class="line">        <span class="keyword">return</span> item;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Stack-linked-list-implementation-performance"><a href="#Stack-linked-list-implementation-performance" class="headerlink" title="Stack: linked-list implementation performance"></a>Stack: linked-list implementation performance</h3><p><strong>Proposition.</strong> Every operation takes constant time in the worst case.</p>
+<p><strong>Proposition.</strong> A stack with <em>N</em> items uses $\sim40N$ bytes.</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/bytes.png" alt="bytes"></p>
+<p><strong>Remark.</strong> This accounts for the memory for the stack (but not the memory for strings themselves, which the client owns).</p>
+<h3 id="Stack-array-implementation"><a href="#Stack-array-implementation" class="headerlink" title="Stack: array implementation"></a>Stack: array implementation</h3><h4 id="Array-implementation-of-a-stack"><a href="#Array-implementation-of-a-stack" class="headerlink" title="Array implementation of a stack."></a>Array implementation of a stack.</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/array.png" alt="array"></p>
+<ul>
+<li>Use array <code>s[]</code> to store <code>N</code> items on stack. </li>
+<li><code>push()</code>: add new item at <code>s[N]</code>.</li>
+<li><code>pop()</code>: remove item from <code>s[N-1]</code>.</li>
+</ul>
+<h4 id="Defect"><a href="#Defect" class="headerlink" title="Defect."></a>Defect.</h4><p>Stack overflows when <code>N</code> exceeds capacity. [stay tuned]</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FixedCapacityStackOfStrings</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> String[] s;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">FixedCapacityStackOfStrings</span><span class="params">(<span class="type">int</span> capacity // a cheat (stay tuned)</span>)</span><br><span class="line">    &#123;  s = <span class="keyword">new</span> <span class="title class_">String</span>[capacity];  &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span></span><br><span class="line">    &#123;  <span class="type">return</span> <span class="variable">N</span> <span class="operator">=</span>= <span class="number">0</span>;  &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(String item)</span></span><br><span class="line">    &#123;  s[N++] = item; <span class="comment">// use to index into array; then increment N &#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">pop</span><span class="params">()</span></span><br><span class="line">    &#123; <span class="keyword">return</span> s[--N]; <span class="comment">// decrement N; then use to index into array &#125; </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Stack-considerations"><a href="#Stack-considerations" class="headerlink" title="Stack considerations"></a>Stack considerations</h3><h4 id="Overflow-and-underflow"><a href="#Overflow-and-underflow" class="headerlink" title="Overflow and underflow."></a>Overflow and underflow.</h4><table>
+<thead>
+<tr>
+<th>Cases</th>
+<th>Consideration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Underflow</td>
+<td>throw exception if pop from an empty stack</td>
+</tr>
+<tr>
+<td>Overflow</td>
+<td>use resizing array for array implementation. [stay tuned]</td>
+</tr>
+</tbody></table>
+<h4 id="Null-items-We-allow-null-items-to-be-inserted"><a href="#Null-items-We-allow-null-items-to-be-inserted" class="headerlink" title="Null items: We allow null items to be inserted."></a>Null items: We allow null items to be inserted.</h4><h4 id="Loitering-Holding-a-reference-to-an-object-when-it-is-no-longer-needed"><a href="#Loitering-Holding-a-reference-to-an-object-when-it-is-no-longer-needed" class="headerlink" title="Loitering: Holding a reference to an object when it is no longer needed."></a>Loitering: Holding a reference to an object when it is no longer needed.</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">pop</span><span class="params">()</span> &#123; <span class="keyword">return</span> s[--N]; &#125;	<span class="comment">// Loitering.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// this version avoids &quot;loitering&quot;: </span></span><br><span class="line"><span class="comment">// garbage collector can reclaim memory only if no outstanding references</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">pop</span><span class="params">()</span></span><br><span class="line">&#123;	<span class="type">String</span> <span class="variable">item</span> <span class="operator">=</span> s[--N]; s[N] = <span class="literal">null</span>;	<span class="keyword">return</span> item;	&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="‣-resizing-arrays"><a href="#‣-resizing-arrays" class="headerlink" title="‣ resizing arrays"></a>‣ resizing arrays</h2><h3 id="Stack-resizing-array-implementation"><a href="#Stack-resizing-array-implementation" class="headerlink" title="Stack: resizing-array implementation"></a>Stack: resizing-array implementation</h3><h4 id="Q-How-to-grow-and-shrink-array"><a href="#Q-How-to-grow-and-shrink-array" class="headerlink" title="Q. How to grow and shrink array?"></a>Q. How to grow and shrink array?</h4><p><strong>Problem.</strong> Requiring client to provide capacity does not implement API! </p>
+<h5 id="First-try"><a href="#First-try" class="headerlink" title="First try."></a>First try.</h5><ul>
+<li><code>push()</code>: increase size of array <code>s[]</code> by 1. </li>
+<li><code>pop()</code>:  decrease size of array <code>s[]</code> by 1.</li>
+</ul>
+<h5 id="Too-expensive"><a href="#Too-expensive" class="headerlink" title="Too expensive."></a>Too expensive.</h5><ul>
+<li><p>Need to copy all items to a new array.</p>
+</li>
+<li><p>Inserting first <code>N</code> items takes time proportional to $1+2+…+N\sim N^2&#x2F;2$.</p>
+</li>
+</ul>
+<h5 id="Challenge-Ensure-that-array-resizing-happens-infrequently"><a href="#Challenge-Ensure-that-array-resizing-happens-infrequently" class="headerlink" title="Challenge: Ensure that array resizing happens infrequently."></a>Challenge: Ensure that array resizing happens infrequently.</h5><h4 id="Q-How-to-grow-array"><a href="#Q-How-to-grow-array" class="headerlink" title="Q. How to grow array?"></a>Q. How to grow array?</h4><h5 id="A"><a href="#A" class="headerlink" title="A."></a><strong>A.</strong></h5><p>If array is full, create a new array of <strong>twice</strong><u>(“repeated doubling”)</u> the size, and copy items.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">ResizingArrayStackOfStrings</span><span class="params">()</span></span><br><span class="line">&#123;  s = <span class="keyword">new</span> <span class="title class_">String</span>[<span class="number">1</span>];  &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(String item)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (N == s.length) resize(<span class="number">2</span> * s.length);</span><br><span class="line">    s[N++] = item;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">resize</span><span class="params">(<span class="type">int</span> capacity)</span></span><br><span class="line">&#123;</span><br><span class="line">    String[] copy = <span class="keyword">new</span> <span class="title class_">String</span>[capacity];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">        copy[i] = s[i];</span><br><span class="line">    s = copy;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Consequence"><a href="#Consequence" class="headerlink" title="Consequence."></a>Consequence.</h5><p>Cost of inserting first N items: Inserting first N items takes time proportional to N (not N 2 ).</p>
+<p>$\begin{align} N_{1\ array\ access&#x2F;push}+(2+4+8+…+N)_{k\ array\ accesses\ to\ double\ to\ size\ k,(ignoring\ cost\ to\ create\ new\ array)}~3N \end{align}$</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/push.png" alt="push"></p>
+<h4 id="Q-How-to-shrink-array"><a href="#Q-How-to-shrink-array" class="headerlink" title="Q. How to shrink array?"></a>Q. How to shrink array?</h4><h5 id="First-try：Too-expensive-in-worst-case"><a href="#First-try：Too-expensive-in-worst-case" class="headerlink" title="First try：Too expensive in worst case."></a>First try：Too expensive in worst case.</h5><table>
+<thead>
+<tr>
+<th></th>
+<th>Operation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>push()</code></td>
+<td>double size of array <code>s[]</code> when array is full.</td>
+</tr>
+<tr>
+<td><code>pop()</code></td>
+<td>halve size of array <code>s[]</code> when array is one-half full.</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Consider <code>push-pop-push-pop-...</code> sequence when array is full. </li>
+<li>Each operation takes time proportional to $N$.</li>
+</ul>
+<h5 id="Efficient-try"><a href="#Efficient-try" class="headerlink" title="Efficient try."></a>Efficient try.</h5><table>
+<thead>
+<tr>
+<th></th>
+<th>Operation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>push()</code></td>
+<td>double size of array <code>s[]</code> when array is full.</td>
+</tr>
+<tr>
+<td><code>pop()</code></td>
+<td>halve size of array <code>s[]</code> when array is one-quarter full.</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">pop</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">item</span> <span class="operator">=</span> s[--N];</span><br><span class="line">    s[N] = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (N &gt; <span class="number">0</span> &amp;&amp; N == s.length/<span class="number">4</span>) resize(s.length/<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">return</span> item;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>Invariant</strong>: Array is between 25% and 100% full.</p>
+</blockquote>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/trace.png" alt="trace"></p>
+<h3 id="performance"><a href="#performance" class="headerlink" title="performance"></a>performance</h3><h4 id="Amortized-analysis"><a href="#Amortized-analysis" class="headerlink" title="Amortized analysis."></a>Amortized analysis.</h4><p>Average running time per operation over a worst-case sequence of operations.</p>
+<h4 id="Proposition"><a href="#Proposition" class="headerlink" title="Proposition."></a>Proposition.</h4><p>Starting from an empty stack, any sequence of $M$ push and pop operations takes time proportional to $M$.</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/resize.png" alt="resize"></p>
+<h3 id="memory-usage"><a href="#memory-usage" class="headerlink" title="memory usage"></a>memory usage</h3><h4 id="Proposition-1"><a href="#Proposition-1" class="headerlink" title="Proposition."></a>Proposition.</h4><p>Uses between ~ $8\ N$ and ~ $32\ N$ bytes to represent a stack with $N$ items.</p>
+<ul>
+<li>~ 8 $N$ when full.</li>
+<li>~ 32 $N$ when one-quarter full.</li>
+</ul>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/one-quarter.png" alt="one-quarter"></p>
+<blockquote>
+<p>This accounts for the memory for the stack (but not the memory for strings themselves, which the client owns).</p>
+</blockquote>
+<h4 id="resizing-array-vs-linked-list"><a href="#resizing-array-vs-linked-list" class="headerlink" title="resizing array vs. linked list"></a>resizing array vs. linked list</h4><h5 id="Tradeoffs"><a href="#Tradeoffs" class="headerlink" title="Tradeoffs."></a>Tradeoffs.</h5><p>Can implement a stack with either resizing array or linked list; save a link to the list; client can use interchangeably. Which one is better?</p>
+<h5 id="Linked-list-implementation"><a href="#Linked-list-implementation" class="headerlink" title="Linked-list implementation."></a>Linked-list implementation.</h5><ul>
+<li>Every operation takes constant time in the worst case.</li>
+<li>Uses extra time and space to deal with the links.</li>
+</ul>
+<h5 id="Resizing-array-implementation"><a href="#Resizing-array-implementation" class="headerlink" title="Resizing-array implementation."></a>Resizing-array implementation.</h5><ul>
+<li>Every operation takes constant amortized time.</li>
+<li>Less wasted space.</li>
+</ul>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/linked-list.png" alt="linked-list"></p>
+<h2 id="‣-queues"><a href="#‣-queues" class="headerlink" title="‣ queues"></a>‣ queues</h2><p>![queue](&#x2F;Users&#x2F;mac&#x2F;github&#x2F;zennlyu.github.io&#x2F;hexo&#x2F;source&#x2F;_posts&#x2F;coursera-BAGS, QUEUES, AND STACKS&#x2F;queue.png)</p>
+<p>linked-list representation</p>
+<h2 id="‣-generics"><a href="#‣-generics" class="headerlink" title="‣ generics"></a>‣ generics</h2><p>Parameterized stack</p>
+<h2 id="‣-iterators"><a href="#‣-iterators" class="headerlink" title="‣ iterators"></a>‣ iterators</h2><h3 id="Design-challenge"><a href="#Design-challenge" class="headerlink" title="Design challenge"></a>Design challenge</h3><blockquote>
+<p>Support iteration over stack items by client, without revealing the internal representation of the stack.</p>
+</blockquote>
+<p><strong>Java solution</strong>: Make stack implement the java.lang.Iterable interface.</p>
+<h3 id="Iterators"><a href="#Iterators" class="headerlink" title="Iterators"></a>Iterators</h3><ul>
+<li>What is an Iterable?  – Has a method that returns an Iterator.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Iterable</span>&lt;Item&gt;</span><br><span class="line">&#123;</span><br><span class="line">   Iterator&lt;Item&gt; <span class="title function_">iterator</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>What is an Iterator? – Has methods hasNext() and next().</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Iterator</span>&lt;Item&gt;</span><br><span class="line">&#123;</span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span>;</span><br><span class="line">   Item <span class="title function_">next</span><span class="params">()</span>;</span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">remove</span><span class="params">()</span>; <span class="comment">// optional; use at your own risk</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Why make data structures Iterable? – Java supports elegant client code.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (String s : stack) StdOut.println(s); <span class="comment">// shorthand</span></span><br><span class="line">||</span><br><span class="line"><span class="comment">// longhand</span></span><br><span class="line">Iterator&lt;String&gt; i = stack.iterator(); <span class="keyword">while</span> (i.hasNext())</span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> i.next();</span><br><span class="line">  StdOut.println(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Stack-iterator-linked-list-implementation"><a href="#Stack-iterator-linked-list-implementation" class="headerlink" title="Stack iterator: linked-list implementation"></a>Stack iterator: linked-list implementation</h3><h3 id="Stack-iterator-array-implementation"><a href="#Stack-iterator-array-implementation" class="headerlink" title="Stack iterator: array implementation"></a>Stack iterator: array implementation</h3><h3 id="Bag-API"><a href="#Bag-API" class="headerlink" title="Bag API"></a>Bag API</h3><p>![bag](&#x2F;Users&#x2F;mac&#x2F;github&#x2F;zennlyu.github.io&#x2F;hexo&#x2F;source&#x2F;_posts&#x2F;coursera-BAGS, QUEUES, AND STACKS&#x2F;bag.png)</p>
+<p><strong>Main application.</strong> Adding items to a collection and iterating (when order doesn’t matter).</p>
+<p><strong>Implementation.</strong> Stack (without pop) or queue (without dequeue).</p>
+<h2 id="‣-applications"><a href="#‣-applications" class="headerlink" title="‣ applications"></a>‣ applications</h2><h3 id="Java-collections-library"><a href="#Java-collections-library" class="headerlink" title="Java collections library"></a>Java collections library</h3><h4 id="List-interface"><a href="#List-interface" class="headerlink" title="List interface."></a>List interface.</h4><p><code>java.util.List</code> is API for an sequence of items.</p>
+<h4 id="Implementations"><a href="#Implementations" class="headerlink" title="Implementations."></a>Implementations.</h4><blockquote>
+<p>caveat: only some operations are efficient</p>
+</blockquote>
+<ul>
+<li><code>java.util.ArrayList</code> uses resizing array;</li>
+<li><code>java.util.LinkedList</code> uses linked list.</li>
+</ul>
+<h4 id="java-util-Stack"><a href="#java-util-Stack" class="headerlink" title="java.util.Stack"></a><code>java.util.Stack</code></h4><ul>
+<li>Supports <code>push()</code>, <code>pop()</code>, and and iteration.</li>
+<li>Extends <code>java.util.Vector</code>, which implements <code>java.util.List</code> interface from previous slide, including, <code>get()</code> and <code>remove()</code>. </li>
+<li>Bloated and poorly-designed API (why?)</li>
+</ul>
+<p><code>java.util.Queue</code>： An interface, not an implementation of a queue. </p>
+<p><strong>Best practices</strong>：Use our implementations of Stack, Queue, and Bag.</p>
+<h4 id="War-story-from-Assignment-1"><a href="#War-story-from-Assignment-1" class="headerlink" title="War story (from Assignment 1)"></a>War story (from Assignment 1)</h4><h5 id="Generate-random-open-sites-in-an-N-by-N-percolation-system"><a href="#Generate-random-open-sites-in-an-N-by-N-percolation-system" class="headerlink" title="Generate random open sites in an N-by-N percolation system."></a>Generate random open sites in an <em>N</em>-by-<em>N</em> percolation system.</h5><ul>
+<li><p>Jenny: pick<code>(i,j)</code> at random; if already open, repeat. | Takes ~$c_1N^2$ seconds.</p>
+</li>
+<li><p>Kenny: create a <code>java.util.ArrayList</code> of $N^2$ closed sites. Pick an index at random and delete. | Takes ~$c_2N^4$ seconds.</p>
+</li>
+</ul>
+<blockquote>
+<p>Lesson. Don’t use a library until you understand its API!</p>
+<p>This course. Can’t use a library until we’ve implemented it in class.</p>
+</blockquote>
+<h4 id="Stack-applications"><a href="#Stack-applications" class="headerlink" title="Stack applications"></a>Stack applications</h4><ul>
+<li>Parsing in a compiler.</li>
+<li>Java virtual machine.</li>
+<li>Undo in a word processor.</li>
+<li>Back button in a Web browser.</li>
+<li>PostScript language for printers.</li>
+<li>Implementing function calls in a compiler.</li>
+</ul>
+<h4 id="Function-Calls"><a href="#Function-Calls" class="headerlink" title="Function Calls"></a>Function Calls</h4><p>How a compiler implements a function.</p>
+<blockquote>
+<p>Recursive function: Function that calls itself.</p>
+<p>Note: Can always use an explicit stack to remove recursion</p>
+</blockquote>
+<ul>
+<li>Function call: push local environment and return address.</li>
+<li>Return: pop return address and local environment.</li>
+</ul>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/07/15/What-open-courses-I-plan-to-take/">Fever's Notes on Open Courses<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/07/15/alg-ELEMENTARY%20SORTS/">coursera 2.1 ELEMENTARY SORTS<span class="note">Newer</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="http://example.com/">@zennlyu</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

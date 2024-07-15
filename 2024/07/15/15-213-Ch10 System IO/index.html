@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>CSAPP-10 System Level IO - zennlyu</title>
+
+  
+    <meta name="description" content="1 UNIX I&#x2F;O一个 Linux 文件就是一个 m 个字节的序列：B0, B1, …, Bk, …, Bm-1 所有的I&#x2F;O设备（例如网络、磁盘和终端）都被模型化为文件，而所有的输人和输出都被当作对相应文件的读和写来执行。这种将设备优雅地映射为文件的方式，允许 Linux内核引出一个简单、低级的应用接口，称为UNIX I&#x2F;O,这使得所有的输入和输出都能以一种统一且">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP-10 System Level IO">
+<meta property="og:url" content="http://example.com/2024/07/15/15-213-Ch10%20System%20IO/index.html">
+<meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="1 UNIX I&#x2F;O一个 Linux 文件就是一个 m 个字节的序列：B0, B1, …, Bk, …, Bm-1 所有的I&#x2F;O设备（例如网络、磁盘和终端）都被模型化为文件，而所有的输人和输出都被当作对相应文件的读和写来执行。这种将设备优雅地映射为文件的方式，允许 Linux内核引出一个简单、低级的应用接口，称为UNIX I&#x2F;O,这使得所有的输入和输出都能以一种统一且">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/07/15/15-213-Ch10%20System%20IO/10-2.png">
+<meta property="article:published_time" content="2024-07-15T03:58:26.018Z">
+<meta property="article:modified_time" content="2024-07-15T03:58:26.018Z">
+<meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="csapp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/07/15/15-213-Ch10%20System%20IO/10-2.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/09/eTtVL.jpg" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-UNIX-I-x2F-O"><span class="toc-text">1 UNIX I&#x2F;O</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%96%87%E4%BB%B6"><span class="toc-text">2 文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%89%93%E5%BC%80-x2F-%E5%85%B3%E9%97%AD%E6%96%87%E4%BB%B6"><span class="toc-text">3 打开&#x2F;关闭文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%AF%BB%E5%92%8C%E5%86%99%E6%96%87%E4%BB%B6"><span class="toc-text">4 读和写文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ssize-t-%E5%92%8C-size-t-%E6%9C%89%E4%BA%9B%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="toc-text">ssize_t 和 size_t 有些什么区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%94%A8-RIO-%E5%8C%85%E5%81%A5%E5%A3%AE%E5%9C%B0%E8%AF%BB%E5%86%99"><span class="toc-text">5 用 RIO 包健壮地读写</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RIO-%E7%9A%84%E6%97%A0%E7%BC%93%E5%86%B2%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%87%BD%E6%95%B0"><span class="toc-text">RIO 的无缓冲输入输出函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIO-%E7%9A%84%E5%B8%A6%E7%BC%93%E5%86%B2%E7%9A%84%E8%BE%93%E5%85%A5%E5%87%BD%E6%95%B0"><span class="toc-text">RIO 的带缓冲的输入函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIO-%E5%8C%85%E7%9A%84%E6%9D%A5%E6%BA%90"><span class="toc-text">RIO 包的来源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E5%85%83%E6%95%B0%E6%8D%AE"><span class="toc-text">6 读取文件元数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%AF%BB%E5%8F%96%E7%9B%AE%E5%BD%95%E5%92%8C%E5%86%85%E5%AE%B9"><span class="toc-text">7 读取目录和内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6"><span class="toc-text">8 共享文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-I-x2F-O-%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-text">9 I&#x2F;O 重定向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E6%A0%87%E5%87%86-I-x2F-O"><span class="toc-text">10 标准 I&#x2F;O</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E7%BB%BC%E5%90%88%EF%BC%9A%E6%88%91%E8%AF%A5%E4%BD%BF%E7%94%A8%E5%93%AA%E4%BA%9B-I-x2F-O-%E5%87%BD%E6%95%B0"><span class="toc-text">11 综合：我该使用哪些 I&#x2F;O 函数</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/csapp/">csapp</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2024-07-15T03:58:26.018Z">2024-07-15</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>CSAPP-10 System Level IO</span></h1>
+<h2 id="1-UNIX-I-x2F-O"><a href="#1-UNIX-I-x2F-O" class="headerlink" title="1 UNIX I&#x2F;O"></a>1 UNIX I&#x2F;O</h2><p>一个 Linux 文件就是一个 m 个字节的序列：B<sub>0</sub>, B<sub>1</sub>, …, B<sub>k</sub>, …, B<sub>m-1</sub></p>
+<p>所有的I&#x2F;O设备（例如网络、磁盘和终端）都被模型化为文件，而所有的输人和输出都被当作对相应文件的读和写来执行。这种将设备优雅地映射为文件的方式，允许 Linux内核引出一个简单、低级的应用接口，称为UNIX I&#x2F;O,这使得所有的输入和输出都能以一种统一且一致的方式来执行：</p>
+<ul>
+<li>打开文件 ｜Linux shell 创建的每个进程开始都有3个打开的文件&lt;unistd.h&gt;，用来代替显式的描述符值<ul>
+<li>标准输入（0）STDIN_FILENO</li>
+<li>标准输出（1）STDOUT_FILENO</li>
+<li>标准错误（2）STDERR_FILENO</li>
+</ul>
+</li>
+<li>改变当前文件位置<ul>
+<li>对于每个打开的文件，内核保持着一个文件位置，初始为 0。这个文件位置是从文件开头起始的字节偏移量。</li>
+<li>应用程序能够通过执行 seek 操作，显式地设置文件的当前位置为。</li>
+</ul>
+</li>
+<li>读写文件<ul>
+<li>一个读操作就是从文件复制 n &gt; 0 个字节到内存，从当前文件位置 k 开始，然后将 k 增加到 k + n。给定一个大小为 m 字节的文件，当 k≥m 时执行读操作会触发一个称为 end-of-file (EOF) 的条件，应用程序能检测到这个条件。在文件结尾处并没有明确的“EOF 符号”。</li>
+<li>类似地，写操作就是从内存复制 n&gt;0 个字节到一个文件，从当前文件位置 k 开始，然后更新 k。</li>
+</ul>
+</li>
+<li>关闭文件<ul>
+<li>当应用完成了对文件的访问之后，它就通知内核关闭这个文件。作为响应，内核释放文件打开时创建的数据结构，并将这个描述符恢复到可用的描述符池中。无论一个进程因为何种原因终止时，内核都会关闭所有打开的文件并释放它们的内存资源。</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-文件"><a href="#2-文件" class="headerlink" title="2 文件"></a>2 文件</h2><p>每个 Linux 文件都有一个类型（type）表明它在系统中的角色：</p>
+<ul>
+<li><strong>普通文件 - regular file</strong></li>
+<li><strong>目录 - directory</strong></li>
+<li><strong>套接字 - socket</strong></li>
+<li>命名通道（named pipe）</li>
+<li>符号链接（symbolic link）</li>
+<li>字符和块设备（character and block device）</li>
+<li>…</li>
+</ul>
+<p>Linux 内核将所有文件都组织成一个目录层次结构（directory hierarchy），由名为&#x2F;（斜杠）的根目录确定。系统中的每个文件都是根目录的直接或间接的后代。图 10-1 显示了 Linux 系统的目录层次结构的一部分。</p>
+<h2 id="3-打开-x2F-关闭文件"><a href="#3-打开-x2F-关闭文件" class="headerlink" title="3 打开&#x2F;关闭文件"></a>3 打开&#x2F;关闭文件</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回：若成功则为新文件描述符，若出错为 -1。</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">open</span><span class="params">(<span class="type">char</span> *filename, <span class="type">int</span> flags, <span class="type">mode_t</span> mode)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>open 函数将 filename 转换为一个文件描述符，并且返回描述符数字。返回的描述符总是在进程中当前没有打开的最小描述符。flags 参数指明了进程打算如何访问这个文件：</p>
+<ul>
+<li>● O RDONLY：只读</li>
+<li>● O WRONLY：只写</li>
+<li>● O RDWR：可读可写</li>
+</ul>
+<p>flags 参数也可以是一个或者更多位掩码的或，为写提供给一些额外的指示:</p>
+<ul>
+<li>●O CREAT：如果文件不存在，就创建它的一个截断的（truncated)（空）文件。</li>
+<li>●O TRUNC：如果文件已经存在，就截断它。</li>
+<li>●O_APPEND：在每次写操作前，设置文件位置到文件的结尾处。</li>
+</ul>
+<p>mode 参数指定了新文件的访问权限位。这些位的符号名字如图 10-2 所示。<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/15-213-Ch10%20System%20IO/10-2.png" alt="10-2"></p>
+<p>作为上下文的一部分，每个进程都有一个 umask，它是通过调用 umask 函数来设置的。当进程通过带某个 mode 参数的 open 函数调用来创建一个新文件时，文件的访问权限位被设置为 mode &amp;~ umask。例如，假设我们给定下面的 mode 和 umask 默认值：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> DEF_MODE 	S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DEF_UMASK 	S_IWGRP|S_IWOTH</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来，下面的代码片段创建一个新文件，文件的拥有者有读写权限，而所有其他的用户都有读权限：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">umask  (DEF_UMASK);</span><br><span class="line">fd = open(<span class="string">&quot;foo.txt&quot;</span>,O_CREAT|O_TRUNC|O_WRONLY, DEF_MODE);</span><br></pre></td></tr></table></figure>
+
+<p>最后，进程通过调用 close 函数关闭一个打开的文件。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">close</span> <span class="params">(<span class="type">int</span> fd)</span>;</span><br><span class="line"><span class="comment">//返回：若成功则为 0，若出错则为 -1。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-读和写文件"><a href="#4-读和写文件" class="headerlink" title="4 读和写文件"></a>4 读和写文件</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** 返回：若成功则为读的字节数，若 EOF 则为 0，若出错为 -1。</span></span><br><span class="line"><span class="comment"> * 	函数从描述符为 fd 的当前文件位置复制最多 n 个字节到内存位置 buf。</span></span><br><span class="line"><span class="comment"> *	返回值 -1 表示一个错误，而返回值 0 表示 EOF。否则，返回值表示的是实际传送的字节数量。</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">read</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *buf, <span class="type">size_t</span> n)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**	返回：若成功则为写的字节数，若出错则为 -1。</span></span><br><span class="line"><span class="comment"> * 	函数以内存位置 buf 复制至多 n 个字节到描述符 fd 的当前文件位置。</span></span><br><span class="line"><span class="comment"> * 	图 l0-3 展示了一个程序使用 read 和 write 调用一次一个字节地从标准输入复制到标准输出。</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">write</span><span class="params">(<span class="type">int</span> fd, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> n)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 10-3</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">	<span class="type">char</span> c;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (read(STDIN_FILENO, &amp;c,<span class="number">1</span>)! =<span class="number">0</span>)</span><br><span class="line">		write(STDOUT_FILENO, &amp;c,<span class="number">1</span>); </span><br><span class="line">	<span class="built_in">exit</span>(O);</span><br><span class="line">&#125;	<span class="comment">// 通过调用 1seek 函数，应用程序能够显示地修改当前文件的位置，这部分内容不在我门的讲述范围之内。</span></span><br></pre></td></tr></table></figure>
+
+<p>在某些情况下，read 和 write 传送的字节比应用程序要求的要少。这些不足值（short count）不表示有错误。出现这样情况的原因有：</p>
+<blockquote>
+<p>实际上，除了 EOF，当你在读写磁盘文件时，不会遇到不足值。然而，如果你想创建健壮的（可靠的）诸如 Web 服务器这样的网络应用，就必须通过反复调用 read 和 write 处理不足值，直到所有需要的字节都传送完华。</p>
+</blockquote>
+<ul>
+<li>● 读时遇到 EO。假设我们准备读一个文件，该文件从当前文件位置开始只含有 20 多个字节，而我们以 50 个字节的片进行读取。这样一来，下一个 read 返回的不足值为 20，此后的 read 将通过返回不足值 0 来发出 EOF 信号。</li>
+<li>● 从终端读文本行。如果打开文件是与终端相关联的（如键盘和显示器），那么每个 read 函数将一次传送一个文本行，返回的不足值等于文本行的大小。</li>
+<li>● 读和写网络套接字（socket）。如果打开的文件对应于网络套接字（11.4 节），那么内部缓冲约束和较长的网络延迟会引起 read 和 write 返回不足值。对 Linux 管道（pipe）调用 read 和 write 时，也有可能出现不足值，这种进程间通信机制不在我们讨论的范围之内。</li>
+</ul>
+<h3 id="ssize-t-和-size-t-有些什么区别"><a href="#ssize-t-和-size-t-有些什么区别" class="headerlink" title="ssize_t 和 size_t 有些什么区别"></a>ssize_t 和 size_t 有些什么区别</h3><p>在 x86-64 系统中，size_t 被定义为 unsigned long，而 ssize_t (有符号的大小）被定义为 long</p>
+<p>read 函数返回一个有符号的大小，而不是一个无符号大小，这是因为出错时它必须返回 -1。有趣的是，返回一个 -1 的可能性使得 read 的最大值减小了一半。</p>
+<h2 id="5-用-RIO-包健壮地读写"><a href="#5-用-RIO-包健壮地读写" class="headerlink" title="5 用 RIO 包健壮地读写"></a>5 用 RIO 包健壮地读写</h2><p>Robust I&#x2F;O ：会自动为你处理上文中所述的不足值。在像网络程序这样容易出现不足值的应用中，RIO 包提供了方便、健壮和高效的I&#x2F;O。RIO提供了两类不同的函数：</p>
+<ul>
+<li><p>● 无缓冲的输入输出函数，这些函数直接在内存和文件之间传送数据，没有应用级缓冲。它们对将二进制数据读写到网络和从网络读写二进制数据尤其有用。</p>
+</li>
+<li><p>● 带缓冲的输入函数。这些函数允许你高效地从文件中读取文本行和二进制数据，这些文件的内容缓存在应用级缓冲区内，类似于为 printf 这样的标准 I&#x2F;O 函数提供的缓冲区。与[110]中讲述的带缓冲的I&#x2F;O例程不同，带缓冲的RIO输入函数是线程安全的（12.7.1 节），它在同一个描述符上可以被交错地调用。</p>
+<blockquote>
+<p>例如，你可以从一个描述符中读一些文本行，然后读取一些二进制数据，接着再多读取一些文本行。</p>
+</blockquote>
+</li>
+</ul>
+<p>我们讲述 RIO 例程有两个原因</p>
+<ul>
+<li>第一，在接下来的两章中，我们开发的网络应用中使用 了它们；</li>
+<li>第二，通过学习这些例程的代码，你将从总体上对 UNIX I&#x2F;O 有更深入的了解。</li>
+</ul>
+<h3 id="RIO-的无缓冲输入输出函数"><a href="#RIO-的无缓冲输入输出函数" class="headerlink" title="RIO 的无缓冲输入输出函数"></a>RIO 的无缓冲输入输出函数</h3><p>通过调用 rio_readn 和 rio_writen 函数，应用程序可以在内存和文件之间直接传送数据</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_readn</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> n)</span>;</span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_writen</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> n)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>rio_readn 函数从描述符 fd 的当前文件位置最多传送 n 个字节到内存位置 usrbuf。类似地，rio_writen 函数从位置 usrbuf 传送 n 个字节到描述符 fd。rio_read 函数在遇到 EOF 时只能返回一个不足值。rio_wr1ten 函数决不会返回不足值。对同一个描述符，可以任意交错地调用 rio_readn 和 rio_writen.</p>
+<p>图 10-4 显示了 rio_readn 和 rio_writen 的代码。注意，如果 rio_readn 和 rio_writen 函数被一个从应用信号处理程序的返回中断，那么每个函数都会手动地重启 read 或 write。为了尽可能有较好的可移植性，我们允许被中断的系统调用，且在必要时重启它们。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_readnb</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">size_t</span> nleft = n;</span><br><span class="line">	<span class="type">ssize_t</span> nread;</span><br><span class="line">	<span class="type">char</span> *bufp = usrbuf;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (nleft &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((nread = read(fd, bufp, nleft)) &lt; <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (errno == EINTR)</span><br><span class="line">				nread = <span class="number">0</span>;</span><br><span class="line">			 <span class="keyword">else</span> </span><br><span class="line">				<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (nread == <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		nleft -= nread;</span><br><span class="line">		bufp += nread;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (n - nleft);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_writen</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">size_t</span> nleft = n;</span><br><span class="line">	<span class="type">ssize_t</span> nwritten;</span><br><span class="line">	<span class="type">char</span> *bufp = usrbuf;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (nleft &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((nwritten = write(fd, bufp, nleft)) &lt;= <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (errno == EINTR)		<span class="comment">/* Interrupted by sig handler return */</span></span><br><span class="line">				nwritten = <span class="number">0</span>;		<span class="comment">/* and call write() again*/</span></span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				<span class="keyword">return</span> <span class="number">-1</span>;			<span class="comment">/* errno set by write() */</span></span><br><span class="line">		&#125;</span><br><span class="line">		nleft -= nwritten;</span><br><span class="line">		bufp += nwritten;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="RIO-的带缓冲的输入函数"><a href="#RIO-的带缓冲的输入函数" class="headerlink" title="RIO 的带缓冲的输入函数"></a>RIO 的带缓冲的输入函数</h3><p>假设我们要编写一个程序来计算文本文件中文本行的数量，该如何来实现呢？</p>
+<p>一种方法就是用 read 函数来一次一个字节地从文件传送到用户内存，检查每个字节来查找换行符。这个方法的缺点是效率不是很高，每读取文件中的一个字节都要求陷人内核。</p>
+<p>一种更好的方法是调用一个包装函数（rio_readlineb），它从一个内部读缓冲区复制一个文本行，当缓冲区变空时，会自动地调用 read 重新填满缓冲区。对于既包含文本行也包含二进制数据的文件（例如 11.5.3 节中描述的 HTTP 响应），我们也提供了一个 rio_readnb 带缓冲区的版本，叫做 rio_readnb，它从和 rio_readlineb 一样的读缓冲区中传送原始字节。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">rio_readinitb</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">int</span> fd)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_readlineb</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> maxlen)</span>;</span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_readnb</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> n)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>每打开一个描述符，都会调用一次 rio_readinitb 函数。它将描述符 fd 和地址 rp 处的一个类型为 rio_t 的读缓冲区联系起来。</p>
+<p>rio_readlineb 函数从文件 rp 读出下一个文本行（包括结尾的换行符），将它复制到内存位置 usrbuf，并且用 NULL（零）字符来结束这个文本行。rio_readlineb 函数最多读 maxlen-1 个字节，余下的一个字符留给结尾的 NULL 字符。超过 maxlen-1 字节的文本行被截断，并用一个 NULL 字符结束。</p>
+<p>rio_readnb 函数从文件 rp 最多读 n 个字节到内存位置 usrbuf。对同一描述符，对 rio_readlineb 和 rio_readnb 的调用可以任意交叉进行。然而，对这些带缓冲的函数的调用却不应和无缓冲的 rio_readn 函数交又使用。</p>
+<p>在本书剩下的部分中将给出大量的 RIO 函数的示例。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 展示了如何使用 RIO 函数来一次一行地从标准输人复制一个文本文件到标准输出。</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> <span class="type">const</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> n;</span><br><span class="line">	<span class="type">rio_t</span> rio;</span><br><span class="line">	<span class="type">char</span> buf[MAXLINE];</span><br><span class="line"></span><br><span class="line">	rio_readinitb(&amp;rio, STDIN_FILENO);</span><br><span class="line">	<span class="keyword">while</span> ((n = rio_readinitb(&amp;rio, buf, MAXLINE)) != <span class="number">0</span>)</span><br><span class="line">		rio_written(STDOUT_FILENO, buf, n);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 展示了一个读缓冲区的格式，以及初始化它的 rio_readinitb 函数的代码。rio_readinitb 函数创建了一个空的读缓冲区，并且将一个打开的文件描述符和这个缓冲区联系起来。</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">	<span class="type">int</span> rio_fd;</span><br><span class="line">	<span class="type">int</span> rio_cnt;</span><br><span class="line">	<span class="type">char</span> *rio_bufptr;</span><br><span class="line">	<span class="type">char</span> rio_buf[RIO_BUFSIZE];</span><br><span class="line">&#125; <span class="type">rio_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">rio_readinitb</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">int</span> fd)</span> &#123;</span><br><span class="line">	rp-&gt;rio_fd = fd;</span><br><span class="line">	rp-&gt;rio_cnt = <span class="number">0</span>;</span><br><span class="line">	rp-&gt;rio_bufptr = rp-&gt;rio_buf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>RIO 读程序的核心是图 10-7 所示的 rio_read 函数。rio_read 函数是 Linux read 函数的带缓冲的版本。当调用 rio_read 要求读 n 个字节时，读缓冲区内有 rp-&gt; rio_cnt 个未读字节。如果缓冲区为空，那么会通过调用 read 再填满它。这个 read 调用收到一个不足值并不是错误，只不过读缓冲区是填充了一部分。一旦缓冲区非空，rio read 就从读缓冲区复制 n 和 rP-&gt; rio cnt 中较小值个字节到用户缓冲区，并返回复制的字节数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">ssize_t</span> <span class="title function_">rio_read</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">char</span> *usrbuf, <span class="type">size_t</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> cnt;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (rp-&gt;rio_cnt &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">		rp-&gt;rio_cnt = read(rp-&gt;rio_fd, rp-&gt;rio_buf,<span class="keyword">sizeof</span>(ro-&gt;rio_buf));</span><br><span class="line">		<span class="keyword">if</span> (rp-&gt;rio_cnt &lt; <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (errno != EINTR) &#123;</span><br><span class="line">				<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (rp-&gt;rio_cnt == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			rp-&gt;rio_bufptr = rp-&gt;rio_buf;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	cnt = n;</span><br><span class="line">	<span class="keyword">if</span> (rp-&gt;rio_cnt &lt; n)</span><br><span class="line">		cnt = rp-&gt;rio_cnt;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">memcpy</span>(usrbuf, rp-&gt;rio_bufptr, cnt);</span><br><span class="line">	rp-&gt;rio_bufptr += cnt;</span><br><span class="line">	rp-&gt;rio_cnt -= cnt;</span><br><span class="line">	<span class="keyword">return</span> cnt</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于一个应用程序，rio_read 函数和 Linux read 函数有同样的语义。在出错时，它返回值 -1，并且适当地设置 errno。在 EOF 时，它返回值 0。如果要求的字节数超过了读缓冲区内未读的字节的数量，它会返回一个不足值。两个函数的相似性使得很容易通过用 rio read 代替 read 来创建不同类型的带缓冲的读函数。例如，用 rio read 代替 read，图 l0-8 中的 rio readnb 函数和 rio readn 有相同的结构。相似地，图 l0-8 中的 rio readlineb 程序最多调用 maxlen-l 次 rio read。每次调用都从读缓冲区返回一个字节，然后检查这个字节是否是结尾的换行符。</p>
+<h3 id="RIO-包的来源"><a href="#RIO-包的来源" class="headerlink" title="RIO 包的来源"></a>RIO 包的来源</h3><p>RIO 函数的灵感来自于 W. Richard Stevens 在他的经典网络编程作品中描述的 readline、readn 和 writen 函数。rio readn 和 rio writen 函数与 Stevens 的 readn 和 writen 函数是一样的。然而，Stevens 的 readline 函数有一些局限性在 RIO 中得到了纠正。第一）因为 readline 是带缓冲的，而 readn 不带，所以这两个函数不能在同一描述符上一起使用。（第二因为它使用一个 static 缓冲区，Stevens 的 readline 函数不是线程安全的，这就要求 Stevens 引入一个不同的线程安全的版本，称为 read- line_r。我们已经在 rio readlineb 和 rio readnb 函数中修改了这两个缺陷，使得这两个函数是相互兼容和线程安全的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_readlineb</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> maxlen)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> n, rc;</span><br><span class="line">	<span class="type">char</span> c, *buf = usrbuf;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (n = <span class="number">1</span>; n &lt; maxlen; n++) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((rc = rio_read(rp, &amp;c, <span class="number">1</span>)) == <span class="number">1</span>) &#123;</span><br><span class="line">			*bufp++ = c;</span><br><span class="line">			<span class="keyword">if</span> (c == <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				n++;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (rc == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (n == <span class="number">1</span>)</span><br><span class="line">				<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	*bufp = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">return</span> n<span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_readnb</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> n)</span> &#123;</span><br><span class="line">	<span class="type">size_t</span> nleft = n;</span><br><span class="line">	<span class="type">ssize_t</span> nread;</span><br><span class="line">	<span class="type">char</span> *bufp = usrbuf;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (nleft &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((nread = rio_read(rp, bufp, nleft)) &lt; <span class="number">0</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">		 <span class="keyword">else</span> <span class="keyword">if</span> (nread == <span class="number">0</span>)</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		nleft -= nread;</span><br><span class="line">		bufp += nread;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (n - nleft);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="6-读取文件元数据"><a href="#6-读取文件元数据" class="headerlink" title="6 读取文件元数据"></a>6 读取文件元数据</h2><p>应用程序能够通过调用 stat 和 fstat 函数，检索到关于文件的信息（有时也称为文件的元数据（metadata））。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">stat</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *filename, <span class="keyword">struct</span> stat *buf)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">fstat</span><span class="params">(<span class="type">int</span> fd, <span class="keyword">struct</span> stat *buf)</span>;</span><br><span class="line"><span class="comment">//返回：若成功则为 0，若出错则为 -1</span></span><br></pre></td></tr></table></figure>
+
+<p>stat 函数以一个文件名作为输人，并填写如图 I0-9 所示的一个 stat 数据结构中的各个成员。fstat 函数是相似的，只不过是以文件描述符而不是文件名作为输入。当我们</p>
+<p>在 11.5 节中讨论 Web 服务器时，会需要 stat 数据结构中的 st_mode 和 st_size 成员，其他成员则不在我们的讨论之列。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Metadata returned by the stat and fstat functions */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span> &#123;</span></span><br><span class="line">    <span class="type">dev_t</span>           st_dev;     <span class="comment">// Device</span></span><br><span class="line">    <span class="type">ino_t</span>           st_ino;     <span class="comment">// inode</span></span><br><span class="line">    <span class="type">mode_t</span>          st_mode;    <span class="comment">// Protection and file type</span></span><br><span class="line">    <span class="type">nlink_t</span>         st_nlink;   <span class="comment">// Number of hard links</span></span><br><span class="line">    <span class="type">uid_t</span>           st_uid;     <span class="comment">// User ID of owner</span></span><br><span class="line">    <span class="type">gid_t</span>           st_gid;     <span class="comment">// Group ID of owner</span></span><br><span class="line">    <span class="type">dev_t</span>           st_rdev;    <span class="comment">// Device Type (if inode device)</span></span><br><span class="line">    <span class="type">off_t</span>           st_size;    <span class="comment">// Total size, in bytes</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span>   st_blksize; <span class="comment">// Block size for filesystem I/O</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span>   st_blocks;  <span class="comment">// Number of blocks allocated</span></span><br><span class="line">    <span class="type">time_t</span>          st_atime;   <span class="comment">// Time of last access</span></span><br><span class="line">    <span class="type">time_t</span>          st_mtime;   <span class="comment">// Time of last modification</span></span><br><span class="line">    <span class="type">time_t</span>          st_ctime;   <span class="comment">// Time of last change</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>st_size 成员包含了文件的字节数大小。st_mode 成员则编码了文件访问许可位 (图 10-2) 和文件类型 (10.2节)。Linux 在sys&#x2F;stat.h 中定义了宏谓词来确定 st_mode 成员的文件类型：</p>
+<ul>
+<li><p>S_ISREG(m)。这是一个普通文件吗？</p>
+</li>
+<li><p>S_ISDIR(m)。这是一个目录文件吗？</p>
+</li>
+<li><p>S_ISSOCK(m)。这是一个网络套接字吗？</p>
+</li>
+</ul>
+<p>图 10-l0 展示了我们会如何使用这些宏和 stat 函数来读取和解释一个文件的 st_mode 位。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"><span class="comment">// 展示了我们会如何使用这些宏和 stat 函数来读取和解释一个文件的 st_mode 位。</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> <span class="type">const</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">stat</span> <span class="title">stat</span>;</span></span><br><span class="line">    <span class="type">char</span> *type, *readok;</span><br><span class="line">    </span><br><span class="line">    stat(argv[<span class="number">1</span>], &amp;stat);</span><br><span class="line">    <span class="keyword">if</span> (S_ISREG(stat.st_mode))</span><br><span class="line">        type = <span class="string">&quot;regular&quot;</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (S_ISDIR(stat.st_mode))</span><br><span class="line">        type = <span class="string">&quot;directory&quot;</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        type = <span class="string">&quot;other&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span> ((stat.st_mode &amp; S_IRUSR))</span><br><span class="line">        readok = <span class="string">&quot;yes&quot;</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        readok = <span class="string">&quot;no&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;type: %s, read: %s\n&quot;</span>, type, readok);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="7-读取目录和内容"><a href="#7-读取目录和内容" class="headerlink" title="7 读取目录和内容"></a>7 读取目录和内容</h2><h2 id="8-共享文件"><a href="#8-共享文件" class="headerlink" title="8 共享文件"></a>8 共享文件</h2><h2 id="9-I-x2F-O-重定向"><a href="#9-I-x2F-O-重定向" class="headerlink" title="9 I&#x2F;O 重定向"></a>9 I&#x2F;O 重定向</h2><h2 id="10-标准-I-x2F-O"><a href="#10-标准-I-x2F-O" class="headerlink" title="10 标准 I&#x2F;O"></a>10 标准 I&#x2F;O</h2><h2 id="11-综合：我该使用哪些-I-x2F-O-函数"><a href="#11-综合：我该使用哪些-I-x2F-O-函数" class="headerlink" title="11 综合：我该使用哪些 I&#x2F;O 函数"></a>11 综合：我该使用哪些 I&#x2F;O 函数</h2>
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/07/15/15-213-Ch03%20Machine%20Level/">CSAPP-03 Machine Level Programming<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/07/15/15-213-Ch07_Link/">CSAPP-07 Link<span class="note">Newer</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="http://example.com/">@zennlyu</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

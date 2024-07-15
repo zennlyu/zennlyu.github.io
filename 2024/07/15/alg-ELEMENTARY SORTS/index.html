@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>coursera 2.1 ELEMENTARY SORTS - zennlyu</title>
+
+  
+    <meta name="description" content="‣ rules of the gameSample sort client 1Goal. Sort any type of data. Ex 1. Sort random real numbers in ascending order.  seems artificial, but stay tuned for an application  12345678910111213public cla">
+<meta property="og:type" content="article">
+<meta property="og:title" content="coursera 2.1 ELEMENTARY SORTS">
+<meta property="og:url" content="http://example.com/2024/07/15/alg-ELEMENTARY%20SORTS/index.html">
+<meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="‣ rules of the gameSample sort client 1Goal. Sort any type of data. Ex 1. Sort random real numbers in ascending order.  seems artificial, but stay tuned for an application  12345678910111213public cla">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-15T03:58:26.062Z">
+<meta property="article:modified_time" content="2024-07-15T03:58:26.062Z">
+<meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="princeton-alg">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/09/eTtVL.jpg" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-rules-of-the-game"><span class="toc-text">‣ rules of the game</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sample-sort-client-1"><span class="toc-text">Sample sort client 1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sample-sort-client-2"><span class="toc-text">Sample sort client 2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sample-sort-client-3"><span class="toc-text">Sample sort client 3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Callbacks"><span class="toc-text">Callbacks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Callbacks-roadmaps"><span class="toc-text">Callbacks: roadmaps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Total-order"><span class="toc-text">Total order</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Ex"><span class="toc-text">Ex.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Surprising-but-true"><span class="toc-text">Surprising but true.</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Comparable-API"><span class="toc-text">Comparable API</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Implement-compareTo-so-that-v-compareTo-w"><span class="toc-text">Implement compareTo() so that v.compareTo(w)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Built-in-comparable-types"><span class="toc-text">Built-in comparable types.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#User-defined-comparable-types"><span class="toc-text">User-defined comparable types.</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Implementing-the-Comparable-interface"><span class="toc-text">Implementing the Comparable interface</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Two-useful-sorting-abstractions"><span class="toc-text">Two useful sorting abstractions</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-selection-sort"><span class="toc-text">‣ selection sort</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-insertion-sort"><span class="toc-text">‣ insertion sort</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-shellsort"><span class="toc-text">‣ shellsort</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-shuffling"><span class="toc-text">‣ shuffling</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%A3-convex-hull"><span class="toc-text">‣ convex hull</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/algorithms/">algorithms</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2024-07-15T03:58:26.062Z">2024-07-15</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>coursera 2.1 ELEMENTARY SORTS</span></h1>
+<h2 id="‣-rules-of-the-game"><a href="#‣-rules-of-the-game" class="headerlink" title="‣ rules of the game"></a>‣ rules of the game</h2><h3 id="Sample-sort-client-1"><a href="#Sample-sort-client-1" class="headerlink" title="Sample sort client 1"></a>Sample sort client 1</h3><p>Goal. Sort any type of data.</p>
+<p>Ex 1. Sort random real numbers in ascending order.</p>
+<blockquote>
+<p>seems artificial, but stay tuned for an application</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Experiment</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> Integer.parseInt(args[<span class="number">0</span>]); </span><br><span class="line">        Double[] a = <span class="keyword">new</span> <span class="title class_">Double</span>[N];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">            a[i] = StdRandom.uniform();</span><br><span class="line">        Insertion.sort(a);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">            StdOut.println(a[i]):</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Sample-sort-client-2"><a href="#Sample-sort-client-2" class="headerlink" title="Sample sort client 2"></a>Sample sort client 2</h3><p>Ex 2. Sort strings from file in alphabetical order.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StringSorter</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">    &#123;</span><br><span class="line">        String[] a = In.readStrings(args[<span class="number">0</span>]); </span><br><span class="line">        Insertion.sort(a);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; a.length; i++)</span><br><span class="line">            StdOut.println(a[i]);</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Sample-sort-client-3"><a href="#Sample-sort-client-3" class="headerlink" title="Sample sort client 3"></a>Sample sort client 3</h3><p>Ex 3. Sort the files in a given directory by filename.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FileSorter</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">File</span> <span class="variable">directory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(args[<span class="number">0</span>]);</span><br><span class="line">        File[] files = directory.listFiles();</span><br><span class="line">        Insertion.sort(files);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; files.length; i++)</span><br><span class="line">            StdOut.println(files[i].getName());</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Callbacks"><a href="#Callbacks" class="headerlink" title="Callbacks"></a>Callbacks</h3><p>Q. How can sort() know how to compare data of type Double, String, and java.io.File without any information about the type of an item’s key?</p>
+<p>Callback &#x3D; reference to executable code.</p>
+<ul>
+<li>Client passes array of objects to sort() function.</li>
+<li>The sort() function calls back object’s compareTo() method as needed.</li>
+</ul>
+<p>Implementing callbacks.</p>
+<ul>
+<li>Java: interfaces.</li>
+<li>C: function pointers.</li>
+<li>C++: class-type functors.</li>
+<li>C#: delegates.</li>
+<li>Python, Perl, ML, Javascript: first-class functions.</li>
+</ul>
+<h3 id="Callbacks-roadmaps"><a href="#Callbacks-roadmaps" class="headerlink" title="Callbacks: roadmaps"></a>Callbacks: roadmaps</h3><p>![callback](&#x2F;Users&#x2F;mac&#x2F;github&#x2F;zennlyu.github.io&#x2F;hexo&#x2F;source&#x2F;_posts&#x2F;coursera-ELEMENTARY SORTS&#x2F;callback.png)</p>
+<h3 id="Total-order"><a href="#Total-order" class="headerlink" title="Total order"></a>Total order</h3><p>A total order is a binary relation $≤$ that satisfies:</p>
+<ul>
+<li>Antisymmetry: if $v≤w$ and $w≤v$, then $v&#x3D;w$. </li>
+<li>Transitivity: if $v≤w$ and $w≤x$, then $v≤x$. </li>
+<li>Totality: either $v≤w$ or $w≤v$ or both.</li>
+</ul>
+<h4 id="Ex"><a href="#Ex" class="headerlink" title="Ex."></a>Ex.</h4><ul>
+<li>Standard order for natural and real numbers.</li>
+<li>Chronological order for dates or times. </li>
+<li>Alphabetical order for strings.</li>
+<li>…</li>
+</ul>
+<h4 id="Surprising-but-true"><a href="#Surprising-but-true" class="headerlink" title="Surprising but true."></a>Surprising but true.</h4><p>The $&lt;&#x3D;$ operator for double is not a total order. (!)</p>
+<blockquote>
+<p>violates totality: (<code>Double.NaN &lt;= Double.NaN</code>) is false</p>
+</blockquote>
+<h3 id="Comparable-API"><a href="#Comparable-API" class="headerlink" title="Comparable API"></a>Comparable API</h3><h4 id="Implement-compareTo-so-that-v-compareTo-w"><a href="#Implement-compareTo-so-that-v-compareTo-w" class="headerlink" title="Implement compareTo() so that v.compareTo(w)"></a>Implement compareTo() so that v.compareTo(w)</h4><ul>
+<li>Is a total order.</li>
+<li>Returns a negative integer, zero, or positive integer</li>
+<li>if $v$ is less than, equal to, or greater than $w$, respectively. Throws an exception if incompatible types (or either is null).</li>
+</ul>
+<h4 id="Built-in-comparable-types"><a href="#Built-in-comparable-types" class="headerlink" title="Built-in comparable types."></a>Built-in comparable types.</h4><p>Integer, Double, String, Date, File, … </p>
+<h4 id="User-defined-comparable-types"><a href="#User-defined-comparable-types" class="headerlink" title="User-defined comparable types."></a>User-defined comparable types.</h4><p>Implement the Comparable interface.</p>
+<h3 id="Implementing-the-Comparable-interface"><a href="#Implementing-the-Comparable-interface" class="headerlink" title="Implementing the Comparable interface"></a>Implementing the Comparable interface</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Date</span> <span class="keyword">implements</span> <span class="title class_">Comparable</span>&lt;Date&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> month, day, year;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Date</span><span class="params">(<span class="type">int</span> m, <span class="type">int</span> d, <span class="type">int</span> y)</span></span><br><span class="line">    &#123;</span><br><span class="line">        month = m;</span><br><span class="line">        day   = d;</span><br><span class="line">        year  = y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(Date that)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.year &lt; that.year ) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.year &gt; that.year ) <span class="keyword">return</span> +<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.month &lt; that.month) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.month &gt; that.month) <span class="keyword">return</span> +<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.day &lt; that.day )   <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.day &gt; that.day )   <span class="keyword">return</span> +<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Two-useful-sorting-abstractions"><a href="#Two-useful-sorting-abstractions" class="headerlink" title="Two useful sorting abstractions"></a>Two useful sorting abstractions</h3><h2 id="‣-selection-sort"><a href="#‣-selection-sort" class="headerlink" title="‣ selection sort"></a>‣ selection sort</h2><h2 id="‣-insertion-sort"><a href="#‣-insertion-sort" class="headerlink" title="‣ insertion sort"></a>‣ insertion sort</h2><h2 id="‣-shellsort"><a href="#‣-shellsort" class="headerlink" title="‣ shellsort"></a>‣ shellsort</h2><h2 id="‣-shuffling"><a href="#‣-shuffling" class="headerlink" title="‣ shuffling"></a>‣ shuffling</h2><h2 id="‣-convex-hull"><a href="#‣-convex-hull" class="headerlink" title="‣ convex hull"></a>‣ convex hull</h2>
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/07/15/alg-BAGS,%20QUEUES,%20AND%20STACKS/">coursera 1.3 BAGS, QUEUES, AND STACKS<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/07/15/alg-Union%20Find/">coursera 1.5 UNION_FIND<span class="note">Newer</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="http://example.com/">@zennlyu</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

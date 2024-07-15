@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>S081 xv6-book - zennlyu</title>
+
+  
+    <meta name="description" content="Chapter 1 Operating System Interfaces1.1 Processes and MemoryAn xv6 process consists of  用户空间内存(指令、数据和堆栈) 内核私有的进程状态  Xv6 time-shares processes:  进程共享 cpu，它透明地切换当前 cpu 正在执行的进程。 当一个进程暂时不使用 cpu 时， xv6 会保">
+<meta property="og:type" content="article">
+<meta property="og:title" content="S081 xv6-book">
+<meta property="og:url" content="http://example.com/2024/07/15/6.828%20xv6-book/index.html">
+<meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="Chapter 1 Operating System Interfaces1.1 Processes and MemoryAn xv6 process consists of  用户空间内存(指令、数据和堆栈) 内核私有的进程状态  Xv6 time-shares processes:  进程共享 cpu，它透明地切换当前 cpu 正在执行的进程。 当一个进程暂时不使用 cpu 时， xv6 会保">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/07/15/6.828%20xv6-book/f-21.png">
+<meta property="og:image" content="http://example.com/2024/07/15/6.828%20xv6-book/f-22.png">
+<meta property="og:image" content="http://example.com/2024/07/15/6.828%20xv6-book/f-23.png">
+<meta property="og:image" content="http://example.com/2024/07/15/6.828%20xv6-book/f-31.png">
+<meta property="article:published_time" content="2024-07-15T03:58:26.027Z">
+<meta property="article:modified_time" content="2024-07-15T03:58:26.028Z">
+<meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="S081">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/07/15/6.828%20xv6-book/f-21.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/09/eTtVL.jpg" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Processes-and-Memory"><span class="toc-text">1.1 Processes and Memory</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fork"><span class="toc-text">fork</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exit"><span class="toc-text">exit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#wait"><span class="toc-text">wait</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exec"><span class="toc-text">exec</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Shell"><span class="toc-text">Shell</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-File-Descriptor-amp-I-x2F-O"><span class="toc-text">1.2 File Descriptor &amp; I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#read-write"><span class="toc-text">read&#x2F;write</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#close"><span class="toc-text">close</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#open"><span class="toc-text">open</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dup"><span class="toc-text">dup</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-Pipes"><span class="toc-text">1.3 Pipes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-File-System"><span class="toc-text">1.4 File System</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#chdir"><span class="toc-text">chdir</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mkdir-mknod"><span class="toc-text">mkdir&#x2F;mknod</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fstat"><span class="toc-text">fstat</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#link"><span class="toc-text">link</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#unlink"><span class="toc-text">unlink</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-Real-world"><span class="toc-text">1.5 Real world</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Abstracting-physical-resources"><span class="toc-text">2.1 Abstracting physical resources</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-User-mode-supervisor-mode-and-system-calls"><span class="toc-text">2.2 User mode, supervisor mode, and system calls</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E5%86%85%E6%A0%B8%E7%9A%84%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84"><span class="toc-text">2.3 内核的组织结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF1%EF%BC%9Amonolithic-kernel"><span class="toc-text">思路1：monolithic kernel</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-text">缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF2%EF%BC%9Amicro-kernel"><span class="toc-text">思路2：micro kernel</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Code-xv6-organization"><span class="toc-text">2.4 Code: xv6 organization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-Process-overview"><span class="toc-text">2.5 Process overview</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-Code-starting-xv6-and-the-first-process"><span class="toc-text">2.6 Code: starting xv6 and the first process</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-7-Real-World"><span class="toc-text">2.7 Real World</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-Paging-hardware"><span class="toc-text">3.1 Paging hardware</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Kernel-address-space"><span class="toc-text">3.2 Kernel address space</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-Code-creating-an-address-space"><span class="toc-text">3.3 Code: creating an address space</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-Physical-memory-allocation"><span class="toc-text">3.4 Physical memory allocation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-Code-Physical-memory-allocator"><span class="toc-text">3.5 Code: Physical memory allocator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6-Process-address-space"><span class="toc-text">3.6 Process address space</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-7-Code-sbrk"><span class="toc-text">3.7 Code: sbrk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-8-Code-exec"><span class="toc-text">3.8 Code: exec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-9-Real-world"><span class="toc-text">3.9 Real world</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-10-Exercises"><span class="toc-text">3.10 Exercises</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-RISV%E7%9A%84%E9%99%B7%E9%98%B1%E6%9C%BA%E5%88%B6"><span class="toc-text">4.1 RISV的陷阱机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E6%9D%A5%E8%87%AA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E7%9A%84%E9%99%B7%E9%98%B1"><span class="toc-text">4.2 来自用户空间的陷阱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E4%BB%A3%E7%A0%81%EF%BC%9A%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-text">4.3 代码：系统调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-%E4%BB%A3%E7%A0%81%EF%BC%9A%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%82%E6%95%B0"><span class="toc-text">4.4 代码：系统调用参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-%E5%86%85%E6%A0%B8%E7%A9%BA%E9%97%B4%E4%B8%AD%E7%9A%84%E9%99%B7%E9%98%B1"><span class="toc-text">4.5 内核空间中的陷阱</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/operating-system/">operating system</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2024-07-15T03:58:26.027Z">2024-07-15</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>S081 xv6-book</span></h1>
+<h1 id="Chapter-1-Operating-System-Interfaces"><a href="#Chapter-1-Operating-System-Interfaces" class="headerlink" title="Chapter 1 Operating System Interfaces"></a>Chapter 1 Operating System Interfaces</h1><h2 id="1-1-Processes-and-Memory"><a href="#1-1-Processes-and-Memory" class="headerlink" title="1.1 Processes and Memory"></a>1.1 Processes and Memory</h2><p>An xv6 process consists of</p>
+<ul>
+<li>用户空间内存(指令、数据和堆栈)</li>
+<li>内核私有的进程状态</li>
+</ul>
+<p>Xv6 <em>time-shares</em> processes:</p>
+<ul>
+<li>进程共享 cpu，它透明地切换当前 cpu 正在执行的进程。</li>
+<li>当一个进程暂时不使用 cpu 时， xv6 会保存它的 CPU 寄存器，在下次运行该进程时恢复它们。</li>
+<li>内核为每个进程关联一个 PID (进程标识符)。</li>
+</ul>
+<h4 id="fork"><a href="#fork" class="headerlink" title="fork"></a><code>fork</code></h4><blockquote>
+<p>Fork returns in both the parent and the child</p>
+</blockquote>
+<ul>
+<li><p>父进程中，<code>fork</code>  返回子进程的 PID;</p>
+</li>
+<li><p>在子进程中，<code> fork</code>  返回 0</p>
+</li>
+</ul>
+<h4 id="exit"><a href="#exit" class="headerlink" title="exit"></a><code>exit</code></h4><blockquote>
+<p>退出调用进程，并释放资源，如内存和打开的文件。</p>
+</blockquote>
+<p><code>exit</code> 需要一个整数状态参数，通常 0 表示成功，1 表示失败。</p>
+<h4 id="wait"><a href="#wait" class="headerlink" title="wait"></a><code>wait</code></h4><p>返回当前进程的一个已退出(或被杀死)的子进程的 PID，并将该子进程的退出状态码复制到一个地址，该地址由 wait 参数提供;</p>
+<p>如果调用者的子进程都没有退出，则  <code>wait</code>  等待一个子进程退出。如果调用者没有子进程，wait 立即返回-1。</p>
+<p>如果父进程不关心子进程的退出状态，可以传递一个 0 地址给 wait。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> pid = fork();</span><br><span class="line"><span class="keyword">if</span> (pid &gt; <span class="number">0</span>)&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;parent: child=%d\n&quot;</span>, pid);</span><br><span class="line">	pid = wait((<span class="type">int</span> *) <span class="number">0</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;child %d is done\n&quot;</span>, pid); </span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span>(pid == <span class="number">0</span>)&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;child: exiting\n&quot;</span>);</span><br><span class="line">	<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;fork error\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//  parent: child=3884 </span></span><br><span class="line"><span class="comment">//	child: exiting </span></span><br><span class="line"><span class="comment">//	child 3884 is done</span></span><br><span class="line"><span class="comment">//	可能会以任何一种顺序输出，这取决于是父进程还是子进程先执行它的 printf 调用。在子程序退出后，父进程的 wait 返回，父进程执行 printf。</span></span><br><span class="line"><span class="comment">//	虽然子进程最初与父进程拥有相同的内存内容，但父进程和子进程是在不同的内存和不 同的寄存器中执行的:改变其中一个进程中的变量不会影响另一个进程。例如，当 wait 的 返回值存储到父进程的 pid 变量中时，并不会改变子进程中的变量 pid。子进程中的 pid 值仍然为零。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="exec"><a href="#exec" class="headerlink" title="exec"></a><code>exec</code></h4><p>使用新内存映像来替换进程的内存， 新内存映像从文件系统中的文件中进行读取。</p>
+<p>这个文件必须有特定的格式，它指定了文件中哪部分存放指令，哪部分是数据， 在哪条指令开始等等</p>
+<blockquote>
+<p>xv6 uses the ELF format</p>
+</blockquote>
+<p>当 <code> exec</code> 成功时，它并不返回到调用程序；而是从文件中加载的指令在 ELF 头声明的入口点开始执行。</p>
+<p><code> exec</code> 需要两个参数:</p>
+<ul>
+<li>包含可执行文件的文件名</li>
+<li>一个字符串参数数组</li>
+</ul>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *argv[<span class="number">3</span>];</span><br><span class="line">argv[<span class="number">0</span>] = <span class="string">&quot;echo&quot;</span>;</span><br><span class="line">argv[<span class="number">1</span>] = <span class="string">&quot;hello&quot;</span>; </span><br><span class="line">argv[<span class="number">2</span>] = <span class="number">0</span>; </span><br><span class="line">exec(<span class="string">&quot;/bin/echo&quot;</span>, argv); </span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;exec error\n&quot;</span>);</span><br><span class="line"><span class="comment">//	上述代码会执行 /bin/echo 程序，并将 argv 数组作为参数。大多数程序都会忽略参数数 组的第一个元素，也就是程序名称。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h4><p>xv6 shell 使用上述调用来在用户空间运行程序。shell 的主结构很简单： <code>main(user/sh.c:145)</code>。</p>
+<blockquote>
+<p>主循环用 <code>getcmd</code> 读取用户的一行输入，然后调用 <code>fork</code> ，创建 shell 副本。父进程调用 wait，而子进程则运行命令。</p>
+<p>例如，如果用户向 shell 输入了  <code>echo hello</code> ， 那么就会调用 <code>runcmd</code>，参数为  <code>echo hello</code> 。<code>runcmd</code> (user&#x2F;sh.c:58) 运行实际的命令。对于  <code>echo hello</code> ，它会调用 <code> exec</code> (user&#x2F;sh.c:78)。如果 <code> exec</code> 成功，那么子进程将执行 echo 程序的 指令，而不是 <code>runcmd</code> 的。</p>
+<p>在某些时候，<code>echo</code> 会调用 <code> exit</code>，这将使父程序从 main(user&#x2F;sh.c:145) 中的  <code>wait</code>  返回。 (user&#x2F;sh.c:145). </p>
+</blockquote>
+<p>你可能会奇怪为什么 <code>fork</code>  和 <code> exec</code> 没有结合在一次调用中，我们后面会看到 shell 在实现 I&#x2F;O 重定向时利用了这种分离的特性。为了避免创建相同进程并立即替换它(使用 exec) 所带来的浪费，内核通过使用虚拟内存技术 (如 copy-on-write) 来优化这种用例的 fork 实现(见 4.6 节)。</p>
+<p>xv6 隐式分配大部分用户空间内存</p>
+<ul>
+<li><code>fork</code>  复制父进程的内存到子进程</li>
+<li><code> exec</code> 分配足够 的内存来容纳可执行文件</li>
+</ul>
+<p>一个进程如果在运行时需要更多的内存(可能是为了 <code>malloc</code>)， 可以调用 <code>sbrk(n)</code> 将其数据内存增长 n 个字节; <code>sbrk(n)</code> 返回新内存的位置。</p>
+<h2 id="1-2-File-Descriptor-amp-I-x2F-O"><a href="#1-2-File-Descriptor-amp-I-x2F-O" class="headerlink" title="1.2 File Descriptor &amp; I&#x2F;O"></a>1.2 File Descriptor &amp; I&#x2F;O</h2><p>文件描述符</p>
+<ul>
+<li>小整数，代表一个可由进程读取或写入的内核管理对象。</li>
+<li>一个进程可以通过打开一个文件、目录、设备，或者通过创建一个管道，或者通过复制一个现有的描述符来获得一个文件描述符。</li>
+<li>通常将 FD 所指向的对象称为文件；FD 接口将文件、管道和设备之间的差异抽象化，使它们看起来都像字节流。</li>
+</ul>
+<p>在内部，xv6 内核为每一个进程单独维护一个以文件描述符为索引的表，因此每个进程都有一个从 0 开始的文件描述符私有空间。</p>
+<p>按照约定，一个进程</p>
+<ul>
+<li>从文件描述符 0 (标准输入) 读取数据</li>
+<li>向文件描述符 1 (标准输出)写入输出</li>
+<li>向文件描述符 2 (标准错误)写入错误信息</li>
+</ul>
+<p>正如我们将看到的那样，shell 利用这个约定来实现 I&#x2F;O 重定向和管道。shell 确保自己总是有 3 个文件描述符打开(user&#x2F;sh.c:151)</p>
+<h4 id="read-write"><a href="#read-write" class="headerlink" title="read/write"></a><code>read/write</code></h4><p><code>read/write</code>  从文件描述符指向的文件读写数据。</p>
+<ul>
+<li><p><code>read(fd, buf, n)</code> </p>
+<blockquote>
+<p>从文件描述符 <code>fd</code> 中读取不超过 <code>n</code> 个字节的数据，将它们复制到 <code>buf</code> 中，并返回读取的字节数。</p>
+<p>每个引用文件的文件描述符都有一个与之相关的偏移量。读取从当前文件偏移量中读取数 据，然后按读取的字节数推进偏移量，随后的读取将返回上次读取之后的数据。当没有更多 的字节可读时，读返回零，表示文件的结束。</p>
+</blockquote>
+</li>
+<li><p><code>write(fd, buf, n)</code> </p>
+<blockquote>
+<p>表示将 <code>buf</code> 中的 <code>n</code> 个字节写入文件描述符 <code>fd</code> 中，并返回写入的字节数。若写入字节数小于 n 则该次写入发生错误。</p>
+<p>和 <code>read</code> 一样，<code>write</code> 在当前文件偏移量处写入 数据，然后按写入的字节数将偏移量向前推进: 每次写入都从上一次写入的地方开始。</p>
+</blockquote>
+</li>
+</ul>
+<p>下面的程序片段 (程序 <code>cat</code> 的核心代码)将数据从其标准输入复制到其标准输出。如果出现错误，它会向标准错误写入一条消息。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> bug[<span class="number">512</span>];</span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (;;) &#123;</span><br><span class="line">	n = read(<span class="number">0</span>, buf, <span class="keyword">sizeof</span> buf);</span><br><span class="line">	<span class="keyword">if</span> (n == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (n &lt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="number">2</span>, <span class="string">&quot;read error\n&quot;</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (write(<span class="number">1</span>, buf, n) != n) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="number">2</span>, <span class="string">&quot;write error\n&quot;</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 需要注意的是，cat 不知道它是从文件、控制台还是管道中读取的。 同样，cat 也不知道它是在打印到控制台、文件还是其他什么地方。文件描述符的使用和 0 代表输入，1 代表输出的约定，使得 cat 可以很容易实现。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="close"><a href="#close" class="headerlink" title="close"></a><code>close</code></h4><p><code>close</code> 系统调用会释放一个文件描述符，使它可以被以后的 <code>open</code>、<code>pipe</code> 或 <code>dup</code> 系统调 用所重用(见下文)。新分配的文件描述符总是当前进程中最小的未使用描述符。</p>
+<p>文件描述符和 <code>fork</code> 相互作用，使 I&#x2F;O 重定向易于实现。<code>fork</code> 将父进程的文件描述符表 和它的内存一起复制，这样子进程开始时打开的文件和父进程完全一样。系统调用 <code>exec</code> 替 换调用进程的内存，但会保留文件描述符表。这种行为允许 shell 通过 <code>fork</code> 实现 I&#x2F;O 重定向， 在子进程中重新打开所选的文件描述符，然后调用 <code>exec</code> 运行新程序。下面是 shell 运行 <code>cat &lt; input.txt</code> 命令的简化版代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *argv[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">argv[<span class="number">0</span>] = <span class="string">&quot;cat&quot;</span>;</span><br><span class="line">argv[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (fork() == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">  close(<span class="number">0</span>);</span><br><span class="line">  open(<span class="string">&quot;input.txt&quot;</span>, O_RDONLY);</span><br><span class="line">  exec(<span class="string">&quot;cat&quot;</span>, argv);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在子进程关闭文件描述符 0 后，<code>open</code> 保证对新打开的 input.txt 使用该文件描述符 0。 因为此时 0 将是最小的可用文件描述符。然后 <code>cat</code> 执行时，文件描述符 0(标准输入)引用 input.txt。这不会改变父进程的文件描述符，它只会修改子进程的描述符。</p>
+<p>xv6 shell 中的 I&#x2F;O 重定向代码正是以这种方式工作的(<code>user/sh.c:82</code>)。回想一下 shell 的 代码，shell 已经 <code>fork</code> 子 shell，<code>runcmd</code> 将调用 <code>exec</code> 来加载新的程序。</p>
+<h4 id="open"><a href="#open" class="headerlink" title="open"></a><code>open</code></h4><p><code>open</code> 的第二个参数由一组用位表示的标志组成，用来控制 <code>open</code> 的工作。可能的值在文件控制(fcntl)头(kernel&#x2F;fcntl.h:1-5)中定义。它们指定 <code>open</code> 打开文件时的功能，</p>
+<ul>
+<li><code>O_RDONLY</code>：读</li>
+<li><code>O_WRONLY：</code>：写</li>
+<li><code>O_RDWR</code>：读和写</li>
+<li><code>O_CREATE</code>：如果文件不存在创建文件</li>
+<li><code>O_TRUNC</code>：将文件截断为零。</li>
+</ul>
+<p>现在应该清楚为什么 <code>fork</code> 和 <code>exec</code> 是分开调用的：</p>
+<ul>
+<li>在这两个调用之间，shell 有机会重定向子进程的 I&#x2F;O，而不干扰父进程的 I&#x2F;O 设置。</li>
+</ul>
+<p>我们可以假设一个由 <code>fork</code> 和 <code>exec</code> 组成的系 统调用 <code>forkexec</code>，但是用这种调用来做 I&#x2F;O 重定向似乎很笨拙。shell 在调用 <code>forkexec</code> 之前 修改自己的 I&#x2F;O 设置(然后取消这些修改)，或者 <code>forkexec</code> 可以将 I&#x2F;O 重定向的指令作为参数，或者(最糟糕的方案)每个程序(比如 cat)都需要自己做 I&#x2F;O 重定向。</p>
+<p>虽然 <code>fork</code> 复制了文件描述符表，但每个底层文件的偏移量都是父子共享的。想一想下面的代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (fork() == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">  write(<span class="number">1</span>, <span class="string">&quot;hello&quot;</span>, <span class="number">6</span>);</span><br><span class="line">  <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  wait(<span class="number">0</span>);</span><br><span class="line">  write(<span class="number">1</span>, <span class="string">&quot;world\n&quot;</span>, <span class="number">6</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个片段的最后，文件描述符 1 所引用的文件将包含数据 hello world。父文件中的 <code>write</code>(由于有了 <code>wait</code>，只有在子文件完成后才会运行)会从子文件的 <code>write</code> 结束的地方开 始。这种行为有助于从 shell 命令的序列中产生有序的输出，比如<code>(echo hello; echo world) &gt;output.txt</code>。</p>
+<h4 id="dup"><a href="#dup" class="headerlink" title="dup"></a><code>dup</code></h4><p><code>dup</code> 系统调用复制一个现有的文件描述符，返回一个新的描述符，它指向同一个底层 I&#x2F;O 对象。两个文件描述符共享一个偏移量，就像被 <code>fork</code> 复制的文件描述符一样。这是将 hello world 写进文件的另一种方法。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fd = dup(<span class="number">1</span>);</span><br><span class="line">write(<span class="number">1</span>, <span class="string">&quot;hello &quot;</span>, <span class="number">6</span>); </span><br><span class="line">write(fd, <span class="string">&quot;world\n&quot;</span>, <span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果两个文件描述符是通过一系列的 <code>fork</code> 和 <code>dup</code> 调用从同一个原始文件描述符衍生出 来的，那么这两个文件描述符共享一个偏移量。否则，文件描述符不共享偏移量，即使它们 是由同一个文件的打开调用产生的。<code>dup</code> 允许 shell 实现这样的命令: <code>ls existing-file non-existing-file &gt; tmp1 2&gt;&amp;1</code>。<code>2&gt;&amp;1</code> 表示 2 是 1 的复制品(<code>dup(1)</code>)，即重定向错误信息到 标准输出，已存在文件的名称和不存在文件的错误信息都会显示在文件 tmp1 中。xv6 shell 不支持错误文件描述符的 I&#x2F;O 重定向，但现在你知道如何实现它了。</p>
+<p>文件描述符是一个强大的抽象，因为它们隐藏了它们连接的细节:一个向文件描述符 1 写入的进程可能是在向一个文件、控制台等设备或向一个管道写入。</p>
+<h2 id="1-3-Pipes"><a href="#1-3-Pipes" class="headerlink" title="1.3 Pipes"></a>1.3 Pipes</h2><p>管道是一个小的内核缓冲区，作为一对文件描述符暴露给进程，一个用于读，一个用于 写。将数据写入管道的一端就可以从管道的另一端读取数据。管道为进程提供了一种通信方 式。</p>
+<p>下面的示例代码运行程序 <code>wc</code>，标准输入连接到管道的读取端。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> p[<span class="number">2</span>];</span><br><span class="line"><span class="type">char</span> *argv[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">argv[<span class="number">0</span>] = <span class="string">&quot;wc&quot;</span>;</span><br><span class="line">argv[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">pipe(p); </span><br><span class="line"><span class="keyword">if</span>(fork() == <span class="number">0</span>) &#123;</span><br><span class="line">	close(<span class="number">0</span>);		<span class="comment">// 释放文件描述符0</span></span><br><span class="line">	dup(p[<span class="number">0</span>]);	<span class="comment">// 复制一个 p[0](管道读端)，此时文件描述符 0 (标准输入) 也引用管道读端，故改变了标准输入。</span></span><br><span class="line">	close(p[<span class="number">0</span>]);</span><br><span class="line">	close(p[<span class="number">1</span>]);</span><br><span class="line">	exec(<span class="string">&quot;/bin/wc&quot;</span>, argv);	<span class="comment">// // wc 从标准输入读取数据，并写入到参数中的每一个文件</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	close(p[<span class="number">0</span>]);</span><br><span class="line">	write(p[<span class="number">1</span>], <span class="string">&quot;hello world\n&quot;</span>, <span class="number">12</span>);</span><br><span class="line">	close(p[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>程序调用 <code>pipe</code>，创建一个新的管道，并将读写文件描述符记录在数组 <code>p</code> 中，经过 <code>fork</code> 后，父进程和子进程的文件描述符都指向管道。子进程调用 <code>close</code> 和 <code>dup</code> 使文件描述符 0 引 用管道的读端，并关闭 p 中的文件描述符，并调用 <code>exec</code> 运行 <code>wc</code>。当 <code>wc</code> 从其标准输入端读 取时，它将从管道中读取。父进程关闭管道的读端，向管道写入，然后关闭写端。</p>
+<p>如果没有数据可用，管道上的 <code>read</code> 会等待数据被写入，或者等待所有指向写端的文件 描述符被关闭;在后一种情况下，读将返回 0，就像数据文件的结束一样。事实上，如果没 有数据写入，读会无限阻塞，直到新数据不可能到达为止(写端被关闭)，这也是子进程在执行上面的 <code>wc</code> 之前关闭管道的写端很重要的一个原因:如果 wc 的一个文件描述符仍然引 用了管道的写端，那么 <code>wc</code> 将永远看不到文件的关闭(被自己阻塞)。</p>
+<p>xv6 的 shell 实现了管道，如 <code>grep fork sh.c | wc -l</code>，shell 的实现类似于上面的代码 (<code>user/sh.c</code>:100)。执行 shell 的子进程创建一个管道来连接管道的左端和右端(去看源码，不看难懂)。然后，它在管道左端(写入端)调用 <code>fork</code> 和 <code>runcmd</code>，在右端(读取端)调用 <code>fork</code> 和 <code>runcmd</code>，并等待两者的完成</p>
+<blockquote>
+<p>读取端会因为管道无数据且输入端未关闭而阻塞，即只能等待左边的命令执行完才能执行右边的命令， 写入端需要将自己的输出写入到管道，或者关闭管道，右边的命令读取管道并将其作为自己的输入(可以没有参数)，</p>
+</blockquote>
+<p>管道的右端(读取端)可以是一个命令，也可以是包 含管道的多个命令(例如，a | b | c)，它又会分叉为两个新的子进程(一个是 b，一个是 c)。 因此，shell 可以创建一棵进程树。这棵树的叶子是命令，内部(非叶子)节点是等待左右子 进程完成的进程。</p>
+<p>原则上，我们可以让内部节点(非叶节点)运行管道的左端，但这样的实现会更加复杂。 考虑只做以下修改:修改 sh.c，使其不为 runcmd(p-&gt;left) fork 进程，直接递归运行 <code>runcmd(p-&gt;left)</code>。像这样，<code>echo hi | wc</code> 不会产生输出，因为当 <code>echo hi</code> 在 <code>runcmd</code> 中退出 时，内部进程会退出，而不会调用 <code>fork</code> 来运行管道的右端。这种不正确的行为可以通过不 在 runcmd 中为内部进程调用 exit 来修正，但是这种修正会使代码变得复杂:<code>runcmd</code> 需要 知道该进程是否是内部进程(非叶节点)。当不为 <code>runcmd(p-&gt;right) fork</code> 进程时，也会出 现复杂的情况。像这样的修改，<code>sleep 10 | echo hi</code> 就会立即打印出 <code>hi</code>，而不是 10 秒后，因 为 <code>echo</code> 会立即运行并退出，而不是等待 <code>sleep</code> 结束。由于 <code>sh.c</code> 的目标是尽可能的简单，所 以它并没有试图避免创建内部进程。</p>
+<p>管道似乎没有比临时文件拥有更多的功能:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> hello world | <span class="built_in">wc</span></span><br></pre></td></tr></table></figure>
+
+<p>could be implemented without pipes as</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> hello world &gt;/tmp/xyz; <span class="built_in">wc</span> &lt;/tmp/xyz</span><br></pre></td></tr></table></figure>
+
+<p>在这种情况下，管道比临时文件至少有四个优势。</p>
+<ul>
+<li>首先，管道会自动清理自己;如果是文件重定向，shell 在完成后必须小心翼翼地删除 <code>/tmp/xyz</code>。</li>
+<li>第二，管道可以传递任意长的数据流，而文件重定向则需要磁盘上有足够的空闲空间来存储所有数据。</li>
+<li>第三，管道可以分阶段的并行执行，而文件方式则需要在第二个程序开始之前完成第一个程序。</li>
+<li>第四，如果你要实现进程间的通信，管道阻塞读写比文件的非阻塞语义更有效率。</li>
+</ul>
+<h2 id="1-4-File-System"><a href="#1-4-File-System" class="headerlink" title="1.4 File System"></a>1.4 File System</h2><h4 id="chdir"><a href="#chdir" class="headerlink" title="chdir"></a><code>chdir</code></h4><p>xv6 文件系统包含了数据文件(拥有字节数组)和目录(拥有对数据文件和其他目录的 命名引用)。可以通过 <code>chdir</code> 系统调用来改变进程的当前目录。下面两个 <code>open</code> 打开了同一个文件(假设所有涉及的目录都存在)。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chdir(&quot;/a&quot;); </span><br><span class="line">chdir(&quot;b&quot;); </span><br><span class="line">open(&quot;c&quot;, O_RDONLY);</span><br><span class="line"></span><br><span class="line">open(&quot;/a/b/c&quot;, O_RDONLY);</span><br></pre></td></tr></table></figure>
+
+<p>前两行将进程的当前目录改为 <code>/a/b</code>; 后面两行既不引用也不改变进程的当前目录。</p>
+<h4 id="mkdir-mknod"><a href="#mkdir-mknod" class="headerlink" title="mkdir/mknod"></a><code>mkdir/mknod</code></h4><p>有一些系统调用来可以创建新的文件和目录: <code>mkdir</code> 创建一个新的目录，用 <code>O_CREATE</code> 标志创建并打开一个新的数据文件，以及 <code>mknod</code> 创建一个新的设备文件。这个例子说明了 这两个系统调用的使用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir(<span class="string">&quot;/dir&quot;</span>);</span><br><span class="line">fd = open(<span class="string">&quot;/dir/file&quot;</span>, O_CREATE | O_WRONLY);</span><br><span class="line">close(fd);</span><br><span class="line"></span><br><span class="line">mknod(<span class="string">&quot;/console&quot;</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>mknod</code> 创建了一个引用设备的特殊文件。与设备文件相关联的是主要设备号和次要设 备号(<code>mknod</code> 的两个参数)，它们唯一地标识一个内核设备。当一个进程打开设备文件后，内 核会将系统的读写调用转移到内核设备实现上，而不是将它们传递给文件系统。</p>
+<p>文件名称与文件是不同的;底层文件(非磁盘上的文件)被称为 inode$^3$ ，一个 inode 可以有多个名称，称为链接。每个链接由目录中的一个项组成;该项包含一个文件名和对 inode 的引用。inode 保存着一个文件的 metadata(元数据)，包括它的类型(文件或目录或设备)， 它的长度，文件内容在磁盘上的位置，以及文件的链接数量。</p>
+<blockquote>
+<p>inode$^3$ : inode 是 linux 和类 unix 操作系统用来储存除了文件名和实际数据的数据结构，它是用来连接实际数据 和文件名的。</p>
+</blockquote>
+<h4 id="fstat"><a href="#fstat" class="headerlink" title="fstat"></a><code>fstat</code></h4><p><code>fstat</code> 系统调用从文件描述符引用的 inode 中检索信息。它定义在 <code>stat.h (kernel/stat.h)</code> 的 <code>stat</code> 结构中:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> T_DIR 1 <span class="comment">// Directory </span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> T_FILE 2 <span class="comment">// File </span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> T_DEVICE 3 <span class="comment">// Device</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span> &#123;</span></span><br><span class="line">  <span class="type">int</span> dev; <span class="comment">// File system’s disk device </span></span><br><span class="line">  uint ino; <span class="comment">// Inode number</span></span><br><span class="line">  <span class="type">short</span> type; <span class="comment">// Type of file</span></span><br><span class="line">  <span class="type">short</span> nlink; <span class="comment">// Number of links to file </span></span><br><span class="line">  uint64 size; <span class="comment">// Size of file in bytes</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="link"><a href="#link" class="headerlink" title="link"></a><code>link</code></h4><p><code>link</code> 系统调用创建了一个引用了同一个 inode 的文件(文件名)。下面的片段创建了引用了同一个 inode 两个文件 a 和 b。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">open(<span class="string">&quot;a&quot;</span>, O_CREATE | O_WRONLY);</span><br><span class="line">link(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>读写 a 与读写 b 是一样的，每个 inode 都有一个唯一的 inode 号来标识。经过上面的代 码序列后，可以通过检查 <code>fstat</code> 的结果来确定 a 和 b 指的是同一个底层内容:两者将返回相 同的 inode 号(ino)，并且 <code>nlink</code> 计数为 2。</p>
+<h4 id="unlink"><a href="#unlink" class="headerlink" title="unlink"></a><code>unlink</code></h4><p><code>unlink</code> 系统调用会从文件系统中删除一个文件名。只有当文件的链接数为零且没有文 件描述符引用它时，文件的 inode 和存放其内容的磁盘空间才会被释放。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unlink(<span class="string">&quot;a&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p> 上面这行代码会删除 a，此时只有 b 会引用 inode。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fd = open(<span class="string">&quot;/tmp/xyz&quot;</span>, O_CREATE | O_RDWR); unlink(<span class="string">&quot;/tmp/xyz&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这段代码是创建一个临时文件的一种惯用方式，它创建了一个无名称 inode，故会在进 程关闭 <code>fd</code> 或者退出时删除文件。</p>
+<p>Unix 提供了 shell 可调用的文件操作程序，作为用户级程序，例如 <code>mkdir</code>、<code>ln</code> 和 <code>rm</code>。这 种设计允许任何人通过添加新的用户级程序来扩展命令行接口。现在看来，这个设计似乎是 显而易见的，但在 Unix 时期设计的其他系统通常将这类命令内置到 shell 中(并将 shell 内 置到内核中)。</p>
+<h2 id="1-5-Real-world"><a href="#1-5-Real-world" class="headerlink" title="1.5 Real world"></a>1.5 Real world</h2><p>Unix 将标准文件描述符、管道和方便的 shell 语法结合起来操作，是通用可重用程序的进步。</p>
+<p>Xv6 并不符合 POSIX 标准：</p>
+<ul>
+<li>它缺少许多基本的系统调用，如 lseek， </li>
+<li>提供的许多系统调用与标准不同。</li>
+</ul>
+<p>Unix 用一套文件名和文件描述符接口统一了对多种类型资源(文件、目录和设备)的访问。</p>
+<p>文件系统和文件描述符已经是强大的抽象。即便如此，操作系统接口还有其他模式。 Multics 是 Unix 的前身，它以一种使文件存储看起来像内存的方式抽象了文件存储，产生了 一种截然不同的接口。Multics 设计的复杂性直接影响了 Unix 的设计者，他们试图建立一些更简单的东西。</p>
+<p>Xv6 没有用户系统；Unix 的术语：所有的 xv6 进程都以 root 身份运行。</p>
+<p>本书研究 xv6 如何实现类 Unix 接口。</p>
+<p>任何操作系统都必须将进程复用到底层硬件上，将进程相互隔离，并提供受控进程间通信的机制。</p>
+<h1 id="第2章-操作系统的组织形式"><a href="#第2章-操作系统的组织形式" class="headerlink" title="第2章 操作系统的组织形式"></a>第2章 操作系统的组织形式</h1><p>操作系统必须满足三个要求：<strong>多路复用、隔离、交互</strong></p>
+<blockquote>
+<p>进程是xv6系统的隔离单元。也概述了当 xv6 启动时，第一个进程是如何创建的。</p>
+</blockquote>
+<p>xv6 运行在多核 RISC-V 微处理器上，许多底层功能 (例如，它的进程实现) 是 RISC-V 所特有的</p>
+<blockquote>
+<p>RISC-V 是一个 64 位的CPU，xv6 是用 <code>LP64</code> C编写的，表示在 C 语言里的 long 和 pointer 是64位的，而不是32位。</p>
+<p>有关 RISC-V 的有用的参考是《The RISC-V Reader: An Open Architecture Atlas》</p>
+<p>通过 <code>qemu</code> 的 <code>-machine virt</code>选项，可为支持硬件编写xv6。这里的支持硬件包括</p>
+<ul>
+<li>RAM</li>
+<li>一个包含启动代码的ROM</li>
+<li>用户键盘&#x2F;屏幕的串行连接</li>
+<li>一个存储用的磁盘</li>
+</ul>
+</blockquote>
+<h2 id="2-1-Abstracting-physical-resources"><a href="#2-1-Abstracting-physical-resources" class="headerlink" title="2.1 Abstracting physical resources"></a>2.1 Abstracting physical resources</h2><p>使用类库实现系统调用：应用通过链接到类库的方式来使用类库。</p>
+<ul>
+<li>每个应用甚应用至可以根据自身需要量身定制自己的类库。</li>
+<li>应用能直接跟硬件资源交互，以对应用最优的方式来使用硬件资源。</li>
+<li>一些嵌入式设备或者实时系统采用这种组织形式。</li>
+</ul>
+<p>类库方法缺点：</p>
+<ul>
+<li>如果多个应用在运行，则这些应用必须有良好的行为</li>
+<li>协作式分时共享策略可行。想要的隔离度要比协作式策略更强</li>
+</ul>
+<p>换句话说，协作式策略需要的隔离是弱隔离。</p>
+<ul>
+<li><p>禁止应用直接访问敏感的硬件资源，转而将资源抽象为服务，对实现强隔离是有帮助的。</p>
+<blockquote>
+<p>比如，UNIX应用只能通过文件系统的<code>open</code>、<code>read</code>、<code>write</code>、<code>close</code> 等系统调用来跟存储交互，而不是直接读写磁盘。</p>
+<p>UNIX 的文件系统为应用提供了路径名，且允许操作系统来管理磁盘。</p>
+</blockquote>
+</li>
+</ul>
+<p>文件系统是一个比直接使用磁盘更方便的抽象</p>
+<ul>
+<li><p>类似地，通过按需保存和恢复寄存器状态，UNIX透明地在多个进程间切换硬件CPU，使得应用自身意识不到分时共享。</p>
+</li>
+<li><p>这种透明性允许：即使有应用陷入死循环，则操作系统仍可以共享 CPU。</p>
+<blockquote>
+<p>比如，UNIX进程使用 <code>exec</code> 来构建它的内存映像，而不是直接跟物理内存交互。这样就允许：</p>
+<ul>
+<li>操作系统决定进程在内存中的放置位置。</li>
+<li>如果内存不够用的话，则操作系统甚至会将进程的数据保存在磁盘上。</li>
+<li><code>exec</code>为用户提供了方便的文件系统来存储可执行程序映像。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p>UNIX 进程间的许多进程的交互方式都是通过文件描述符发生的。</p>
+<ul>
+<li><p>不仅抽象了许多细节 (比如数据是存储在管道里还是文件里等)</p>
+</li>
+<li><p>还是以简化交互的形式定义的。比如，如果在管道中的一个应用失败了，则内核会为管道中的下一个进程生成一个 <code>EOF </code> 的信号。</p>
+</li>
+</ul>
+<p>为了既为程序员提供方便，也提供强隔离，则在图1.3中的系统调用接口是经过仔细设计的。</p>
+<h2 id="2-2-User-mode-supervisor-mode-and-system-calls"><a href="#2-2-User-mode-supervisor-mode-and-system-calls" class="headerlink" title="2.2 User mode, supervisor mode, and system calls"></a>2.2 User mode, supervisor mode, and system calls</h2><p>CPU为强隔离提供硬件上的支持，比如，RISC-V有3种CPU执行指令的模式</p>
+<ul>
+<li>机器模式<ul>
+<li>在机器模式下执行指令具有完整的特权。机器模式主要用于配置计算机。</li>
+<li>xv6 在机器模式下执行若干行指令，然后切换到超级用户模式。</li>
+</ul>
+</li>
+<li>超级用户模式<ul>
+<li>在超级用户模式下，允许 CPU 执行特权指令，比如使中断生效和失效、读写持有页表地址的寄存器等。</li>
+</ul>
+</li>
+<li>用户模式<ul>
+<li>如果处于用户模式的应用尝试去执行一个特权指令，则 CPU 不会执行该指令，而是切换到超级用户模式，使得超级用户代码能终止该应用，因为应用做了本不应该它做的事。</li>
+</ul>
+</li>
+</ul>
+<p>运行模式切换：</p>
+<ul>
+<li>应用只能执行用户模式的指令(比如，将数字相加等)，称该软件在用户空间运行。</li>
+<li>在超级用户模式下的软件也能执行特权指令，称该软件在内核空间运行。<ul>
+<li>在内核空间中运行的软件成为内核。想调用内核功能 (比如xv6中的<code>read</code>系统调用) 的的应用必须要切换到内核。</li>
+</ul>
+</li>
+<li>CPU提供了一个特定指令 (RISC-V 提供了 <code>ecall</code> 指令)，该指令的功能是从用户模式切换到超级用户模式的特定指令，进入内核的指定位置。<ul>
+<li>一旦 CPU 切换到了超级用户模式，则内核就能验证该系统调用的参数，决定是否允许应用执行请求操作，拒绝执行或者执行。</li>
+<li>重要的是内核控制着切换到超级用户模式的入口点。如果应用能决定内核的进入点，则一个恶意的应用就能在一个跳过验证参数的点进入内核。</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-3-内核的组织结构"><a href="#2-3-内核的组织结构" class="headerlink" title="2.3 内核的组织结构"></a>2.3 内核的组织结构</h2><blockquote>
+<p>一个很关键的设计问题：操作系统的哪些部分应该以超级用户模式运行？</p>
+</blockquote>
+<h3 id="思路1：monolithic-kernel"><a href="#思路1：monolithic-kernel" class="headerlink" title="思路1：monolithic kernel"></a>思路1：monolithic kernel</h3><p>整个操作系统都驻留在内核，使得所有的系统调用都是在超级用户模式下运行。在整体内核中，整个操作系统运行时都具有完整的硬件特权。</p>
+<h5 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h5><p>这样的组织很方便——</p>
+<ul>
+<li>操作系统的设计者不用判断操作系统的哪一部分不需要完整的特权。</li>
+<li>操作系统的各个部分之间协作起来会更容易，比如操作系统可能有一个被文件系统和虚拟内存系统共用的缓冲区缓存。</li>
+</ul>
+<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h5><ul>
+<li>操作系统的不同部分之间的接口通常会很复杂，从而导致操作系统的开发者很容易就犯错。</li>
+<li>在整体内核中，出一个错就是致命的，因为在超级用户模式下的一个错误通常会导致内核崩溃。</li>
+<li>如果内核崩溃了，则计算机将停止工作，进而所有应用都失败了。计算机必须重新启动了。</li>
+</ul>
+<h3 id="思路2：micro-kernel"><a href="#思路2：micro-kernel" class="headerlink" title="思路2：micro kernel"></a>思路2：micro kernel</h3><p>为了降低内核中出错的风险，操作系统的设计者要</p>
+<ul>
+<li>最小化能以超级用户模式运行的操作系统代码的数量；</li>
+<li>以用户模式执行操作系统剩余的大部分代码；</li>
+</ul>
+<p>图2.1说明了这种微内核设计。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/6.828%20xv6-book/f-21.png" alt="f-21"></p>
+<p>作为进程运行的 OS 服务称为服务器，文件系统作为一个用户级别的进程在运行。</p>
+<p>在图中，文件系统作为一个用户级进程运行。作为进程运行的 OS 服务称为服务器。</p>
+<p>为了让应用程序与文件服务器进行交互，内核提供了一种进程间通信机制，用于从一个用户模式进程向另一个进程发送消息。</p>
+<blockquote>
+<p>例如，如果一个像 shell 这样的应用程序想要读写文件，它就会向文件服务器发送一个消息，并等待响应。</p>
+</blockquote>
+<p>在微内核中，内核接口由一些低级函数组成，用于启动应用程序、发送消息、访问设备硬件等。这种组织方式使得内核相对简单，因为大部分操作系统驻留在用户级服务器中。</p>
+<p>xv6 和大多数 Unix 操作系统一样，是以宏内核的形式实现的。</p>
+<ul>
+<li>因此，xv6 内核接口与操作系统接口相对应，内核实现了完整的操作系统。</li>
+<li>由于 xv6 不提供很多服务，所以它的内核比一些微内核要小，但从概念上讲 xv6 是宏内核。</li>
+</ul>
+<h2 id="2-4-Code-xv6-organization"><a href="#2-4-Code-xv6-organization" class="headerlink" title="2.4 Code: xv6 organization"></a>2.4 Code: xv6 organization</h2><p>xv6的内核源代码是在 <code>kernel</code> 子目录下。模块间接口被定义在 <code>defs.h</code> 中。</p>
+<p>遵循粗略的模块化概念，它被分成许多文件:</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/6.828%20xv6-book/f-22.png" alt="f-22"></p>
+<h2 id="2-5-Process-overview"><a href="#2-5-Process-overview" class="headerlink" title="2.5 Process overview"></a>2.5 Process overview</h2><p><code>xv6</code> 里的一个隔离单元就是一个进程。进程抽象可以 ——</p>
+<ul>
+<li>防止一个进程破坏或者监视另一个进程的内存、CPU、文件描述符等</li>
+<li>防止一个进程破坏内核，以便一个进程不能颠覆内核的隔离机制</li>
+</ul>
+<p>内核必须仔细地实现隔离机制，内核用来实现进程的机制包括</p>
+<ul>
+<li>用户&#x2F;超级用户模式标记</li>
+<li>地址空间</li>
+<li>线程的时间分片等</li>
+</ul>
+<p>进程抽象为程序提供了私有机器，私有的内存系统（地址空间），私有的 CPU（用来执行指令）</p>
+<p>xv6 使用页表（通过硬件来实现）来给予每个进程自己的地址空间。RISC-V 页表将虚拟地址(RISC-V指令能操作的地址)映射到物理地址(CPU芯片发送给主内存的地址)。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/6.828%20xv6-book/f-23.png" alt="f-23"></p>
+<p>xv6为每个进程维护一张单独的页表，该页表定义了进程的地址空间。如图 2.3 所示，进程的用户空间内存的地址空间从虚拟地址 0 开始的。</p>
+<ul>
+<li>指令存放在最前面，</li>
+<li>全局变量其次</li>
+<li>栈</li>
+<li>堆区(用于 <code>malloc</code>)，进程可以根据需要扩展</li>
+<li><code>trampoline</code></li>
+<li><code>trapframe</code></li>
+</ul>
+<p>一些因素限制了进程地址空间的最大长度：</p>
+<ul>
+<li>RISC-V 上的指针是 64 位宽；</li>
+<li>硬件在页表中查找虚拟地址时只使用低的 39 位；</li>
+<li>xv6 只使用 39 位中的 38 位。</li>
+</ul>
+<p>因此，最大的地址是 $2^{38}-1&#x3D;0x3fffffffff$，即 <code>MAXVA</code> (定义可见<code>kernel/risv.h</code>)。在地址空间的顶部，xv6 保留了一页，用于 <code>trampoline</code> 和映射进程 <code>trapframe</code> 的页，以便切换到内核，我们将在第 4 章中解释。</p>
+<blockquote>
+<p>这里留了两个问题：</p>
+<ul>
+<li>什么是 trampoline？</li>
+<li>什么是 trapframe？</li>
+</ul>
+</blockquote>
+<p>xv6 内核为每个进程维护了许多状态，且将这些状态收集在了 <code>proc</code> 结构体中<code>kernel/proc.h:86</code>)。</p>
+<ul>
+<li>一个进程最重要的内核状态片段就是页表、内核栈、运行状态。</li>
+<li>我们用 <code>p-&gt;xxx</code> 来表示 proc 结构的元素，例如，<code>p-&gt;pagetable</code> 是指向进程页表的指针。</li>
+</ul>
+<p>每个进程都有一个执行线程(简称线程)，执行进程的指令。</p>
+<ul>
+<li>一个线程能被挂起，然后恢复。</li>
+<li>为了在进程间透明地切换，内核会挂起当前运行线程，恢复另一个进程的线程。</li>
+</ul>
+<p>线程的许多状态 (局部变量、函数调用返回地址) 是保存在线程的栈上的</p>
+<ul>
+<li>每个进程有两个栈：用户栈 + 内核栈 (<code>p-&gt;kstack</code>)。</li>
+<li>当进程在执行用户指令时，只有它的用户栈在使用，而它的内核栈是空的。</li>
+<li>当进程进入内核时 (为了系统调用或中断)，内核代码在进程的内核栈上执行;</li>
+<li>当进程在内核中时，它的用户栈仍然包含保存的数据，但不被主动使用。</li>
+<li>进程的线程在用户栈和内核栈中交替执行。</li>
+<li>内核栈是独立的(并且受到保护，不受用户代码的影响)，所以即使一个进程用户栈被破坏了，内核也可以执行。</li>
+</ul>
+<p>一个进程通过执行 RISC-v 的<code>ecall</code>指令来进行系统调用。</p>
+<ul>
+<li><p>该指令提升硬件特权等级，修改程序计数器到某个内核定义的入口点。</p>
+</li>
+<li><p>内核入口点的代码切换到一个内核栈，并执行实现系统调用的内核指令。</p>
+</li>
+<li><p>当系统调用完成时，内核通过调用<code>sret</code>指令来切换回用户栈并返回到用户空间。</p>
+<blockquote>
+<p>该指令降低硬件特权等级，恢复执行紧邻系统调用指令的那条用户指令。</p>
+</blockquote>
+</li>
+</ul>
+<p>进程的线程可以在内核中阻塞等待 I&#x2F;O，当 I&#x2F;O 完成后，再从离开的地方恢复。</p>
+<ul>
+<li><code>p-&gt;kstack</code>：进程的内核栈。</li>
+<li><code>p-&gt;state</code>：表示进程的状态，包括已分配、待运行、运行中、等待I&#x2F;O、退出等。</li>
+</ul>
+<p><code>p-&gt;pagetable</code> 以 RISC-V 硬件需要的格式保存进程的页表。进程在用户空间执行时， xv6 使分页硬件使用进程的 <code>p-&gt;pagetable</code>。进程的页表也会记录分配给该进程内存的物理页地址。</p>
+<h2 id="2-6-Code-starting-xv6-and-the-first-process"><a href="#2-6-Code-starting-xv6-and-the-first-process" class="headerlink" title="2.6 Code: starting xv6 and the first process"></a>2.6 Code: starting xv6 and the first process</h2><p>RISC-V 计算机开机会初始化自己并运行存储在只读存储器中的 <code>boot loader</code>。<code>boot loader</code> 将 xv6 内核加载到内存中。</p>
+<p>CPU 从 <code>_entry(kernel/entry.S:6)</code> 在机器模式下开始执行 xv6。RISC-V 在<strong>禁用分页硬件</strong>的情况下启动：虚拟地址直接映射到物理地址。</p>
+<p><code>loader</code> 将 xv6 内核加载到物理地址 <code>0x80000000</code> 的内存中。</p>
+<blockquote>
+<p>是因为地址范围 <code>0x0-0x80000000</code> 包含 I&#x2F;O 设备。所以内核放在 <code>0x80000000</code> 而非 <code>0x0</code></p>
+</blockquote>
+<p><code>_entry</code> 处的指令设置了一个栈，这样 xv6 就可以运行 C 代码。Xv6 在文件 <code>start.c(kernel/start.c:11)</code> 中声明了初始栈的空间，即 <code>stack0</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// entry.S needs one stack per CPU.</span></span><br><span class="line">__attribute__ ((aligned (<span class="number">16</span>))) <span class="type">char</span> stack0[<span class="number">4096</span> * NCPU];</span><br></pre></td></tr></table></figure>
+
+<p>在<code>_entry</code> 处的代码加载栈指针寄存器 <code>sp</code>，地址为 <code>stack0+4096</code>，也就是栈的顶部，因为 RISC-V 的栈是向下扩张的。现在内核就拥有了栈，<code>_entry</code> 调用 <code>start (kernel/start.c:21)</code>，并执行其 C 代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// entry.S jumps here in machine mode on stack0.</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">start</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// set M Previous Privilege mode to Supervisor, for mret.</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">long</span> x = r_mstatus();</span><br><span class="line">  x &amp;= ~MSTATUS_MPP_MASK;</span><br><span class="line">  x |= MSTATUS_MPP_S;</span><br><span class="line">  w_mstatus(x);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// set M Exception Program Counter to main, for mret.</span></span><br><span class="line">  <span class="comment">// requires gcc -mcmodel=medany</span></span><br><span class="line">  w_mepc((uint64)main);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// disable paging for now.</span></span><br><span class="line">  w_satp(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// delegate all interrupts and exceptions to supervisor mode.</span></span><br><span class="line">  w_medeleg(<span class="number">0xffff</span>);</span><br><span class="line">  w_mideleg(<span class="number">0xffff</span>);</span><br><span class="line">  w_sie(r_sie() | SIE_SEIE | SIE_STIE | SIE_SSIE);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ask for clock interrupts.</span></span><br><span class="line">  timerinit();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// keep each CPU&#x27;s hartid in its tp register, for cpuid().</span></span><br><span class="line">  <span class="type">int</span> id = r_mhartid();</span><br><span class="line">  w_tp(id);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// switch to supervisor mode and jump to main().</span></span><br><span class="line">  <span class="keyword">asm</span> <span class="title function_">volatile</span><span class="params">(<span class="string">&quot;mret&quot;</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数 <code>start</code> 执行一些只有在机器模式下才允许的配置，然后切换到监督者模式。</p>
+<p>为了进入监督者模式，RISC-V 提供了指令 <code>mret</code>。 这条指令最常用来从上一次的调用中返回，上一次调用从监督者模式到机器模式。</p>
+<p><code>start</code> 并不是从这样的调用中返回，而是把事情设置得像有过这样的调用一样：它在寄存器 <code>mstatus</code> 中把上一次的特权模式设置为特权者模式，它把 <code>main</code> 的地址写入寄存器 <code>mepc</code> 中，把返回地址设置为 <code>main</code> 函数的地址，在特权者模式中把 0 写入页表寄存器 <code>satp</code> 中，禁用虚拟地址转换，并把所有中断和异常委托给特权者模式。</p>
+<p>在进入特权者模式之前，<code>start</code> 还要执行一项任务：<u>对时钟芯片进行编程以初始化定时器中断</u>。在完成了这些基本管理后，<code>start</code> 通过调用 <code>mret</code> “返回” 到监督者模式。这将导致程序计数器变为 <code>main(kernel/main.c:11)</code> 的地址。</p>
+<p>在 <code>main(kernel/main.c:11)</code>初始化几个设备和子系统后，它通过调用 <code>userinit(kernel/proc.c:212)</code> 来创建第一个进程。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// start() jumps here in supervisor mode on all CPUs.</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(cpuid() == <span class="number">0</span>)&#123;</span><br><span class="line">    consoleinit();</span><br><span class="line">    printfinit();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;xv6 kernel is booting\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    kinit();         <span class="comment">// physical page allocator</span></span><br><span class="line">    kvminit();       <span class="comment">// create kernel page table</span></span><br><span class="line">    kvminithart();   <span class="comment">// turn on paging</span></span><br><span class="line">    procinit();      <span class="comment">// process table</span></span><br><span class="line">    trapinit();      <span class="comment">// trap vectors</span></span><br><span class="line">    trapinithart();  <span class="comment">// install kernel trap vector</span></span><br><span class="line">    plicinit();      <span class="comment">// set up interrupt controller</span></span><br><span class="line">    plicinithart();  <span class="comment">// ask PLIC for device interrupts</span></span><br><span class="line">    binit();         <span class="comment">// buffer cache</span></span><br><span class="line">    iinit();         <span class="comment">// inode cache</span></span><br><span class="line">    fileinit();      <span class="comment">// file table</span></span><br><span class="line">    virtio_disk_init(); <span class="comment">// emulated hard disk</span></span><br><span class="line">    userinit();      <span class="comment">// first user process</span></span><br><span class="line">    __sync_synchronize();</span><br><span class="line">    started = <span class="number">1</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">while</span>(started == <span class="number">0</span>)</span><br><span class="line">      ;</span><br><span class="line">    __sync_synchronize();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hart %d starting\n&quot;</span>, cpuid());</span><br><span class="line">    kvminithart();    <span class="comment">// turn on paging</span></span><br><span class="line">    trapinithart();   <span class="comment">// install kernel trap vector</span></span><br><span class="line">    plicinithart();   <span class="comment">// ask PLIC for device interrupts</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  scheduler();        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Set up first user process.</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">userinit</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">p</span>;</span></span><br><span class="line"></span><br><span class="line">  p = allocproc();</span><br><span class="line">  initproc = p;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// allocate one user page and copy init&#x27;s instructions</span></span><br><span class="line">  <span class="comment">// and data into it.</span></span><br><span class="line">  uvminit(p-&gt;pagetable, initcode, <span class="keyword">sizeof</span>(initcode));</span><br><span class="line">  p-&gt;sz = PGSIZE;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// prepare for the very first &quot;return&quot; from kernel to user.</span></span><br><span class="line">  p-&gt;trapframe-&gt;epc = <span class="number">0</span>;      <span class="comment">// user program counter</span></span><br><span class="line">  p-&gt;trapframe-&gt;sp = PGSIZE;  <span class="comment">// user stack pointer</span></span><br><span class="line"></span><br><span class="line">  safestrcpy(p-&gt;name, <span class="string">&quot;initcode&quot;</span>, <span class="keyword">sizeof</span>(p-&gt;name));</span><br><span class="line">  p-&gt;cwd = namei(<span class="string">&quot;/&quot;</span>);</span><br><span class="line"></span><br><span class="line">  p-&gt;state = RUNNABLE;</span><br><span class="line"></span><br><span class="line">  release(&amp;p-&gt;lock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第一个进程执行一个用 RISC-V 汇编编写的小程序 <code>initcode.S(user/initcode.S:1)</code>，它通过调用 <code>exec</code> 系统调用重新进入内核。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># Initial process that execs /init.</span><br><span class="line"># This code runs in user space.</span><br><span class="line"></span><br><span class="line">#include &quot;syscall.h&quot;</span><br><span class="line"></span><br><span class="line"># exec(init, argv)</span><br><span class="line">.globl start</span><br><span class="line">start:</span><br><span class="line">        la a0, init</span><br><span class="line">        la a1, argv</span><br><span class="line">        li a7, SYS_exec</span><br><span class="line">        ecall</span><br><span class="line"></span><br><span class="line"># for(;;) exit();</span><br><span class="line">exit:</span><br><span class="line">        li a7, SYS_exit</span><br><span class="line">        ecall</span><br><span class="line">        jal exit</span><br><span class="line"></span><br><span class="line"># char init[] = &quot;/init\0&quot;;</span><br><span class="line">init:</span><br><span class="line">  .string &quot;/init\0&quot;</span><br><span class="line"></span><br><span class="line"># char *argv[] = &#123; init, 0 &#125;;</span><br><span class="line">.p2align 2</span><br><span class="line">argv:</span><br><span class="line">  .long init</span><br><span class="line">  .long 0</span><br></pre></td></tr></table></figure>
+
+<p>正如我们在第一章中所看到的，<code>exec</code> 用一个新的程序(本例中是 <code>/init</code>) 替换当前进程的内存和寄存器。 一旦内核完成 <code>exec</code>，它就会在 <code>/init</code> 进程中返回到用户空间。<code>init(user/init.c:15)</code> 在需要时会创建一个新的控制台设备文件，然后以文件描述符 0、1 和 2 的形式打开它。然后它在控制台上启动一个 shell。这样系统就启动了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// init: The initial user-level program</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/types.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/stat.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/spinlock.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/sleeplock.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/fs.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/file.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;user/user.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/fcntl.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> *argv[] = &#123; <span class="string">&quot;sh&quot;</span>, <span class="number">0</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> pid, wpid;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(open(<span class="string">&quot;console&quot;</span>, O_RDWR) &lt; <span class="number">0</span>)&#123;</span><br><span class="line">    mknod(<span class="string">&quot;console&quot;</span>, CONSOLE, <span class="number">0</span>);</span><br><span class="line">    open(<span class="string">&quot;console&quot;</span>, O_RDWR);</span><br><span class="line">  &#125;</span><br><span class="line">  dup(<span class="number">0</span>);  <span class="comment">// stdout</span></span><br><span class="line">  dup(<span class="number">0</span>);  <span class="comment">// stderr</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;init: starting sh\n&quot;</span>);</span><br><span class="line">    pid = fork();</span><br><span class="line">    <span class="keyword">if</span>(pid &lt; <span class="number">0</span>)&#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;init: fork failed\n&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(pid == <span class="number">0</span>)&#123;</span><br><span class="line">      exec(<span class="string">&quot;sh&quot;</span>, argv);</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;init: exec sh failed\n&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">      <span class="comment">// this call to wait() returns if the shell exits,</span></span><br><span class="line">      <span class="comment">// or if a parentless process exits.</span></span><br><span class="line">      wpid = wait((<span class="type">int</span> *) <span class="number">0</span>);</span><br><span class="line">      <span class="keyword">if</span>(wpid == pid)&#123;</span><br><span class="line">        <span class="comment">// the shell exited; restart it.</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span>(wpid &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;init: wait returned an error\n&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// it was a parentless process; do nothing.</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-7-Real-World"><a href="#2-7-Real-World" class="headerlink" title="2.7 Real World"></a>2.7 Real World</h2><p>许多 Unix 内核都是宏内核，比如 Linux 的内核，尽管有些操作系统的功能是作为用户级服务器运行的 (如 windows 系统)。L4、Minix 和 QNX 等内核是以服务器的形式组织的微内核，并在嵌入式环境中得到了广泛的部署。大多数操作系统都采用了进程概念，大多数进程都与 xv6 的相似。</p>
+<p>然而，现代操作系统支持进程可以拥有多个线程，以允许一个进程利用多个 CPU。在一个进程中支持多个线程涉及到不少 xv6 没有的机制，包括潜在的接口变化 (如 Linux 的 <code>clone</code>， <code>fork</code> 的变种)，以控制线程共享进程的哪些方面。</p>
+<h1 id="Chapter-3-Page-tables"><a href="#Chapter-3-Page-tables" class="headerlink" title="Chapter 3 Page tables"></a>Chapter 3 Page tables</h1><p>页表是操作系统为每个进程提供自己私有地址空间和内存的机制。页表决定了 <strong>内存地址</strong> 的含义，以及物理内存的哪些部分可以被访问。它们允许 xv6 隔离不同进程的地址空间，并 将它们映射到物理内存上。</p>
+<p>页表还提供了一个间接层次，允许 xv6 执行一些技巧：在几个地址空间中映射同一内存 (trampoline 页)，以及用一个未映射页来保护内核和用户的栈。</p>
+<h2 id="3-1-Paging-hardware"><a href="#3-1-Paging-hardware" class="headerlink" title="3.1 Paging hardware"></a>3.1 Paging hardware</h2><p>RISC-V 指令 (包括用户和内核) 操作的是虚拟地址，</p>
+<p>机器 RAM（物理内存）用物理地址做索引，</p>
+<p>RISC-V 分页硬件 (一般指内存管理单元 (Memory Management Unit, MMU)) 将这两种地址联系起来，通过将每个虚拟地址映射到物理地址上。</p>
+<p>xv6 运行在 <code>Sv39 RISC-V</code> 上，这意味着只使用 64 位虚拟地址的底部 39 位，顶部 25 位未被使用。</p>
+<ul>
+<li>在这种 <code>Sv39</code> 配置中，一个 RISC-V 页表在逻辑上是一个 $2^{27}(134,217,728)$ 页表项 $(Page Table Entry, PTE)$ 的数组。每个 $PTE$ 包含一个 44 位的物理页号 $(Physical Page Number，PPN)$ 和一些标志位。</li>
+<li>分页硬件通过利用 39 位中的高 27 位索引到页表中找到一个 $PTE$ 来转换一个虚拟地址，并计算出一个 56 位的物理地址，它的前 44 位来自于 $PTE$ 中的 $PPN$，而它的后 12 位则是从原来的虚拟地址复制过来的。</li>
+<li>图 3.1 显示了这个过程，在逻辑上可以把页表看成是一个简单的 $PTE$ 数组(更完整的描述见图 3.2)。页表让操作系统控 制虚拟地址到物理地址的转换，其粒度为 $4096(2^{12})$ 字节的对齐块。这样的分块称为页。</li>
+</ul>
+<p>在 <code>Sv39 RISC-V</code> 中，虚拟地址的前 25 位不用于转换地址；将来，RISC-V 可能会使用这些位来定义更多的转换层。物理地址也有增长的空间：在 $PTE$ 格式中，物理页号还有 10 位 的增长空间。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/6.828%20xv6-book/f-31.png" alt="f-31"></p>
+<p>如图 3.2 所示，实际转换分三步进行。一个页表以三层树的形式存储在物理内存中。树 的根部是一个 4096 字节的页表页，它包含 512 个 PTE，这些 PTE 包含树的下一级页表页的 物理地址。每一页都包含 512 个 PTE，用于指向下一个页表或物理地址。分页硬件用 27 位 中的顶 9 位选择根页表页中的 PTE，用中间 9 位选择树中下一级页表页中的 PTE，用底 9 位选择最后的 PTE。</p>
+<p>如果转换一个地址所需的三个 PTE 中的任何一个不存在，分页硬件就会引发一个页面错误的异常(<strong>page-fault exception</strong>)，让内核来处理这个异常(见第 4 章)。这种三层结构的 一种好处是，当有大范围的虚拟地址没有被映射时，可以省略整个页表页。</p>
+<p>每个 PTE 包含标志位，告诉分页硬件如何允许使用相关的虚拟地址。<strong>PTE_V</strong> 表示 PTE 是 否存在:如果没有设置，对该页的引用会引起异常(即不允许)。PTE_R 控制是否允许指令 读取到页。<strong>PTE_W</strong> 控制是否允许指令向写该页。<strong>PTE_X</strong> 控制 CPU 是否可以将页面的内容解 释为指令并执行。<strong>PTE_U</strong> 控制是否允许用户模式下的指令访问页面;如果不设置 <strong>PTE_U</strong>， PTE 只能在监督者模式下使用。图 3.2 显示了这一切的工作原理。标志位和与页相关的结构体定义在(kernel&#x2F;riscv.h)。</p>
+<p>![f-32](&#x2F;Users&#x2F;kedae&#x2F;Desktop&#x2F;zennlyu.github.io&#x2F;hexo&#x2F;source&#x2F;_posts&#x2F;6.828 xv6-book&#x2F;f-32.png)</p>
+<p>要告诉硬件使用页表，内核必须将根页表页的物理地址写入 <strong>satp</strong> 寄存器中。每个 CPU 都有自己的 <strong>satp</strong> 寄存器。一个 CPU 将使用自己的 <strong>satp</strong> 所指向的页表来翻译后续指令产生 的所有地址。每个 CPU 都有自己的 <strong>satp</strong>，这样不同的 CPU 可以运行不同的进程，每个进程 都有自己的页表所描述的私有地址空间。</p>
+<p>关于术语的一些说明。物理内存指的是 <strong>DRAM</strong> 中的存储单元。物理存储器的一个字节 有一个地址，称为物理地址。当指令操作虚拟地址时，分页硬件会将其翻译成物理地址，然后发送给 DRAM 硬件，以读取或写入存储。不像物理内存和虚拟地址，虚拟内存不是一个 物理对象，而是指内核提供的管理物理内存和虚拟地址的抽象和机制的集合。</p>
+<h2 id="3-2-Kernel-address-space"><a href="#3-2-Kernel-address-space" class="headerlink" title="3.2 Kernel address space"></a>3.2 Kernel address space</h2><p>Xv6 为每个进程维护页表，一个是进程的用户地址空间，外加一个内核地址空间的单页 表。内核配置其地址空间的布局，使其能够通过可预测的虚拟地址访问物理内存和各种硬件资源。图 3.3 显示了这个设计是如何将内核虚拟地址映射到物理地址的。文件 (kernel&#x2F;memlayout.h) 声明了 xv6 内核内存布局的常量。</p>
+<p>![f-33](6.828 xv6-book&#x2F;f-33.png)</p>
+<p>QEMU 模拟的计算机包含 RAM(物理内存)，从物理地址 <strong>0x80000000</strong>，至少到 0x86400000，xv6 称之为 <strong>PHYSTOP</strong>。QEMU 模拟还包括 I&#x2F;O 设备，如磁盘接口。QEMU 将 设备接口作为 <strong>memory-mapped(内存映射)控制寄存器</strong> 暴露给软件，这些寄存器位于物理地址空间的 0x80000000 以下。内核可以通过读取&#x2F;写入这些特殊的物理地址与设备进行交互; 这种读取和写入与设备硬件而不是与 RAM 进行通信。第 4 章解释了 xv6 如何与设备交互。</p>
+<p>内核使用“直接映射” <strong>RAM</strong> 和<strong>内存映射</strong>设备寄存器，也就是在虚拟地址上映射硬件资源， 这些地址与物理地址相等。例如，内核本身在虚拟地址空间和物理内存中的位置都是 <strong>KERNBASE&#x3D;0x80000000</strong>。直接映射简化了读&#x2F;写物理内存的内核代码。例如，当 fork 为子 进程分配用户内存时，分配器返回该内存的物理地址;<strong>fork</strong> 在将父进程的用户内存复制到子 进程时，直接使用该地址作为虚拟地址。</p>
+<p>有几个内核虚拟地址不是直接映射的:</p>
+<p>1.trampoline 页。它被映射在虚拟地址空间的顶端;用户页表也有这个映射。第 4 章 讨论了 trampoline 页的作用，但我们在这里看到了页表的一个有趣的用例;一个物理页(存 放 trampoline 代码)在内核的虚拟地址空间中被映射了两次:一次是在虚拟地址空间的顶 部，一次是直接映射。</p>
+<p>2.内核栈页。每个进程都有自己的内核栈，内核栈被映射到地址高处，所以在它后面 xv6 可以留下一个未映射的守护页。守护页的 PTE 是无效的(设置 <strong>PTE_V</strong>)，这样如果内核 溢出内核 stack，很可能会引起异常，内核会报错。如果没有防护页，栈溢出时会覆盖其他 内核内存，导致不正确的操作。报错还是比较好的</p>
+<p>当内核通过高地址映射使用 stack 时，它们也可以通过直接映射的地址被内核访问。另 一种的设计是只使用直接映射，并在直接映射的地址上使用 stack。在这种安排中，提供保 护页将涉及到取消映射虚拟地址，否则这些地址将指向物理内存，这将很难使用。</p>
+<p>内核为 trampoline 和 text(可执行程序的代码段)映射的页会有 <strong>PTE_R</strong> 和 <strong>PTE_X</strong> 权限。 内核从这些页读取和执行指令。内核映射的其他 page 会有 <strong>PTE_R</strong> 和 <strong>PTE_W</strong> 权限，以便内 核读写这些页面的内存。守护页的映射是无效的(设置 <strong>PTE_V</strong>);</p>
+<h2 id="3-3-Code-creating-an-address-space"><a href="#3-3-Code-creating-an-address-space" class="headerlink" title="3.3 Code: creating an address space"></a>3.3 Code: creating an address space</h2><p>大部分用于操作地址空间和页表的 xv6 代码都在 <strong>vm.c</strong>(kernel&#x2F;vm.c:1)中。核心数据结构 是 <strong>pagetable_t</strong>，它实际上是一个指向 RISC-V 根页表页的指针;<strong>pagetable_t</strong> 可以是内核页 表，也可以是进程的页表。核心函数是 <strong>walk</strong> 和 <strong>mappages</strong>，前者通过虚拟地址得到 PTE， 后者将虚拟地址映射到物理地址。以 <strong>kvm</strong> 开头的函数操作内核页表;以 uvm 开头的函数 操作用户页表;其他函数用于这两种页表。<strong>copyout</strong> 可以将内核数据复制到用户虚拟地址， <strong>copyin</strong> 可以将用户虚拟地址的数据复制到内核空间地址，用户虚拟地址由系统调用的参数 指定;它们在 <strong>vm.c</strong> 中，因为它们需要显式转换这些地址，以便找到相应的物理内存。</p>
+<p>在启动序列的前面，<strong>main</strong> 调用 <strong>kvminit</strong>(kernel&#x2F;vm.c:22)来创建内核的页表。这个调用发 生在 xv6 在 RISC-V 启用分页之前，所以地址直接指向物理内存。<strong>Kvminit</strong> 首先分配一页物 理内存来存放根页表页。然后调用 <strong>kvmmap</strong> 将内核所需要的硬件资源映射到物理地址。这 些资源包括内核的指令和数据，KERNBASE 到 PHYSTOP(0x86400000)的物理内存，以及 实际上是设备的内存范围。</p>
+<p><strong>kvmmap</strong>(kernel&#x2F;vm.c:118) 调用 <strong>mappages</strong>(kernel&#x2F;vm.c:149)，它将一个虚拟地址范围 映射到一个物理地址范围。它将范围内地址分割成多页(忽略余数)，每次映射一页的顶端 地址。对于每个要映射的虚拟地址(页的顶端地址)，mapages 调用 walk 找到该地址的最后 一级 PTE 的地址。然后，它配置 PTE，使其持有相关的物理页号、所需的权限(<strong>PTE_W<strong><strong>、</strong></strong>PTE_X</strong> <strong>和</strong>**&#x2F;<strong><strong>或</strong> <strong>PTE_R</strong>)，以及 <strong>PTE_V</strong> 来标记 PTE 为有效</strong>(kernel&#x2F;vm.c:161)**。</p>
+<p><strong>walk (kernel&#x2F;vm.c:72)<strong>模仿 RISC-V 分页硬件查找虚拟地址的 PTE(见图 3.2)。walk 每次 降低 3 级页表的 9 位。它使用每一级的 9 位虚拟地址来查找下一级页表或最后一级 (kernel&#x2F;vm.c:78)的 PTE。如果 PTE 无效，那么所需的物理页还没有被分配;如果 <strong>alloc</strong> 参 数被设置 <strong>true</strong>，</strong>walk</strong> 会分配一个新的页表页，并把它的物理地址放在 PTE 中。它返回 PTE 在树的最低层的地址(kernel&#x2F;vm.c:88)。</p>
+<p><strong>main</strong> 调用 <strong>kvminithart</strong>(kernel&#x2F;vm.c:53) 来映射内核页表。它将根页表页的物理地址写 入寄存器 <strong>satp</strong> 中。在这之后，CPU 将使用内核页表翻译地址。由于内核使用唯一映射，所 以指令的虚拟地址将映射到正确的物理内存地址。</p>
+<p><strong>procinit</strong> (kernel&#x2F;proc.c:26)，它由 <strong>main</strong> 调用，为每个进程分配一个内核栈。它将每个栈 映射在 <strong>KSTACK</strong> 生成的虚拟地址上，这就为栈守护页留下了空间。<strong>Kvmmap</strong> 栈的虚拟地址 映射到申请的物理内存上，然后调用 <strong>kvminithart</strong> 将内核页表重新加载到 <strong>satp</strong> 中，这样硬 件就知道新的 PTE 了。</p>
+<p>每个 RISC-V CPU 都会在 **Translation Look-aside Buffer(TLB)**中缓存页表项，当 xv6 改 变页表时，必须告诉 CPU 使相应的缓存 TLB 项无效。如果它不这样做，那么在以后的某个 时刻，TLB 可能会使用一个旧的缓存映射，指向一个物理页，而这个物理页在此期间已经分 配给了另一个进程，这样的话，一个进程可能会在其他进程的内存上“乱写乱画“。RISC-V 有一条指令 <strong>sfence.vma</strong>，可以刷新当前 CPU 的 TLB。xv6 在重新加载 satp 寄存器后，在 <strong>kvminithart</strong> 中执行 <strong>sfence.vma</strong>，也会在从内核空间返回用户空间前，切换到用户页表的 trampoline 代码中执行 <strong>sfence.vma</strong>(kernel&#x2F;trampoline.S:79)。</p>
+<h2 id="3-4-Physical-memory-allocation"><a href="#3-4-Physical-memory-allocation" class="headerlink" title="3.4 Physical memory allocation"></a>3.4 Physical memory allocation</h2><p>内核必须在运行时为页表、用户内存、内核堆栈和管道缓冲区分配和释放物理内存。xv6 使用内核地址结束到 <strong>PHYSTOP</strong> 之间的物理内存进行运行时分配。它每次分配和释放整个 4096 字节的页面。它通过保存空闲页链表，来记录哪些页是空闲的。分配包括从链表中删 除一页;释放包括将释放的页面添加到空闲页链表中。</p>
+<h2 id="3-5-Code-Physical-memory-allocator"><a href="#3-5-Code-Physical-memory-allocator" class="headerlink" title="3.5 Code: Physical memory allocator"></a>3.5 Code: Physical memory allocator</h2><p>分配器在 <strong>kalloc.c(kernel&#x2F;kalloc.c:1)<strong>中。分配器的数据结构是一个可供分配的物理内存 页的</strong>空闲页链表</strong>，每个空闲页的链表元素是一个结构体 <strong>run</strong><strong>(<strong><strong>kernel&#x2F;kalloc.c:17</strong></strong>)<strong>。分配器从 哪里获得内存来存放这个结构体呢?它把每个空闲页的 <strong>run</strong> 结构体存储在空闲页本身，因 为那里没有其他东西存储。空闲链表由一个</strong>自旋锁</strong>保护(kernel&#x2F;kalloc.c:21-24)。链表和锁被 包裹在一个结构体中，以明确锁保护的是结构体中的字段。现在，请忽略锁以及 <strong>acquire</strong> 和 <strong>release</strong> 的调用;第 6 章将详细研究锁。</p>
+<p><strong>main</strong> 函数调用 <strong>kinit</strong> 来初始化分配器(kernel&#x2F;kallo .c:27)。<strong>kinit</strong> 初始空闲页链表，以保存 内核地址结束到 <strong>PHYSTOP</strong> 之间的每一页。xv6 应该通过解析硬件提供的配置信息来确定有 多少物理内存可用。但是它没有做，而是假设机器有 128M 字节的 RAM。<strong>Kinit</strong> 通过调用 <strong>freerange</strong> 来添加内存到空闲页链表，<strong>freerange</strong> 则对每一页都调用 <strong>kfree</strong>。PTE 只能引用按 4096 字节边界对齐的物理地址(4096 的倍数)，因此 <strong>freerange</strong> 使用 <strong>PGROUNDUP</strong> 来确保它 只添加对齐的物理地址到空闲链表中。分配器开始时没有内存;这些对 <strong>kfree</strong> 的调用给了它 一些内存管理。</p>
+<p>分配器有时把地址当作整数来处理，以便对其进行运算(如 <strong>freerange</strong> 遍历所有页)， 有时把地址当作指针来读写内存(如操作存储在每页中的 <strong>run</strong> 结构体);这种对地址的双重 使用是分配器代码中充满 C 类型转换的主要原因。另一个原因是，释放和分配本质上改变 了内存的类型。</p>
+<p>函数 <strong>kfree</strong> (kernel&#x2F;kalloc.c:47)将被释放的内存中的每个字节设置为 1。这将使得释放内 存后使用内存的代码(使用悬空引用)读取垃圾而不是旧的有效内容;希望这将导致这类代码 更快地崩溃。然后 <strong>kfree</strong> 将页面预存入释放列表:它将 <strong>pa</strong>(物理地址)转为指向结构体 <strong>run</strong> 的指针，在 <strong>r-&gt;next</strong> 中记录空闲链表之前的节点，并将释放列表设为 <strong>r</strong>，<strong>kalloc</strong> 移除并返回 空闲链表中的第一个元素。</p>
+<h2 id="3-6-Process-address-space"><a href="#3-6-Process-address-space" class="headerlink" title="3.6 Process address space"></a>3.6 Process address space</h2><p>每个进程都有一个单独的页表，当 xv6 在进程间切换时，也会改变页表。如图 2.3 所示， 一个进程的用户内存从虚拟地址 0 开始，可以增长到 MAXVA(kernel&#x2F;riscv.h:348)，原则上允 许一个进程寻址 256GB 的内存。</p>
+<p>当一个进程要求 xv6 提供更多的用户内存时，xv6 首先使用 <strong>kalloc</strong> 来分配物理页，然后 将指向新物理页的 PTE 添加到进程的页表中。然后它将指向新物理页的 PTE 添加到进程的 页表中。Xv6 在这些 PTE 中设置 <strong>PTE_W</strong>、<strong>PTE_X</strong>、<strong>PTE_R</strong>、<strong>PTE_U</strong> 和 <strong>PTE_V</strong> 标志。大多数进 程不使用整个用户地址空间;xv6 使用 <strong>PTE_V</strong> 来清除不使用的 PTE。</p>
+<p>我们在这里看到了几个例子，是关于使用页表的。首先，不同的进程页表将用户地址转 化为物理内存的不同页，这样每个进程都有私有的用户内存。第二，每个进程都认为自己的 内存具有从零开始的连续的虚拟地址，而进程的物理内存可以是不连续的。第三，内核会映 射带有 <strong>trampoline</strong> 代码的页，该 <strong>trampoline</strong> 处于用户地址空间顶端，因此，在所有地址 空间中都会出现一页物理内存。</p>
+<p>![f-34](&#x2F;Users&#x2F;kedae&#x2F;Desktop&#x2F;zennlyu.github.io&#x2F;hexo&#x2F;source&#x2F;_posts&#x2F;6.828 xv6-book&#x2F;f-34.png)</p>
+<p>图 3.4 更详细地显示了 xv6 中执行进程的用户内存布局。栈只有一页，图中显示的是由 <strong>exec</strong> 创建的初始内容。字符串的值，以及指向这些参数的指针数组，位于栈的最顶端。下 面是允许程序在 <strong>main</strong> 启动的值，就像函数 **main(argc, argv)**刚刚被调用一样。</p>
+<p>为了检测用户栈溢出分配的栈内存，xv6 会在 stack 的下方放置一个无效的保护页。如 果用户栈溢出，而进程试图使用栈下面的地址，硬件会因为该映射无效而产生一个页错误异 常。现实世界中的操作系统可能会在用户栈溢出时自动为其分配更多的内存。</p>
+<h2 id="3-7-Code-sbrk"><a href="#3-7-Code-sbrk" class="headerlink" title="3.7 Code: sbrk"></a>3.7 Code: sbrk</h2><p><code>sbrk</code> 是一个进程收缩或增长内存的系统调用。该系统调用由函数 <code>growproc(kernel/proc.c:239)</code>实现，<code>growproc</code> 调用 <code>uvmalloc</code> 或 <code>uvmdealloc</code>，取决于 n 是 正数还是负数。<code>uvmdealloc</code> 调用 <code>uvmunmap</code> (kernel&#x2F;vm.c:174)，它使用 walk 来查找 PTE， 使用 <code>kfree</code> 来释放它们所引用的物理内存。</p>
+<p>xv6 使用进程的页表不仅是为了告诉硬件如何映射用户虚拟地址，也是将其作为分配给该进程的物理地址的唯一记录。这就是为什么释放用户内存(<code>uvmunmap</code> 中)需要检查用 户页表的原因。</p>
+<h2 id="3-8-Code-exec"><a href="#3-8-Code-exec" class="headerlink" title="3.8 Code: exec"></a>3.8 Code: exec</h2><p><code>exec</code> 是创建用户地址空间的系统调用。它读取储存在文件系统上的文件用来初始化用 户地址空间。<code>Exec</code> (kernel&#x2F;exec.c:13)使用 <code>namei</code> (kernel&#x2F;exec.c:26)打开二进制文件路径，这 在第 8 章中有解释。然后，它读取 ELF 头。xv6 应用程序用 ELF 格式来描述可执行文件，它 定义在<code>(kernel/elf.h)</code>。一个 ELF 二进制文件包括一个 ELF 头，<code>elfhdr</code> 结构体<code>(kernel/elf.h:6)</code>， 后面是一个程序节头(program section header)序列，程序节头为一个结构体 <code>proghdr</code>(kernel&#x2F;elf.h:25)。每一个 <code>proghdr</code> 描述了一个必须加载到内存中的程序节;xv6 程 序只有一个程序节头，但其他系统可能有单独的指令节和数据节需要加载到内存。</p>
+<p>第一步是快速检查文件是否包含一个 ELF 二进制文件。一个 ELF 二进制文件以四个字节 的”魔法数字“ 0x7F、<code>E</code>、<code>L</code>、<code>F</code>或 ELF_MAGIC(kernel&#x2F;elf.h:3)开始。如果 ELF 头有正确的”魔 法数字“，exec 就会认为该二进制文件是正确的类型。</p>
+<p><code>Exec</code> 使用 <code>proc_pagetable(kernel/exec.c:38)</code>分配一个没有使用的页表，使用 <code>uvmalloc (kernel/exec.c:52)</code>为每一个 ELF 段分配内存，通过 <code>loadseg (kernel/exec.c:10)</code>加载每一个 段到内存中。<code>loadseg</code> 使用 <code>walkaddr</code> 找到分配内存的物理地址，在该地址写入 ELF 段的每 一页，页的内容通过 <code>readi</code> 从文件中读取。</p>
+<p>![w1](&#x2F;Users&#x2F;kedae&#x2F;Desktop&#x2F;zennlyu.github.io&#x2F;hexo&#x2F;source&#x2F;_posts&#x2F;6.828 xv6-book&#x2F;w1.png)</p>
+<p>用 <code>exec</code> 创建的第一个用户程序<code>/init</code> 的程序部分 header 是上面这样的。</p>
+<p>程序部分头的 <code>filesz</code> 可能小于 <code>memsz</code>，说明它们之间的空隙应该用 0(用于 C 语言全 局变量)来填充，而不是从文件中读取。对于<code>/init</code> 来说，<code>filesz</code> 是 2112 字节，<code>memsz</code> 是 2136 字节，因此 <code>uvmalloc</code> 分配了足够的物理内存来容纳 2136 字节，但只从文件<code>/init</code> 中读取 2112 字节。</p>
+<p><code>exec</code> 在栈页的下方放置了一个不可访问页，这样程序如果试图使用多个页面，就会出 现故障。这个不可访问的页允许 exec 处理过大的参数;在这种情况下，exec 用来复制参数 到栈的 copyout(kernel&#x2F;vm.c:355)函数会注意到目标页不可访问，并返回-1。</p>
+<p>在准备新的内存映像的过程中，如果 exec 检测到一个错误，比如一个无效的程序段， 它就会跳转到标签 bad，释放新的映像，并返回-1。<code>exec</code> 必须延迟释放旧映像，直到它确定 exec 系统调用会成功:如果旧映像消失了，系统调用就不能返回-1。exec 中唯一的错误情 况发生在创建映像的过程中。一旦镜像完成，exec 就可以提交到新的页表(kernel&#x2F;exec.c:113) 并释放旧的页表(kernel&#x2F;exec.c:117)。</p>
+<p><code>Exec</code> 将 ELF 文件中的字节按 ELF 文件指定的地址加载到内存中。用户或进程可以将任何他们想要的地址放入 ELF 文件中。因此，Exec 是有风险的，因为 ELF 文件中的地址可能会 意外地或故意地指向内核。对于一个不小心的内核来说，后果可能从崩溃到恶意颠覆内核的 隔离机制(即安全漏洞)。xv6 执行了一些检查来避免这些风险。例如 <code>if(ph.vaddr + ph.memsz &lt; ph.vaddr)</code>检查总和是否溢出一个 64 位整数。危险的是，用户可以用指向用户选择的地址 的 <code>ph.vaddr</code> 和足够大的 <code>ph.memsz</code> 来构造一个 ELF 二进制，使总和溢出到 <code>0x1000</code>，这 看起来像是一个有效值。在旧版本的 xv6 中，用户地址空间也包含内核(但在用户模式下不 可读&#x2F;写)，用户可以选择一个对应内核内存的地址，从而将 ELF 二进制中的数据复制到内核 中。在 RISC-V 版本的 xv6 中，这是不可能的，因为内核有自己独立的页表;<code>loadseg</code> 加载 到进程的页表中，而不是内核的页表中。</p>
+<p>内核开发人员很容易忽略一个关键的检查，现实中的内核有很长一段缺少检查的空档期，用户程序可以利用缺少这些检查来获得内核特权。xv6 在验证需要提供给内核的用户程序数据的时候，并没有完全验证其是否是恶意的，恶意用户程序可能利用这些数据来绕过 xv6 的隔离。</p>
+<h2 id="3-9-Real-world"><a href="#3-9-Real-world" class="headerlink" title="3.9 Real world"></a>3.9 Real world</h2><p>xv6 使用分页硬件进行内存保护和映射。大多数操作系统对分页的使用要比 xv6 复杂得多，它将分页和分页错误异常结合起来，我们将在第 4 章中讨论。</p>
+<p>在真实的硬件上，真实的硬件将 RAM 和设备放置在不可预测的物理地址上，例如在 0x8000000 处可能没有 RAM，而 xv6 期望能够在那里存储内核。更好的内核设计利用页表将任意的硬件物理内存布局变成可预测的内核虚拟地址布局。</p>
+<p>RISC-V 支持物理地址级别的保护，但 xv6 没有使用该功能。</p>
+<p>在有大量内存的机器上，使用 RISC-V 对超级页(4MB 的页)的支持可能是有意义的。当物理内存很小的时候，小页是有意义的，可以精细地分配和分页到磁盘。例如，如果一个程序只使用 8k 字节的内存，那么给它整整 4 兆字节的超级物理内存页是浪费的。更大的页在有大量内存的机器上是有意义的，可以减少页表操作的开销。</p>
+<p>xv6 内核缺乏一个类 malloc 的分配器为小程序提供内存，这使得内核没有使用需要动态分配的复杂数据结构，从而简化了设计。</p>
+<p>内存分配是一个常年的热门话题，基本问题是有效利用有限的内存和为未来未知的请求做准备。如今人们更关心的是速度而不是空间效率。此外，一个更复杂的内核可能会分配许多不同大小的小块，而不是 (在 xv6 中) 只分配 4096 字节的块；一个真正的内核分配器需要处理小块分配以及大块分配。</p>
+<h2 id="3-10-Exercises"><a href="#3-10-Exercises" class="headerlink" title="3.10 Exercises"></a>3.10 Exercises</h2><p>1、分析 RISC-V 的设备树(device tree)，找出计算机有多少物理内存。 </p>
+<p>2、编写一个用户程序，通过调用 sbrk(1)使其地址空间增加一个字节。运行该程序，研究调 用 sbrk 之前和调用 sbrk 之后的程序页表。内核分配了多少空间?新内存的 PTE 包含哪些内容?</p>
+<p>3、修改 xv6 使得内核使用超级页 4M)</p>
+<p>4、修改 xv6，使用户程序间接引用7一个空指针时，会收到一个异常，即修改 xv6，使用户程 序的虚拟地址 0 不被映射。</p>
+<p>5、Unix 实现的 exec 传统上包括对 shell 脚本的特殊处理。如果要执行的文件以文本#!开头， 那么第一行就被认为是要运行的程序来解释文件。例如，如果调用 exec 运行 myprog arg1， 而 myprog 的第一行是#!&#x2F;interp，那么 exec 执行&#x2F;interp myprog arg1。在 xv6 中实现对这个 约定的支持。</p>
+<h1 id="第4章-陷阱和系统调用"><a href="#第4章-陷阱和系统调用" class="headerlink" title="第4章 陷阱和系统调用"></a>第4章 陷阱和系统调用</h1><p>有 3 类事件可导致 CPU 把普通的指令执行搁置在一边，强制把控制权转移到能处理事件的特定代码处。</p>
+<ul>
+<li><strong>系统调用</strong><br>用户程序执行 <code>ecall</code> 指令来请求内核为它做一些事；</li>
+<li><strong>异常</strong><br>一条指令(用户或者内核)做了非法的事，比如除以0、使用了一个非法的虚拟地址等；</li>
+<li><strong>设备中断</strong><br>设备发出了需要关注的信号，比如磁盘完成了读或者写操作等</li>
+</ul>
+<p>当陷阱出现时，无论正在执行什么代码都需要恢复，不应该感知到发生了任何特殊的事件。我们通常希望陷阱是透明的，这对于中断来说极其重要，因为被中断的代码不期望感知到有特殊事件发生了。</p>
+<p>通常的步骤是：</p>
+<ul>
+<li>陷阱强制将控制权转交给内核；</li>
+<li>内核保存寄存器及其他状态，使得执行能被恢复；</li>
+<li>内核执行合适的处理代码(比如，系统调用的实现或者设备驱动)；</li>
+<li>内核恢复被保存的状态，从陷阱中返回；</li>
+<li>从被打断处恢复原始代码的执行；</li>
+</ul>
+<p>xv6 内核处理所有类型的陷阱。</p>
+<ul>
+<li>对系统调用来说，这是很自然的事。</li>
+<li>对中断来说，也是很有意义的，因为隔离性要求：用户进程不能直接访问设备，只有内核有处理设备所需的状态。</li>
+<li>对异常来说，也很有意义，因为xv6对来自用户空间的所有异常的作出的响应是杀掉相应的进程。</li>
+</ul>
+<p>xv6 陷阱处理分为4个阶段：</p>
+<ul>
+<li>RISC-V的CPU采取的硬件操作；</li>
+<li>1个为内核C代码准备好路径的汇编向量；</li>
+<li>1个决定如何处理陷阱的C陷阱处理程序；</li>
+<li>系统调用或者设备驱动服务例程；</li>
+</ul>
+<p>虽然这3类陷阱之间的共性建议：内核可使用一条代码路径来处理所有类型的陷阱，但是事实证明，针对用户空间陷阱、内核空间陷阱、计时器中断等3种不同的情形，有单独的汇编向量及C陷阱处理程序是很方便的。</p>
+<h2 id="4-1-RISV的陷阱机制"><a href="#4-1-RISV的陷阱机制" class="headerlink" title="4.1 RISV的陷阱机制"></a>4.1 RISV的陷阱机制</h2><p>每个RISC-V的CPU都有一套控制寄存器，内核可向其中写入信息来告知CPU如何处理陷阱，内核可从中读数据来查找有关已发生的陷阱信息。</p>
+<p>在<code>riscv.h</code>中包含了xv6使用的定义。</p>
+<table>
+<thead>
+<tr>
+<th>Register</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>stvec</td>
+<td>内核向其中写入中断处理程序的地址；<br>RISC-V将跳转到这里记录的地址处理陷阱；</td>
+</tr>
+<tr>
+<td>sepc</td>
+<td>当陷阱发生时，RISC-V将程序计数器的值保存在这里，因为随后pc的值将被stvec的值覆盖掉；<br>sret指令拷贝sepc的值到pc中；<br>内核可向spec中写入值来控制sret返回到哪里；</td>
+</tr>
+<tr>
+<td>scause</td>
+<td>RISC-V在这里放入一个数，描述的是陷阱发生的原因；</td>
+</tr>
+<tr>
+<td>sscratch</td>
+<td>内核在这里放置一个值，这个值会在处理程序开始时很有用；</td>
+</tr>
+<tr>
+<td>sstatus</td>
+<td>在sstatus中的SIE位控制的是设备中断是否生效；<br>如果内核清除了SIE，则RISC-V将延迟设备中断直到内核设置了SIE。<br>在sstatus中的SPP位记录的是陷阱来自用户模式还是超级用户模式，及控制sret返回到哪种模式。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>以上5个跟陷阱相关的寄存器都是在超级用户模式下处理的，在用户模式下不能读写这5个寄存器的值。</p>
+</blockquote>
+<p>在机器模式下，有等价的一套控制寄存器来用于陷阱处理。</p>
+<p>xv6仅在计时器中断的特殊情况下使用这些寄存器。</p>
+<p>在多核处理器的每个CPU都有自己的一套类似这样的寄存器；在任意给定时刻，可能不止有一个CPU在处理陷阱。</p>
+<p>当需要强制处理一个陷阱时，RISV 硬件对除了计时器中断外的所有陷阱类型做下面几件事：</p>
+<ol>
+<li>如果陷阱是一个设备中断，且sstatus中的SIE标记位被清除了，则什么都不做；</li>
+<li>清除sstatus中的SIE标记，使中断失效；</li>
+<li>拷贝pc到spec；</li>
+<li>保存当前模式到sstatus的SPP标记位；</li>
+<li>设置scause寄存器来反映陷阱的起因；</li>
+<li>设置模式为超级用户模式；</li>
+<li>拷贝stvec到pc</li>
+<li>跳转到新的pc处开始执行</li>
+</ol>
+<p>注意：CPU没有切换到内核的页表，没有切换到内核栈中，没有保存除了pc之外的任何寄存器。这些是内核软件必须要做的任务。</p>
+<p>理由：CPU在处理陷阱的过程中做少量的工作是为了给软件提供更大的灵活性。比如，一些操作系统在某些情况下不需要页表切换的，这可以提升性能。</p>
+<p>能不能对CPU的陷阱处理步骤进行进一步的简化？</p>
+<ul>
+<li>假设CPU不切换程序寄存器pc。则还在运行用户指令，陷阱就切换到超级用户模式了。这样，那些用户指令就能破坏用户&#x2F;内核隔离机制了，比如通过修改satp寄存器来指向允许访问整个物理内存的页表了。</li>
+<li>因此，CPU切换到由stvec寄存器指定的内核指令地址是非常重要的。</li>
+</ul>
+<h2 id="4-2-来自用户空间的陷阱"><a href="#4-2-来自用户空间的陷阱" class="headerlink" title="4.2 来自用户空间的陷阱"></a>4.2 来自用户空间的陷阱</h2><ul>
+<li>问题：一次完整的来自用户空间的陷阱处理流程是怎样的？</li>
+<li>问题：<code>uservec</code> 做了哪些事？</li>
+<li>问题：<code>usertrap </code>做了哪些事？</li>
+<li>问题：<code>usertrapret </code>做了哪些事？</li>
+<li>问题：<code>userret</code> 做了哪些事？</li>
+</ul>
+<p>当CPU在用户空间执行时，如果用户程序做了一个系统调用，或者做了非法的事，或者某个设备中断了，则就可能会发生一个陷阱。</p>
+<p>处理来自用户空间的陷阱的代码路径是先<code>uservec</code>，后<code>usertrap</code>。<br>返回时是先<code>usertrapret</code>，后<code>userret</code>。</p>
+<p>来自用户空间的陷阱处理代码要比来自内核的更具有挑战性：因为<code>satp</code>指向的是一个没有映射到内核的用户页表，栈指针可能包含一个无效甚至是恶意的值。</p>
+<p>因为RISC-V硬件在陷阱期间不切换页表，则用户页表必须包含<code>uservec</code>的映射，即<code>stvec</code>指向的陷阱向量指令。</p>
+<p><code>uservec</code>必须切换<code>satp</code>以指向内核页表；为了在切换后继续执行指令，必须将<code>uservec</code>映射到内核页表中跟用户页表中相同的地址。</p>
+<p>xv6使用包含<code>uservec</code>的<code>trampoline页</code>来满足这些约束。xv6将<code>trampoline页</code>映射到内核页表和每个用户页表中的虚拟地址是相同的。这个虚拟地址就是<code>TRAMPOLINE</code>。</p>
+<p>在<code>trampoline.S</code>中设置了<code>trampoline</code>的内容。</p>
+<p>当执行用户代码时，设置<code>stevec</code>为<code>uservec</code>。</p>
+<p>当uservec开始执行时，所有32个寄存器包含的都是被打断代码的值。<br>但是，为了设置satp及生成保存寄存器值的地址，uservec需要能修改一些寄存器。</p>
+<p>RISC-V以sscratch寄存器的形式提供了一个帮手。<br>在uservec开头的csrrw指令交换了a0寄存器和sscratch寄存器的值。</p>
+<p>现在用户代码的a0寄存器的值被保存了；<br>uservec有一个寄存器a0可以使用了；<br>ao包含了内核先前放在sscratch里的值。</p>
+<p>uservec的下一个任务是保存用户寄存器的值。<br>在进入用户空间前，内核之前设置sscratch指向每个进程的trapframe，该trapframe有空间来保存所有的寄存器。<br>由于satp仍指向用户页表，则uservec需要将trapframe映射到用户地址空间。</p>
+<p>当创建进程时，xv6会分配一个页给该进程的trapframe，将该页映射到用户虚拟地址TRAPFRAME。进程的p-&gt;trapframe指向的就是陷阱栈，不过是它的物理地址，以便内核能通过内核页表来使用它。</p>
+<p>因此，在交换了a0和sscratch后，a0持有了一个指向当前进程陷阱栈的指针。现在，uservec可以将所有的用户寄存器保存到陷阱栈中，包括用户的a0。</p>
+<p>陷阱栈包含了指向当前进程内核栈的指针、当前CPU的hartid、usertrap的地址、内核页表的地址。</p>
+<p>uservec检索这些值，切换satp指向内核页表，调用usertrap。</p>
+<p>usertrap的工作是判断陷阱的起因，处理陷阱，并返回。<br>首先，修改stvec，使得陷阱在内核中将被kernelvec处理。<br>然后，保存sepc的值，因为在usertrap中的一个进程切换可能会导致sepc的值被覆盖。<br>接着，如果一个陷阱是系统调用，则syscall会处理陷阱；<br>如果陷阱是一个设备中断，则devintr会处理陷阱；<br>如果陷阱是一个异常，则内核会杀掉出错的进程；</p>
+<p>系统调用路径会将保存的用户pc加4，因为在系统调用情形下，RISC-V会让程序指针指向ecall指令。</p>
+<p>退出过程中，usertrap会检查进程是否被杀死，或者应该让出CPU(如果这是一个计时器中断)。</p>
+<p>如何返回到用户空间？</p>
+<p>第一步：调用usertrapret。<br>该函数先设置RISC-V的控制寄存器为将来的来自用户空间的陷阱做好准备。包括：设置stvec指向uservec，准备好uservec依赖的trapframe字段，设置sepc为先前保存的用户pc。<br>然后，调用在trampoline页上的userret，该trampiline页在用户页表和内核页表中都有映射，理由是在userret中的汇编码将切换页表。</p>
+<p>usertrapret对userret的调用传递了一个指向进程用户页表(在a0中)和TRAPFRAME(在a1中)的指针。</p>
+<p>userret切换satp指向进程的用户页表。<br>回想一下，用户页表既映射了trampoline页，也映射了TRPFRAME，但没有映射来自内核的其他内容。<br>在用户页表和内核页表中，trampoline页被映射到相同的虚拟地址，这就允许：在修改satp之后，uservec继续执行。</p>
+<p>userret拷贝trapframe上保存的用户a0到sscratch中，为以后的TRAPFRAME交换做好准备。</p>
+<p>从现在起，userret能使用的数据只有寄存器的内容和trapframe的内容。<br>接下来，userret从trapframe中恢复被保存的寄存器，做最后一次a0和sscratch的交换来恢复a0，为接下来的陷阱而保存TRAPFRAME，使用sret返回到用户空间。</p>
+<h2 id="4-3-代码：系统调用"><a href="#4-3-代码：系统调用" class="headerlink" title="4.3 代码：系统调用"></a>4.3 代码：系统调用</h2><p>第2章以initcode.S结束，在initcode.S中触发了exec系统调用。让我们看看用户的调用是如何抵达内核中的exec系统调用实现的。</p>
+<p>用户代码在寄存器a0和a1中放入了用于exec的参数，在寄存器a7中放入了系统调用编号。</p>
+<p>系统调用编号是跟syscalls数组的条目相匹配的，其中syscalls是一个由多个函数指针组成的表。</p>
+<p>ecall 指令进入到内核，执行 uservec、usertrap，然后是syscall。</p>
+<p>syscall从在trapframe上被保存的寄存器a7的值中检索出系统调用号，使用它作为syscalls的索引。寄存器a7包含的值为SYS_exec，导致调用系统调用实现sys_exec。</p>
+<p>当从系统调用实现函数中返回时，syscall在p-&gt;trapframe-&gt;a0中记录返回值。由于在RISC-V上的C调用约定在寄存器a0中放入返回值，则前述操作会导致初始用户空间对exec()调用返回syscall在trapframe-&gt;a0中放入的值。</p>
+<p>系统调用约定返回负数表示错误，0或者整数表示成功。</p>
+<p>如果系统调用号非法，则syscall会输出错误，并返回-1。</p>
+<h2 id="4-4-代码：系统调用参数"><a href="#4-4-代码：系统调用参数" class="headerlink" title="4.4 代码：系统调用参数"></a>4.4 代码：系统调用参数</h2><p>寄存器-&gt;陷阱帧trapframe</p>
+<p>内核中的系统调用实现需要找到用户代码传递的参数。</p>
+<p>因为用户代码调用的是经过包装的系统调用函数，所以参数最开始是按照RISC-V的C调用约定，保存在寄存器中的。</p>
+<p>内核的陷阱trap代码将寄存器的值保存到当前进程的陷阱帧trap frame中，内核代码是从当前进程的trapframe上找到系统调用参数的。</p>
+<p>函数argint、argaddr、argfd分别从陷阱帧上检索第n个参数作为整数、指针、或者文件描述符。这3个函数都是调用argraw来检索到合适的被保存的用户寄存器。</p>
+<p>有些系统调用传递指针作为参数，内核必须使用这些指针来读写用户内存。比如，系统调用exec传递给内核一个指针数组，引用的是在用户空间的字符串参数。</p>
+<p>这些指针带来两个挑战：</p>
+<ol>
+<li>用户程序可能会出错或者有恶意，可能会传递给内核一个无效的指针、或者旨在骗过内核来访问内核的内存代替访问用户内存。</li>
+<li>xv6的内核页表映射跟用户页表映射不一样，所以内核不能使用普通的指令来加载或者保存来自用户提供的地址。</li>
+</ol>
+<p>内核实现了向用户提供的地址以及从用户提供的地址安全转移数据的功能，比如<code>fetchstr</code>函数。</p>
+<p>诸如<code>exec</code>等文件系统调用使用fetchstr函数来从用户空间检索字符串式的文件名参数。</p>
+<p>fetchstr函数调用copyinstr来做实际的工作。</p>
+<p>copyinstr从用户页表pagetale中的虚拟地址srcva处最多拷贝max个字节。它使用walkaddr来遍历软件形式的页表来确定srcva对应的物理地址pa0。因为内核映射所有的RAM地址到相同的内核虚拟地址，所以copyinstr可以直接从pa0拷贝字符串字节到dst。</p>
+<p>walkaddr会检查用户提供的虚拟地址是否属于用户地址空间，所以程序不能骗过内核去读其他内存。</p>
+<p>类似的函数还有copyout：将数据从内核拷贝到用户提供的地址。</p>
+<h2 id="4-5-内核空间中的陷阱"><a href="#4-5-内核空间中的陷阱" class="headerlink" title="4.5 内核空间中的陷阱"></a>4.5 内核空间中的陷阱</h2><p>来自内核空间的陷阱处理步骤</p>
+<ul>
+<li>保存寄存器</li>
+<li>处理陷阱</li>
+<li>从陷阱中返回</li>
+</ul>
+<p>根据是在用户空间执行代码还是在内核空间执行代码，xv6配置CPU陷阱寄存器的方式是不一样的。</p>
+<p>当内核在CPU上执行时，内核将stvec指向在kernelvec处的汇编代码。</p>
+<p>由于xv6已经在内核里了，kernelvec能依赖stap来设置内核页表和栈指针来引用有效的内核栈。</p>
+<p>kernelvec保存所有的寄存器，以便被打断的代码最终能无扰动地恢复执行。</p>
+<p>kernelvec将寄存器保存在被打断的内核线程的栈上，这是有意义的，因为此时这些寄存器的值是属于该内核线程的。如果陷阱导致切换到一个不同的线程，这一点非常重要，陷阱将实际返回到新线程的栈上，同时安全地把被打断线程的寄存器保存在自己的栈上。</p>
+<p>在保存完寄存器后，kernelvec就跳转到kerneltrap。</p>
+<p>kerneltrap为两类陷阱做好准备：设备中断和异常。<br>它调用devintr来检查和处理设备中断。如果陷阱不是设备中断，则一定是异常；如果在xv6内核中发生了异常，则通常是一个致命错误；内核调用panic并停止执行。</p>
+<p>如果由于计时器中断调用了kerneltrap，且一个进程的内核线程正在运行，则kerneltrap调用yield来给其他进程一个运行的机会。在将来的某个时间点，总有某个线程会yied，让我们的线程及它的kerneltrap恢复执行。</p>
+<p>当kerneltrap执行完后，需要返回到被陷阱打断的代码处。kerneltrap检索那些控制寄存器的值，返回给kernelvec。</p>
+<p>kernelvec从栈上弹出保存的寄存器值，并执行sret；sret拷贝sepc到pc，恢复执行被打断代码的值。</p>
+<p>由于一个yield会干扰spec和sstatus，所以kernel在一开始就先保存spec和sstatus的值。</p>
+<p>非常值得思考的一个问题是：如果kerneltrap由于计时器中断调用了yield，则陷阱返回是如何发生的？</p>
+<p>当CPU从用户空间进入内核，xv6设置该CPU的stvec指向kernelvec。<br>当内核正在执行，但stvec指向uservec时，存在一个时间窗口。<br>在这个时间窗口内，使设备中断失效时非常关键的。</p>
+<p>幸运的是，RISC-V在取一个陷阱的开始就让中断失效，直到xv6设置了stvec后，才让中断生效。</p>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/07/15/6.824-T3-FT-VM/">6.824 T3 FT-VM<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/07/15/6.828-Syscall/">S081 Syscalls<span class="note">Newer</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="http://example.com/">@zennlyu</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
