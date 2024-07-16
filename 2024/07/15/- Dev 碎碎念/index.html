@@ -21,12 +21,12 @@
   <title>Dev 碎碎念 - zennlyu</title>
 
   
-    <meta name="description" content="Tornado 试用思考Tornado 在物联网上结合 twisted 蛮好用的。tornado 主要用于 websocket&#x2F;tcp 这些长连接数据流的场景，结合 async 很有效，python 生态里暂时应该没有更好的替代框架。tornado支持把底层事件循环换成 asyncio 的循环。接着 gevent 还可以把 asyncio 的循环再 patch掉。这样 tornado 可">
+    <meta name="description" content="Tornado 试用思考Tornado 在物联网上结合 twisted 蛮好用的。tornado 主要用于 websocket&#x2F;tcp 这些长连接数据流的场景，结合 async 很有效，python 生态里暂时应该没有更好的替代框架。tornado支持把底层事件循环换成 asyncio 的循环。接着 gevent 还可以把 asyncio 的循环再 patch掉。这样 tornado 可以轻松异步">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dev 碎碎念">
 <meta property="og:url" content="http://example.com/2024/07/15/-%20Dev%20%E7%A2%8E%E7%A2%8E%E5%BF%B5/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="Tornado 试用思考Tornado 在物联网上结合 twisted 蛮好用的。tornado 主要用于 websocket&#x2F;tcp 这些长连接数据流的场景，结合 async 很有效，python 生态里暂时应该没有更好的替代框架。tornado支持把底层事件循环换成 asyncio 的循环。接着 gevent 还可以把 asyncio 的循环再 patch掉。这样 tornado 可">
+<meta property="og:description" content="Tornado 试用思考Tornado 在物联网上结合 twisted 蛮好用的。tornado 主要用于 websocket&#x2F;tcp 这些长连接数据流的场景，结合 async 很有效，python 生态里暂时应该没有更好的替代框架。tornado支持把底层事件循环换成 asyncio 的循环。接着 gevent 还可以把 asyncio 的循环再 patch掉。这样 tornado 可以轻松异步">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-07-15T03:58:25.980Z">
 <meta property="article:modified_time" content="2024-07-15T03:58:25.980Z">
@@ -88,7 +88,7 @@
 
 <article class='content md post'>
 <h1 class="article-title"><span>Dev 碎碎念</span></h1>
-<h1 id="Tornado-试用思考"><a href="#Tornado-试用思考" class="headerlink" title="Tornado 试用思考"></a>Tornado 试用思考</h1><p>Tornado 在物联网上结合 twisted 蛮好用的。tornado 主要用于 websocket&#x2F;tcp 这些长连接数据流的场景，结合 async 很有效，python 生态里暂时应该没有更好的替代框架。tornado支持把底层事件循环换成 asyncio 的循环。接着 gevent 还可以把 asyncio 的循环再 patch掉。这样 tornado 可以轻松异步调用任何支持 asyncio 或 gevent 的库。同时在 Windows 上使用 gevent (IOCP) 的 tornado 会有非常恐怖的并发能力。如果供 web CRUD 或者 restful 接口设计，优势不大。几个主流 python 框架更多是互补关系，不是竞争关系。</p>
+<h1 id="Tornado-试用思考"><a href="#Tornado-试用思考" class="headerlink" title="Tornado 试用思考"></a>Tornado 试用思考</h1><p>Tornado 在物联网上结合 twisted 蛮好用的。tornado 主要用于 websocket/tcp 这些长连接数据流的场景，结合 async 很有效，python 生态里暂时应该没有更好的替代框架。tornado支持把底层事件循环换成 asyncio 的循环。接着 gevent 还可以把 asyncio 的循环再 patch掉。这样 tornado 可以轻松异步调用任何支持 asyncio 或 gevent 的库。同时在 Windows 上使用 gevent (IOCP) 的 tornado 会有非常恐怖的并发能力。如果供 web CRUD 或者 restful 接口设计，优势不大。几个主流 python 框架更多是互补关系，不是竞争关系。</p>
 
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
