@@ -18,18 +18,18 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>S081 Utilities - zennlyu</title>
+  <title>S081 Labs - zennlyu</title>
 
   
-    <meta name="description" content="Install xv6 on Catalina配置 S081 实验环境的时候，官网对于 macOS 的安装方法 brew install riscv-tools 等包管理无法在 Catalina 及以下的系统版本上安装成功，需要进行手动编译。编译项如下  RISC-V工具链： 包括一系列交叉编译的工具，用于把源码编译成机器码，如 gcc，binutils，glibc 等 QEMU模拟器： 用于在">
+    <meta name="description" content="UtilitiesInstall xv6 on Catalina配置 S081 实验环境的时候，官网对于 macOS 的安装方法 brew install riscv-tools 等包管理无法在 Catalina 及以下的系统版本上安装成功，需要进行手动编译。编译项如下  RISC-V工具链： 包括一系列交叉编译的工具，用于把源码编译成机器码，如 gcc，binutils，glibc 等 QEMU">
 <meta property="og:type" content="article">
-<meta property="og:title" content="S081 Utilities">
+<meta property="og:title" content="S081 Labs">
 <meta property="og:url" content="http://example.com/2024/07/15/6.828-Utilities/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="Install xv6 on Catalina配置 S081 实验环境的时候，官网对于 macOS 的安装方法 brew install riscv-tools 等包管理无法在 Catalina 及以下的系统版本上安装成功，需要进行手动编译。编译项如下  RISC-V工具链： 包括一系列交叉编译的工具，用于把源码编译成机器码，如 gcc，binutils，glibc 等 QEMU模拟器： 用于在">
+<meta property="og:description" content="UtilitiesInstall xv6 on Catalina配置 S081 实验环境的时候，官网对于 macOS 的安装方法 brew install riscv-tools 等包管理无法在 Catalina 及以下的系统版本上安装成功，需要进行手动编译。编译项如下  RISC-V工具链： 包括一系列交叉编译的工具，用于把源码编译成机器码，如 gcc，binutils，glibc 等 QEMU">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-07-15T03:58:26.037Z">
-<meta property="article:modified_time" content="2024-07-15T03:58:26.037Z">
+<meta property="article:modified_time" content="2024-07-16T03:53:09.971Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="S081">
 <meta name="twitter:card" content="summary">
@@ -71,7 +71,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Install-xv6-on-Catalina"><span class="toc-text">Install xv6 on Catalina</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81RISC-V-toolchain"><span class="toc-text">一、RISC-V toolchain</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81QEMU"><span class="toc-text">二、QEMU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-xv6"><span class="toc-text">3 xv6</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Boot-xv6-Easy"><span class="toc-text">Boot xv6 [Easy]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Grading-and-hand-in-procedure"><span class="toc-text">Grading and hand-in procedure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sleep-easy"><span class="toc-text">sleep (easy)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Preparation"><span class="toc-text">Preparation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Presentation"><span class="toc-text">Presentation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pingpong-easy"><span class="toc-text">pingpong (easy)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Preparation-1"><span class="toc-text">Preparation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Presentation-1"><span class="toc-text">Presentation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#primes-moderate-x2F-hard"><span class="toc-text">primes (moderate)&#x2F;(hard)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Preparation-2"><span class="toc-text">Preparation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Presentation-2"><span class="toc-text">Presentation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#find-moderate"><span class="toc-text">find (moderate)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Preparation-3"><span class="toc-text">Preparation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Presentation-3"><span class="toc-text">Presentation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xargs-moderate"><span class="toc-text">xargs (moderate)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Preparation-4"><span class="toc-text">Preparation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Presentation-4"><span class="toc-text">Presentation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optional-challenge-exercises"><span class="toc-text">Optional challenge exercises</span></a></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Utilities"><span class="toc-text">Utilities</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-xv6-on-Catalina"><span class="toc-text">Install xv6 on Catalina</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E3%80%81RISC-V-toolchain"><span class="toc-text">一、RISC-V toolchain</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E3%80%81QEMU"><span class="toc-text">二、QEMU</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-xv6"><span class="toc-text">3 xv6</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Boot-xv6-Easy"><span class="toc-text">Boot xv6 [Easy]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Grading-and-hand-in-procedure"><span class="toc-text">Grading and hand-in procedure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sleep-easy"><span class="toc-text">sleep (easy)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Preparation"><span class="toc-text">Preparation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Presentation"><span class="toc-text">Presentation</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pingpong-easy"><span class="toc-text">pingpong (easy)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Preparation-1"><span class="toc-text">Preparation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Presentation-1"><span class="toc-text">Presentation</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#primes-moderate-x2F-hard"><span class="toc-text">primes (moderate)&#x2F;(hard)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Preparation-2"><span class="toc-text">Preparation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Presentation-2"><span class="toc-text">Presentation</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#find-moderate"><span class="toc-text">find (moderate)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Preparation-3"><span class="toc-text">Preparation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Presentation-3"><span class="toc-text">Presentation</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xargs-moderate"><span class="toc-text">xargs (moderate)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Preparation-4"><span class="toc-text">Preparation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Presentation-4"><span class="toc-text">Presentation</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Optional-challenge-exercises"><span class="toc-text">Optional challenge exercises</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Syscall"><span class="toc-text">Syscall</span></a></li></ol></div></div></div>
 
 
 </div>
@@ -87,14 +87,14 @@
 <div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/operating-system/">operating system</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2024-07-15T03:58:26.037Z">2024-07-15</time></div></div>
 
 <article class='content md post'>
-<h1 class="article-title"><span>S081 Utilities</span></h1>
-<h2 id="Install-xv6-on-Catalina"><a href="#Install-xv6-on-Catalina" class="headerlink" title="Install xv6 on Catalina"></a>Install xv6 on Catalina</h2><p>配置 <code>S081</code> 实验环境的时候，官网对于 macOS 的安装方法 <code>brew install riscv-tools</code> 等包管理无法在 Catalina 及以下的系统版本上安装成功，需要进行手动编译。编译项如下</p>
+<h1 class="article-title"><span>S081 Labs</span></h1>
+<h2 id="Utilities"><a href="#Utilities" class="headerlink" title="Utilities"></a>Utilities</h2><h3 id="Install-xv6-on-Catalina"><a href="#Install-xv6-on-Catalina" class="headerlink" title="Install xv6 on Catalina"></a>Install xv6 on Catalina</h3><p>配置 <code>S081</code> 实验环境的时候，官网对于 macOS 的安装方法 <code>brew install riscv-tools</code> 等包管理无法在 Catalina 及以下的系统版本上安装成功，需要进行手动编译。编译项如下</p>
 <ul>
 <li>RISC-V工具链： 包括一系列交叉编译的工具，用于把源码编译成机器码，如 <code>gcc，binutils，glibc</code> 等</li>
 <li>QEMU模拟器： 用于在 X86 机器上模拟 RISC-V 架构的 CPU</li>
 <li>xv6源码： xv6 操作系统源码</li>
 </ul>
-<h3 id="一、RISC-V-toolchain"><a href="#一、RISC-V-toolchain" class="headerlink" title="一、RISC-V toolchain"></a>一、RISC-V toolchain</h3><p>下载后在源码根目录进行编译，具体参考官方文档。编译大约需要30min：</p>
+<h4 id="一、RISC-V-toolchain"><a href="#一、RISC-V-toolchain" class="headerlink" title="一、RISC-V toolchain"></a>一、RISC-V toolchain</h4><p>下载后在源码根目录进行编译，具体参考官方文档。编译大约需要30min：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone --recursive https://github.com/riscv/riscv-gnu-toolchain</span><br><span class="line">cd riscv-gnu-toolchain</span><br><span class="line">./configure --prefix=/usr/local/opt/riscv-gnu-toolchain    #配置产物路径</span><br><span class="line">make                                                       #编译</span><br></pre></td></tr></table></figure>
 
 <p>在macOS catalina版本下进行.&#x2F;configure时提示缺少GNU的 awk 和 sed: configure: error: GNU awk not found，手动安装即可: </p>
@@ -105,14 +105,14 @@
 
 <p>此时在命令行输入 <code>riscv64-unknown-elf-gcc -v</code>，如果能显示版本信息则代表安装成功。</p>
 <p>需要注意的是，在编译的过程中，会出现报错，需要手动在 <code>terminal.c</code> 和  <code>rltty.c</code> 中添加 <code>#include &lt;sys/ioctl.h&gt;</code> 头文件。</p>
-<h3 id="二、QEMU"><a href="#二、QEMU" class="headerlink" title="二、QEMU"></a>二、QEMU</h3><p>编译生成的 risc-v 机器码需要通过模拟 cpu 执行，因此需要从qemu官网下载指定版本的源码并编译：</p>
+<h4 id="二、QEMU"><a href="#二、QEMU" class="headerlink" title="二、QEMU"></a>二、QEMU</h4><p>编译生成的 risc-v 机器码需要通过模拟 cpu 执行，因此需要从qemu官网下载指定版本的源码并编译：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://download.qemu.org/qemu-4.1.0.tar.xz  #下载后解压并进入目录</span><br><span class="line">./configure                                       #默认安装所有目标平台，产物路径为/usr/local/bin</span><br><span class="line">make &amp;&amp; make install                              #编译并安装</span><br></pre></td></tr></table></figure>
 
-<h3 id="3-xv6"><a href="#3-xv6" class="headerlink" title="3 xv6"></a>3 xv6</h3><p>进入 MIT 的官网 <code>https://pdos.csail.mit.edu/6.S081/2020/</code> , 键入以下命令</p>
+<h4 id="3-xv6"><a href="#3-xv6" class="headerlink" title="3 xv6"></a>3 xv6</h4><p>进入 MIT 的官网 <code>https://pdos.csail.mit.edu/6.S081/2020/</code> , 键入以下命令</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> git://g.csail.mit.edu/xv6-labs-2020</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> xv6-labs-2020</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git checkout util</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make qemu</span></span><br></pre></td></tr></table></figure>
 
 <p>即进入实验环境</p>
-<h2 id="Boot-xv6-Easy"><a href="#Boot-xv6-Easy" class="headerlink" title="Boot xv6 [Easy]"></a>Boot xv6 [Easy]</h2><p>The xv6-labs-2020 repository differs slightly from the book’s xv6-riscv; it mostly adds some files. If you are curious look at the git log:</p>
+<h3 id="Boot-xv6-Easy"><a href="#Boot-xv6-Easy" class="headerlink" title="Boot xv6 [Easy]"></a>Boot xv6 [Easy]</h3><p>The xv6-labs-2020 repository differs slightly from the book’s xv6-riscv; it mostly adds some files. If you are curious look at the git log:</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">log</span></span></span><br></pre></td></tr></table></figure>
 
 <p>The files you will need for this and subsequent lab assignments are distributed using the <a target="_blank" rel="noopener" href="http://www.git-scm.com/">Git</a> version control system. Above you switched to a branch (git checkout util) containing a version of xv6 tailored to this lab. To learn more about Git, take a look at the <a target="_blank" rel="noopener" href="http://www.kernel.org/pub/software/scm/git/docs/user-manual.html">Git user’s manual</a>, or, you may find this <a target="_blank" rel="noopener" href="http://eagain.net/articles/git-for-computer-scientists/">CS-oriented overview of Git</a> useful. Git allows you to keep track of the changes you make to the code. For example, if you are finished with one of the exercises, and want to checkpoint your progress, you can <em>commit</em> your changes by running:</p>
@@ -122,12 +122,12 @@
 <p>These are the files that <code>mkfs</code> includes in the initial file system; most are programs you can run. You just ran one of them: <code>ls</code>. If you type <code>ls</code> at the prompt, you should see output similar to the following:</p>
 <p>xv6 has no <code>ps</code> command, but, if you type Ctrl-p, the kernel will print information about each process. If you try it now, you’ll see two lines: one for <code>init</code>, and one for <code>sh</code>.</p>
 <p>To quit qemu type: <code>Ctrl-a x</code>.</p>
-<h2 id="Grading-and-hand-in-procedure"><a href="#Grading-and-hand-in-procedure" class="headerlink" title="Grading and hand-in procedure"></a>Grading and hand-in procedure</h2><p>You can run <code>make grade</code> to test your solutions with the grading program. The TAs will use the same grading program to assign your lab submission a grade. Separately, we will also have check-off meetings for labs (see <a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/general.html#grading">Grading policy</a>).</p>
+<h3 id="Grading-and-hand-in-procedure"><a href="#Grading-and-hand-in-procedure" class="headerlink" title="Grading and hand-in procedure"></a>Grading and hand-in procedure</h3><p>You can run <code>make grade</code> to test your solutions with the grading program. The TAs will use the same grading program to assign your lab submission a grade. Separately, we will also have check-off meetings for labs (see <a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/general.html#grading">Grading policy</a>).</p>
 <p>The lab code comes with GNU Make rules to make submission easier. After committing your final changes to the lab, type make handin to submit your lab. For detailed instructions on how to submit see <a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/util.html#submit">below</a>.</p>
-<h2 id="sleep-easy"><a href="#sleep-easy" class="headerlink" title="sleep (easy)"></a>sleep (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">easy</a>)</h2><blockquote>
+<h3 id="sleep-easy"><a href="#sleep-easy" class="headerlink" title="sleep (easy)"></a>sleep (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">easy</a>)</h3><blockquote>
 <p>Implement the UNIX program <code>sleep</code> for xv6; your <code>sleep</code> should pause for a user-specified number of ticks. A tick is a notion of time defined by the xv6 kernel, namely the time between two interrupts from the timer chip. Your solution should be in the file <code>user/sleep.c</code>.</p>
 </blockquote>
-<h3 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h3><ul>
+<h4 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h4><ul>
 <li>read Chapter 1 of the <a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/xv6/book-riscv-rev1.pdf">xv6 book</a>.</li>
 <li>Look at some of the other programs in <code>user/</code> (e.g., <code>user/echo.c</code>, <code>user/grep.c</code>, and <code>user/rm.c</code>) to see how you can obtain the command-line arguments passed to a program.</li>
 <li>If the user forgets to pass an argument, sleep should print an error message.</li>
@@ -138,7 +138,7 @@
 <li>Add your <code>sleep</code> program to <code>UPROGS</code> in Makefile; once you’ve done that, <code>make qemu</code> will compile your program and you’ll be able to run it from the xv6 shell.</li>
 <li>Look at Kernighan and Ritchie’s book <em>The C programming language (second edition)</em> (K&amp;R) to learn about C.</li>
 </ul>
-<h3 id="Presentation"><a href="#Presentation" class="headerlink" title="Presentation"></a>Presentation</h3><p>Run the program from the xv6 shell:</p>
+<h4 id="Presentation"><a href="#Presentation" class="headerlink" title="Presentation"></a>Presentation</h4><p>Run the program from the xv6 shell:</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sleep</span> 10</span><br><span class="line">(nothing happens <span class="keyword">for</span> a little <span class="keyword">while</span>)</span><br></pre></td></tr></table></figure>
 
 <p>Your solution is correct if your program pauses when run as shown above. Run make grade to see if you indeed pass the sleep tests.</p>
@@ -150,10 +150,10 @@
 
 
 
-<h2 id="pingpong-easy"><a href="#pingpong-easy" class="headerlink" title="pingpong (easy)"></a>pingpong (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">easy</a>)</h2><blockquote>
+<h3 id="pingpong-easy"><a href="#pingpong-easy" class="headerlink" title="pingpong (easy)"></a>pingpong (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">easy</a>)</h3><blockquote>
 <p>Write a program that uses UNIX system calls to ‘’ping-pong’’ a byte between two processes over a pair of pipes, one for each direction. The parent should send a byte to the child; the child should print “<pid>: received ping”, where <pid> is its process ID, write the byte on the pipe to the parent, and exit; the parent should read the byte from the child, print “<pid>: received pong”, and exit. Your solution should be in the file <code>user/pingpong.c</code>.</pid></pid></pid></p>
 </blockquote>
-<h3 id="Preparation-1"><a href="#Preparation-1" class="headerlink" title="Preparation"></a>Preparation</h3><ul>
+<h4 id="Preparation-1"><a href="#Preparation-1" class="headerlink" title="Preparation"></a>Preparation</h4><ul>
 <li>Use <code>pipe</code> to create a pipe.</li>
 <li>Use <code>fork</code> to create a child.</li>
 <li>Use <code>read</code> to read from the pipe, and <code>write</code> to write to the pipe.</li>
@@ -161,15 +161,15 @@
 <li>Add the program to <code>UPROGS</code> in Makefile.</li>
 <li>User programs on xv6 have a limited set of library functions available to them. You can see the list in <code>user/user.h</code>; the source (other than for system calls) is in <code>user/ulib.c</code>, <code>user/printf.c</code>, and <code>user/umalloc.c</code>.</li>
 </ul>
-<h3 id="Presentation-1"><a href="#Presentation-1" class="headerlink" title="Presentation"></a>Presentation</h3><p>Run the program from the xv6 shell and it should produce the following output:</p>
+<h4 id="Presentation-1"><a href="#Presentation-1" class="headerlink" title="Presentation"></a>Presentation</h4><p>Run the program from the xv6 shell and it should produce the following output:</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">pingpong</span></span><br><span class="line">4: received ping</span><br><span class="line">3: received pong</span><br></pre></td></tr></table></figure>
 
 <p>Your solution is correct if your program exchanges a byte between two processes and produces output as shown above.</p>
-<h2 id="primes-moderate-x2F-hard"><a href="#primes-moderate-x2F-hard" class="headerlink" title="primes (moderate)&#x2F;(hard)"></a>primes (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">moderate</a>)&#x2F;(<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">hard</a>)</h2><blockquote>
+<h3 id="primes-moderate-x2F-hard"><a href="#primes-moderate-x2F-hard" class="headerlink" title="primes (moderate)&#x2F;(hard)"></a>primes (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">moderate</a>)&#x2F;(<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">hard</a>)</h3><blockquote>
 <p>Write a concurrent version of prime sieve using pipes. This idea is due to Doug McIlroy, inventor of Unix pipes. The picture halfway down <a target="_blank" rel="noopener" href="http://swtch.com/~rsc/thread/">this page</a> and the surrounding text explain how to do it. Your solution should be in the file <code>user/primes.c</code>.</p>
 <p>Your goal is to use <code>pipe</code> and <code>fork</code> to set up the pipeline. The first process feeds the numbers 2 through 35 into the pipeline. For each prime number, you will arrange to create one process that reads from its left neighbor over a pipe and writes to its right neighbor over another pipe. Since xv6 has limited number of file descriptors and processes, the first process can stop at 35.</p>
 </blockquote>
-<h3 id="Preparation-2"><a href="#Preparation-2" class="headerlink" title="Preparation"></a>Preparation</h3><ul>
+<h4 id="Preparation-2"><a href="#Preparation-2" class="headerlink" title="Preparation"></a>Preparation</h4><ul>
 <li>Be careful to close file descriptors that a process doesn’t need, because otherwise your program will run xv6 out of resources before the first process reaches 35.</li>
 <li>Once the first process reaches 35, it should wait until the entire pipeline terminates, including all children, grandchildren, &amp;c. Thus the main primes process should only exit after all the output has been printed, and after all the other primes processes have exited.</li>
 <li>Hint: <code>read</code> returns zero when the write-side of a pipe is closed.</li>
@@ -177,15 +177,15 @@
 <li>You should create the processes in the pipeline only as they are needed.</li>
 <li>Add the program to <code>UPROGS</code> in Makefile.</li>
 </ul>
-<h3 id="Presentation-2"><a href="#Presentation-2" class="headerlink" title="Presentation"></a>Presentation</h3><p>Your solution is correct if it implements a pipe-based sieve and produces the following output:</p>
+<h4 id="Presentation-2"><a href="#Presentation-2" class="headerlink" title="Presentation"></a>Presentation</h4><p>Your solution is correct if it implements a pipe-based sieve and produces the following output:</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">primes</span></span><br><span class="line">prime 2</span><br><span class="line">prime 3</span><br><span class="line">prime 5</span><br><span class="line">prime 7</span><br><span class="line">prime 11</span><br><span class="line">prime 13</span><br><span class="line">prime 17</span><br><span class="line">prime 19</span><br><span class="line">prime 23</span><br><span class="line">prime 29</span><br><span class="line">prime 31</span><br></pre></td></tr></table></figure>
 
 
 
-<h2 id="find-moderate"><a href="#find-moderate" class="headerlink" title="find (moderate)"></a>find (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">moderate</a>)</h2><blockquote>
+<h3 id="find-moderate"><a href="#find-moderate" class="headerlink" title="find (moderate)"></a>find (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">moderate</a>)</h3><blockquote>
 <p>Write a simple version of the UNIX find program: find all the files in a directory tree with a specific name. Your solution should be in the file <code>user/find.c</code>.</p>
 </blockquote>
-<h3 id="Preparation-3"><a href="#Preparation-3" class="headerlink" title="Preparation"></a>Preparation</h3><ul>
+<h4 id="Preparation-3"><a href="#Preparation-3" class="headerlink" title="Preparation"></a>Preparation</h4><ul>
 <li>Look at user&#x2F;ls.c to see how to read directories.</li>
 <li>Use recursion to allow find to descend into sub-directories.</li>
 <li>Don’t recurse into “.” and “..”.</li>
@@ -194,15 +194,15 @@
 <li>Note that &#x3D;&#x3D; does not compare strings like in Python. Use strcmp() instead.</li>
 <li>Add the program to <code>UPROGS</code> in Makefile.</li>
 </ul>
-<h3 id="Presentation-3"><a href="#Presentation-3" class="headerlink" title="Presentation"></a>Presentation</h3><p>Your solution is correct if produces the following output (when the file system contains the files <code>b</code> and <code>a/b</code>):</p>
+<h4 id="Presentation-3"><a href="#Presentation-3" class="headerlink" title="Presentation"></a>Presentation</h4><p>Your solution is correct if produces the following output (when the file system contains the files <code>b</code> and <code>a/b</code>):</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> &gt; b</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">mkdir</span> a</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> &gt; a/b</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">find . b</span></span><br><span class="line">./b</span><br><span class="line">./a/b</span><br><span class="line"><span class="meta prompt_">$ </span></span><br></pre></td></tr></table></figure>
 
 
 
-<h2 id="xargs-moderate"><a href="#xargs-moderate" class="headerlink" title="xargs (moderate)"></a>xargs (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">moderate</a>)</h2><blockquote>
+<h3 id="xargs-moderate"><a href="#xargs-moderate" class="headerlink" title="xargs (moderate)"></a>xargs (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">moderate</a>)</h3><blockquote>
 <p>Write a simple version of the UNIX xargs program: read lines from the standard input and run a command for each line, supplying the line as arguments to the command. Your solution should be in the file <code>user/xargs.c</code>.</p>
 </blockquote>
-<h3 id="Preparation-4"><a href="#Preparation-4" class="headerlink" title="Preparation"></a>Preparation</h3><ul>
+<h4 id="Preparation-4"><a href="#Preparation-4" class="headerlink" title="Preparation"></a>Preparation</h4><ul>
 <li>Use <code>fork</code> and <code>exec</code> to invoke the command on each line of input. Use <code>wait</code> in the parent to wait for the child to complete the command.</li>
 <li>To read individual lines of input, read a character at a time until a newline (‘\n’) appears.</li>
 <li>kernel&#x2F;param.h declares MAXARG, which may be useful if you need to declare an argv array.</li>
@@ -217,7 +217,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sh &lt; xargstest.sh</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">$ $ $ $ $ hello</span></span><br><span class="line">hello</span><br><span class="line">hello</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">$</span></span><br></pre></td></tr></table></figure>
 
 <p>You may have to go back and fix bugs in your find program. The output has many <code>$</code> because the xv6 shell doesn’t realize it is processing commands from a file instead of from the console, and prints a <code>$</code> for each command in the file.</p>
-<h3 id="Presentation-4"><a href="#Presentation-4" class="headerlink" title="Presentation"></a>Presentation</h3><p>The following example illustrates xarg’s behavior:</p>
+<h4 id="Presentation-4"><a href="#Presentation-4" class="headerlink" title="Presentation"></a>Presentation</h4><p>The following example illustrates xarg’s behavior:</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> hello too | xargs <span class="built_in">echo</span> <span class="built_in">bye</span></span></span><br><span class="line">bye hello too</span><br></pre></td></tr></table></figure>
 
 <p>Note that the command here is “echo bye” and the additional arguments are “hello too”, making the command “echo bye hello too”, which outputs “bye hello too”.</p>
@@ -226,19 +226,19 @@
 
 
 
-<h2 id="Optional-challenge-exercises"><a href="#Optional-challenge-exercises" class="headerlink" title="Optional challenge exercises"></a>Optional challenge exercises</h2><ul>
+<h3 id="Optional-challenge-exercises"><a href="#Optional-challenge-exercises" class="headerlink" title="Optional challenge exercises"></a>Optional challenge exercises</h3><ul>
 <li>Write an uptime program that prints the uptime in terms of ticks using the <code>uptime</code> system call. (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">easy</a>)</li>
 <li>Support regular expressions in name matching for <code>find</code>. <code>grep.c</code> has some primitive support for regular expressions. (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">easy</a>)</li>
 <li>The xv6 shell (<code>user/sh.c</code>) is just another user program and you can improve it. It is a minimal shell and lacks many features found in real shell. For example, modify the shell to not print a <code>$</code> when processing shell commands from a file (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">moderate</a>), modify the shell to support wait (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">easy</a>), modify the shell to support lists of commands, separated by “;” (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">moderate</a>), modify the shell to support sub-shells by implementing “(“ and “)” (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">moderate</a>), modify the shell to support tab completion (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">easy</a>), modify the shell to keep a history of passed shell commands (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.S081/2020/labs/guidance.html">moderate</a>), or anything else you would like your shell to do. (If you are very ambitious, you may have to modify the kernel to support the kernel features you need; xv6 doesn’t support much.)</li>
 </ul>
-
+<h2 id="Syscall"><a href="#Syscall" class="headerlink" title="Syscall"></a>Syscall</h2>
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
 </div></section></div>
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/07/15/CS229-Courses-Note/">CS229 Courses Note<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/07/15/alg-ANALYSIS%20OF%20ALGORITHMS/">coursera 1.4 ANALYSIS OF ALGORITHMS<span class="note">Newer</span></a></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/07/15/CS229-Courses-Note/">CS229 Courses Note<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/07/15/What-open-courses-I-plan-to-take/">Fever's Notes on Open Courses<span class="note">Newer</span></a></section></div>
 
 
 

@@ -29,7 +29,7 @@
 <meta property="og:description" content="Intro本课程广泛介绍机器学习和统计模式识别。主题包括：监督学习（生成&#x2F;判别学习、参数化&#x2F;非参数化学习、神经网络、支持向量机）；无监督学习（聚类、维度缩减、核方法）；学习理论（偏差&#x2F;方差权衡，实用建议）；强化学习和自适应控制。本课程还将讨论机器学习的最新应用，如机器人控制、数据挖掘、自主导航、生物信息学、语音识别以及文本和网页数据处理。 Res 2018 年秋季学期">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-07-15T03:58:26.037Z">
-<meta property="article:modified_time" content="2024-07-15T03:58:26.037Z">
+<meta property="article:modified_time" content="2024-07-16T03:54:23.633Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="machine learning">
 <meta name="twitter:card" content="summary">
@@ -71,7 +71,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Intro"><span class="toc-text">Intro</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Res-2018-%E5%B9%B4%E7%A7%8B%E5%AD%A3%E5%AD%A6%E6%9C%9F"><span class="toc-text">Res 2018 年秋季学期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0"><span class="toc-text">课程笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%A4%8D%E4%B9%A0"><span class="toc-text">3.0 基础知识复习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%9C%89%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">3.1 有监督学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-text">3.2 神经网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">3.3 无监督学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0"><span class="toc-text">3.4 强化学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA"><span class="toc-text">3.5 学习理论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Intro"><span class="toc-text">Intro</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Res-2018-%E5%B9%B4%E7%A7%8B%E5%AD%A3%E5%AD%A6%E6%9C%9F"><span class="toc-text">Res 2018 年秋季学期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0"><span class="toc-text">课程笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%A4%8D%E4%B9%A0"><span class="toc-text">3.0 基础知识复习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%9C%89%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">3.1 有监督学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-text">3.2 神经网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">3.3 无监督学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0"><span class="toc-text">3.4 强化学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA"><span class="toc-text">3.5 学习理论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Supervised-Learning-Terms"><span class="toc-text">Supervised Learning Terms</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Housing-Example-Jump-Start"><span class="toc-text">Housing Example Jump Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-LMS-Algorithms"><span class="toc-text">1. LMS Algorithms</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-The-normal-equation"><span class="toc-text">2.The normal equation</span></a></li></ol></li></ol></div></div></div>
 
 
 </div>
@@ -140,14 +140,78 @@
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>CS229 官方讲义：<a href="https://link.zhihu.com/?target=http://cs229.stanford.edu/">CS229: Machine Learning</a></p>
 <p>CS229 讲义中文翻译：<a href="https://link.zhihu.com/?target=https://github.com/Kivy-CN/Stanford-CS-229-CN/">https://github.com/Kivy-CN/Stanford-CS-229-CN/</a> 、<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/28702753">CycleUser：斯坦福大学机器学习 CS229 课程讲义翻译完毕</a></p>
 <p>口仆的学习笔记中 CS229 部分：<a target="_blank" rel="noopener" href="https://www.zhihu.com/column/xxwywzy">口仆的学习笔记</a></p>
-
+<h2 id="Supervised-Learning-Terms"><a href="#Supervised-Learning-Terms" class="headerlink" title="Supervised Learning Terms"></a>Supervised Learning Terms</h2><ul>
+<li>Regression</li>
+<li>Classification</li>
+<li>Terms:<ul>
+<li>input <strong>Features</strong>: $x^{(i)}$</li>
+<li>output <strong>Target</strong>: $y^{(i)}$</li>
+<li><strong>Training sample</strong>: a pair $(x^{(i)},y^{(i)})$</li>
+<li><strong>Training set</strong>: a list of $n$ training examples {$(x^{(i)},y^{(i)});i&#x3D;1,…,n$}</li>
+<li>$\chi$ denote the space of input values, and $\gamma$ the space of output values. In this example, $\chi$ &#x3D; $\gamma$ &#x3D; R.</li>
+<li><strong>Hypothesis</strong>: $h: \chi \mapsto \gamma$ so that $h(x)$ is a “good” predictor for the corresponding value of y</li>
+</ul>
+</li>
+</ul>
+<h2 id="Housing-Example-Jump-Start"><a href="#Housing-Example-Jump-Start" class="headerlink" title="Housing Example Jump Start"></a>Housing Example Jump Start</h2><p>First approximate y as a linear function of x:<br>$$<br>\begin{align}<br>h_\theta (x)&#x3D;\theta_0+\theta_1x_1+\theta_2x_2<br>\end{align}<br>$$</p>
+<ul>
+<li><p>$\theta_i’s$: <strong>Parameters&#x2F;Weights</strong>, parameterizing the space of linear functions mapping from $\Chi$ to $\Upsilon$ </p>
+</li>
+<li><p>$h(x)$: No risk of confusion, then drop the $\theta$</p>
+</li>
+</ul>
+<p>Let $x_0$ &#x3D;1, that $$h(x)&#x3D;\begin{align}\sum_{i&#x3D;0}^{d}\theta_ix_i\end{align} &#x3D; \theta^Tx$$ </p>
+<ul>
+<li>where on the right-hand side above we are viewing θ and x both as vectors, and here d is the number of input variables (not counting x0).</li>
+</ul>
+<p>Then how to pick parameters $\theta$ :</p>
+<ul>
+<li><p>make $h(x)$ close to $y$, at least for the training examples we have. </p>
+</li>
+<li><p>To formalize this, we will define a function that measures, for each value of the $θ’$s, how close the $h(x^{(i)})$’s are to the corresponding $y^{(i)}$’s. We define the <strong>cost function</strong>: $\begin{align} J(\theta)&#x3D;\tfrac{1}{2}\sum_{i&#x3D;1}^{n}(h_\theta(x^{(i)})- y^{i})^2\end{align}$</p>
+</li>
+<li><p><strong>ordinary least squares regression model</strong></p>
+</li>
+</ul>
+<h3 id="1-LMS-Algorithms"><a href="#1-LMS-Algorithms" class="headerlink" title="1. LMS Algorithms"></a>1. LMS Algorithms</h3><p><strong>choose $\theta$ to minimize $J(\theta)$:</strong> search algorithm starts “initial guesses” for θ, and that repeatedly changes $θ$ to make $J(θ)$ smaller, until hopefully converge to a value of $θ$ that minimizes $J(θ)$.</p>
+<p>Specifically, let’s consider the <strong>gradient descent algorithm</strong>, which starts with some initial $θ$, and repeatedly performs the update:<br>$$<br>\begin{align}<br>\theta_j :&#x3D; \theta_j-\alpha\tfrac{\partial}{\partial\theta_j}J_\theta.<br>\end{align}<br>$$</p>
+<p>This update is simultaneously performed for all values of $j&#x3D;0,…,d$</p>
+<ul>
+<li>$\alpha$: Learning rate</li>
+</ul>
+<p>To implement the algorithm: <strong>work out what is the partial derivative term</strong> on the right hand side. </p>
+<ul>
+<li>Let’s first work it out for the case of if we have only one training example (x,y), so that we can neglect the sum in the definition of J. We have:</li>
+</ul>
+<p>$$<br>\begin{aligned}<br>\tfrac{\partial}{\partial\theta_j}J_\theta &amp;&#x3D; \tfrac{\partial}{\partial\theta_j}\tfrac{1}{2}(h_\theta(x)-y)^2 \<br>&amp; &#x3D;2\cdot\tfrac{1}{2}(h_\theta(x)-y)\cdot\tfrac{\partial}{\partial\theta_j}(h_\theta(x)-y) \<br>&amp; &#x3D; (h_\theta(x)-y)\cdot\tfrac{\partial}{\partial\theta_j}(\sum_{i&#x3D;0}^{d}\theta_ix_i-y) \<br>&amp; &#x3D; (h_\theta(x)-y)\cdot x_j<br>\end{aligned}<br>$$</p>
+<p>For a single training example, this gives the update rule:1<br>$$<br>\theta_j :&#x3D; \theta_j+\alpha(y^{(i)}-h_\theta(x^{(i)}))x^{(i)}_{j}<br>$$<br>The rule : <strong>LMS update rule</strong> (“least mean squares”), and is also known as the <strong>Widrow-Hoff learning rule</strong>. </p>
+<ul>
+<li>This rule has several properties that seem natural and intuitive. </li>
+<li>For instance, the magnitude of the update is proportional to the error term (y(i) − hθ(x(i))); thus, for instance, if we are encountering a training example on which our prediction nearly matches the actual value of y(i), then we find that there is little need to change the parameters; </li>
+<li>in contrast, a larger change to the parameters will be made if our prediction hθ(x(i)) has a large error (i.e., if it is very far from y(i)).</li>
+</ul>
+<p>Derived the LMS rule:  only a single training example.  There are two ways to modify this method for a training set of more than one example.</p>
+<p><strong>1st</strong> <strong>batch gradient descent</strong>. </p>
+<ul>
+<li>_ replace it with the following algorithm: Repeat Until Convergence —</li>
+</ul>
+<p>$$<br>Repeat: Until: Convergence - {<br>\theta_j :&#x3D; \theta_j+\alpha\sum_{i&#x3D;1}^{n}(y^{(i)}-h_\theta(x^{(i)}))x_j^{(i)},(for:every:j)<br>}<br>$$</p>
+<ul>
+<li>By grouping the updates of the coordinates into an update of the vector θ, rewrite:</li>
+</ul>
+<p>$$<br>\theta :&#x3D; \theta+\alpha\sum_{i&#x3D;1}^{n}(y^{(i)}-h_\theta(x^{(i)}))x^{(i)}<br>$$</p>
+<ul>
+<li>can easily verify the quantity in the summation in the update rule above is just $\tfrac{∂J(θ)}{∂θ_j}$(for the original definition of $J$). So, this is simply gradient descent on the original cost function$J$. This method looks at every example in the entire training set on every step, and is called <strong>batch gradient descent</strong>. Note that, while gradient descent can be susceptible to local minima in general, the optimization problem we have posed here</li>
+</ul>
+<p><strong>2nd stochastic gradient descent &#x2F; incremental gradient descent</strong><br>$$<br>\begin{aligned}<br>Loop: { for: i&#x3D;1: to: n {\<br>\theta_j :&#x3D; \theta_j+\alpha(y^{(i)}-h_\theta(x^{(i)}))x_j^{(i)} \<br>(for:every:j)  } \<br>}<br>\end{aligned}<br>$$<br>By grouping the updates of the coordinates into an update of the vector θ, we can rewrite update (2) in a slightly more succinct way:<br>$$<br>\theta :&#x3D; \theta+\alpha(y^{(i)}-h_\theta(x^{(i)}))x^{(i)}<br>$$</p>
+<h3 id="2-The-normal-equation"><a href="#2-The-normal-equation" class="headerlink" title="2.The normal equation"></a>2.The normal equation</h3>
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
 </div></section></div>
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/07/15/CS229-Supervised%20Learning/">CS229-Supervised Learning<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/07/15/6.828-Utilities/">S081 Utilities<span class="note">Newer</span></a></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/07/15/6.828%20xv6-book/">S081 xv6-book<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/07/15/6.828-Utilities/">S081 Labs<span class="note">Newer</span></a></section></div>
 
 
 
