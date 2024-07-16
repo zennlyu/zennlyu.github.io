@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>CSAPP - zennlyu</title>
+
+  
+    <meta name="description" content="Ch02_Bits &amp; Bytes &amp; Integer &amp; Floating3种重要的数字表示：  unsigned two’s complement floating point  阅读技巧：首先给出以数学形式表示的属性，作为原理。然后，用例子和非形式化的讨论来解释这个原理。我们建议你反复阅读原理描述和它的示例与讨论，直到你对该属性的说明内容及其重要性有了牢固的直觉。对于">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP">
+<meta property="og:url" content="http://example.com/2024/07/15/CSAPP/index.html">
+<meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="Ch02_Bits &amp; Bytes &amp; Integer &amp; Floating3种重要的数字表示：  unsigned two’s complement floating point  阅读技巧：首先给出以数学形式表示的属性，作为原理。然后，用例子和非形式化的讨论来解释这个原理。我们建议你反复阅读原理描述和它的示例与讨论，直到你对该属性的说明内容及其重要性有了牢固的直觉。对于">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/2-3.png">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/2-6.png">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/float.png">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/bool.png">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/boolExe.png">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/xor.png">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/2-8.png">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/2-9.png">
+<meta property="og:image" content="http://example.com/Users/mac/github/zennlyu.github.io/hexo/source/statics/csapp/2-10.png">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/2-11.png">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/2.4.png">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/2-13.png">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/2-15.png">
+<meta property="og:image" content="http://example.com/2024/07/15/CSAPP/2-17.png">
+<meta property="og:image" content="http://example.com/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch02_Bits/2-31.png">
+<meta property="og:image" content="http://example.com/Users/zenn/zennlyu.github.io/hexo/source/_posts/3-1.png">
+<meta property="og:image" content="http://example.com/Users/mac/github/zennlyu.github.io/hexo/source/statics/csapp/3-2.png">
+<meta property="og:image" content="http://example.com/Users/zenn/zennlyu.github.io/hexo/source/_posts/3-3.png">
+<meta property="og:image" content="http://example.com/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch03%20Machine%20Level/3-4.png">
+<meta property="og:image" content="http://example.com/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch03%20Machine%20Level/3-5-6.png">
+<meta property="og:image" content="http://example.com/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch03%20Machine%20Level/3-8.png">
+<meta property="og:image" content="http://example.com/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch03%20Machine%20Level/3-9.png">
+<meta property="og:image" content="http://example.com/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch03%20Machine%20Level/3-10.png">
+<meta property="og:image" content="http://example.com/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch03%20Machine%20Level/3-11.png">
+<meta property="og:image" content="http://example.com/Users/zenn/zennlyu.github.io/hexo/source/_posts/10-2.png">
+<meta property="article:published_time" content="2024-07-15T03:58:25.984Z">
+<meta property="article:modified_time" content="2024-07-16T04:09:24.666Z">
+<meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="csapp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/07/15/CSAPP/2-3.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/09/eTtVL.jpg" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BF%A1%E6%81%AF%E5%AD%98%E5%82%A8"><span class="toc-text">1 信息存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-text">虚拟内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="toc-text">十六进制表示法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E6%95%B0%E6%8D%AE%E5%A4%A7%E5%B0%8F"><span class="toc-text">字数据大小</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%88%86%E9%85%8D%E5%AD%97%E8%8A%82%E6%95%B0%EF%BC%88C%E6%A0%87%E5%87%86%E4%BF%9D%E8%AF%81%E7%9A%84%E5%AD%97%E8%8A%82%E6%95%B0%E5%92%8C%E5%85%B8%E5%9E%8B%E7%9A%84%E5%AD%97%E8%8A%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%89"><span class="toc-text">C 语言数据类型分配字节数（C标准保证的字节数和典型的字节数之间的关系）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E6%8C%87%E9%92%88"><span class="toc-text">声明指针</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BB%E5%9D%80%E5%92%8C%E5%AD%97%E8%8A%82%E9%A1%BA%E5%BA%8F"><span class="toc-text">寻址和字节顺序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E9%A1%BA%E5%BA%8F"><span class="toc-text">字节顺序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E6%8A%80%E5%B7%A7"><span class="toc-text">C 语言技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-typedef-%E5%91%BD%E5%90%8D%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">使用 typedef 命名数据类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-printf-%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA%EF%BC%9A%E5%AF%B9%E6%A0%BC%E5%BC%8F%E5%8C%96%E7%BB%86%E8%8A%82%E7%9A%84%E6%8E%A7%E5%88%B6%E8%83%BD%E5%8A%9B"><span class="toc-text">使用 printf 格式化输出：对格式化细节的控制能力</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-text">指针和数组</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E9%97%B4%E6%8E%A5%E5%BC%95%E7%94%A8"><span class="toc-text">指针的创建和间接引用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E4%B8%80%E5%BC%A0-ASCII-%E8%A1%A8"><span class="toc-text">生成一张 ASCII 表</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E7%A4%BA%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">表示字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E7%A4%BA%E4%BB%A3%E7%A0%81"><span class="toc-text">表示代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E4%BB%A3%E6%95%B0-amp-%E4%BD%8D%E5%90%91%E9%87%8F"><span class="toc-text">布尔代数 &amp; 位向量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%8D%E5%90%91%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97"><span class="toc-text">位向量的运算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%8D%E5%90%91%E9%87%8F-%E8%A1%A8%E7%A4%BA%E6%9C%89%E9%99%90%E9%9B%86%E5%90%88"><span class="toc-text">位向量-表示有限集合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%B8%83%E5%B0%94%E4%BB%A3%E6%95%B0%E5%92%8C%E5%B8%83%E5%B0%94%E7%8E%AF%E7%9A%84%E6%9B%B4%E5%A4%9A%E5%86%85%E5%AE%B9"><span class="toc-text">关于布尔代数和布尔环的更多内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%83%E4%B9%A0%E9%A2%98"><span class="toc-text">练习题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BA%A7%E8%BF%90%E7%AE%97"><span class="toc-text">C 语言中的位级运算</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%E6%8C%89%E4%BD%8D%E5%B8%83%E5%B0%94%E8%BF%90%E7%AE%97"><span class="toc-text">C 语言支持按位布尔运算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%8D%E7%BA%A7%E8%BF%90%E7%AE%97%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95%E5%B0%B1%E6%98%AF%E5%AE%9E%E7%8E%B0%E6%8E%A9%E7%A0%81%E8%BF%90%E7%AE%97"><span class="toc-text">位级运算的一个常见用法就是实现掩码运算</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97"><span class="toc-text">C 语言中的逻辑运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E7%A7%BB%E4%BD%8D%E8%BF%90%E7%AE%97"><span class="toc-text">C 语言中的移位运算</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%81%E6%B3%A8%E7%A7%BB%E5%8A%A8-K-%E4%BD%8D%EF%BC%8C%E8%BF%99%E9%87%8C-k-%E5%BE%88%E5%A4%A7"><span class="toc-text">旁注移动 K 位，这里 k 很大</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%95%B4%E6%95%B0%E8%A1%A8%E7%A4%BA"><span class="toc-text">2 整数表示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B4%E5%9E%8B%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">整型数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E7%9A%84%E7%BC%96%E7%A0%81"><span class="toc-text">无符号数的编码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A0%E7%AC%A6%E5%8F%B7%E7%BC%96%E7%A0%81%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">无符号编码的定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E7%BC%96%E7%A0%81%E7%9A%84%E9%9A%BE%E4%B8%80%E6%80%A7%EF%BC%9A%E5%87%BD%E6%95%B0-B2U-w-%E6%98%AF%E4%B8%80%E4%B8%AA%E5%8F%8C%E5%B0%84"><span class="toc-text">原理：无符号数编码的难一性：函数 $B2U_w$ 是一个双射</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E7%A0%81%E7%BC%96%E7%A0%81"><span class="toc-text">补码编码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A1%A5%E7%A0%81%E7%BC%96%E7%A0%81%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">补码编码的定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A1%A5%E7%A0%81%E7%BC%96%E7%A0%81%E7%9A%84%E5%94%AF%E4%B8%80%E6%80%A7"><span class="toc-text">补码编码的唯一性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A1%A5%E7%A0%81%E8%BF%90%E7%AE%97%E7%9A%84%E7%89%B9%E6%AE%8A%E6%80%A7"><span class="toc-text">补码运算的特殊性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E7%A1%AE%E5%AE%9A%E5%A4%A7%E5%B0%8F%E7%9A%84%E6%95%B4%E6%95%B0%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%9B%B4%E5%A4%9A%E5%86%85%E5%AE%B9"><span class="toc-text">关于确定大小的整数类型的更多内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E7%9A%84%E5%85%B6%E4%BB%96%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="toc-text">有符号数的其他表示方法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%8D%E7%A0%81%EF%BC%88Ones%E2%80%99-Complement%EF%BC%89"><span class="toc-text">反码（Ones’ Complement）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8E%9F%E7%A0%81%EF%BC%88Sign-Magnitude%EF%BC%89"><span class="toc-text">原码（Sign-Magnitude）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">有符号数和无符号数的转换</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A%E8%A1%A5%E7%A0%81%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0"><span class="toc-text">原理：补码转换为无符号数</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%A8%E5%AF%BC%E8%AF%81%E6%98%8E%EF%BC%9A"><span class="toc-text">推导证明：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E8%BD%AC%E6%8D%A2%E4%B8%BA%E8%A1%A5%E7%A0%81"><span class="toc-text">原理：无符号数转换为补码</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%A8%E5%AF%BC%E8%AF%81%E6%98%8E%EF%BC%9A-1"><span class="toc-text">推导证明：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0"><span class="toc-text">C 语言中的有符号数和无符号数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E4%B8%AD-TMin-%E7%9A%84%E5%86%99%E6%B3%95"><span class="toc-text">C 语言中 TMin 的写法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E4%B8%80%E4%B8%AA%E6%95%B0%E5%AD%97%E7%9A%84%E4%BD%8D%E8%A1%A8%E7%A4%BA"><span class="toc-text">扩展一个数字的位表示</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E7%9A%84%E9%9B%B6%E6%89%A9%E5%B1%95"><span class="toc-text">原理：无符号数的零扩展</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A%E8%A1%A5%E7%A0%81%E6%95%B0%E7%9A%84%E7%AC%A6%E5%8F%B7%E6%89%A9%E5%B1%95"><span class="toc-text">原理：补码数的符号扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%A8%E5%AF%BC%EF%BC%9A%E8%A1%A5%E7%A0%81%E6%95%B0%E5%80%BC%E7%9A%84%E7%AC%A6%E5%8F%B7%E6%89%A9%E5%B1%95"><span class="toc-text">推导：补码数值的符号扩展</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%AA%E6%96%AD%E6%95%B0%E5%AD%97"><span class="toc-text">截断数字</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A%E6%88%AA%E6%96%AD%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0"><span class="toc-text">原理：截断无符号数</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%A8%E5%AF%BC%EF%BC%9A%E6%88%AA%E6%96%AD%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0"><span class="toc-text">推导：截断无符号数</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A%E6%88%AA%E6%96%AD%E8%A1%A5%E7%A0%81%E6%95%B0%E5%80%BC"><span class="toc-text">原理：截断补码数值</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%A8%E5%AF%BC%EF%BC%9A%E6%88%AA%E6%96%AD%E8%A1%A5%E7%A0%81%E6%95%B0%E5%80%BC"><span class="toc-text">推导：截断补码数值</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E7%9A%84%E5%BB%BA%E8%AE%AE"><span class="toc-text">关于有符号数和无符号数的建议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%BD%E6%95%B0-getpeername-%E7%9A%84%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E"><span class="toc-text">函数 getpeername 的安全漏洞</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%95%B4%E6%95%B0%E8%BF%90%E7%AE%97"><span class="toc-text">3 整数运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8A%A0%E6%B3%95"><span class="toc-text">3.1 无符号加法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%8A%A0%E6%B3%95"><span class="toc-text">原理：无符号数加法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%A8%E5%AF%BC%EF%BC%9A%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%8A%A0%E6%B3%95"><span class="toc-text">推导：无符号数加法</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A%E6%A3%80%E6%B5%8B%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%8A%A0%E6%B3%95%E4%B8%AD%E7%9A%84%E6%BA%A2%E5%87%BA"><span class="toc-text">原理：检测无符号数加法中的溢出</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%A8%E5%AF%BC%EF%BC%9A%E6%A3%80%E6%B5%8B%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%8A%A0%E6%B3%95%E4%B8%AD%E7%9A%84%E6%BA%A2%E5%87%BA"><span class="toc-text">推导：检测无符号数加法中的溢出</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E6%B1%82%E5%8F%8D"><span class="toc-text">原理：无符号数求反</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%A8%E5%AF%BC%EF%BC%9A%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E6%B1%82%E5%8F%8D"><span class="toc-text">推导：无符号数求反</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95"><span class="toc-text">3.2 补码加法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E8%A1%A5%E7%A0%81%E7%9A%84%E9%9D%9E"><span class="toc-text">3.3 补码的非</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B9%98%E6%B3%95"><span class="toc-text">3.4 无符号乘法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E8%A1%A5%E7%A0%81%E4%B9%98%E6%B3%95"><span class="toc-text">3.5 补码乘法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-%E4%B9%98%E4%BB%A5%E5%B8%B8%E6%95%B0"><span class="toc-text">3.6 乘以常数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-%E5%85%B3%E4%BA%8E%E6%95%B4%E6%95%B0%E8%BF%90%E7%AE%97%E7%9A%84%E6%80%9D%E8%80%83"><span class="toc-text">3.7 关于整数运算的思考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="toc-text">4 浮点数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%B0%8F%E6%95%B0"><span class="toc-text">二进制小数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IEEE-%E6%B5%AE%E7%82%B9%E8%A1%A8%E7%A4%BA"><span class="toc-text">IEEE 浮点表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E7%A4%BA%E4%BE%8B"><span class="toc-text">数字示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%88%8D%E5%85%A5"><span class="toc-text">舍入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E8%BF%90%E7%AE%97"><span class="toc-text">浮点运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="toc-text">C 语言中的浮点数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8E%86%E5%8F%B2%E8%A7%82%E7%82%B9"><span class="toc-text">1 历史观点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%A8%8B%E5%BA%8F%E7%BC%96%E7%A0%81"><span class="toc-text">2 程序编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E7%BA%A7%E4%BB%A3%E7%A0%81"><span class="toc-text">机器级代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%B3%A8%E8%A7%A3"><span class="toc-text">关于格式的注解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ATT-%E4%B8%8E-Intel-%E6%B1%87%E7%BC%96%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F"><span class="toc-text">ATT 与 Intel 汇编代码格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96"><span class="toc-text">内联汇编</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F"><span class="toc-text">3 数据格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%AE%BF%E9%97%AE%E4%BF%A1%E6%81%AF"><span class="toc-text">4 访问信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8C%87%E7%A4%BA%E7%AC%A6"><span class="toc-text">操作数指示符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4"><span class="toc-text">数据传送指令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%81%E6%B3%A8-%E7%90%86%E8%A7%A3%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E5%A6%82%E4%BD%95%E6%94%B9%E5%8F%98%E7%9B%AE%E7%9A%84%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-text">旁注: 理解数据传送如何改变目的寄存器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%81%E6%B3%A8-%E5%AD%97%E8%8A%82%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4%E6%AF%94%E8%BE%83"><span class="toc-text">旁注: 字节传送指令比较</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E7%A4%BA%E4%BE%8B"><span class="toc-text">数据传送示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E5%85%A5%E5%92%8C%E5%BC%B9%E5%87%BA%E6%A0%88%E6%95%B0%E6%8D%AE"><span class="toc-text">压入和弹出栈数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%AE%97%E6%95%B0%E5%92%8C%E9%80%BB%E8%BE%91%E6%93%8D%E4%BD%9C"><span class="toc-text">5 算数和逻辑操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E6%9C%89%E6%95%88%E5%9C%B0%E5%9D%80"><span class="toc-text">加载有效地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E5%85%83%E5%92%8C%E4%BA%8C%E5%85%83%E6%93%8D%E4%BD%9C"><span class="toc-text">一元和二元操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E4%BD%8D%E6%93%8D%E4%BD%9C"><span class="toc-text">移位操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A8%E8%AE%BA"><span class="toc-text">讨论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E7%9A%84%E7%AE%97%E6%9C%AF%E6%8E%A7%E5%88%B6"><span class="toc-text">特殊的算术控制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%8E%A7%E5%88%B6"><span class="toc-text">6 控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%A0%81"><span class="toc-text">条件码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E6%9D%A1%E4%BB%B6%E7%A0%81"><span class="toc-text">访问条件码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4"><span class="toc-text">跳转指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4%E7%9A%84%E7%BC%96%E7%A0%81"><span class="toc-text">跳转指令的编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%9D%A1%E4%BB%B6%E6%8E%A7%E5%88%B6%E6%9D%A5%E5%AE%9E%E7%8E%B0%E6%9D%A1%E4%BB%B6%E5%88%86%E6%94%AF"><span class="toc-text">用条件控制来实现条件分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%9D%A1%E4%BB%B6%E4%BC%A0%E9%80%81%E6%9D%A5%E5%AE%9E%E7%8E%B0%E6%9D%A1%E4%BB%B6%E5%88%86%E6%94%AF"><span class="toc-text">用条件传送来实现条件分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF"><span class="toc-text">循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#do-while"><span class="toc-text">do-while</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#while"><span class="toc-text">while</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#for"><span class="toc-text">for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#switch"><span class="toc-text">switch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%BF%87%E7%A8%8B"><span class="toc-text">7 过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%A0%88"><span class="toc-text">运行时栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E7%A7%BB%E6%8E%A7%E5%88%B6"><span class="toc-text">转移控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81"><span class="toc-text">数据传送</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E4%B8%8A%E7%9A%84%E5%B1%80%E9%83%A8%E5%AD%98%E5%82%A8"><span class="toc-text">栈上的局部存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E4%B8%AD%E7%9A%84%E5%B1%80%E9%83%A8%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4"><span class="toc-text">寄存器中的局部存储空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E8%BF%87%E7%A8%8B"><span class="toc-text">递归过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E6%95%B0%E7%BB%84%E5%88%86%E9%85%8D%E5%92%8C%E8%AE%BF%E9%97%AE"><span class="toc-text">8 数组分配和访问</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99"><span class="toc-text">基本原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E8%BF%90%E7%AE%97"><span class="toc-text">指针运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B5%8C%E5%A5%97%E7%9A%84%E6%95%B0%E7%BB%84"><span class="toc-text">嵌套的数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E9%95%BF%E6%95%B0%E7%BB%84"><span class="toc-text">定长数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%95%BF%E6%95%B0%E7%BB%84"><span class="toc-text">变长数组</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%BC%82%E8%B4%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">9 异质的数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%84"><span class="toc-text">结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%94%E5%90%88"><span class="toc-text">联合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AF%B9%E9%BD%90"><span class="toc-text">数据对齐</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E5%9C%A8%E6%9C%BA%E5%99%A8%E7%BA%A7%E7%A8%8B%E5%BA%8F%E4%B8%AD%E5%B0%86%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E5%90%88%E8%B5%B7%E6%9D%A5"><span class="toc-text">10 在机器级程序中将控制与数据结合起来</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%A7%A3%E6%8C%87%E9%92%88"><span class="toc-text">理解指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%EF%BC%9A%E4%BD%BF%E7%94%A8-GDB-%E8%B0%83%E8%AF%95%E5%99%A8"><span class="toc-text">应用：使用 GDB 调试器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E8%B6%8A%E7%95%8C%E5%BC%95%E7%94%A8%E5%92%8C%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA"><span class="toc-text">内存越界引用和缓冲区溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%8A%97%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%94%BB%E5%87%BB"><span class="toc-text">对抗缓冲区溢出攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%88%E9%9A%8F%E6%9C%BA%E5%8C%96"><span class="toc-text">栈随机化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%88%E7%A0%B4%E5%9D%8F%E6%A3%80%E6%B5%8B"><span class="toc-text">栈破坏检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%99%90%E5%88%B6%E5%8F%AF%E6%89%A7%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%8C%BA%E5%9F%9F"><span class="toc-text">限制可执行代码区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E5%8F%98%E9%95%BF%E6%A0%88%E5%B8%A7"><span class="toc-text">支持变长栈帧</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E6%B5%AE%E7%82%B9%E4%BB%A3%E7%A0%81"><span class="toc-text">11 浮点代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E4%BC%A0%E9%80%81%E5%92%8C%E8%BD%AC%E6%8D%A2%E6%93%8D%E4%BD%9C"><span class="toc-text">浮点传送和转换操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E6%B5%AE%E7%82%B9%E4%BB%A3%E7%A0%81"><span class="toc-text">过程中的浮点代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E8%BF%90%E7%AE%97%E6%93%8D%E4%BD%9C"><span class="toc-text">浮点运算操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8%E6%B5%AE%E7%82%B9%E5%B8%B8%E6%95%B0"><span class="toc-text">定义和使用浮点常数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E6%B5%AE%E7%82%B9%E4%BB%A3%E7%A0%81%E4%B8%AD%E4%BD%BF%E7%94%A8%E4%BD%8D%E7%BA%A7%E6%93%8D%E4%BD%9C"><span class="toc-text">在浮点代码中使用位级操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E6%AF%94%E8%BE%83%E6%93%8D%E4%BD%9C"><span class="toc-text">浮点比较操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%B5%AE%E7%82%B9%E4%BB%A3%E7%A0%81%E7%9A%84%E8%A7%82%E5%AF%9F%E7%BB%93%E8%AE%BA"><span class="toc-text">对浮点代码的观察结论</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A5%BD%E5%A4%84"><span class="toc-text">好处</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-UNIX-I-O"><span class="toc-text">1 UNIX I&#x2F;O</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%96%87%E4%BB%B6"><span class="toc-text">2 文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%89%93%E5%BC%80-%E5%85%B3%E9%97%AD%E6%96%87%E4%BB%B6"><span class="toc-text">3 打开&#x2F;关闭文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%AF%BB%E5%92%8C%E5%86%99%E6%96%87%E4%BB%B6"><span class="toc-text">4 读和写文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ssize-t-%E5%92%8C-size-t-%E6%9C%89%E4%BA%9B%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="toc-text">ssize_t 和 size_t 有些什么区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%94%A8-RIO-%E5%8C%85%E5%81%A5%E5%A3%AE%E5%9C%B0%E8%AF%BB%E5%86%99"><span class="toc-text">5 用 RIO 包健壮地读写</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RIO-%E7%9A%84%E6%97%A0%E7%BC%93%E5%86%B2%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%87%BD%E6%95%B0"><span class="toc-text">RIO 的无缓冲输入输出函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIO-%E7%9A%84%E5%B8%A6%E7%BC%93%E5%86%B2%E7%9A%84%E8%BE%93%E5%85%A5%E5%87%BD%E6%95%B0"><span class="toc-text">RIO 的带缓冲的输入函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIO-%E5%8C%85%E7%9A%84%E6%9D%A5%E6%BA%90"><span class="toc-text">RIO 包的来源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E5%85%83%E6%95%B0%E6%8D%AE"><span class="toc-text">6 读取文件元数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%AF%BB%E5%8F%96%E7%9B%AE%E5%BD%95%E5%92%8C%E5%86%85%E5%AE%B9"><span class="toc-text">7 读取目录和内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6"><span class="toc-text">8 共享文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-I-O-%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-text">9 I&#x2F;O 重定向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E6%A0%87%E5%87%86-I-O"><span class="toc-text">10 标准 I&#x2F;O</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E7%BB%BC%E5%90%88%EF%BC%9A%E6%88%91%E8%AF%A5%E4%BD%BF%E7%94%A8%E5%93%AA%E4%BA%9B-I-O-%E5%87%BD%E6%95%B0"><span class="toc-text">11 综合：我该使用哪些 I&#x2F;O 函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AE%A2%E6%88%B7%E7%AB%AF-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="toc-text">1 客户端-服务器编程模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BD%91%E7%BB%9C"><span class="toc-text">2 网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%85%A8%E7%90%83-IP-%E5%9B%A0%E7%89%B9%E7%BD%91"><span class="toc-text">3 全球 IP 因特网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A5%97%E6%8E%A5%E5%AD%97%E6%8E%A5%E5%8F%A3"><span class="toc-text">4 套接字接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Web-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">5 Web 服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%BB%BC%E5%90%88%EF%BC%9ATINY-Web-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">6 综合：TINY Web 服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E4%BA%8E%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B"><span class="toc-text">1 基于进程的并发编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8E-I-O-%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B"><span class="toc-text">2 基于 I&#x2F;O 多路复用的并发编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9F%BA%E4%BA%8E%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B"><span class="toc-text">3 基于线程的并发编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F"><span class="toc-text">4 多线程程序中的共享变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%94%A8%E4%BF%A1%E5%8F%B7%E9%87%8F%E5%90%8C%E6%AD%A5%E7%BA%BF%E7%A8%8B"><span class="toc-text">5 用信号量同步线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E4%BD%BF%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%8F%90%E9%AB%98%E5%B9%B6%E8%A1%8C%E6%80%A7"><span class="toc-text">6 使用线程提高并行性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%85%B6%E4%BB%96%E5%B9%B6%E5%8F%91%E9%97%AE%E9%A2%98"><span class="toc-text">7 其他并发问题</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/csapp/">csapp</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2024-07-15T03:58:25.984Z">2024-07-15</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>CSAPP</span></h1>
+<h1 id="Ch02-Bits-amp-Bytes-amp-Integer-amp-Floating"><a href="#Ch02-Bits-amp-Bytes-amp-Integer-amp-Floating" class="headerlink" title="Ch02_Bits &amp; Bytes &amp; Integer &amp; Floating"></a>Ch02_Bits &amp; Bytes &amp; Integer &amp; Floating</h1><p>3种重要的数字表示：</p>
+<ul>
+<li>unsigned</li>
+<li>two’s complement</li>
+<li>floating point</li>
+</ul>
+<p>阅读技巧：首先给出以数学形式表示的属性，作为原理。然后，用例子和非形式化的讨论来解释这个原理。我们建议你反复阅读原理描述和它的示例与讨论，直到你对该属性的说明内容及其重要性有了牢固的直觉。对于更加复杂的属性，还会提供推导，其结构看上去将会像一个数学证明。虽然最终你应该尝试理解这些推导，但在第一次阅读时你可以跳过它们。</p>
+<h2 id="1-信息存储"><a href="#1-信息存储" class="headerlink" title="1 信息存储"></a>1 信息存储</h2><p>大多数计算机使用 8 位的块，或者字节（byte），作为最小的可寻址的内存单位，而不是访问内存中单独的位。</p>
+<h3 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h3><ul>
+<li>机器级程序将内存视为一个非常大的字节数组，称为<strong>虚拟内存（virtual memory）</strong>。</li>
+<li>内存的每个字节都由一个唯一的数字来标识，称为它的<strong>地址（address）</strong></li>
+<li>所有可能地址的集合就称为<strong>虚拟地址空间（virtual address space）</strong>。顾名思义，这个虚拟地址空间只是一个展现给机器级程序的概念性映像。</li>
+<li>实际的实现（见第 9 章）是将动态随机访问存储器（DRAM）、闪存、磁盘存储器、特殊硬件和操作系统软件结合起来，为程序提供一个看上去统一的字节数组。</li>
+<li>本章重点是编译器和运行时系统是如何将存储器空间划分为更可管理的单元，来存放不同的程序对象（program object），即程序数据、指令和控制信息。</li>
+</ul>
+<p>可以用各种机制来分配和管理程序不同部分的存储。这种管理完全是在虚拟地址空间里完成的。</p>
+<ul>
+<li>例如，C 语言中一个指针的值（无论它指向一个整数、一个结构或是某个其他程序对象）都是某个存储块的第一个字节的虚拟地址。</li>
+<li>C 编译器还把每个指针和类型信息联系起来，这样就可以根据指针值的类型，生成不同的机器级代码来访问存储在指针所指向位置处的值。</li>
+<li>尽管 C 编译器维护着这个类型信息，但是它生成的实际机器级程序并不包含关于数据类型的信息。</li>
+</ul>
+<p>每个程序对象可以简单地视为一个字节块，而程序本身就是一个字节序列。</p>
+<h3 id="十六进制表示法"><a href="#十六进制表示法" class="headerlink" title="十六进制表示法"></a>十六进制表示法</h3><h3 id="字数据大小"><a href="#字数据大小" class="headerlink" title="字数据大小"></a>字数据大小</h3><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/2-3.png" alt="2-3"></p>
+<p>每台计算机都有一个字长（word size），指明指针数据的标称大小（nominal size）。因为虚拟地址是以这样的一个字来编码的，所以字长决定的最重要的系统参数就是虚拟地址空间的最大大小。也就是说，对于一个字长为 w 位的机器而言，虚拟地址的范围为 $0-2^w-1$，程序最多访问 $2^w$个字节。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linux&gt; gcc -m32 prog.c</span><br></pre></td></tr></table></figure>
+<h4 id="C-语言数据类型分配字节数（C标准保证的字节数和典型的字节数之间的关系）"><a href="#C-语言数据类型分配字节数（C标准保证的字节数和典型的字节数之间的关系）" class="headerlink" title="C 语言数据类型分配字节数（C标准保证的字节数和典型的字节数之间的关系）"></a>C 语言数据类型分配字节数（C标准保证的字节数和典型的字节数之间的关系）</h4><p>为了避免由于依赖“典型”大小和不同编译器设置带来的奇怪行为，<code>ISO C99</code> 引人了一类数据类型，其数据大小是固定的，不随编译器和机器设置而变化。其中就有数据类型 <code>int32_t</code> ,<code>int64_t</code>, 分别为 4 和 8 个字节</p>
+<p>大部分数据类型都编码为有符号数值，除非有前缀关键字 <code>unsigned</code> 或对确定大小的数据类型使用了特定的无符号声明。</p>
+<blockquote>
+<p>数据类型 char 是一个例外。尽管大多数编译器和机器将它们视为有符号数，但 C 标准不保证这一点。</p>
+<p>相反，正如方括号指示的那样，程序员应该用有符号字符的声明来保证其为一个字节的有符号数值。</p>
+<p>不过，在很多情况下，程序行为对数据类型 char 是有符号的还是无符号的并不敏感。</p>
+</blockquote>
+<p>大多数机器支持两种不同的浮点数格式：单精度 float &amp; 双精度 double</p>
+<p>以下声明都一样</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">long</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">long</span> <span class="type">int</span></span><br><span class="line"><span class="type">long</span> <span class="type">unsigned</span></span><br><span class="line"><span class="type">long</span> <span class="type">unsigned</span> <span class="type">int</span></span><br></pre></td></tr></table></figure>
+<h4 id="声明指针"><a href="#声明指针" class="headerlink" title="声明指针"></a>声明指针</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T *p;		<span class="comment">// 对于任何数据类型 T，p 是一个指针变量，指向一个类型为 T 的对象</span></span><br><span class="line"><span class="type">char</span> *p	<span class="comment">// 将一个指针声明为指向一个 char 类型的对象</span></span><br></pre></td></tr></table></figure>
+<p>可移植性的一个方面就是使程序对不同数据类型的确切大小不敏感。<strong>C 语言标准对不同数据类型的数字范围设置了下界（这点在后面还将讲到），但是却没有上界。</strong></p>
+<blockquote>
+<p>因为从 1980 年左右到 2010 年左右，32 位机器和 32 位程序是主流的组合，许多程序的编写都假设为图 2-3 中 32 位程序的字节分配。随着 64 位机器的日益普及，在将这些程序移植到新机器上时，许多隐藏的对字长的依赖性就会显现出来，成为错误。</p>
+<p>比如，许多程序员假设一个声明为 int 类型的程序对象能被用来存储一个指针。这在大多数 32 位的机器上能正常工作，但是在一台 64 位的机器上却会导致问题。</p>
+</blockquote>
+<h3 id="寻址和字节顺序"><a href="#寻址和字节顺序" class="headerlink" title="寻址和字节顺序"></a>寻址和字节顺序</h3><p>对于跨越多字节的程序对象，我们必须建立两个规则：</p>
+<ul>
+<li>这个对象的地址是什么</li>
+<li>在内存中如何排列这些字节</li>
+</ul>
+<p>在几乎所有的机器上，多字节对象都被存储为连续的字节序列，对象的地址为所使用字节中最小的地址。</p>
+<blockquote>
+<p>例如，假设一个类型为 int 的变量×的地址为 0x100, 也就是说，地址表达式&amp;×的值为 0x100。</p>
+<p>那么，（假设数据类型 int 为 32 位表示）x 的 4 个字节将被存储在内存的 0x100、0x101、0x102 和 0x103 位置。</p>
+</blockquote>
+<p><strong>排列表示一个对象的字节有两个通用的规则</strong> ：考虑一个 w 位的整数，位表示为 $[x<em>{w-1},x</em>{w-2},x<em>{w-3},…x</em>{1},x_{0}]$</p>
+<ul>
+<li>其中 x<sub>w-1</sub> 是最高有效位，x<sub>0</sub> 是最低有效位</li>
+<li>假设 w 是 8 的倍数，这些位就能被分组为字节，其中最高有效字节包含位 $[x^{w-1},x^{w-2},x^{w-3} x^{w-4},x^{w-5},x^{w-6},x^{w-7}]$，最低有效字节位包含 $[x^{7},x^{6},x^{5},x^{4},x^{3},x^{2},x^{1},x^{0}],$ 其他字节包含中间的位。</li>
+</ul>
+<h4 id="字节顺序"><a href="#字节顺序" class="headerlink" title="字节顺序"></a>字节顺序</h4><ul>
+<li><p>某些机器选择在内存中按照从最低有效字节到最高有效字节的顺序存储对象，而另一些机器则按照从最高有效字节到最低有效字节的顺序存储。</p>
+</li>
+<li><p>前一种规则一最低有效字节在最前面的方式，称为<strong>小端法（little endian）</strong>。后一种规则一最高有效字节在最前面的方式，称为<strong>大端法（big endian)</strong></p>
+</li>
+<li><p>双端法</p>
+</li>
+<li><p>对于大多数应用程序员来说，其机器所使用的字节顺序是完全不可见的。无论为哪种类型的机器所编译的程序都会得到同样的结果。</p>
+</li>
+<li><p>不过有时候，字节顺序会成为问题。</p>
+<ul>
+<li><p>首先是在不同类型的机器之间通过网络传送二进制数据时，一个常见的问题是当小端法机器产生的数据被发送到大端法机器或者反过来时，接收程序会发现，字里的字节成了反序的。为了避免这类问题，网络应用程序的代码编写必须遵守已建立的关于字节顺序的规则，以确保发送方机器将它的内部表示转换成网络标准，而接收方机器则将网络标准转换为它的内部表示。</p>
+<p>我们将在第 11 章中看到这种转换的例子。</p>
+</li>
+<li><p>第二种情况是，当阅读表示整数数据的字节序列时，字节顺序也很重要。这通常发生在检查机器级程序时。</p>
+</li>
+<li><p>第三种情况是当编写规避正常的类型系统的程序时。C语言可以通过使用强制类型转换（cast） 或联合（union）来允许以一种数据类型引用一个对象，而这种数据类型与创建这个对象时定义的数据类型不同。大多数应用编程都强烈不推荐这种编码技巧，但是它们对系统级编程来说是非常有用，甚至是必需的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">打印程序对象的字节表示。这段代码使用强制类型转换来规避类型系统。</span></span><br><span class="line"><span class="comment">很容易定义针对其他数据类型的类似函数.</span></span><br><span class="line"><span class="comment">分别输出类型为 int、f1oat 和 void*的 C 程序对象的字节表示。</span></span><br><span class="line"><span class="comment">* 可以观察到它们仅仅传递给 show bytes 一个指向它们参数 x 的指针&amp;x，且这个指针被强制类型转换为“unsigned char*”。</span></span><br><span class="line"><span class="comment">* 这种强制类型转换告诉编译器，程序应该把这个指针看成指向一个字节序列，而不是指向一个原始数据类型的对象。</span></span><br><span class="line"><span class="comment">* 然后，这个指针会被看成是对象使用的最低字节地址。</span></span><br><span class="line"><span class="comment">*/</span> </span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">char</span> *byte_pointer;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">show_bytes</span><span class="params">(byte_pointer start, <span class="type">size_t</span> len)</span> &#123;</span><br><span class="line">	<span class="type">size_t</span> i;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%.2x\n&quot;</span>, start[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">show_int</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">	show_bytes((byte_pointer) &amp;x, <span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">show_float</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">	show_bytes((byte_pointer) &amp;x, <span class="keyword">sizeof</span>(<span class="type">float</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">show_pointer</span><span class="params">(<span class="type">void</span> *x)</span> &#123;</span><br><span class="line">	show_bytes((byte_pointer) &amp;x, <span class="keyword">sizeof</span>(<span class="type">void</span> *));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>参数 12345 的十六进制表示为 0x00003039。对于 int 类型的数据，除了字节顺序以外，我们在所有机器上都得到相同的结果。特别地，我们可以看到在 Linux32、Windows 和 Linux64 上，最低有效字节值 0x39 最先输出，这说明它们是小端法机器；而在 Sun 上最后输出，这说明 Sun 是大端法机器。同样地，float 数据的字节，除了字节顺序以外， 也都是相同的。另一方面，<strong>指针值却是完全不同的</strong>。不同的机器/操作系统配置使用不同的存储分配规则。一个值得注意的特性是 Linux32、Windows 和 Sun 的机器使用 4 字节地址，而 Linux64 使用 8 字节地址。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/2-6.png" alt="2-6"></p>
+<p>可以观察到，尽管浮点型和整型数据都是对数值 12345 编码，但是它们有截然不同的字节模式：整型为 0x00003039, 而浮点数为 0x4640E400。一般而言，这两种格式使用不同的编码方法。如果我们将这些十六进制模式扩展为二进制形式，并且适当地将它们移位，就会发现一个有 13 个相匹配的位的序列，用一串星号标识出来：<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/float.png" alt="float"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="C-语言技巧"><a href="#C-语言技巧" class="headerlink" title="C 语言技巧"></a>C 语言技巧</h4><h5 id="使用-typedef-命名数据类型"><a href="#使用-typedef-命名数据类型" class="headerlink" title="使用 typedef 命名数据类型"></a>使用 typedef 命名数据类型</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> *int_pointer; <span class="comment">// 将类型 int_pointer 定义为一个指向 int 的指针，并且声明了一个这种类型的变量 ip</span></span><br><span class="line">int_pointer ip;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> *ip</span><br></pre></td></tr></table></figure>
+<h5 id="使用-printf-格式化输出：对格式化细节的控制能力"><a href="#使用-printf-格式化输出：对格式化细节的控制能力" class="headerlink" title="使用 printf 格式化输出：对格式化细节的控制能力"></a>使用 printf 格式化输出：对格式化细节的控制能力</h5><blockquote>
+<p>指定确定大小数据类型的格式，如 it32t，要更复杂一些，相关内容参见 2.2.3 节的旁注。</p>
+</blockquote>
+<h5 id="指针和数组"><a href="#指针和数组" class="headerlink" title="指针和数组"></a>指针和数组</h5><blockquote>
+<p>在 C 语言中，我们能够用数组表示法来引用指针，同时我们也能用指针表示法来引用数组元素。在这个例子中，引用 start [i】表示我们想要读取以 start 指向的位置为起始的第 i 个位置处的字节。</p>
+</blockquote>
+<h5 id="指针的创建和间接引用"><a href="#指针的创建和间接引用" class="headerlink" title="指针的创建和间接引用"></a>指针的创建和间接引用</h5><blockquote>
+<p>C 的“取地址”运算符 &amp; 创建一个指针。在这三行中，表达式 &amp;x 创建了一个指向保存变量 x 的位置的指针。这个指针的类型取决于 x 的类型，因此这三个指针的类型分别为 int<em>、f1oat</em>和 void。（数据类型 void 是一种特殊类型的指针，没有相关联的类型信息。）</p>
+<p>强制类型转换运算符可以将一种数据类型转换为另一种。因此，强制类型转换 (byte pointer)&amp;x 表明无论指针&amp;x 以前是什么类型，它现在就是一个指向数据类型为 unsigned char 的指针。这里给出的这些强制类型转换不会改变真实的指针，它们只是告诉编译器以新的数据类型来看待被指向的数据。</p>
+</blockquote>
+<h5 id="生成一张-ASCII-表"><a href="#生成一张-ASCII-表" class="headerlink" title="生成一张 ASCII 表"></a>生成一张 ASCII 表</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">man ascii</span><br></pre></td></tr></table></figure>
+<h3 id="表示字符串"><a href="#表示字符串" class="headerlink" title="表示字符串"></a>表示字符串</h3><p>C 语言中字符串被编码为一个以 nuIl（其值为 0) 字符结尾的字符数组。每个字符都由某个标准编码来表示，最常见的是 ASCII 字符码。</p>
+<p>因此，如果我们以参数“12345”和 6（包括终止符）来运行例程 show bytes，我们得到结果 31 32 33 34 35 00。</p>
+<p>请注意，十进制数字 x 的 ASCII 码正好是 0x3x，而终止字节的十六进制表示为 0x00。在使用 ASCII 码作为字符码的任何系统上都将得到相同的结果，与字节顺序和字大小规则无关。因而，文本数据比二进制数据具有更强的平台独立性。</p>
+<h3 id="表示代码"><a href="#表示代码" class="headerlink" title="表示代码"></a>表示代码</h3><p>计算机系统的一个基本概念：从机器的角度来看，程序仅仅只是字节序列。</p>
+<h3 id="布尔代数-amp-位向量"><a href="#布尔代数-amp-位向量" class="headerlink" title="布尔代数 &amp; 位向量"></a>布尔代数 &amp; 位向量</h3><h4 id="位向量的运算"><a href="#位向量的运算" class="headerlink" title="位向量的运算"></a>位向量的运算</h4><ul>
+<li>位向量就是固定长度为 w、由 0 和 1 组成的串。</li>
+<li>位向量的运算可以定义成参数的每个对应元素之间的运算。</li>
+<li>假设 α 和 b 别表示位向量$[a<em>{w-1}, a</em>{w-2}, …, a<em>{0}] $和$[b</em>{w-1}, b<em>{w-2}, …, b</em>{0}]$。我们将 a&amp;b 也定义为一个长度为 w 的位向量，其中第 i 个元素等于 a<sub>i</sub> &amp; b<sub>i</sub>:,0≤i&lt;w。</li>
+<li>可以用类似的方式将运算 |, ^, 和 ~ 扩展到位向量上。</li>
+</ul>
+<h4 id="位向量-表示有限集合"><a href="#位向量-表示有限集合" class="headerlink" title="位向量-表示有限集合"></a>位向量-表示有限集合</h4><ul>
+<li><p>我们可以用位向量 $[a<em>{w-1}, a</em>{w-2}, …, a_{0}] $ 编码任何子集 $A⊆\lbrace{0,1,…,w-1}\rbrace$，其中 a<sub>i</sub>=1 当且仅当 i∈A。</p>
+<blockquote>
+<p>例如（记住我们是把 $a_{w-1}$ 写在左边，而将 $a_0$ 写在右边），位向量 $a ≐ [01101001]$ 表示集合 $A=\lbrace{0,3,5,6}\rbrace$，而 $b≐[01010101]$ 表示集合 $B=\lbrace0,2,4,6\rbrace$。</p>
+</blockquote>
+</li>
+<li><p>使用这种编码集合的方法，布尔运算 | 和 &amp; 分别对应于集合的并和交，而 ~ 对应于于集合的补。还是用前面那个例子，运算 $α\&amp;b$ 得到位向量 $[01000001]$，而 $A∩B=\lbrace0,6\rbrace$。</p>
+</li>
+<li><p>在大量实际应用中，我们都能看到用位向量来对集合编码。</p>
+<blockquote>
+<p>例如，在第 8 章，我们会看到有很多不同的信号会中断程序执行。我们能够通过指定一个位向量掩码，有选择地使能或是屏蔽一些信号，其中某一位位置上为 1 时，表明信号 i 是有效的（使能），而 0 表明该信号是被屏蔽的。因而，这个掩码表示的就是设置为有效信号的集合。</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="关于布尔代数和布尔环的更多内容"><a href="#关于布尔代数和布尔环的更多内容" class="headerlink" title="关于布尔代数和布尔环的更多内容"></a>关于布尔代数和布尔环的更多内容</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/bool.png" alt="bool"></p>
+<h4 id="练习题"><a href="#练习题" class="headerlink" title="练习题"></a>练习题</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/boolExe.png" alt="boolExe"></p>
+<h3 id="C-语言中的位级运算"><a href="#C-语言中的位级运算" class="headerlink" title="C 语言中的位级运算"></a>C 语言中的位级运算</h3><h4 id="C-语言支持按位布尔运算"><a href="#C-语言支持按位布尔运算" class="headerlink" title="C 语言支持按位布尔运算"></a>C 语言支持按位布尔运算</h4><p>这些运算能运用到任何 “整型” 数据类型上</p>
+<p>正如示例说明的那样，确定一个位级表达式的结果最好的方法，就是将十六进制的参数扩展成二进制表示并执行二进制运算，然后再转换回十六进制。<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/xor.png" alt="xor"></p>
+<h4 id="位级运算的一个常见用法就是实现掩码运算"><a href="#位级运算的一个常见用法就是实现掩码运算" class="headerlink" title="位级运算的一个常见用法就是实现掩码运算"></a>位级运算的一个常见用法就是实现掩码运算</h4><p>这里掩码是一个位模式，表示从一个字中选出的位的集合。</p>
+<blockquote>
+<p>例子：掩码 0xFF（最低的 8 位为 1) 表示一个字的低位字节。位级运算 x&amp;0xFF 生成一个由 x。的最低有效字节组成的值，而其他的字节就被置为 0。</p>
+<p>比如，对于 x=0x89ABCDEF，其表达式将得到 0x000000EF。表达式 ~0 将生成一个全1的掩码，不管机器的字大小是多少。</p>
+<p>尽管对于一个 32 位机器来说，同样的掩码可以写成 0xFFFFFFFF，但是这样的代码不是可移植的。</p>
+</blockquote>
+<h3 id="C-语言中的逻辑运算"><a href="#C-语言中的逻辑运算" class="headerlink" title="C 语言中的逻辑运算"></a>C 语言中的逻辑运算</h3><p>C 语言还提供了一组逻辑运算符 ‖、&amp;&amp;和 !，分别对应于命题逻辑中的 OR、AND 和 OT 运算。</p>
+<p>逻辑运算很容易和位级运算相混淆，但是它们的功能是完全不同的。</p>
+<p>逻辑运算认为所有非零的参数都表示 TRUE，而参数 0 表示 FALSE。它们返回 1 或者 0，分别表示结果为 TRUE 或者为 FALSE。以下是一些表达式求值的示例。</p>
+<p>逻辑运算符&amp;&amp;和‖与它们对应的位级运算&amp;和|之间第二个重要的区别是，如果对第一个参数求值就能确定表达式的结果，那么逻辑运算符就不会对第二个参数求值。因此，例如，表达式a&amp;&amp;5/a将不会造成被零除，而表达式p&amp;&amp;*p++也不会导致间接引用空指针。</p>
+<h3 id="C-语言中的移位运算"><a href="#C-语言中的移位运算" class="headerlink" title="C 语言中的移位运算"></a>C 语言中的移位运算</h3><p>对于一个位表示为 $[x<em>{w-1}, x</em>{w-2}, …, x_{0}] $ 的操作数 x, C 表达式 $x\ll k$ 会生成一个值，其位表示为 $[x^{w-k-1},x^{w-k-2},…,x^{0},0,…,0]$。也就是说，x 向左移动 k 位，丢弃最高的 k 位，并在右端补 k 个 0。移位量应该是一个 $0\sim(w-1)$ 之间的值。移位运算是从左至右可结合的，所以 $x\ll j\ll k$  等价于$(x\ll j)\ll k$</p>
+<p>有一个相应的右移运算 x&gt;&gt;k，但是它的行为有点微妙。一般而言，机器支持两种形式的右移：</p>
+<ul>
+<li><p>逻辑右移算术右移逻辑右移在左端补 k 个 0，得到的结果是 </p>
+<script type="math/tex; mode=display">
+[0,...,0,x^{w-1},x^{w-2},...,x^{k}]</script></li>
+<li><p>算术右移是在左端补及个最高有效位的值，得到的结果是 $[x<em>{w-1},…,x</em>{w-1},x<em>{w-1},x</em>{w-2},…,x_{k}]$。这种做法看上去可能有点奇特，但是我们会发现它对有符号整数数据的运算非常有用。</p>
+</li>
+</ul>
+<p>让我们来看一个例子，下面的表给出了对一个 8 位参数×的两个不同的值做不同的移位操作得到的结果：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Parameter x</td>
+<td>[01100011] [10010101]</td>
+</tr>
+<tr>
+<td>x &lt;&lt; 4</td>
+<td>[0011<em>0000</em>] [0101<em>0000</em>]</td>
+</tr>
+<tr>
+<td>x &gt;&gt; 4(Logical shift)</td>
+<td>[<em>0000</em>0110] [<em>0000</em>1001]</td>
+</tr>
+<tr>
+<td>x &gt;&gt; 4(arithmetic shift)</td>
+<td>[<em>0000</em>0110] [<em>1111</em>1001]</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>斜体的数字表示的是最右端（左移）或最左端（右移）填充的值。可以看到除了一个条目之外，其他的都包含填充 0。唯一的例外是算术右移 $[10010101]$ 的情况。因为操作数的最高位是 1，填充的值就是 1。</p>
+<p>C 语言标准并没有明确定义对于有符号数应该使用哪种类型的右移一算术右移或者逻辑右移都可以。不幸地，这就意味着任何假设一种或者另一种右移形式的代码都可能会遇到可移 植性问题。然而，实际上，几乎所有的编译器/机器组合都对有符号数使用算术右移，且许多程序员也都假设机器会使用这种右移。另一方面，对于无符号数，右移必须是逻辑的。</p>
+<p>与 C 相比，Jva 对于如何进行右移有明确的定义。表达是 $x\gg k$ 会将 x 算术右移 k 个位置，而 $x\gg k$ 会对 x 做逻辑右移。</p>
+<h4 id="旁注移动-K-位，这里-k-很大"><a href="#旁注移动-K-位，这里-k-很大" class="headerlink" title="旁注移动 K 位，这里 k 很大"></a>旁注移动 K 位，这里 k 很大</h4><p>对于一个由位组成的数据类型，如果要移动 $k≥w$ 位会得到什么结果呢？例如，计算下面的表达式会得到什么结果，假设数据类型 int 为 w=32：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> 	 lval = <span class="number">0xFEDCBA98</span>  	&lt;&lt;<span class="number">32</span>;</span><br><span class="line"><span class="type">int</span> 	 aval = <span class="number">0xFEDCBA98</span>  	&gt;&gt;<span class="number">36</span>;</span><br><span class="line"><span class="type">unsigned</span> uval = OxFEDCBA98u &gt;&gt;<span class="number">40</span>;</span><br></pre></td></tr></table></figure>
+<p>C 语言标准很小心地规避了说明在这种情况下该如何做。在许多机器上，当移动一个w位的值时，移位指令只考虑位移量的低 $log_2w$ 位，因此实际上位移量就是通过计算 $k\mod w$ 得到的。例如，当 $ω=32$ 时，上面三个移位运算分别是移动 0、4 和 8 位，得到结果：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lval <span class="number">0xFEDCBA98</span></span><br><span class="line">aval OxFFEDCBA9</span><br><span class="line">uval OxOOFEDCBA</span><br></pre></td></tr></table></figure>
+<p>不过这种行为对于 C 程序来说是没有保证的，所以应该保持位移量小于待移位值的位数</p>
+<p>另一方面，Java 特别要求位移数量应该按照我们前面所讲的求模的方法来计算。</p>
+<h2 id="2-整数表示"><a href="#2-整数表示" class="headerlink" title="2 整数表示"></a>2 整数表示</h2><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/2-8.png" alt="2-8"></p>
+<h3 id="整型数据类型"><a href="#整型数据类型" class="headerlink" title="整型数据类型"></a>整型数据类型</h3><p>C 语言支持多种整型数据类型——表示有限范围的整数。<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/2-9.png" alt="2-9"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/mac/github/zennlyu.github.io/hexo/source/statics/csapp/2-10.png" alt="2-10"></p>
+<p>每种类型都能用关键字来指定大小，这些关键字包括 char、short、long，同时还可以指示被表示的数字是非负数（声明为 unsigned），或者可能是负数（默认）。</p>
+<p>如图 2-3 所示，为这些不同的大小分配的字节数根据程序编译为 32 位还是 64 位而有所不同。根据字节分配，不同的大小所能表示的值的范围是不同的。这里给出来的唯一一个与机器相关的取值范围是大小指示符 log 的。大多数 64 位机器使用 8 个字节的表示，比 32 位机器上使用的 4 个字节的表示的取值范围大很多。</p>
+<p>图 2-9 和图 2-10 中一个很值得注意的特点是取值范围不是对称的一负数的范围比整数的范围大 1。当我们考虑如何表示负数的时候，会看到为什么会这样。<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/2-11.png" alt="2-11"></p>
+<p>C 语言标准定义了每种数据类型必须能够表示的最小的取值范围。特别地，除了固定大小的数据类型是例外，我们看到它们只要求正数和负数的取值范围是对称的。</p>
+<p>此外，数据类型 int 可以用 2 个字节的数字来实现，而这几乎回退到了 16 位机器的时代。</p>
+<p>还可以看到，log 的大小可以用 4 个字节的数字来实现，对 32 位程序来说这是很典型的。固定大小的数据类型保证数值的范围与图 2-9 给出的典型数值一致，包括负数与正数的不对称性。</p>
+<h3 id="无符号数的编码"><a href="#无符号数的编码" class="headerlink" title="无符号数的编码"></a>无符号数的编码</h3><h4 id="无符号编码的定义"><a href="#无符号编码的定义" class="headerlink" title="无符号编码的定义"></a>无符号编码的定义</h4><p>假设有一个整数数据类型有 $w$ 位。我们可以将位向量写成 $\vec{x}$，表示整个向量，或者写成 $[x<em>{w-1}, x</em>{w-2}, …, x_{0}]$: ，表示向量中的每一位。把 $\vec{x}$ 看做一个二进制表示的数，就获得了 $\vec{x}$  的无符号表示。在这个编码中，每个位 $x_i$ 都取值为 0 或 1，后一种取值意味着数值 $2^i$ 应为数字值的一部分。我们用一个函数 $B2U$ (Binary to Unsigned 的缩写，长度为 $w$）来表示：</p>
+<p>对于向量 $\vec{x}=[x<em>{w-1}, x</em>{w-2}, …, x_{0}]$: </p>
+<script type="math/tex; mode=display">
+\begin{align} B2U_w(\vec{x})≐\sum\limits_{i=0}^{w-1}x_i2^i \end{align}</script><p>在这个等式中，符号“≐”表示左边被定义为等于右边。</p>
+<p>函数 B2Uw 将一个长度为的 0、1 串映射到非负整数。</p>
+<blockquote>
+<p>举一个示例，图 2-11 展示的是下面几种情况下 B2U 给出的从位向量到整数的映射：</p>
+</blockquote>
+<p>让我们来考虑一下位所能表示的值的范围。</p>
+<ul>
+<li><p>最小值是用位向量 [00… 0] 表示，也就是整数值 0，而最大值是用位向量 [11…1] 表示，也就是整数值。</p>
+<script type="math/tex; mode=display">
+ \begin{align} UMax_w≐\sum\limits_{i=0}^{w-1}2^i=2^w-1\end{align}</script></li>
+<li><p>以4位情况为例，$UMax_4=B2U_4([1111]) =2^4-1=15$</p>
+</li>
+<li><p>因此，函数 B2U 能够被定义为一个映射 </p>
+<p><script type="math/tex">\begin{align} B2U_w:\lbrace0,1\rbrace^w→\lbrace0，… ,2^w-1\rbrace \end{align}</script>.</p>
+</li>
+</ul>
+<p>无符号数的二进制表示有一个很重要的属性，也就是每个介于 $0\sim2^w-1$ 之间的数都有唯一一个位的值编码。例如，十进制值 11 作为无符号数，只有一个 4 位的表示，即 $[1011]$。我们用数学原理来重点讲述它，先表述原理再解释。 </p>
+<h4 id="原理：无符号数编码的难一性：函数-B2U-w-是一个双射"><a href="#原理：无符号数编码的难一性：函数-B2U-w-是一个双射" class="headerlink" title="原理：无符号数编码的难一性：函数 $B2U_w$ 是一个双射"></a>原理：无符号数编码的难一性：函数 $B2U_w$ 是一个双射</h4><p>数学术语双射是指一个函数 $f$ 有两面：它将数值 $x$ 映射为数值 $y$，即 $y=f(x)$</p>
+<p>但它也可以反向操作，因为对每一个 $y$ 而言，都有唯一一个数值 $x$ 使得 $f(x)=y$。这可以用反函数 $f^{-1}$ 来表示，在本例中，即 $x=f^{-1}(y)$。函数 $B2U$ 将每一个长度为的位向量都映射为 $0\sim 2^w-1$ 之间的一个唯一值；反过来，我们称其为 $U2B_w$（即“无符号数到二进制”），在 $0\sim 2^w-1$ 之间的每一个整数都可以映射为一个唯一的长度为 $w$ 的位模式。</p>
+<h3 id="补码编码"><a href="#补码编码" class="headerlink" title="补码编码"></a>补码编码</h3><h4 id="补码编码的定义"><a href="#补码编码的定义" class="headerlink" title="补码编码的定义"></a>补码编码的定义</h4><p>对于向量 $\vec{x}=[x<em>{w-1}, x</em>{w-2}, …, x_{0}]$： </p>
+<script type="math/tex; mode=display">
+\begin{align}B2T_w(\vec{x})≐-x_{w-1}2^{w-1}+\sum\limits_{i=0}^{w-2}x_i2^i\end{align}</script><blockquote>
+<p>最高有效位 $x_{w-1}$也称为符号位，它的“权重”为 $-2^{w-1}$，是无符号表示中权重的负数。</p>
+<p>符号位被设置为 1 时，表示值为负，而当设置为 0 时，值为非负。</p>
+<p>这里来看一个示例，图 2-13 展示的是下面几种情况下 $B2T$ 给出的从位向量到整数的映射。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/2.4.png" alt="2.4"></p>
+</blockquote>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/2-13.png" alt="2-13"></p>
+<p>在这个图中，我们用向左指的条表示符号位具有负权重。于是，与一个位向量相关联的数值是由可能的向左指的条和向右指的条加起来决定的。</p>
+<p>我们可以看到，图 2-12 和图 2-13 中的位模式都是一样的，对等式（2.2) 和等式（2.4) 来说也是一样，但是当最高有效位是 1 时，数值是不同的，这是因为在一种情况中，最高有效位的权重是+8，而在另一种情况中，它的权重是 -8。</p>
+<p>让我们来考虑一下 w 位补码所能表示的值的范围。它能表示的最小值是位向量 [10…0] (也就是设置这个位为负权，但是清除其他所有的位），其整数值为 $TMin_w≐-2^{w-1}$, 而最大值是位向量 $[01…1]$，（清除具有负权的位，而设置其他所有的位），其整数值为</p>
+<script type="math/tex; mode=display">
+TMax_w≐\sum\limits_{i=0}^{w-2}2^i=2^{w-1}-1</script><p>以长度 4 为例，我们有</p>
+<ul>
+<li><p>$TMin_4=B2T_4([1000])=-2^3=-8$，而</p>
+</li>
+<li><p>$TMax_4=B2T_4([0111])=2^2+2^1+2^0=4+2+1=7$</p>
+</li>
+</ul>
+<p>我们可以看出 $B2T_w$ 是一个从长度为 $w$ 的位模式到 $TMin_w$ 和 $TMax_w$ 之间数字的映射，写作$B2T_w:\left(0,1\right)^w\rightarrow\left(TMin_w, …, Tmax_w\right)$ 。同无符号表示一样，在可表示的取值范围内的每个数字都有一个唯一的位的补码编码。这就导出了与无符号数相似的补码数原理：</p>
+<h4 id="补码编码的唯一性"><a href="#补码编码的唯一性" class="headerlink" title="补码编码的唯一性"></a>补码编码的唯一性</h4><p>函数 B2T 是一个双射。</p>
+<p>我们定义函数 $T2B$（即“补码到二进制”）作为 $B2T$ 的反函数。也就是说，对于每个数 x，满足 $TMin_w≤x≤ TMax_w$，则 $T2B(x)$是 x 的（唯一的）w 位模式。</p>
+<p>图 2-14 展示了针对不同字长，几个重要数字的位模式和数值。前三个给出的是可表示的整数的范围，用 $UMax_w、TMin_w$ 和 $TMax_w$ 来表示。在后面的讨论中，我们还会经常引用到这三个特殊的值。如果可以从上下文中推断出 w，或者不是讨论的主要内容时，我们会省略下标 w，直接引用 $UMax、TMin$ 和 $TMax$。</p>
+<h4 id="补码运算的特殊性"><a href="#补码运算的特殊性" class="headerlink" title="补码运算的特殊性"></a>补码运算的特殊性</h4><ol>
+<li>$|TMin|=|TMax|+1$, TMin 没有对应的正数</li>
+<li>最大的无符号数值刚好比补码的最大值的两倍大一点：$UMax_w=2TMax_w+1$。补码表示中所有表示负数的位模式在无符号表示中都变成了正数。图 2-14 也给出了常数 -1 和 0 的表示。注意 -1 和 $UMax$ 有同样的位表示 —— 一个全 1 的串。数值 0 在两种表示方式中都是全 0 的串。</li>
+</ol>
+<p>语言标准并没有要求要用补码形式来表示有符号整数，但是几乎所有的机器都是这么做的。程序员如果希望代码具有最大可移植性，能够在所有可能的机器上运行，那么除了图 2-11 所示的那些范围之外，我们<strong>不应该假设任何可表示的数值范围</strong>，<strong>也不应该假设有符号数会使用何种特殊的表示方式</strong>。</p>
+<p><strong>另一方面，许多程序的书写都假设用补码来表示有符号数</strong>，并且具有图 2-9 和图 2-10 所示的“典型的”取值范围，这些程序也能够在大量的机器和编译器上移植。C 库中的文件 <code>limits.h</code> 定义了一组常量，来限定编译器运行的这台机器的不同整型数据类型的取值范围。</p>
+<blockquote>
+<p>比如，它定义了常量 <code>INT_MAX、INT_MIN</code> 和 <code>UINT_MAX</code>，它们描述了有符号和无符号整数的范围。</p>
+</blockquote>
+<p>对于一个补码的机器，数据类型 int 有 w 位，这些常量就对应于 $TMax_w、TMin_w$ 和 $UMax_w$ 的值。</p>
+<p>关于<strong>整数数据类型的取值范围和表示，Java 标准是非常明确的</strong>。它要求采用补码表示，取值范围与图 2-10 中 64 位的情况一样。在 Java 中，单字节数据类型称为 byte，而不是 char。这些非常具体的要求都是为了保证无论在什么机器上运行，Java 程序都能表现地完全一样。</p>
+<p>为了更好地理解补码表示，考虑下面的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">short</span> x = <span class="number">12345</span>;</span><br><span class="line"><span class="type">short</span> mx = -x;</span><br><span class="line"></span><br><span class="line">show_bytes((byte_pointer) &amp;x,  <span class="keyword">sizeof</span>(<span class="type">short</span>));</span><br><span class="line">show_bytes((byte_pointer) &amp;mx, <span class="keyword">sizeof</span>(<span class="type">short</span>));</span><br></pre></td></tr></table></figure>
+<p>当在大端法机器上运行时，这段代码的输出为 <code>30 39</code> 和 <code>cf c7</code>, 指明 x 的十六进制表示为 <code>0x3039</code>, 而 <code>mx</code> 的十六进制表示为 <code>0xCFC7</code>。将它们展开为二进制，我们得到 x 的位模式为 [0011000000111001]，而 mx 的位模式为[1100111111000111]。如图 2-15 所示，等式(2.3)对这两个位模式生成的值为 12 345 和 -12 345。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/2-15.png" alt="2-15"></p>
+<h4 id="关于确定大小的整数类型的更多内容"><a href="#关于确定大小的整数类型的更多内容" class="headerlink" title="关于确定大小的整数类型的更多内容"></a>关于确定大小的整数类型的更多内容</h4><h4 id="有符号数的其他表示方法"><a href="#有符号数的其他表示方法" class="headerlink" title="有符号数的其他表示方法"></a>有符号数的其他表示方法</h4><ol>
+<li><h5 id="反码（Ones’-Complement）"><a href="#反码（Ones’-Complement）" class="headerlink" title="反码（Ones’ Complement）"></a>反码（Ones’ Complement）</h5><p>除了最高有效位的权是 $-(2^{w-1}一1)$ 而不是 $-2^{w-1}$, 它和补码是一样的：</p>
+<script type="math/tex; mode=display">
+B2O_w(\vec x)≐-x_{w-1}(2^{w-1}-1)+\sum\limits_{i=0}^{w-2}x_i2^i</script></li>
+<li><h5 id="原码（Sign-Magnitude）"><a href="#原码（Sign-Magnitude）" class="headerlink" title="原码（Sign-Magnitude）"></a>原码（Sign-Magnitude）</h5><p>最高有效位是符号位，用来确定剩下的位应该取负权还是正权：</p>
+<script type="math/tex; mode=display">
+B2S_w(\vec x)≐(-1)^{x_{w-1}}·(\sum\limits_{i=0}^{w-2}x_i2^i)​</script></li>
+</ol>
+<p>这两种表示方法都有一个奇怪的属性，那就是<strong>对于数字有两种不同的编码方式。</strong></p>
+<p>这两种表示方法，把 [00…0] 都解释为 +0。而值 -0 在原码中表示为 [10…0]，在反码中表示为 [11…1]。虽然过去生产过基于反码表示的机器，但是几乎所有的现代机器都使用补码。我们将看到在浮点数中有使用原码编码。</p>
+<p>请注意补码（Two’ s complement）和反码（Ones’ complement）中撇号的位置是不同的。术语补码来源于这样一个情况，对于非负数 x，我们用 $2^w- x$（这里只有一个 2) 来计算 -x 的 w 位表示。术语反码来源于这样一个属性，我们用 $[111…1]-x$（这里有很多个 1) 来计算 -x 的反码表示。</p>
+<h3 id="有符号数和无符号数的转换"><a href="#有符号数和无符号数的转换" class="headerlink" title="有符号数和无符号数的转换"></a>有符号数和无符号数的转换</h3><p>C 语言允许在各种不同的数字数据类型之间做强制类型转换。例如，假设变量声明为 int, u 声明为 unsigned。表达式 <code>(unsigned)x</code> 会将 x 的值转换成一个无符号数值，而 <code>(int) u</code> 将 u 的值转换成一个有符号整数。将有符号数强制类型转换成无符号数，或者反过来，会得到什么结果呢？从数学的角度来说，可以想象到几种不同的规则。</p>
+<p>很明显，对于在两种形式中都能表示的值，我们是想要保持不变的。另一方面，将负数转换成无符号数可能会得到。如果转换的无符号数太大以至于超出了补码能够表示的范围，可能会得到 $TMax$。不过，对于大多数 C 语言的实现来说，对这个问题的回答都是从位级角度来看的，而不是数的角度。</p>
+<p>比如说，考虑下面的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">short</span> <span class="type">int</span> v = <span class="number">-12345</span>;</span><br><span class="line"><span class="type">unsigned</span> <span class="type">short</span> uv = (<span class="type">unsigned</span> <span class="type">short</span>) v;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;v=%d, uv=%u&quot;</span>, v, uv);</span><br></pre></td></tr></table></figure>
+<p>在一台采用补码的机器上，上述代码会产生如下输出：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v = <span class="number">-12345</span>, uv = <span class="number">53191</span></span><br></pre></td></tr></table></figure>
+<p>我们看到，强制类型转换的结果保持位值不变，只是改变了解释这些位的方式。在图 2-15 中我们看到过，一 12345 的 16 位补码表示与 53191 的 16 位无符号表示是完全一样的。将 short 强制类型转换为 unsigned short 改变数值，但是不改变位表示。</p>
+<p>类似地，考虑下面的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> u = <span class="number">4294967295u</span>; <span class="comment">/* UMax */</span> </span><br><span class="line"><span class="type">int</span> tu = (<span class="type">int</span>) u;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;u = %u, tu = %d\n&quot;</span>, u, tu);</span><br></pre></td></tr></table></figure>
+<p>在一台采用补码的机器上，上述代码会产生如下输出：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">u=<span class="number">4294967295</span>, tu= <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+<p>从图 2-14 我们可以看到，对于 32 位字长来说，无符号形式的 4294967295 (UMax32) 和补码形式的一 l 的位模式是完全一样的。将 unsigned 强制类型转换成 int，底层的位表示保持不变。</p>
+<p>对于大多数语言的实现，处理同样字长的有符号数和无符号数之间相互转换的一般规则是：数值可能会改变，但是位模式不变。让我们用更数学化的形式来描述这个规则。我们定义函数 U2B。和 T2B，它们将数值映射为无符号数和补码形式的位表示。也就是说，给定 O≤x≤ UMaxw 范围内的一个整数 x，函数 U2B (x）会给出 x 的唯一的 w 位无符号表示。相似地，当 x 满足 TMinw≤x≤ TMaxw，函数 T2B (x）会给出 x 的唯一的 w 位补码表示。</p>
+<p>现在，将函数 T2U 定义为 T2Uw (x）二 B2U (T2B (x））。这个函数的输入是一个TMinw~ TMaxw 的数，结果得到一个 0~UMax 的值，这里两个数有相同的位模式，除了参数是无符号的，而结果是以补码表示的。类似地，对于 0~ UMaxw 之间的值 x，定义函数 U2T 为 U2T (x）二 B2T (U2B. (x））。生成一个数的无符号表示和 x 的补码表示相同。</p>
+<p>继续我们前面的例子，从图 2-15 中，我们看到 T2U16（一 12345) =53191，并且 U2T16 (53191) =一 12345。也就是说，十六进制表示写作 0xCFC7 的 16 位位模式既是一 12345 的补码表示，又是 53191 的无符号表示。同时请注意 12345+53191=65536= 216。这个属性可以推广到给定位模式的两个数值（补码和无符号数）之间的关系。类似地，从图 2-14 我们看到 T2U32（一 1) =4294967295，并且 U2T32 (4294967295) =一 1。也就是说，无符号表示中的 UMax 有着和补码表示的一 1 相同的位模式。我们在这两个数之间也能看到这种关系：1+ UMaxw=2w。</p>
+<p>接下来，我们看到函数 U2T 描述了从无符号数到补码的转换，而 T2U 描述的是补码到无符号的转换。这两个函数描述了在大多数语言实现中这两种数据类型之间的强制类型转换效果。</p>
+<p>通过上述这些例子，我们可以看到给定位模式的补码与无符号数之间的关系可以表示为函数 T2U 的一个属性：</p>
+<h4 id="原理：补码转换为无符号数"><a href="#原理：补码转换为无符号数" class="headerlink" title="原理：补码转换为无符号数"></a>原理：补码转换为无符号数</h4><p>对满足 $TMin_w≤x≤TMax_w$ 的 x 有：(该属性可以通过比较公式（2.1) 和公式（2.3) 推导出来)</p>
+<script type="math/tex; mode=display">
+T2U_w(x)=
+\begin{cases}
+x+2^w, &x<0\\
+x, &x\ge0\
+\end{cases}</script><h5 id="推导证明："><a href="#推导证明：" class="headerlink" title="推导证明："></a>推导证明：</h5><h4 id="原理：无符号数转换为补码"><a href="#原理：无符号数转换为补码" class="headerlink" title="原理：无符号数转换为补码"></a>原理：无符号数转换为补码</h4><p>对满足 $0≤u≤ UMax_w$ 的 u 有：</p>
+<script type="math/tex; mode=display">
+U2T_w(u)=
+\begin{cases}
+u, &u\le TMax_w\\
+u-2^w, &u\ge TMax_w\
+\end{cases}
+\tag{2.7}</script><h5 id="推导证明：-1"><a href="#推导证明：-1" class="headerlink" title="推导证明："></a>推导证明：</h5><p>设 $\vec u=U2B_w(u)$，这个位向量也是 $U2T_w(u)$ 的表示。公式 (2.1) 和公式 (2.3) 结合起来有</p>
+<script type="math/tex; mode=display">
+U2T_w(u)=
+-u_{w-1}2^w+u
+\tag{2.8}</script><p>在 $u$ 的无符号表示中，对公式（2.7) 的两种情况来说，位 uw-1 决定了 u 是否大于 $TМaxw=2^{w-1}-1$</p>
+<p>图 2-18 说明了函数 $U2T$ 的行为。对于小的数 ($≤ TMax_w$)，从无符号到有符号的转换将保留数字的原值。对于大的数 ($&gt;TMax_w$) ，数字将被转换为一个负数值。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/07/15/CSAPP/2-17.png" alt="2-17"></p>
+<p>总结一下，我们考虑无符号与补码表示之间互相转换的结果。</p>
+<ul>
+<li><p>对于在范围 $0≤x≤ TMax_w$ 之内的值 x 而言，我们得到 $T2U_x(x)=x$ 和 $U2T_w(x) =x$</p>
+<p>。也就是说，在这个范围内的数字有相同的无符号和补码表示。</p>
+</li>
+<li><p>对于这个范围以外的数值，转换需要加上或者减去 $2^w$。例如，</p>
+<ul>
+<li>我们有 $T2U_w(-1)=-1+2^w= UMax_w$ —— 最靠近 0 的负数映射为最大的无符号数。</li>
+<li>在另一个极端，我们可以看到 $T2U_w(TMin_w)=-2^{w-1}+2^w=2^{w-1}= TMax_w+1$ ——最小的负数映射为一个刚好在补码的正数范围之外的无符号数。</li>
+<li>使用图 2-15 的示例，我们能看到 $T2U_{16}(-12345)=65563+-12345=53191$</li>
+</ul>
+</li>
+</ul>
+<h3 id="C-语言中的有符号数和无符号数"><a href="#C-语言中的有符号数和无符号数" class="headerlink" title="C 语言中的有符号数和无符号数"></a>C 语言中的有符号数和无符号数</h3><h4 id="C-语言中-TMin-的写法"><a href="#C-语言中-TMin-的写法" class="headerlink" title="C 语言中 TMin 的写法"></a>C 语言中 TMin 的写法</h4><h3 id="扩展一个数字的位表示"><a href="#扩展一个数字的位表示" class="headerlink" title="扩展一个数字的位表示"></a>扩展一个数字的位表示</h3><p>一个常见的运算是在不同字长的整数之间转换，同时又保持数值不变。当然，当目标数据类型太小以至于不能表示想要的值时，这根本就是不可能的。然而，从一个较小的数据类型转换到一个较大的类型，应该总是可能的。</p>
+<p>要将一个无符号数转换为一个更大的数据类型，我们只要简单地在表示的开头添加。这种运算被称为<strong>零扩展(zero extension)</strong>。表示原理如下：</p>
+<h4 id="原理：无符号数的零扩展"><a href="#原理：无符号数的零扩展" class="headerlink" title="原理：无符号数的零扩展"></a>原理：无符号数的零扩展</h4><p>定义宽度为 $w$ 的位向量 $\vec u= [u<em>{w-1}, u</em>{w-2}, …, u<em>o]$和宽度为 $w’$ 的位向量 u’= $[0, …, 0, u</em>{w-1}, u<em>{w-2}, …, u_0]$，其中 $w’&gt;w$。则 $B2Uw(\vec u) =B2U</em>{w’}(\vec u’)$。</p>
+<p>按照公式（2.1)，该原理可以看作是直接遵循了无符号数编码的定义。</p>
+<p>要将一个补码数字转换为一个更大的数据类型，可以执行一个符号扩展 (sign extension)，在表示中添加最高有效位的值，表示为如下原理。我们用蓝色标出符号位 $x_{w-i}$ 来突出它在符号扩展中的角色。</p>
+<h4 id="原理：补码数的符号扩展"><a href="#原理：补码数的符号扩展" class="headerlink" title="原理：补码数的符号扩展"></a>原理：补码数的符号扩展</h4><p>定义宽度为 $w$ 的位向量 $\vec x=[x<em>{w-1}, x</em>{w-2}, …, x<em>0]$ 和宽度为 $w$ 的位向量 $\vec x’= [x</em>{w-1}, …, x<em>{w-1}, x</em>{w-2}, …, x<em>0]$，其中 $w’&gt;w$。则 $B2T_w(\vec x)=B2T</em>{w’}(\vec x’)$。</p>
+<p>有了这个直觉，我们现在可以展示保持补码值的符号扩展。</p>
+<h5 id="推导：补码数值的符号扩展"><a href="#推导：补码数值的符号扩展" class="headerlink" title="推导：补码数值的符号扩展"></a>推导：补码数值的符号扩展</h5><p>令 $w’=w+k$，我们想要证明的是 </p>
+<script type="math/tex; mode=display">
+B2T_{w+k}([x_{w-1},...,x_{w-1},x_{w-1},x_{w-2},...,x_0])=B2T_w([x_{w-1},x_{w-2},...,x_0])</script><p>(k 次 $x_{w-1}$)</p>
+<p>下面的证明是对 k 进行归纳。也就是说，如果我们能够证明符号扩展一位保持了数值不变，那么符号扩展任意位都能保持这种属性。因此，证明的任务就变为了：</p>
+<script type="math/tex; mode=display">
+B2T_{w+1}([x_{w-1},x_{w-1},x_{w-2},...,x_0])=B2T_w([x_{w-1},x_{w-2},...,x_0])</script><p>用等式（2.3) 展开左边的表达式，得到：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+B2T_{w+1}([x_{w-1},x_{w-1},x_{w-2},...,x_0])
+& = -x_{w-1}2^w +\sum\limits_{i=0}^{w-1}x_i2^i \\
+& = -x_{w-1}2^w+x_{w-1}2^{w-1}+\sum\limits_{i=0}^{w-2}x_i2^i \\
+& = -x_{w-1}(2^w-2^{w-1})+\sum\limits_{i=0}^{w-2}x_i2^i \\
+& = -x_{w-1}2^{w-1} + \sum\limits_{i=0}^{w-2}x_i2^i \\
+& = B2T_w([x_{w-1},x_{w-2},..x_0])
+\end{aligned}</script><p>我们使用的关键属性是 $2^w-2^{w-1}=2^{w-1}$。因此，加上一个权值为 $-2^w$ 的位，和将一个权值为 $-2^{w-1}$ 的位转换为一个权值为 $2^{w-1}$ 的位，这两项运算的综合效果就会保持原始的数值。</p>
+<h3 id="截断数字"><a href="#截断数字" class="headerlink" title="截断数字"></a>截断数字</h3><p>假设我们不用额外的位来扩展一个数值，而是减少表示一个数字的位数。例如下面代码中这种情况：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">53191</span>;</span><br><span class="line"><span class="type">short</span> <span class="title function_">sx</span>  <span class="params">(<span class="type">short</span>)</span> x; <span class="comment">/*-12345 */</span> </span><br><span class="line"><span class="type">int</span> y sx; <span class="comment">/*-12345*/</span></span><br></pre></td></tr></table></figure>
+<p>当我们把 x 强制类型转换为 short 时，我们就将 32 位的 int 截断为了 16 位的 short int。就像我们看到的那样，有符号数到无符号数的隐式强制类型转换导致了某些非直观的行为。而这些非直观的特性经常导致程序错误，并且这种包含隐式强制类型转换的细微差别的错误很难被发现。因为这种强制类型转换是在代码中没有明确指示的情况下发生的，程序员经常忽视了它的影响。</p>
+<p>下面两个练习题说明了某些由于隐式强制类型转换和无符号数据类型造成的细微的错误。</p>
+<h4 id="原理：截断无符号数"><a href="#原理：截断无符号数" class="headerlink" title="原理：截断无符号数"></a>原理：截断无符号数</h4><p>令 $\vec x$ 等于位向量 $[x<em>{w-1}, x</em>{w-2}, …, x<em>0]$，而 $\vec x’$ 是将其截断为 k 位的结果： $\vec x=[x</em>{k-1}, x_{k-2}, …, x_0】$。令 $x=B2U_w(\vec x), x’=B2U_k(\vec x’)$。则 $x’=x\mod2^k$。</p>
+<p>该原理背后的直觉就是所有被截去的位其权重形式都为 $2^i$，其中 $i≥k$，因此，每一个权在取模操作下结果都为零。可用如下推导表示：</p>
+<h5 id="推导：截断无符号数"><a href="#推导：截断无符号数" class="headerlink" title="推导：截断无符号数"></a>推导：截断无符号数</h5><p>通过对等式（2.1) 应用取模运算就可以看到：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+B2U_w([x_{w-1},x_{w-2},...,x_0])\mod2^k 
+& = [\sum\limits_{i=0}^{w-1}x_i2^i]\mod2^k \\ 
+& = [\sum\limits_{i=0}^{k-1}x_i2^i]\mod2^k \\ 
+& = \sum\limits_{i=0}^{k-1}x_i2^i \\ 
+& = B2K_k([x_{k-1},x_{k-2},...,x_0]) \\ 
+
+\end{aligned}</script><p>在这段推导中，我们利用了属性：对于任何 $i≥k,2^i \mod2^k=0$。</p>
+<p>补码截断也具有相似的属性，只不过要将最高位转换为符号位：</p>
+<h4 id="原理：截断补码数值"><a href="#原理：截断补码数值" class="headerlink" title="原理：截断补码数值"></a>原理：截断补码数值</h4><p>令 $\vec x$ 等于位向量 $[x<em>{w-1}, x</em>{w-2},…, x_0]$。而 $\vec x’$ 是将其截断为 $k$ 位的结果：</p>
+<p>$\vec x’=[x<em>{k-1}, x</em>{k-2},…, x_0]$ 。令 $x=B2U_w (\vec x), x’=B2T_k(\vec x’) $。则 $x’=U2T_k(x \mod2^k)$。</p>
+<p>在这个公式中，xmod2k 将是 0 到 2k 一 1 之间的一个数。对其应用函数 U2Tk 产生的效果是把最高有效位 xk-1 的权重从 2k-1 转变为一 2k-1。举例来看，将数值 x=53191 从 int 转换为 short。由于 216=65536≥x，我们有 xmod216=x。但是，当我们把这个数转换为 16 位的补码时，我们得到 $x’=53191 - 65536= -12345$.</p>
+<h5 id="推导：截断补码数值"><a href="#推导：截断补码数值" class="headerlink" title="推导：截断补码数值"></a>推导：截断补码数值</h5><p>使用与无符号数截断相同的参数，则有</p>
+<script type="math/tex; mode=display">
+B2U_w([x_{w-1},x_{w-2},...,x_0])\mod 2^k=B2U_k[x_{k-1}, x_{k-2},...,x_0]</script><p>也就是，$x \mod2k$ 能够被一个位级表示为 $[x<em>{k-1}, x</em>{k-2}, …, x_0]$ 的无符号数表示。将其转换为补码数则有 $x’=U2T_k(x\mod2^k)$。</p>
+<p>总而言之，无符号数的截断结果是：</p>
+<script type="math/tex; mode=display">
+B2U_k[x_{k-1}, x_{k-2},...,x_0]=B2U_w([x_{w-1},x_{w-2},...,x_0])\mod 2^k</script><p>而补码数字的截断结果是：</p>
+<script type="math/tex; mode=display">
+B2T_k[x_{k-1}, x_{k-2},...,x_0]=U2T_k(B2U_w([x_{w-1},x_{w-2},...,x_0])\mod 2^k)</script><h3 id="关于有符号数和无符号数的建议"><a href="#关于有符号数和无符号数的建议" class="headerlink" title="关于有符号数和无符号数的建议"></a>关于有符号数和无符号数的建议</h3><h4 id="函数-getpeername-的安全漏洞"><a href="#函数-getpeername-的安全漏洞" class="headerlink" title="函数 getpeername 的安全漏洞"></a>函数 getpeername 的安全漏洞</h4><h2 id="3-整数运算"><a href="#3-整数运算" class="headerlink" title="3 整数运算"></a>3 整数运算</h2><h3 id="3-1-无符号加法"><a href="#3-1-无符号加法" class="headerlink" title="3.1 无符号加法"></a>3.1 无符号加法</h3><p>考虑两个非负整数 x 和 y，满足 $0≤x$, $y&lt;2^w$。每个数都能表示为 w 位无符号数字。</p>
+<p>然而，如果计算它们的和，我们就有一个可能的范围 $0≤x+y≤2^{w+1}-2$。表示这个和可能需要 $w+1$ 位。例如，图 2-21 展示了当 x 和 y 有 4 位表示时，函数 $x+y$ 的坐标图。参数（显示在水平轴上）取值范围为 0~15，但是和的取值范围为 0~30。</p>
+<p>函数的形状是一个有坡度的平面（在两个维度上，函数都是线性的）。</p>
+<p>如果保持和为一个 w+1 位的数字，并且把它加上另外一个数值，我们可能需要 w+2 个位，以此类推。这种持续的<u>“字长膨胀”</u>意味着，要想完整地表示算术运算的结果，我们不能对字长做任何限制。</p>
+<p>Lisp 实际就支持无限精度的运算，允许任意的机器的内存限制之内的整数运算。更常见的是，编程语言支持固定精度的运算，因此像“加法”和“乘法”这样的运算不同于它们在整数上的相应运算。</p>
+<p>让我们为参数 x 和 y 定义运算$+^u_w$ ，其中 $0≤x, y&lt;2^w$，该操作是把整数和 $x+y$ 截断为位 w 得到的结果，再把这个结果看做是一个无符号数。这可以被视为一种形式的模运算，对 $x+y$ 的位级表示，简单丢弃任何权重大于 $2^{w-1}$ 的位就可以计算出和模 $2^w$。比如，考虑一个 4 位数字表示，x=9 和 y=12 的位表示分别为 [1001] 和[1100]。它们的和是 21，5 位的表示为 [10101]。但是如果丢弃最高位，我们就得到 [0101]，也就是说，十进制值的 5。这就和值 $21\mod16=5$ 一致。</p>
+<p>可以把操作 $+^u_w$ 描述为：</p>
+<h4 id="原理：无符号数加法"><a href="#原理：无符号数加法" class="headerlink" title="原理：无符号数加法"></a>原理：无符号数加法</h4><p>对满足 $0≤x,y&lt;2^w$ 的 x 和 y 有：</p>
+<script type="math/tex; mode=display">
+x+^u_wy=
+\begin{cases}
+x+y, &x+y<2^w, 正常\\ 
+x+y-2^w, &2^w\le x+y<2^{w-1}, 溢出\\
+\end{cases}
+\tag{2.11}</script><h5 id="推导：无符号数加法"><a href="#推导：无符号数加法" class="headerlink" title="推导：无符号数加法"></a>推导：无符号数加法</h5><p>当执行 C 程序时，不会将溢出作为错误而发信号。不过有的时候，我们可能希望判定是否发生了溢出。</p>
+<h4 id="原理：检测无符号数加法中的溢出"><a href="#原理：检测无符号数加法中的溢出" class="headerlink" title="原理：检测无符号数加法中的溢出"></a>原理：检测无符号数加法中的溢出</h4><p>对在范围 $0≤x,y≤UMax_w$ 中的 x 和 y，令 $s≐x+^u_wy$。则对计算 s，当且仅当 $s&lt;x$（或者等价地 $s&lt;y$）时，发生了溢出。</p>
+<p>作为说明，在前面的示例中，我们看到 $9+^u_412=5$。由于 5 &lt;9，我们可以看出发生了溢出。</p>
+<h5 id="推导：检测无符号数加法中的溢出"><a href="#推导：检测无符号数加法中的溢出" class="headerlink" title="推导：检测无符号数加法中的溢出"></a>推导：检测无符号数加法中的溢出</h5><p>通过观察发现 $x+y≥x$，因此如果 s 没有溢出，我们能够肯定 $s≥x$。另一方面，如果 s 确实溢出了，我们就有 $s=x+y-2^w$。假设 $y&lt;2^w$，我们就有 $y-2^w&lt;0$，因此 $s=x+(y-2^w)&lt;x$。</p>
+<p>模数加法形成了一种数学结构，称为<strong>阿贝尔群(Abelian group)</strong>，也就说，它是可交换的和可结合的。它有一个单位元 0，并且每个元素有一个加法逆元。让我们考虑 w 位的无符号数的集合，执行加法运算十 u。对于每个值 x，必然有某个值一 x 满足一 ux+ux=0。该加法的逆操作可以表述如下：</p>
+<h4 id="原理：无符号数求反"><a href="#原理：无符号数求反" class="headerlink" title="原理：无符号数求反"></a>原理：无符号数求反</h4><p>对满足 0≤x &lt;2“的任意 x，其 w 位的无符号逆元一 x 由下式给出：</p>
+<p>该结果可以很容易地通过案例分析推导出来：</p>
+<h5 id="推导：无符号数求反"><a href="#推导：无符号数求反" class="headerlink" title="推导：无符号数求反"></a>推导：无符号数求反</h5><p>当 x=0 时，加法逆元显然是 0。对于 x&gt;0, 考虑值 2w 一 x。我们观察到这个数字在 0 &lt;2w 一 x &lt;2w 范围之内，并且（x 十 2“一 x) mod2w=2“mod2w=0。因此，它就是 x 在十下的逆元。</p>
+<h3 id="3-2-补码加法"><a href="#3-2-补码加法" class="headerlink" title="3.2 补码加法"></a>3.2 补码加法</h3><h3 id="3-3-补码的非"><a href="#3-3-补码的非" class="headerlink" title="3.3 补码的非"></a>3.3 补码的非</h3><h3 id="3-4-无符号乘法"><a href="#3-4-无符号乘法" class="headerlink" title="3.4 无符号乘法"></a>3.4 无符号乘法</h3><h3 id="3-5-补码乘法"><a href="#3-5-补码乘法" class="headerlink" title="3.5 补码乘法"></a>3.5 补码乘法</h3><h3 id="3-6-乘以常数"><a href="#3-6-乘以常数" class="headerlink" title="3.6 乘以常数"></a>3.6 乘以常数</h3><h3 id="3-7-关于整数运算的思考"><a href="#3-7-关于整数运算的思考" class="headerlink" title="3.7 关于整数运算的思考"></a>3.7 关于整数运算的思考</h3><h2 id="4-浮点数"><a href="#4-浮点数" class="headerlink" title="4 浮点数"></a>4 浮点数</h2><p>浮点数表示对形如 $V=x\times2^y$ 的有理数进行编码。它对执行…很有用</p>
+<ul>
+<li>涉及非常大的数字 $(|V|&gt;&gt;0)$，</li>
+<li>非常接近 0 $(|V| &lt;&lt; 1)$ 的数字，</li>
+<li>以及更普遍的作为实数运算的近似值的计算</li>
+</ul>
+<h3 id="二进制小数"><a href="#二进制小数" class="headerlink" title="二进制小数"></a>二进制小数</h3><p>十进制表示法：$d<em>md</em>{m-1}…d<em>1d_0·d</em>{-1}d_{-2}…d{-n}$, 其中每个十进制数 $d_i$ 的取值范围是 $0\sim 9$, 这个表达描述的数值 $d$ 定义如下：</p>
+<script type="math/tex; mode=display">
+\begin{align} d=\sum_{i=-n}^{m}10^i\times d_i\end{align}</script><p>数字权的定义与十进制小数点符号 $.$ 相关</p>
+<p>类似，考虑一个形如 $b<em>mb</em>{m-1}…b<em>1b_0·b</em>{-1}b{-2}…b<em>{-n-1}b</em>{-n}$ 的表示法，其中每个二进制数字，或者称为位，$b_i$ 的取值范围是 0 和 1，如图 2-31，这种方法表示的数 b 定义如下</p>
+<script type="math/tex; mode=display">
+\begin{align} b=\sum_{i=-n}^{m}2^i\times b_i\end{align}</script><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch02_Bits/2-31.png" alt="2-31"></p>
+<p>符号 $·$ 表示二进制的点，点左边位的权是 2 的正幂，右边位的权是 2 的负幂</p>
+<p>形如 $0.11…1_2$ 的数表示的刚好小于 1 的数，我们可以用简单的表达法 $1.0-\varepsilon$ 来表示这样的数值</p>
+<p>小数的二进制只能表示那些能够被写成 $x\times2^y$ 的数，其他只能近似表示。只能近似地表示它，增加二进制表示的长度可以提高表示的精度</p>
+<h3 id="IEEE-浮点表示"><a href="#IEEE-浮点表示" class="headerlink" title="IEEE 浮点表示"></a>IEEE 浮点表示</h3><p>IEEE 浮点标准用 $V=(-1)^s\times M\times 2^E$ 的形式来表示一个数：</p>
+<ul>
+<li>sign 符号</li>
+<li>significand 尾数</li>
+<li>exponent 阶码</li>
+</ul>
+<p>将浮点数的位表示划分为三个字段，分别对这些值进行编码：</p>
+<ul>
+<li>一个单独的符号位 $s$ 直接编码符号</li>
+<li>$k$ 位的阶码字段 $exp=e_{k-1}…e_1e_0$ 编码阶段 $E$</li>
+<li>$n$ 位小数字段 $frac=f_{n-1}…f_1f_0$ 编码尾数 $M$ ，但是编码出来的值也依赖于阶码字段的值是否等于 0</li>
+</ul>
+<p>图 2-32 给出了将这三个字段装进字中两种最常见的格式。</p>
+<ul>
+<li>在单精度浮点格式 $float$，$s$, $exp$ 和 $frac$ 字段分别为1位，$k=8$ 和 $n=23$ 位，得到一个 32 位的表示</li>
+<li>在双精度浮点格式 $double$，$s$, $exp$ 和 $frac$ 字段分别为1位，$k=11$ 和 $n=52$ 位，得到一个 64 位的表示</li>
+</ul>
+<p>给定位表示，根据 $exp$ 的值，被编码的值可以分成三种不同的情况（最后一种情况有两个变种）</p>
+<h3 id="数字示例"><a href="#数字示例" class="headerlink" title="数字示例"></a>数字示例</h3><h3 id="舍入"><a href="#舍入" class="headerlink" title="舍入"></a>舍入</h3><h3 id="浮点运算"><a href="#浮点运算" class="headerlink" title="浮点运算"></a>浮点运算</h3><h3 id="C-语言中的浮点数"><a href="#C-语言中的浮点数" class="headerlink" title="C 语言中的浮点数"></a>C 语言中的浮点数</h3><h1 id="CSAPP-03-Machine-Level-Programming"><a href="#CSAPP-03-Machine-Level-Programming" class="headerlink" title="CSAPP-03 Machine Level Programming"></a>CSAPP-03 Machine Level Programming</h1><h2 id="1-历史观点"><a href="#1-历史观点" class="headerlink" title="1 历史观点"></a>1 历史观点</h2><h2 id="2-程序编码"><a href="#2-程序编码" class="headerlink" title="2 程序编码"></a>2 程序编码</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">linux&gt; </span><span class="language-bash">gcc -Og -o p p1.c p2.c</span></span><br></pre></td></tr></table></figure>
+<p>实际上 gcc 命令调用了一整套的程序，将源代码转化成可执行代码。</p>
+<ul>
+<li>首先，C 预处理器扩展源代码，插入所有用#include 命令指定的文件，并扩展所有用#define 声明指定的宏。</li>
+<li>其次，编译器产生两个源文件的汇编代码，名字分别为 P1. S 和 p2. S。</li>
+<li>接下来，汇编器会将汇编代码转化成二进制目标代码文件 p1.o 和 p2.o。目标代码是机器代码的一种形式，它包含所有指令的二进制表示，但是还没有填入全局值的地址。</li>
+<li>最后，链接器将两个目标代码文件与实现库函数（例如 printf）的代码合并，并产生最终的可执行代码文件 p（由命令行指示符 -o p 指定的）。可执行代码是我们要考虑的机器代码的第二种形式，也就是处理器执行的代码格式。</li>
+</ul>
+<h3 id="机器级代码"><a href="#机器级代码" class="headerlink" title="机器级代码"></a>机器级代码</h3><p>对于机器级编程来说，2 种抽象尤为重要</p>
+<ul>
+<li>由指今集体系结构或指令集架构（Instruction Set Architecture, ISA） 来定义机器级程序的格式和行为，它定义了处理器状态、指令的格式，以及每条指令对状态的影响。</li>
+<li>第二种抽象是，机器级程序使用的内存地址是虚拟地址，提供的内存模型看上去是一个非常大的字节数组。存储器系统的实际实现是将多个硬件存储器和操作系统软件组合起来。</li>
+</ul>
+<p>x86-64 的机器代码和原始的 C 代码差别非常大。一些通常对 C 语言程序员隐藏的处理器状态都是可见的：</p>
+<ul>
+<li>● 程序计数器（通常称为“PC”，在 x86-64 中用号 rip 表示）给出将要执行的下一条指令在内存中的地址。</li>
+<li>● 整数寄存器文件包含 16 个命名的位置，分别存储 64 位的值。这些寄存器可以存储地址（对应于 C 语言的指针）或整数数据，有的寄存器被用来记录某些重要的程序状态，而其他的寄存器用来保存临时数据，例如过程的参数和局部变量，以及函数的返回值。</li>
+<li>● 条件码寄存器保存着最近执行的算术或逻辑指令的状态信息。它们用来实现控制或数据流中的条件变化，比如说用来实现 if 和 while 语句。）</li>
+<li>● 一组向量寄存器可以存放一个或多个整数或浮点数值。</li>
+</ul>
+<p>机器代码只是简单地将内存看成一个很大的、按字节寻址的数组。</p>
+<p>程序内存包含：程序的可执行机器代码，操作系统需要的一些信息，用来管理过程调用和返回的运行时栈，以及用户分配的内存块（比如说用 ma11oc 库函数分配的）。</p>
+<p>程序内存用虚拟地址来寻址。在任意给定的时刻，只有有限的一部分虚拟地址被认为是合法的。</p>
+<blockquote>
+<p>例如，x86-64 的虚拟地址是由 64 位的字来表示的。在目前的实现中，这些地址的高 16 位必须设置为 0，所以一个地址实际上能够指定的是 248 或 64TB 范围内的一个字节。较为典型的程序只会访问几兆字节或几千兆字节的数据。操作系统负责管理虚拟地址空间，将虚拟地址翻译成实际处理器内存中的物理地址。</p>
+</blockquote>
+<h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><h3 id="关于格式的注解"><a href="#关于格式的注解" class="headerlink" title="关于格式的注解"></a>关于格式的注解</h3><h4 id="ATT-与-Intel-汇编代码格式"><a href="#ATT-与-Intel-汇编代码格式" class="headerlink" title="ATT 与 Intel 汇编代码格式"></a>ATT 与 Intel 汇编代码格式</h4><h4 id="内联汇编"><a href="#内联汇编" class="headerlink" title="内联汇编"></a>内联汇编</h4><h2 id="3-数据格式"><a href="#3-数据格式" class="headerlink" title="3 数据格式"></a>3 数据格式</h2><p>由于是从 16 位体系结构扩展成 32 位的，Intel 用术语 “字（word）”表示 16 位数据类型。因此，称 32 位数为“双字（double words）”，称 64 位数为“四字（quad words）”。</p>
+<p>图 3-1 给出了 C 语言基本数据类型对应的 x86-64 表示。标准 int 值存储为双字（32 位）。指针（在此用 char*表示）存储为 8 字节的四字，64 位机器本来就预期如此。x86-64 中，数据类型 1ong 实现为 64 位，允许表示的值范围较大。本章代码示例中的大部分都使用了指针和 1ong 数据类型，所以都是四字操作。x86-64 指令集同样包括完整的针对字节、字和双字的指令。<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/zenn/zennlyu.github.io/hexo/source/_posts/3-1.png" alt="3-1"></p>
+<p>浮点数主要有两种形式：</p>
+<ul>
+<li>单精度（4 字节）值，对应于 C 语言数据类型 f1oat；</li>
+<li>双精度（8 字节）值，对应于 C 语言数据类型 double。</li>
+</ul>
+<p>x86 家族的微处理器历史上实现过对一种特殊的 80 位（10 字节）浮点格式进行全套的浮点运算（参见家庭作业 2.86）。可以在 C 程序中用声明 long double 来指定这种格式。不过我们不建议使用这种格式。它不能移植到其他类型的机器上，而且实现的硬件也不如单精度和双精度算术运算的高效。</p>
+<p>如图所示，大多数 GCC 生成的汇编代码指令都有一个字符的后缀，表明操作数的大小。</p>
+<blockquote>
+<p>例如，数据传送指令有四个变种：movb（传送字节）、movw（传送字）、movl（传送双字）和 movg（传送四字）。后缀‘l’用来表示双字，因为 32 位数被看成是“长字（long word）”。</p>
+</blockquote>
+<p>注意，汇编代码也使用后缀 ‘l’来表示 4 字节整数和 8 字节双精度浮点数。这不会产生歧义，因为浮点数使用的是一组完全不同的指令和寄存器。</p>
+<h2 id="4-访问信息"><a href="#4-访问信息" class="headerlink" title="4 访问信息"></a>4 访问信息</h2><p>一个 x86-64 的中央处理单元（CPU）包含一组 16 个存储 64 位值的通用目的寄存器。这些寄存器用来存储整数数据和指针。<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/mac/github/zennlyu.github.io/hexo/source/statics/csapp/3-2.png" alt="3-2"></p>
+<p>图 3-2 显示了这 16 个寄存器。它们的名字都以号 r 开头，不过后面还跟着一些不同的命名规则的名字，这是由于指令集历史演化造成的。</p>
+<p>最初的 8086 中有 8 个 16 位的寄存器，即图 3-2 中的 %ax 到 %bp。每个寄存器都有特殊的用途，它们的名字就反映了这些不同的用途。扩展到 IA32 架构时，这些寄存器也扩展成 32 位寄存器，标号从 %eax 到 %ebp。扩展到 x86-64 后，原来的 8 个寄存器扩展成 64 位，标号从 %rax 到 %rbp。除此之外，还增加了 8 个新的寄存器，它们的标号是按照新的命名规则制定的：从 %r8 到 %r15。</p>
+<p>如图 3-2 中嵌套的方框标明的，指令可以对这 16 个寄存器的低位字节中存放的不同大小的数据进行操作。字节级操作可以访问最低的字节，16 位操作可以访问最低的 2 个字节，32 位操作可以访问最低的 4 个字节，而 64 位操作可以访问整个寄存器。</p>
+<p>在后面的章节中，我们会展现很多指令，复制和生成 1 字节、2 字节、4 字节和 8 字节值。当这些指令以寄存器作为目标时，对于生成小于 8 字节结果的指令，寄存器中剩下的字节会怎么样，对此有两条规则：生成 1 字节和 2 字节数字的指令会保持剩下的字节不变；生成 4 字节数字的指令会把高位 4 个字节置为 0。后面这条规则是作为从 IA32 到 x86-64 的扩展的一部分而采用的。</p>
+<p>就像图 3-2 右边的解释说明的那样，在常见的程序里不同的寄存器扮演不同的角色。</p>
+<p>其中最特别的是栈指针 %rsp，用来指明运行时栈的结束位置。有些程序会明确地读写这个寄存器。另外 15 个寄存器的用法更灵活。少量指令会使用某些特定的寄存器。更重要的是，有一组标准的编程规范控制着如何使用寄存器来管理栈、传递函数参数、从函数的返回值，以及存储局部和临时数据。我们会在描述过程的实现时（特别是在 3.7 节中），讲述这些惯例。</p>
+<h3 id="操作数指示符"><a href="#操作数指示符" class="headerlink" title="操作数指示符"></a>操作数指示符</h3><p>大多数指令有一个或多个操作数（operand）指示出执行一个操作中要使用的源数据值，以及放置结果的目的位置。x86-64 支持多种操作数格式（参见图 3-3）。源数据值可以以常数形式给出，或是从寄存器或内存中读出。结果可以存放在寄存器或内存中。因此，各种不同的操作数的可能性被分为三种类型。第一种类型是立即数（immediate）用来表示常数值。在 ATT 格式的汇编代码中，立即数的书写方式是‘$’后面跟一个用标准 C 表示法表示的整数，比如，$-577 或$0x1F。不同的指令允许的立即数值范围不同，汇编器会自动选择最紧凑的方式进行数值编码。第二种类型是寄存器（register）它表示某个寄存器的内容，16 个寄存器的低位 1 字节、2 字节、4 字节或 8 字节中的一个作为操作数，这些字节数分别对应于 8 位、16 位、32 位或 64 位。在图 3-3 中，我们用符号 ra 来表示任意寄存器 a，用引用 R [ra】来表示它的值，这是将寄存器集合看成一个数组 R，用寄存器标识符作为索引。</p>
+<p>第三类操作数是内存引用，它会根据计算出来的地址（通常称为有效地址）访问某个内存位置。因为将内存看成一个很大的字节数组，我们用符号 M [Addr】表示对存储在内存中从地址 Addr 开始的 b 个字节值的引用。为了简便，我们通常省去下标 b。</p>
+<p>如图 3-3 所示，有多种不同的寻址模式允许不同形式的内存引用。表中底部用语法 $Imm(r_b, r_i, s)$ 表示的是最常用的形式。这样的引用有四个组成部分：一个立即数偏移 $Imm$，一个基址寄存器 $r_b$，一个变址寄存器 $r_i$；和一个比例因子 $s$，这里 s 必须是 1、2、4 或者 8。基址和变址寄存器都必须是 64 位寄存器。有效地址被计算为 $Imm+R[r_b]+R[r_i]·s$。引用数组元素时，会用到这种通用形式。其他形式都是这种通用形式的特殊情况，只是省略了某些部分。正如我们将看到的，当引用数组和结构元素时，比较复杂的寻址模式是很有用的。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/zenn/zennlyu.github.io/hexo/source/_posts/3-3.png" alt="3-3"></p>
+<h3 id="数据传送指令"><a href="#数据传送指令" class="headerlink" title="数据传送指令"></a>数据传送指令</h3><p>最频繁使用的指令是将数据从一个位置复制到另一个位置的指令。操作数表示的通用性使得一条简单的数据传送指令能够完成在许多机器中要好几条不同指令才能完成的功能。我们会介绍多种不同的数据传送指令，它们或者源和目的类型不同，或者执行的转换不同，或者具有的一些副作用不同。在我们的讲述中，把许多不同的指令划分成指令类每一类中的指令执行相同的操作，只不过操作数大小不同。</p>
+<p>图 3-4 列出的是最简单形式的数据传送指令—— <code>mov</code> 类。这些指令把数据从源位置复制到目的位置，不做任何变化。<code>mov</code> 类由四条指令组成：<code>movb</code>、<code>movw</code>、<code>movl</code> 和 <code>movq</code>。这些指令都执行同样的操作；主要区别在于它们操作的数据大小不同：分别是 1、2、4 和 8 字节。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch03 Machine Level/3-4.png" alt="3-4"></p>
+<p>源操作数指定的值是一个立即数，存储在寄存器中或者内存中。目的操作数指定一个位置，要么是一个寄存器或者，要么是一个内存地址。x86-64 加了一条限制，传送指令的两个操作数不能都指向内存位置。将一个值从一个内存位置复制到另一个内存位置需要两条指令—第一条指令将源值加载到寄存器中，第二条将该寄存器值写入目的位置。参考图 3-2，这些指令的寄存器操作数可以是 16 个寄存器有标号部分中的任意一个，寄存器部分的大小必须与指令最后一个字符（‘b’, ‘w’, ‘1’或‘q’）指定的大小匹配。大多数情况中，MV 指令只会更新目的操作数指定的那些寄存器字节或内存位置。唯一的例外是 movl 指令以寄存器作为目的时，它会把该寄存器的高位 4 字节设置为 0。造成这个例外的原因是 x86-64 采用的惯例，即任何为寄存器生成 32 位值的指令都会把该寄存器的高位部分置成 0。</p>
+<p>下面的 mov 指令示例给出了源和目的类型的五种可能的组合。记住，第一个是源操作数，第二个是目的操作数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">movl $0x4050,%eax</span><br><span class="line">movw %bp,%sp</span><br><span class="line">movb (%rdi,%rcx),%al</span><br><span class="line">movb $-17,(%rsp)</span><br><span class="line">movq %rax,-12(%rbp)</span><br></pre></td></tr></table></figure>
+<p>图 3-4 中记录的最后一条指令是处理 64 位立即数数据的。常规的 movq 指令只能以表示为 32 位补码数字的立即数作为源操作数，然后把这个值符号扩展得到 64 位的值，放到目的位置。<code>movabsq</code> 指令能够以任意 64 位立即数值作为源操作数，并且只能以寄存器作为目的。</p>
+<p>图 3-5 和图 3-6 记录的是两类数据移动指令，在将较小的源值复制到较大的目的时使用。所有这些指令都把数据从源（在寄存器或内存中）复制到目的寄存器。MOVZ 类中的指令把目的中剩余的字节填充为 0，而 MOVS 类中的指令通过符号扩展来填充，把源操作的最高位进行复制。可以观察到，每条指令名字的最后两个字符都是大小指示符：第一个字符指定源的大小，而第二个指明目的的大小。正如看到的那样，这两个类中每个都有三条指令，包括了所有的源大小为 1 个和 2 个字节、目的大小为 2 个和 4 个的情况，当然只考虑目的大于源的情况。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch03 Machine Level/3-5-6.png" alt="3-5-6"></p>
+<p>注意图 3-5 中并没有一条明确的指令把 4 字节源值零扩展到 8 字节目的。这样的指令逻辑上应该被命名为 movz1q，但是并没有这样的指令。不过，这样的数据传送可以用以寄存器为目的的 mov1 指令来实现。这一技术利用的属性是，生成 4 字节值并以寄存器作为目的的指令会把高 4 字节置为 0。对于 64 位的目标，所有三种源类型都有对应的符号扩展传送，而只有两种较小的源类型有零扩展传送。</p>
+<p>图 3-6 还给出 cltq 指令。这条指令没有操作数：它总是以寄存器 %eax 作为源，%rax 作为符号扩展结果的目的。它的效果与指令 movslq, %eax,% rax 完全一致，不过编码更紧凑。</p>
+<h4 id="旁注-理解数据传送如何改变目的寄存器"><a href="#旁注-理解数据传送如何改变目的寄存器" class="headerlink" title="旁注: 理解数据传送如何改变目的寄存器"></a>旁注: 理解数据传送如何改变目的寄存器</h4><p>正如我们描述的那样，关于数据传送指令是否以及如何修改目的寄存器的高位字节有两种不同的方法。下面这段代码序列会说明其差别：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">movabsq $0x0011223344556677, %rax </span><br><span class="line">// %rax=0011223344556677</span><br><span class="line">movb $-1, %al %raX=00112233445566FF</span><br><span class="line">movw $-1, %ax %rax=001122334455FFFF</span><br><span class="line">movl $-1, %eax %rax =00000000FFFFFFFF</span><br><span class="line">movq $-1, %rax %rax =FFFFFFFFFFFFFFFF</span><br></pre></td></tr></table></figure>
+<p>在接下来的讨论中，我们使用十六进制表示。在这个例子中，第 1 行的指令把寄存器 %rax 初始化为位模式 0011223344556677。剩下的指令的源操作数值是立即数值一 1。回想一 1 的十六进制表示形如 FF…F，这里 F 的数量是表述中字节数量的两倍。因此 movb 指令（第 2 行）把 rax 的低位字节设置为 FF，而 movw 指令（第 3 行）把低 2 位字节设置为 FFFF，剩下的字节保持不变。movl 指令（第 4 行）将低 4 个字节设置为 FFFFFFFF，同时把高位 4 字节设置为 00000000。最后 movq 指令（第 5 行）把整个寄存器设置为 FFFFFFFFFFFFFFFF。</p>
+<h4 id="旁注-字节传送指令比较"><a href="#旁注-字节传送指令比较" class="headerlink" title="旁注: 字节传送指令比较"></a>旁注: 字节传送指令比较</h4><p>下面这个示例说明了不同的数据传送指令如何改变或者不改变目的的高位字节。仔细观察可以发现，三个字节传送指令 movb、movsbq 和 movzbq 之间有细微的差别。示例如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">movabsq $0x0011223344556677, %rax </span><br><span class="line">//%rax=0011223344556677</span><br><span class="line">movb $0xAA, %dl 	// %dl =AA</span><br><span class="line">movb %d1, %al 		// %rax=00112233445566AA</span><br><span class="line">movsbq %d1, %rax 	// %rax=FFFFFFFFFFFFFFAA</span><br><span class="line">movzbq %dl, %rax 	// %rax=00000000000000AA</span><br></pre></td></tr></table></figure>
+<p>在下面的讨论中，所有的值都使用十六进制表示。代码的头 2 行将寄存器 %rax 和 %dl 分别初始化为 0011223344556677 和 AA。剩下的指令都是将 %rdx 的低位字节复制到 %rax 的低位字节。movb 指令（第 3 行）不改变其他字节。根据源字节的最高位，movsbq 指令（第 4 行）将其他 7 个字节设为全 1 或全 0。由于十六进制 A 表示二进制值 1010，符号扩展会把高位字节都设置为 FE。movzbq 指令（第 5 行）总是将其他 7 个字节全都设置为 0。</p>
+<h3 id="数据传送示例"><a href="#数据传送示例" class="headerlink" title="数据传送示例"></a>数据传送示例</h3><p>作为一个使用数据传送指令的代码示例，考虑图 3-7 中所示的数据交换函数，既有 C 代码，也有 GCC 产生的汇编代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">exchange</span><span class="params">(<span class="type">long</span> *xp, <span class="type">long</span> y)</span> &#123;</span><br><span class="line">  <span class="type">long</span> x = *xp;</span><br><span class="line">  *xp = y;</span><br><span class="line">  <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(xp in %rdi, y in %rsi)</span><br><span class="line">exchange:</span><br><span class="line">	movq	(%rdi), %rax		Get x at xp. Set as return value</span><br><span class="line">	movq	%rsi, (%rdi)		Store y at xp.</span><br><span class="line">	ret										Return.</span><br></pre></td></tr></table></figure>
+<p>如图 3-7b 所示，函数 exchange 由三条指令实现：两个数据传送（movq），加上一条返回函数被调用点的指令（ret）。我们会在 3.7 节中讲述函数调用和返回的细节。在此之前，知道参数通过寄存器传递给函数就足够了。我们对汇编代码添加注释来加以说明。函数通过把值存储在寄存器号 rax 或该寄存器的某个低位部分中返回。</p>
+<p>当过程开始执行时，过程参数 xp 和 y 分别存储在寄存器号 rdi 和号 rsi 中。然后，指令 2 从内存中读出 x，把它存放到寄存器号 rax 中，直接实现了 C 程序中的操作 x=<em>xP。稍后，用寄存器号 ra×从这个函数返回一个值，因而返回值就是 x。指令 3 将 y 写人到寄存器号 rdi 中的 p 指向的内存位置，直接实现了操作</em>xp=y。这个例子说明了如何用 MOV 指令从内存中读值到寄存器（第 2 行），如何从寄存器写到内存（第 3 行）。</p>
+<p>关于这段汇编代码有两点值得注意。首先我们看到 C 语言中所谓的“指针”其实就是地址。间接引用指针就是将该指针放在一个寄存器中，然后在内存引用中使用这个寄存器。其次，像×这样的局部变量通常是保存在寄存器中，而不是内存中。访问寄存器比访问内存要快得多。</p>
+<h3 id="压入和弹出栈数据"><a href="#压入和弹出栈数据" class="headerlink" title="压入和弹出栈数据"></a>压入和弹出栈数据</h3><p>最后两个数据传送操作可以将数据压入程序栈中，以及从程序栈中弹出数据，如图 3-8 所示。正如我们将看到的，栈在处理过程调用中起到至关重要的作用。栈是一种数据结构，可以添加或者删除值，不过要遵循“后进先出”的原则。通过 push 操作把数据压入栈中，通过 pop 操作删除数据；它具有一个属性：弹出的值永远是最近被压入而且仍然在栈中的值。栈可以实现为一个数组，总是从数组的一端插入和删除元素。这一端被称为栈顶。在 x86-64 中，程序栈存放在内存中某个区域。如图 3-9 所示，栈向下增长，这样一来，栈顶元素的地址是所有栈中元素地址中最低的。（根据惯例，我们的栈是倒过来画的，栈“顶”在图的底部。）栈指针 %rsp 保存着栈顶元素的地址。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch03 Machine Level/3-8.png" alt="3-8"></p>
+<p>pushq 指令的功能是把数据压入到栈上，而 popq 指令是弹出数据。这些指令都只有一个操作数一一压入的数据源和弹出的数据目的。</p>
+<p>将一个四字值压入栈中，首先要将栈指针减 8，然后将值写到新的栈顶地址。因此，指令 pushq %rbp 的行为等价于下面两条指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">subq $8, %rsp			Decrement stack pointer</span><br><span class="line">movq %rbp,(%rsp)	Store %rbp on stack</span><br></pre></td></tr></table></figure>
+<p>它们之间的区别是在机器代码中 pushq 指令编码为 1 个字节，而上面那两条指令一共需要 8 个字节。图 3-9 中前两栏给出的是，当 %rsp 为 0x108, rax 为 0x123 时，执行指令 pushq %rax 的效果。首先 %rsp 会减 8，得到 0x100, 然后会将 0x123 存放到内存地址 0x100 处。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch03 Machine Level/3-9.png" alt="3-9"></p>
+<p>弹出一个四字的操作包括从栈顶位置读出数据，然后将栈指针加 8。因此，指令 popq grax 等价于下面两条指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">movq (%rsp), %rax //Read %rax from stack</span><br><span class="line">addq $8, %rsp //Increment stack pointer</span><br></pre></td></tr></table></figure>
+<p>图 3-9 的第三栏说明的是在执行完 pushq 后立即执行指令 popq &amp;rdx 的效果。先从内存中读出值 0x123, 再写到寄存器 rdx 中，然后，寄存器 rsp 的值将增加回到 0x108。如图中所示，值 0x123 仍然会保持在内存位置 0x100 中，直到被覆盖（例如被另一条入栈操作覆盖）。无论如何，%rsp 指向的地址总是栈顶。</p>
+<p>因为栈和程序代码以及其他形式的程序数据都是放在同一内存中，所以程序可以用标准的内存寻址方法访问栈内的任意位置。例如，假设栈顶元素是四字，指令 movq8 (rsp), rdx 会将第二个四字从栈中复制到寄存器 rdx。</p>
+<h2 id="5-算数和逻辑操作"><a href="#5-算数和逻辑操作" class="headerlink" title="5 算数和逻辑操作"></a>5 算数和逻辑操作</h2><p>图 3-10 列出了 x86-64 的一些整数和逻辑操作。大多数操作都分成了指令类，这些指令类有各种带不同大小操作数的变种（只有 1eaq 没有其他大小的变种）。例如，指令类 ADD 由四条加法指令组成：addb、addw、addl 和 addq，分别是字节加法、字加法、双学加法和四字加法。事实上，给出的每个指令类都有对这四种不同大小数据的指令。这些操作被分为四组：加载有效地址、一元操作、二元操作和移位。二元操作有两个操作数，而一元操作有一个操作数。这些操作数的描述方法与 3.4 节中所讲的一样。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch03 Machine Level/3-10.png" alt="3-10"></p>
+<h3 id="加载有效地址"><a href="#加载有效地址" class="headerlink" title="加载有效地址"></a>加载有效地址</h3><p>加载有效地址（load effective address）指令 leaq 实际上是 movq 指令的变形。它的指令形式是从内存读数据到寄存器，但实际上它根本就没有引用内存。它的第一个操作数看上去是一个内存引用，但该指令并不是从指定的位置读入数据，而是将有效地址写入到目的操作数。</p>
+<p>在图 3-10 中我们用 C 语言的地址操作符&amp;S 说明这种计算。这条指令可以为后面的内存引用产生指针。另外，它还可以简洁地描述普通的算术操作。</p>
+<p>例如，如果寄存器 rdx 的值为 x，那么指令 <code>leaq 7 (%rdx,%rdx,4), %rax</code> 将设置寄存器 <code>%rax</code> 的值为 <code>5x+7</code>。编译器经常发现 <code>leaq</code> 的一些灵活用法，根本就与有效地址计算无关。目的操作数必须是一个寄存器。</p>
+<p>为了说明 leap 在编译出的代码中的使用，看看下面这个 C 程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">scale</span><span class="params">(<span class="type">long</span> x, <span class="type">long</span> y, <span class="type">long</span> z)</span> &#123;</span><br><span class="line">	<span class="type">long</span> t = x+<span class="number">4</span>*y+<span class="number">12</span>*z;</span><br><span class="line">	<span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译时，该函数的算术运算以三条 leaq 指令实现，就像右边注释说明的那样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">long scale (long x, long y, long z) </span><br><span class="line">x in Ardi, y in Xrsi, z in Xrdx </span><br><span class="line">scale: </span><br><span class="line">	leaq  (%rdi, %rsi, 4), %rax 		x+4*y </span><br><span class="line">	leaq  (%rdx, %rdx, 2), %rdx 		z+2*z=3*z </span><br><span class="line">	leaq  (%rax, %rdx, 4), %rax  		(x+4*y)+4*(3*z)=x+4y+12+z</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<p>leaq 指令能执行加法和有限形式的乘法，在编译如上简单的算术表达式时，是很有用处的。</p>
+<h3 id="一元和二元操作"><a href="#一元和二元操作" class="headerlink" title="一元和二元操作"></a>一元和二元操作</h3><p>第二组中的操作是一元操作，只有一个操作数，既是源又是目的。这个操作数可以是一个寄存器，也可以是一个内存位置。比如说，指令 incq (rsp）会使栈顶的 8 字节元素加 1。这种语法让人想起 C 语言中的加 1 运算符（++）和减 1 运算符（一一）。</p>
+<p>第三组是二元操作，其中，第二个操作数既是源又是目的。这种语法让人想起语言中的赋值运算符，例如 x-=y。不过，要注意，源操作数是第一个，目的操作数是第二个，对于不可交换操作来说，这看上去很奇特。例如，指令 subq %rax, %rdx 使寄存器 %rdx 的值减去 %rax 中的值。（将指令解读成“从 %rdx 中减去 %rax”会有所帮助。）第一个操作数可以是立即数、寄存器或是内存位置。第二个操作数可以是寄存器或是内存位置。注意，当第二个操作数为内存地址时，处理器必须从内存读出值，执行操作，再把结果写回内存。</p>
+<h3 id="移位操作"><a href="#移位操作" class="headerlink" title="移位操作"></a>移位操作</h3><p>最后一组是移位操作，先给出移位量，然后第二项给出的是要移位的数。可以进行算术和逻辑右移。移位量可以是一个立即数，或者放在单字节寄存器 1 中。（这些指令很特别，因为只允许以这个特定的寄存器作为操作数。）原则上来说，1 个字节的移位量使得移位量的编码范围可以达到 2 一 1=255。x86-64 中，移位操作对 w 位长的数据值进行操作，移位量是由 c1 寄存器的低 m 位决定的，这里 2=w。高位会被忽略。所以，例如当寄存器 8c1 的十六进制值为 0xFF 时，指令 salb 会移 7 位，sa1w 会移 15 位，sa11 会移 31 位，而 sa1q 会移 63 位。</p>
+<p>如图 3-10 所示，左移指令有两个名字：SAL 和 SHL。两者的效果是一样的，都是将右边填上 0。右移指令不同，SAR 执行算术移位（填上符号位），而 SHR 执行逻辑移位（填上 0)。移位操作的目的操作数可以是一个寄存器或是一个内存位置。图 3-10 中用&gt;&gt;_A（算术）和 &gt;&gt;_L（遷辑）来表示这两种不同的右移运算。</p>
+<h3 id="讨论"><a href="#讨论" class="headerlink" title="讨论"></a>讨论</h3><p>我们看到图 3-10 所示的大多数指令，既可以用于无符号运算，也可以用于补码运算。只有右移操作要求区分有符号和无符号数。这个特性使得补码运算成为实现有符号整数运算的一种比较好的方法的原因之一。</p>
+<p>图 3-11 给出了一个执行算术操作的函数示例，以及它的汇编代码。参数 x、y 和 z 初始时分别存放在内存 rdi、rsi 和 rdx 中。汇编代码指令和 C 源代码行对应很紧密。第 2 行计算 x^y 的值。指令 3 和 4 用 1eaq 和移位指令的组合来实现表达式 z*48。第 5 行计算 t1 和 0x0F0F0F0F 的 AND 值。第 6 行计算最后的减法。由于减法的目的寄存器是 rax，函数会返回这个值。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/kedae/Desktop/zennlyu.github.io/hexo/source/_posts/15-213-Ch03 Machine Level/3-11.png" alt="3-11"></p>
+<p>在图 3-11 的汇编代码中，寄存器 rax 中的值先后对应于程序值 3<em>z、z</em>48 和 t4（作为返回值）。通常，编译器产生的代码中，会用一个寄存器存放多个程序值，还会在寄存器之间传送程序值。</p>
+<h3 id="特殊的算术控制"><a href="#特殊的算术控制" class="headerlink" title="特殊的算术控制"></a>特殊的算术控制</h3><p>正如我们在 2.3 节中看到的，两个 64 位有符号或无符号整数相乘得到的乘积需要 128 位来表示。x86-64 指令集对 128 位（16 字节）数的操作提供有限的支持。延续字（2 字节）、双字（4 字节）和四字（8 字节）的命名惯例，Intel 把 16 字节的数称为八字（oct word）。图 3-12 描述的是支持产生两个 64 位数字的全 128 位乘积以及整数除法的指令。</p>
+<p>imulq 指令有两种不同的形式。其中一种，如图 3-10 所示，是 IMUL 指令类中的一种。这种形式的 imulq 指令是一个“双操作数”乘法指令。它从两个 64 位操作数产生一个 64 位乘积，实现了 2.3.4 和 2.3.5 节中描述的操作和。（回想一下，当将乘积截取到 64 位时，无符号乘和补码乘的位级行为是一样的。）</p>
+<p>此外，x86-64 指令集还提供了两条不同的“单操作数”乘法指令，以计算两个 64 位值的全 128 位乘积一一个是无符号数乘法（mulq），而另一个是补码乘法（imulq）。这两条指令都要求一个参数必须在寄存器号 xax 中，而另一个作为指令的源操作数给出。然后乘积存放在寄存器 rdx（高 64 位）和 rax（低 64 位）中。虽然 imulq 这个名字可以用于两个不同的乘法操作，但是汇编器能够通过计算操作数的数目，分辨出想用哪条指令。</p>
+<p>下面这段 C 代码是一个示例，说明了如何从两个无符号 64 位数字 x 和 y 生成 128 位的乘积：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;inttypes.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> __int128 <span class="type">uint128_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">store_uprod</span><span class="params">(<span class="type">uint128_t</span> *dest, <span class="type">uint64_t</span> x, <span class="type">uint64_t</span> y)</span> &#123;</span><br><span class="line">	*dest = x*(<span class="type">uint128_t</span>) y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这个程序中，我们显式地把 x 和 y 声明为 64 位的数字，使用文件 inttypes.h 中声明的定义，这是对标准 C 扩展的一部分。不幸的是，这个标准没有提供 128 位的值。所以我们只好依赖 GCC 提供的 128 位整数支持，用名字 int128 来声明。代码用 typedef 声明定义了一个数据类型 uint128t，沿用的 inttypes. H 中其他数据类型的命名规律。这段代码指明得到的乘积应该存放在指针 dest 指向的 16 字节处。</p>
+<p>GCC 生成的汇编代码如下：</p>
+<h2 id="6-控制"><a href="#6-控制" class="headerlink" title="6 控制"></a>6 控制</h2><h3 id="条件码"><a href="#条件码" class="headerlink" title="条件码"></a>条件码</h3><h3 id="访问条件码"><a href="#访问条件码" class="headerlink" title="访问条件码"></a>访问条件码</h3><h3 id="跳转指令"><a href="#跳转指令" class="headerlink" title="跳转指令"></a>跳转指令</h3><h3 id="跳转指令的编码"><a href="#跳转指令的编码" class="headerlink" title="跳转指令的编码"></a>跳转指令的编码</h3><h3 id="用条件控制来实现条件分支"><a href="#用条件控制来实现条件分支" class="headerlink" title="用条件控制来实现条件分支"></a>用条件控制来实现条件分支</h3><h3 id="用条件传送来实现条件分支"><a href="#用条件传送来实现条件分支" class="headerlink" title="用条件传送来实现条件分支"></a>用条件传送来实现条件分支</h3><h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><h3 id="do-while"><a href="#do-while" class="headerlink" title="do-while"></a>do-while</h3><h3 id="while"><a href="#while" class="headerlink" title="while"></a>while</h3><h3 id="for"><a href="#for" class="headerlink" title="for"></a>for</h3><h3 id="switch"><a href="#switch" class="headerlink" title="switch"></a>switch</h3><h2 id="7-过程"><a href="#7-过程" class="headerlink" title="7 过程"></a>7 过程</h2><h3 id="运行时栈"><a href="#运行时栈" class="headerlink" title="运行时栈"></a>运行时栈</h3><h3 id="转移控制"><a href="#转移控制" class="headerlink" title="转移控制"></a>转移控制</h3><h3 id="数据传送"><a href="#数据传送" class="headerlink" title="数据传送"></a>数据传送</h3><h3 id="栈上的局部存储"><a href="#栈上的局部存储" class="headerlink" title="栈上的局部存储"></a>栈上的局部存储</h3><h3 id="寄存器中的局部存储空间"><a href="#寄存器中的局部存储空间" class="headerlink" title="寄存器中的局部存储空间"></a>寄存器中的局部存储空间</h3><h3 id="递归过程"><a href="#递归过程" class="headerlink" title="递归过程"></a>递归过程</h3><h2 id="8-数组分配和访问"><a href="#8-数组分配和访问" class="headerlink" title="8 数组分配和访问"></a>8 数组分配和访问</h2><h3 id="基本原则"><a href="#基本原则" class="headerlink" title="基本原则"></a>基本原则</h3><h3 id="指针运算"><a href="#指针运算" class="headerlink" title="指针运算"></a>指针运算</h3><h3 id="嵌套的数组"><a href="#嵌套的数组" class="headerlink" title="嵌套的数组"></a>嵌套的数组</h3><h3 id="定长数组"><a href="#定长数组" class="headerlink" title="定长数组"></a>定长数组</h3><h3 id="变长数组"><a href="#变长数组" class="headerlink" title="变长数组"></a>变长数组</h3><h2 id="9-异质的数据结构"><a href="#9-异质的数据结构" class="headerlink" title="9 异质的数据结构"></a>9 异质的数据结构</h2><h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><h3 id="联合"><a href="#联合" class="headerlink" title="联合"></a>联合</h3><h3 id="数据对齐"><a href="#数据对齐" class="headerlink" title="数据对齐"></a>数据对齐</h3><h2 id="10-在机器级程序中将控制与数据结合起来"><a href="#10-在机器级程序中将控制与数据结合起来" class="headerlink" title="10 在机器级程序中将控制与数据结合起来"></a>10 在机器级程序中将控制与数据结合起来</h2><h3 id="理解指针"><a href="#理解指针" class="headerlink" title="理解指针"></a>理解指针</h3><h3 id="应用：使用-GDB-调试器"><a href="#应用：使用-GDB-调试器" class="headerlink" title="应用：使用 GDB 调试器"></a>应用：使用 GDB 调试器</h3><h3 id="内存越界引用和缓冲区溢出"><a href="#内存越界引用和缓冲区溢出" class="headerlink" title="内存越界引用和缓冲区溢出"></a>内存越界引用和缓冲区溢出</h3><h3 id="对抗缓冲区溢出攻击"><a href="#对抗缓冲区溢出攻击" class="headerlink" title="对抗缓冲区溢出攻击"></a>对抗缓冲区溢出攻击</h3><h4 id="栈随机化"><a href="#栈随机化" class="headerlink" title="栈随机化"></a>栈随机化</h4><h4 id="栈破坏检测"><a href="#栈破坏检测" class="headerlink" title="栈破坏检测"></a>栈破坏检测</h4><h4 id="限制可执行代码区域"><a href="#限制可执行代码区域" class="headerlink" title="限制可执行代码区域"></a>限制可执行代码区域</h4><h4 id="支持变长栈帧"><a href="#支持变长栈帧" class="headerlink" title="支持变长栈帧"></a>支持变长栈帧</h4><h2 id="11-浮点代码"><a href="#11-浮点代码" class="headerlink" title="11 浮点代码"></a>11 浮点代码</h2><h3 id="浮点传送和转换操作"><a href="#浮点传送和转换操作" class="headerlink" title="浮点传送和转换操作"></a>浮点传送和转换操作</h3><h3 id="过程中的浮点代码"><a href="#过程中的浮点代码" class="headerlink" title="过程中的浮点代码"></a>过程中的浮点代码</h3><h3 id="浮点运算操作"><a href="#浮点运算操作" class="headerlink" title="浮点运算操作"></a>浮点运算操作</h3><h3 id="定义和使用浮点常数"><a href="#定义和使用浮点常数" class="headerlink" title="定义和使用浮点常数"></a>定义和使用浮点常数</h3><h3 id="在浮点代码中使用位级操作"><a href="#在浮点代码中使用位级操作" class="headerlink" title="在浮点代码中使用位级操作"></a>在浮点代码中使用位级操作</h3><h3 id="浮点比较操作"><a href="#浮点比较操作" class="headerlink" title="浮点比较操作"></a>浮点比较操作</h3><h3 id="对浮点代码的观察结论"><a href="#对浮点代码的观察结论" class="headerlink" title="对浮点代码的观察结论"></a>对浮点代码的观察结论</h3><h1 id="CSAPP-07-Link"><a href="#CSAPP-07-Link" class="headerlink" title="CSAPP-07 Link"></a>CSAPP-07 Link</h1><p>链接（linking）是将各种代码和数据片段收集并组合成为一个单一文件的过程，这个文件可被加载（复制）到内存并执行。</p>
+<ul>
+<li>链接可以执行于编译时（compile time），也就是在源代码被翻译成机器代码时；</li>
+<li>也可以执行于加载时（load time），也就是在程序被加载器（loader）加载到内存并执行时；</li>
+<li>甚至执行于运行时（run time），也就是由应用程序来执行。</li>
+</ul>
+<p>在早期的计算机系统中，链接是手动执行的。在现代系统中，链接是由叫做链接器(linker)的程序自动执行的。</p>
+<p>链接器使得分离编译（separate compilation）成为可能。我们不用将一个大型的应用程序组织为一个巨大的源文件，而是可以把它分解为更小、更好管理的模块，可以独立地修改和编译这些模块。当我们改变这些模块中的一个时，只需简单地重新编译它，并重新链接应用，而不必重新编译其他文件。</p>
+<h5 id="好处"><a href="#好处" class="headerlink" title="好处"></a>好处</h5><p>●理解链接器将帮助你构造大型程序。</p>
+<blockquote>
+<p>构造大型程序的程序员经常会遇到由于缺少模块、缺少库或者不兼容的库版本引起的链接器错误。除非你理解链接器是如何解析引用、什么是库以及链接器是如何使用库来解析引用的，否则这类错误将令你感到迷惑和挫败。</p>
+</blockquote>
+<p>● 理解链接器将帮助你避免一些危险的编程错误。</p>
+<blockquote>
+<p>Liux 链接器解析符号引用时所做的决定可以不动声色地影响你程序的正确性。在默认情况下，错误地定义多个全局变量的程序将通过链接器，而不产生任何警告信息。由此得到的程序会产生令人迷惑的运行时行为，而且非常难以调试。我们将向你展示这是如何发生的，以及该如何避免它。</p>
+</blockquote>
+<p>●理解链接将帮助你理解语言的作用域规则是如何实现的。</p>
+<blockquote>
+<p>例如，全局和局部变量之间的区别是什么？当你定义一个具有 static 属性的变量或者函数时，实际到底意味着什么？</p>
+</blockquote>
+<p>● 理解链接将帮助你理解其他重要的系统概念。</p>
+<blockquote>
+<p>链接器产生的可执行目标文件在重要的系统功能中扮演着关键角色，比如加载和运行程序、虚拟内存、分页、内存映射。</p>
+</blockquote>
+<p>● 理解链接将使你能够利用共享库。</p>
+<blockquote>
+<p>多年以来，链接都被认为是相当简单和无趣的。然而，随着共享库和动态链接在现代操作系统中重要性的日益加强，链接成为一个复杂的过程，为掌握它的程序员提供了强大的能力。比如，许多软件产品在运行时使用共享库来升级压缩包装的（shrink-wrapped）二进制程序。还有，大多数 Web 服务器都依赖于共享库的动态链接来提供动态内容。</p>
+</blockquote>
+<h1 id="CSAPP-10-System-Level-IO"><a href="#CSAPP-10-System-Level-IO" class="headerlink" title="CSAPP-10 System Level IO"></a>CSAPP-10 System Level IO</h1><h2 id="1-UNIX-I-O"><a href="#1-UNIX-I-O" class="headerlink" title="1 UNIX I/O"></a>1 UNIX I/O</h2><p>一个 Linux 文件就是一个 m 个字节的序列：B<sub>0</sub>, B<sub>1</sub>, …, B<sub>k</sub>, …, B<sub>m-1</sub></p>
+<p>所有的I/O设备（例如网络、磁盘和终端）都被模型化为文件，而所有的输人和输出都被当作对相应文件的读和写来执行。这种将设备优雅地映射为文件的方式，允许 Linux内核引出一个简单、低级的应用接口，称为UNIX I/O,这使得所有的输入和输出都能以一种统一且一致的方式来执行：</p>
+<ul>
+<li>打开文件 ｜Linux shell 创建的每个进程开始都有3个打开的文件<unistd.h>，用来代替显式的描述符值<ul>
+<li>标准输入（0）STDIN_FILENO</li>
+<li>标准输出（1）STDOUT_FILENO</li>
+<li>标准错误（2）STDERR_FILENO</li>
+</ul>
+</unistd.h></li>
+<li>改变当前文件位置<ul>
+<li>对于每个打开的文件，内核保持着一个文件位置，初始为 0。这个文件位置是从文件开头起始的字节偏移量。</li>
+<li>应用程序能够通过执行 seek 操作，显式地设置文件的当前位置为。</li>
+</ul>
+</li>
+<li>读写文件<ul>
+<li>一个读操作就是从文件复制 n &gt; 0 个字节到内存，从当前文件位置 k 开始，然后将 k 增加到 k + n。给定一个大小为 m 字节的文件，当 k≥m 时执行读操作会触发一个称为 end-of-file (EOF) 的条件，应用程序能检测到这个条件。在文件结尾处并没有明确的“EOF 符号”。</li>
+<li>类似地，写操作就是从内存复制 n&gt;0 个字节到一个文件，从当前文件位置 k 开始，然后更新 k。</li>
+</ul>
+</li>
+<li>关闭文件<ul>
+<li>当应用完成了对文件的访问之后，它就通知内核关闭这个文件。作为响应，内核释放文件打开时创建的数据结构，并将这个描述符恢复到可用的描述符池中。无论一个进程因为何种原因终止时，内核都会关闭所有打开的文件并释放它们的内存资源。</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-文件"><a href="#2-文件" class="headerlink" title="2 文件"></a>2 文件</h2><p>每个 Linux 文件都有一个类型（type）表明它在系统中的角色：</p>
+<ul>
+<li><strong>普通文件 - regular file</strong></li>
+<li><strong>目录 - directory</strong></li>
+<li><strong>套接字 - socket</strong></li>
+<li>命名通道（named pipe）</li>
+<li>符号链接（symbolic link）</li>
+<li>字符和块设备（character and block device）</li>
+<li>…</li>
+</ul>
+<p>Linux 内核将所有文件都组织成一个目录层次结构（directory hierarchy），由名为/（斜杠）的根目录确定。系统中的每个文件都是根目录的直接或间接的后代。图 10-1 显示了 Linux 系统的目录层次结构的一部分。</p>
+<h2 id="3-打开-关闭文件"><a href="#3-打开-关闭文件" class="headerlink" title="3 打开/关闭文件"></a>3 打开/关闭文件</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回：若成功则为新文件描述符，若出错为 -1。</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">open</span><span class="params">(<span class="type">char</span> *filename, <span class="type">int</span> flags, <span class="type">mode_t</span> mode)</span>;</span><br></pre></td></tr></table></figure>
+<p>open 函数将 filename 转换为一个文件描述符，并且返回描述符数字。返回的描述符总是在进程中当前没有打开的最小描述符。flags 参数指明了进程打算如何访问这个文件：</p>
+<ul>
+<li>● O RDONLY：只读</li>
+<li>● O WRONLY：只写</li>
+<li>● O RDWR：可读可写</li>
+</ul>
+<p>flags 参数也可以是一个或者更多位掩码的或，为写提供给一些额外的指示:</p>
+<ul>
+<li>●O CREAT：如果文件不存在，就创建它的一个截断的（truncated)（空）文件。</li>
+<li>●O TRUNC：如果文件已经存在，就截断它。</li>
+<li>●O_APPEND：在每次写操作前，设置文件位置到文件的结尾处。</li>
+</ul>
+<p>mode 参数指定了新文件的访问权限位。这些位的符号名字如图 10-2 所示。<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/zenn/zennlyu.github.io/hexo/source/_posts/10-2.png" alt="10-2"></p>
+<p>作为上下文的一部分，每个进程都有一个 umask，它是通过调用 umask 函数来设置的。当进程通过带某个 mode 参数的 open 函数调用来创建一个新文件时，文件的访问权限位被设置为 mode &amp;~ umask。例如，假设我们给定下面的 mode 和 umask 默认值：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> DEF_MODE 	S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DEF_UMASK 	S_IWGRP|S_IWOTH</span></span><br></pre></td></tr></table></figure>
+<p>接下来，下面的代码片段创建一个新文件，文件的拥有者有读写权限，而所有其他的用户都有读权限：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">umask  (DEF_UMASK);</span><br><span class="line">fd = open(<span class="string">&quot;foo.txt&quot;</span>,O_CREAT|O_TRUNC|O_WRONLY, DEF_MODE);</span><br></pre></td></tr></table></figure>
+<p>最后，进程通过调用 close 函数关闭一个打开的文件。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">close</span> <span class="params">(<span class="type">int</span> fd)</span>;</span><br><span class="line"><span class="comment">//返回：若成功则为 0，若出错则为 -1。</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-读和写文件"><a href="#4-读和写文件" class="headerlink" title="4 读和写文件"></a>4 读和写文件</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** 返回：若成功则为读的字节数，若 EOF 则为 0，若出错为 -1。</span></span><br><span class="line"><span class="comment"> * 	函数从描述符为 fd 的当前文件位置复制最多 n 个字节到内存位置 buf。</span></span><br><span class="line"><span class="comment"> *	返回值 -1 表示一个错误，而返回值 0 表示 EOF。否则，返回值表示的是实际传送的字节数量。</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">read</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *buf, <span class="type">size_t</span> n)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**	返回：若成功则为写的字节数，若出错则为 -1。</span></span><br><span class="line"><span class="comment"> * 	函数以内存位置 buf 复制至多 n 个字节到描述符 fd 的当前文件位置。</span></span><br><span class="line"><span class="comment"> * 	图 l0-3 展示了一个程序使用 read 和 write 调用一次一个字节地从标准输入复制到标准输出。</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">write</span><span class="params">(<span class="type">int</span> fd, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> n)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 10-3</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">	<span class="type">char</span> c;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (read(STDIN_FILENO, &amp;c,<span class="number">1</span>)! =<span class="number">0</span>)</span><br><span class="line">		write(STDOUT_FILENO, &amp;c,<span class="number">1</span>); </span><br><span class="line">	<span class="built_in">exit</span>(O);</span><br><span class="line">&#125;	<span class="comment">// 通过调用 1seek 函数，应用程序能够显示地修改当前文件的位置，这部分内容不在我门的讲述范围之内。</span></span><br></pre></td></tr></table></figure>
+<p>在某些情况下，read 和 write 传送的字节比应用程序要求的要少。这些不足值（short count）不表示有错误。出现这样情况的原因有：</p>
+<blockquote>
+<p>实际上，除了 EOF，当你在读写磁盘文件时，不会遇到不足值。然而，如果你想创建健壮的（可靠的）诸如 Web 服务器这样的网络应用，就必须通过反复调用 read 和 write 处理不足值，直到所有需要的字节都传送完华。</p>
+</blockquote>
+<ul>
+<li>● 读时遇到 EO。假设我们准备读一个文件，该文件从当前文件位置开始只含有 20 多个字节，而我们以 50 个字节的片进行读取。这样一来，下一个 read 返回的不足值为 20，此后的 read 将通过返回不足值 0 来发出 EOF 信号。</li>
+<li>● 从终端读文本行。如果打开文件是与终端相关联的（如键盘和显示器），那么每个 read 函数将一次传送一个文本行，返回的不足值等于文本行的大小。</li>
+<li>● 读和写网络套接字（socket）。如果打开的文件对应于网络套接字（11.4 节），那么内部缓冲约束和较长的网络延迟会引起 read 和 write 返回不足值。对 Linux 管道（pipe）调用 read 和 write 时，也有可能出现不足值，这种进程间通信机制不在我们讨论的范围之内。</li>
+</ul>
+<h3 id="ssize-t-和-size-t-有些什么区别"><a href="#ssize-t-和-size-t-有些什么区别" class="headerlink" title="ssize_t 和 size_t 有些什么区别"></a>ssize_t 和 size_t 有些什么区别</h3><p>在 x86-64 系统中，size_t 被定义为 unsigned long，而 ssize_t (有符号的大小）被定义为 long</p>
+<p>read 函数返回一个有符号的大小，而不是一个无符号大小，这是因为出错时它必须返回 -1。有趣的是，返回一个 -1 的可能性使得 read 的最大值减小了一半。</p>
+<h2 id="5-用-RIO-包健壮地读写"><a href="#5-用-RIO-包健壮地读写" class="headerlink" title="5 用 RIO 包健壮地读写"></a>5 用 RIO 包健壮地读写</h2><p>Robust I/O ：会自动为你处理上文中所述的不足值。在像网络程序这样容易出现不足值的应用中，RIO 包提供了方便、健壮和高效的I/O。RIO提供了两类不同的函数：</p>
+<ul>
+<li><p>● 无缓冲的输入输出函数，这些函数直接在内存和文件之间传送数据，没有应用级缓冲。它们对将二进制数据读写到网络和从网络读写二进制数据尤其有用。</p>
+</li>
+<li><p>● 带缓冲的输入函数。这些函数允许你高效地从文件中读取文本行和二进制数据，这些文件的内容缓存在应用级缓冲区内，类似于为 printf 这样的标准 I/O 函数提供的缓冲区。与[110]中讲述的带缓冲的I/O例程不同，带缓冲的RIO输入函数是线程安全的（12.7.1 节），它在同一个描述符上可以被交错地调用。</p>
+<blockquote>
+<p>例如，你可以从一个描述符中读一些文本行，然后读取一些二进制数据，接着再多读取一些文本行。</p>
+</blockquote>
+</li>
+</ul>
+<p>我们讲述 RIO 例程有两个原因</p>
+<ul>
+<li>第一，在接下来的两章中，我们开发的网络应用中使用 了它们；</li>
+<li>第二，通过学习这些例程的代码，你将从总体上对 UNIX I/O 有更深入的了解。</li>
+</ul>
+<h3 id="RIO-的无缓冲输入输出函数"><a href="#RIO-的无缓冲输入输出函数" class="headerlink" title="RIO 的无缓冲输入输出函数"></a>RIO 的无缓冲输入输出函数</h3><p>通过调用 rio_readn 和 rio_writen 函数，应用程序可以在内存和文件之间直接传送数据</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_readn</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> n)</span>;</span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_writen</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> n)</span>;</span><br></pre></td></tr></table></figure>
+<p>rio_readn 函数从描述符 fd 的当前文件位置最多传送 n 个字节到内存位置 usrbuf。类似地，rio_writen 函数从位置 usrbuf 传送 n 个字节到描述符 fd。rio_read 函数在遇到 EOF 时只能返回一个不足值。rio_wr1ten 函数决不会返回不足值。对同一个描述符，可以任意交错地调用 rio_readn 和 rio_writen.</p>
+<p>图 10-4 显示了 rio_readn 和 rio_writen 的代码。注意，如果 rio_readn 和 rio_writen 函数被一个从应用信号处理程序的返回中断，那么每个函数都会手动地重启 read 或 write。为了尽可能有较好的可移植性，我们允许被中断的系统调用，且在必要时重启它们。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_readnb</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">size_t</span> nleft = n;</span><br><span class="line">	<span class="type">ssize_t</span> nread;</span><br><span class="line">	<span class="type">char</span> *bufp = usrbuf;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (nleft &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((nread = read(fd, bufp, nleft)) &lt; <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (errno == EINTR)</span><br><span class="line">				nread = <span class="number">0</span>;</span><br><span class="line">			 <span class="keyword">else</span> </span><br><span class="line">				<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (nread == <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		nleft -= nread;</span><br><span class="line">		bufp += nread;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (n - nleft);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_writen</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">size_t</span> nleft = n;</span><br><span class="line">	<span class="type">ssize_t</span> nwritten;</span><br><span class="line">	<span class="type">char</span> *bufp = usrbuf;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (nleft &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((nwritten = write(fd, bufp, nleft)) &lt;= <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (errno == EINTR)		<span class="comment">/* Interrupted by sig handler return */</span></span><br><span class="line">				nwritten = <span class="number">0</span>;		<span class="comment">/* and call write() again*/</span></span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				<span class="keyword">return</span> <span class="number">-1</span>;			<span class="comment">/* errno set by write() */</span></span><br><span class="line">		&#125;</span><br><span class="line">		nleft -= nwritten;</span><br><span class="line">		bufp += nwritten;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="RIO-的带缓冲的输入函数"><a href="#RIO-的带缓冲的输入函数" class="headerlink" title="RIO 的带缓冲的输入函数"></a>RIO 的带缓冲的输入函数</h3><p>假设我们要编写一个程序来计算文本文件中文本行的数量，该如何来实现呢？</p>
+<p>一种方法就是用 read 函数来一次一个字节地从文件传送到用户内存，检查每个字节来查找换行符。这个方法的缺点是效率不是很高，每读取文件中的一个字节都要求陷人内核。</p>
+<p>一种更好的方法是调用一个包装函数（rio_readlineb），它从一个内部读缓冲区复制一个文本行，当缓冲区变空时，会自动地调用 read 重新填满缓冲区。对于既包含文本行也包含二进制数据的文件（例如 11.5.3 节中描述的 HTTP 响应），我们也提供了一个 rio_readnb 带缓冲区的版本，叫做 rio_readnb，它从和 rio_readlineb 一样的读缓冲区中传送原始字节。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">rio_readinitb</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">int</span> fd)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_readlineb</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> maxlen)</span>;</span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_readnb</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> n)</span>;</span><br></pre></td></tr></table></figure>
+<p>每打开一个描述符，都会调用一次 rio_readinitb 函数。它将描述符 fd 和地址 rp 处的一个类型为 rio_t 的读缓冲区联系起来。</p>
+<p>rio_readlineb 函数从文件 rp 读出下一个文本行（包括结尾的换行符），将它复制到内存位置 usrbuf，并且用 NULL（零）字符来结束这个文本行。rio_readlineb 函数最多读 maxlen-1 个字节，余下的一个字符留给结尾的 NULL 字符。超过 maxlen-1 字节的文本行被截断，并用一个 NULL 字符结束。</p>
+<p>rio_readnb 函数从文件 rp 最多读 n 个字节到内存位置 usrbuf。对同一描述符，对 rio_readlineb 和 rio_readnb 的调用可以任意交叉进行。然而，对这些带缓冲的函数的调用却不应和无缓冲的 rio_readn 函数交又使用。</p>
+<p>在本书剩下的部分中将给出大量的 RIO 函数的示例。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 展示了如何使用 RIO 函数来一次一行地从标准输人复制一个文本文件到标准输出。</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> <span class="type">const</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> n;</span><br><span class="line">	<span class="type">rio_t</span> rio;</span><br><span class="line">	<span class="type">char</span> buf[MAXLINE];</span><br><span class="line"></span><br><span class="line">	rio_readinitb(&amp;rio, STDIN_FILENO);</span><br><span class="line">	<span class="keyword">while</span> ((n = rio_readinitb(&amp;rio, buf, MAXLINE)) != <span class="number">0</span>)</span><br><span class="line">		rio_written(STDOUT_FILENO, buf, n);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 展示了一个读缓冲区的格式，以及初始化它的 rio_readinitb 函数的代码。rio_readinitb 函数创建了一个空的读缓冲区，并且将一个打开的文件描述符和这个缓冲区联系起来。</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">	<span class="type">int</span> rio_fd;</span><br><span class="line">	<span class="type">int</span> rio_cnt;</span><br><span class="line">	<span class="type">char</span> *rio_bufptr;</span><br><span class="line">	<span class="type">char</span> rio_buf[RIO_BUFSIZE];</span><br><span class="line">&#125; <span class="type">rio_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">rio_readinitb</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">int</span> fd)</span> &#123;</span><br><span class="line">	rp-&gt;rio_fd = fd;</span><br><span class="line">	rp-&gt;rio_cnt = <span class="number">0</span>;</span><br><span class="line">	rp-&gt;rio_bufptr = rp-&gt;rio_buf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>RIO 读程序的核心是图 10-7 所示的 rio_read 函数。rio_read 函数是 Linux read 函数的带缓冲的版本。当调用 rio_read 要求读 n 个字节时，读缓冲区内有 rp-&gt; rio_cnt 个未读字节。如果缓冲区为空，那么会通过调用 read 再填满它。这个 read 调用收到一个不足值并不是错误，只不过读缓冲区是填充了一部分。一旦缓冲区非空，rio read 就从读缓冲区复制 n 和 rP-&gt; rio cnt 中较小值个字节到用户缓冲区，并返回复制的字节数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">ssize_t</span> <span class="title function_">rio_read</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">char</span> *usrbuf, <span class="type">size_t</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> cnt;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (rp-&gt;rio_cnt &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">		rp-&gt;rio_cnt = read(rp-&gt;rio_fd, rp-&gt;rio_buf,<span class="keyword">sizeof</span>(ro-&gt;rio_buf));</span><br><span class="line">		<span class="keyword">if</span> (rp-&gt;rio_cnt &lt; <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (errno != EINTR) &#123;</span><br><span class="line">				<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (rp-&gt;rio_cnt == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			rp-&gt;rio_bufptr = rp-&gt;rio_buf;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	cnt = n;</span><br><span class="line">	<span class="keyword">if</span> (rp-&gt;rio_cnt &lt; n)</span><br><span class="line">		cnt = rp-&gt;rio_cnt;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">memcpy</span>(usrbuf, rp-&gt;rio_bufptr, cnt);</span><br><span class="line">	rp-&gt;rio_bufptr += cnt;</span><br><span class="line">	rp-&gt;rio_cnt -= cnt;</span><br><span class="line">	<span class="keyword">return</span> cnt</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于一个应用程序，rio_read 函数和 Linux read 函数有同样的语义。在出错时，它返回值 -1，并且适当地设置 errno。在 EOF 时，它返回值 0。如果要求的字节数超过了读缓冲区内未读的字节的数量，它会返回一个不足值。两个函数的相似性使得很容易通过用 rio read 代替 read 来创建不同类型的带缓冲的读函数。例如，用 rio read 代替 read，图 l0-8 中的 rio readnb 函数和 rio readn 有相同的结构。相似地，图 l0-8 中的 rio readlineb 程序最多调用 maxlen-l 次 rio read。每次调用都从读缓冲区返回一个字节，然后检查这个字节是否是结尾的换行符。</p>
+<h3 id="RIO-包的来源"><a href="#RIO-包的来源" class="headerlink" title="RIO 包的来源"></a>RIO 包的来源</h3><p>RIO 函数的灵感来自于 W. Richard Stevens 在他的经典网络编程作品中描述的 readline、readn 和 writen 函数。rio readn 和 rio writen 函数与 Stevens 的 readn 和 writen 函数是一样的。然而，Stevens 的 readline 函数有一些局限性在 RIO 中得到了纠正。第一）因为 readline 是带缓冲的，而 readn 不带，所以这两个函数不能在同一描述符上一起使用。（第二因为它使用一个 static 缓冲区，Stevens 的 readline 函数不是线程安全的，这就要求 Stevens 引入一个不同的线程安全的版本，称为 read- line_r。我们已经在 rio readlineb 和 rio readnb 函数中修改了这两个缺陷，使得这两个函数是相互兼容和线程安全的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_readlineb</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> maxlen)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> n, rc;</span><br><span class="line">	<span class="type">char</span> c, *buf = usrbuf;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (n = <span class="number">1</span>; n &lt; maxlen; n++) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((rc = rio_read(rp, &amp;c, <span class="number">1</span>)) == <span class="number">1</span>) &#123;</span><br><span class="line">			*bufp++ = c;</span><br><span class="line">			<span class="keyword">if</span> (c == <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				n++;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (rc == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (n == <span class="number">1</span>)</span><br><span class="line">				<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	*bufp = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">return</span> n<span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">rio_readnb</span><span class="params">(<span class="type">rio_t</span> *rp, <span class="type">void</span> *usrbuf, <span class="type">size_t</span> n)</span> &#123;</span><br><span class="line">	<span class="type">size_t</span> nleft = n;</span><br><span class="line">	<span class="type">ssize_t</span> nread;</span><br><span class="line">	<span class="type">char</span> *bufp = usrbuf;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (nleft &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((nread = rio_read(rp, bufp, nleft)) &lt; <span class="number">0</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">		 <span class="keyword">else</span> <span class="keyword">if</span> (nread == <span class="number">0</span>)</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		nleft -= nread;</span><br><span class="line">		bufp += nread;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (n - nleft);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="6-读取文件元数据"><a href="#6-读取文件元数据" class="headerlink" title="6 读取文件元数据"></a>6 读取文件元数据</h2><p>应用程序能够通过调用 stat 和 fstat 函数，检索到关于文件的信息（有时也称为文件的元数据（metadata））。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">stat</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *filename, <span class="keyword">struct</span> stat *buf)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">fstat</span><span class="params">(<span class="type">int</span> fd, <span class="keyword">struct</span> stat *buf)</span>;</span><br><span class="line"><span class="comment">//返回：若成功则为 0，若出错则为 -1</span></span><br></pre></td></tr></table></figure>
+<p>stat 函数以一个文件名作为输人，并填写如图 I0-9 所示的一个 stat 数据结构中的各个成员。fstat 函数是相似的，只不过是以文件描述符而不是文件名作为输入。当我们</p>
+<p>在 11.5 节中讨论 Web 服务器时，会需要 stat 数据结构中的 st_mode 和 st_size 成员，其他成员则不在我们的讨论之列。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Metadata returned by the stat and fstat functions */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span> &#123;</span></span><br><span class="line">    <span class="type">dev_t</span>           st_dev;     <span class="comment">// Device</span></span><br><span class="line">    <span class="type">ino_t</span>           st_ino;     <span class="comment">// inode</span></span><br><span class="line">    <span class="type">mode_t</span>          st_mode;    <span class="comment">// Protection and file type</span></span><br><span class="line">    <span class="type">nlink_t</span>         st_nlink;   <span class="comment">// Number of hard links</span></span><br><span class="line">    <span class="type">uid_t</span>           st_uid;     <span class="comment">// User ID of owner</span></span><br><span class="line">    <span class="type">gid_t</span>           st_gid;     <span class="comment">// Group ID of owner</span></span><br><span class="line">    <span class="type">dev_t</span>           st_rdev;    <span class="comment">// Device Type (if inode device)</span></span><br><span class="line">    <span class="type">off_t</span>           st_size;    <span class="comment">// Total size, in bytes</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span>   st_blksize; <span class="comment">// Block size for filesystem I/O</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span>   st_blocks;  <span class="comment">// Number of blocks allocated</span></span><br><span class="line">    <span class="type">time_t</span>          st_atime;   <span class="comment">// Time of last access</span></span><br><span class="line">    <span class="type">time_t</span>          st_mtime;   <span class="comment">// Time of last modification</span></span><br><span class="line">    <span class="type">time_t</span>          st_ctime;   <span class="comment">// Time of last change</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>st_size 成员包含了文件的字节数大小。st_mode 成员则编码了文件访问许可位 (图 10-2) 和文件类型 (10.2节)。Linux 在sys/stat.h 中定义了宏谓词来确定 st_mode 成员的文件类型：</p>
+<ul>
+<li><p>S_ISREG(m)。这是一个普通文件吗？</p>
+</li>
+<li><p>S_ISDIR(m)。这是一个目录文件吗？</p>
+</li>
+<li><p>S_ISSOCK(m)。这是一个网络套接字吗？</p>
+</li>
+</ul>
+<p>图 10-l0 展示了我们会如何使用这些宏和 stat 函数来读取和解释一个文件的 st_mode 位。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;csapp.h&quot;</span></span></span><br><span class="line"><span class="comment">// 展示了我们会如何使用这些宏和 stat 函数来读取和解释一个文件的 st_mode 位。</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> <span class="type">const</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">stat</span> <span class="title">stat</span>;</span></span><br><span class="line">    <span class="type">char</span> *type, *readok;</span><br><span class="line">    </span><br><span class="line">    stat(argv[<span class="number">1</span>], &amp;stat);</span><br><span class="line">    <span class="keyword">if</span> (S_ISREG(stat.st_mode))</span><br><span class="line">        type = <span class="string">&quot;regular&quot;</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (S_ISDIR(stat.st_mode))</span><br><span class="line">        type = <span class="string">&quot;directory&quot;</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        type = <span class="string">&quot;other&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span> ((stat.st_mode &amp; S_IRUSR))</span><br><span class="line">        readok = <span class="string">&quot;yes&quot;</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        readok = <span class="string">&quot;no&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;type: %s, read: %s\n&quot;</span>, type, readok);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="7-读取目录和内容"><a href="#7-读取目录和内容" class="headerlink" title="7 读取目录和内容"></a>7 读取目录和内容</h2><h2 id="8-共享文件"><a href="#8-共享文件" class="headerlink" title="8 共享文件"></a>8 共享文件</h2><h2 id="9-I-O-重定向"><a href="#9-I-O-重定向" class="headerlink" title="9 I/O 重定向"></a>9 I/O 重定向</h2><h2 id="10-标准-I-O"><a href="#10-标准-I-O" class="headerlink" title="10 标准 I/O"></a>10 标准 I/O</h2><h2 id="11-综合：我该使用哪些-I-O-函数"><a href="#11-综合：我该使用哪些-I-O-函数" class="headerlink" title="11 综合：我该使用哪些 I/O 函数"></a>11 综合：我该使用哪些 I/O 函数</h2><h1 id="CSAPP-11-Network-Programming"><a href="#CSAPP-11-Network-Programming" class="headerlink" title="CSAPP-11 Network Programming"></a>CSAPP-11 Network Programming</h1><h2 id="1-客户端-服务器编程模型"><a href="#1-客户端-服务器编程模型" class="headerlink" title="1 客户端-服务器编程模型"></a>1 客户端-服务器编程模型</h2><h2 id="2-网络"><a href="#2-网络" class="headerlink" title="2 网络"></a>2 网络</h2><h2 id="3-全球-IP-因特网"><a href="#3-全球-IP-因特网" class="headerlink" title="3 全球 IP 因特网"></a>3 全球 IP 因特网</h2><h2 id="4-套接字接口"><a href="#4-套接字接口" class="headerlink" title="4 套接字接口"></a>4 套接字接口</h2><h2 id="5-Web-服务器"><a href="#5-Web-服务器" class="headerlink" title="5 Web 服务器"></a>5 Web 服务器</h2><h2 id="6-综合：TINY-Web-服务器"><a href="#6-综合：TINY-Web-服务器" class="headerlink" title="6 综合：TINY Web 服务器"></a>6 综合：TINY Web 服务器</h2><h1 id="CSAPP-12-Concurrency"><a href="#CSAPP-12-Concurrency" class="headerlink" title="CSAPP-12 Concurrency"></a>CSAPP-12 Concurrency</h1><h2 id="1-基于进程的并发编程"><a href="#1-基于进程的并发编程" class="headerlink" title="1 基于进程的并发编程"></a>1 基于进程的并发编程</h2><h2 id="2-基于-I-O-多路复用的并发编程"><a href="#2-基于-I-O-多路复用的并发编程" class="headerlink" title="2 基于 I/O 多路复用的并发编程"></a>2 基于 I/O 多路复用的并发编程</h2><h2 id="3-基于线程的并发编程"><a href="#3-基于线程的并发编程" class="headerlink" title="3 基于线程的并发编程"></a>3 基于线程的并发编程</h2><h2 id="4-多线程程序中的共享变量"><a href="#4-多线程程序中的共享变量" class="headerlink" title="4 多线程程序中的共享变量"></a>4 多线程程序中的共享变量</h2><h2 id="5-用信号量同步线程"><a href="#5-用信号量同步线程" class="headerlink" title="5 用信号量同步线程"></a>5 用信号量同步线程</h2><h2 id="6-使用线程提高并行性"><a href="#6-使用线程提高并行性" class="headerlink" title="6 使用线程提高并行性"></a>6 使用线程提高并行性</h2><h2 id="7-其他并发问题"><a href="#7-其他并发问题" class="headerlink" title="7 其他并发问题"></a>7 其他并发问题</h2>
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/07/15/-%20FRND-Skillset/">FE 随手记<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/07/15/CSAPP%20Lab/">CSAPP Datalab<span class="note">Newer</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="http://example.com/">@zennlyu</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
