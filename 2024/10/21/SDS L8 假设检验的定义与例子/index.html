@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>LC8 Hypothesis testing & Computational alternatives - zennlyu</title>
+
+  
+    <meta name="description" content="LC8 Hypothesis testing &amp; Computational alternatives假设检验的定义与例子​    •    假设检验的形式化定义：假设 \theta 是我们感兴趣的未知参数， S 是所有可能的取值集合。我们将 S 分成两个互斥的子集 S_0 和 S_1 ： ​    •     H_0 ： \theta \in S_0 （零假设），即我们最初假设为真的条件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LC8 Hypothesis testing &amp; Computational alternatives">
+<meta property="og:url" content="http://example.com/2024/10/21/SDS%20L8%20%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E4%BE%8B%E5%AD%90/index.html">
+<meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="LC8 Hypothesis testing &amp; Computational alternatives假设检验的定义与例子​    •    假设检验的形式化定义：假设 \theta 是我们感兴趣的未知参数， S 是所有可能的取值集合。我们将 S 分成两个互斥的子集 S_0 和 S_1 ： ​    •     H_0 ： \theta \in S_0 （零假设），即我们最初假设为真的条件">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-10-21T15:34:26.608Z">
+<meta property="article:modified_time" content="2024-10-21T15:45:29.052Z">
+<meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="LiU SDS">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/09/eTtVL.jpg" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E4%BE%8B%E5%AD%90"><span class="toc-text">假设检验的定义与例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E9%AA%8C%E7%BB%9F%E8%AE%A1%E9%87%8F%EF%BC%88Test-Statistic%EF%BC%89"><span class="toc-text">检验统计量（Test Statistic）</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Machine-Learning/">Machine Learning</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2024-10-21T15:34:26.608Z">2024-10-21</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>LC8 Hypothesis testing & Computational alternatives</span></h1>
+<h1 id="LC8-Hypothesis-testing-amp-Computational-alternatives"><a href="#LC8-Hypothesis-testing-amp-Computational-alternatives" class="headerlink" title="LC8 Hypothesis testing &amp; Computational alternatives"></a>LC8 Hypothesis testing &amp; Computational alternatives</h1><h3 id="假设检验的定义与例子"><a href="#假设检验的定义与例子" class="headerlink" title="假设检验的定义与例子"></a>假设检验的定义与例子</h3><p>​    •    假设检验的形式化定义：假设 <script type="math/tex">\theta</script> 是我们感兴趣的未知参数， S 是所有可能的取值集合。我们将 S 分成两个互斥的子集 <script type="math/tex">S_0</script> 和 <script type="math/tex">S_1</script> ：</p>
+<p>​    •     <script type="math/tex">H_0 ： \theta \in S_0</script> （零假设），即我们最初假设为真的条件。</p>
+<p>​    •     <script type="math/tex">H_1 ： \theta \in S_1</script> （备择假设），它是与零假设相对立的假设。</p>
+<p>例子：在 Arbuthnot 性别比例的例子中，假设我们感兴趣的是某个比例 p ，我们可以提出以下假设：</p>
+<p>​    •     <script type="math/tex">H_0 ： p = 0.5</script> （性别比例为 0.5，即男女平等）。</p>
+<p>​    •     <script type="math/tex">H_1 ： p \neq 0.5</script> （性别比例不同于 0.5）。</p>
+<h3 id="检验统计量（Test-Statistic）"><a href="#检验统计量（Test-Statistic）" class="headerlink" title="检验统计量（Test Statistic）"></a>检验统计量（Test Statistic）</h3><p>​    •    定义：检验统计量是从观测数据（如样本均值）计算得出的值，用来进行假设检验。我们根据检验统计量 W 的值来判断是否接受零假设。</p>
+<p>​    •    接受区域和拒绝区域：</p>
+<p>​    •    接受区域 A ：如果检验统计量落在该区域内，我们接受零假设 H_0 。</p>
+<p>​    •    拒绝区域 R ：如果检验统计量落在该区域内，我们拒绝零假设 H_0 ，接受备择假设 H_1 。</p>
+<p>例如，假设我们的检验统计量服从标准正态分布 N(0,1) ，在95%的置信区间内，接受区域为 A = [-1.96, 1.96] ，超出这个范围的值则落入拒绝区域。</p>
+<ol>
+<li>第一类错误和第二类错误</li>
+</ol>
+<p>​    •    第一类错误（Type I Error）：错误地拒绝了一个实际上为真的零假设。这被称为“假阳性”。</p>
+<p>​    •    例如：在一个刑事审判中，假设 H_0 为“被告无罪”。如果我们拒绝了 H_0 （即判定有罪），但实际上被告无罪，那么这就是第一类错误。</p>
+<p>​    •    第二类错误（Type II Error）：未能拒绝一个实际上为假的零假设。这被称为“假阴性”。</p>
+<p>​    •    例如：如果我们支持 H_0 （即判定无罪），但实际上被告有罪，那么这就是第二类错误。</p>
+<p>​    •    权衡：通常存在第一类错误和第二类错误之间的权衡。增加一个错误的概率，往往会减少另一个错误的概率。一般情况下，我们希望同时减少这两类错误的发生率。</p>
+<ol>
+<li>进一步讨论</li>
+</ol>
+<p>​    •    通常，我们希望将第一类错误的概率（记为 \alpha）控制在较小的范围内，例如 0.05。当 \alpha 较小的时候，我们能够更好地控制错误拒绝真假设的可能性。</p>
+<ol>
+<li>针对均值的假设检验</li>
+</ol>
+<p>​    •    假设：我们有一个随机样本 X_1, X_2, …, X_n ，目标是对总体均值 \mu 做出推断。</p>
+<p>​    •    常见的假设检验类型：</p>
+<p>​    •    双侧检验： H_0: \mu = \mu_0 和 H_1: \mu \neq \mu_0 </p>
+<p>​    •    单侧检验： H_0: \mu \leq \mu_0 和 H_1: \mu &gt; \mu_0 或 H_0: \mu \geq \mu_0 和 H_1: \mu &lt; \mu_0 </p>
+<p>​    •    双侧检验（常见）：我们只覆盖最常见的双侧检验，它比较两侧的极端值，以评估样本均值与假设的总体均值是否不同。</p>
+<ol>
+<li>小样本均值的假设检验</li>
+</ol>
+<p>​    •    假设我们的样本量较小（ n &lt; 30 ），并且我们想要判断样本均值是否与给定的值 \mu_0 相同。</p>
+<p>​    •    当总体的方差未知时，我们使用 t 分布，而不是标准正态分布。</p>
+<p>​    •    t 检验统计量： T = \frac{\bar{X} - \mu_0}{s / \sqrt{n}} </p>
+<p>​    •    其中， \bar{X} 是样本均值， s 是样本标准差， n 是样本大小。</p>
+<p>​    •    检验统计量服从 t_{n-1} 分布（自由度为 n-1 ）。</p>
+<p>​    •    如果 |T| \leq t_{\alpha/2, n-1} ，我们接受零假设，否则拒绝零假设。</p>
+<ol>
+<li>p 值的定义和计算</li>
+</ol>
+<p>​    •    p 值：p 值表示在假设零假设 H_0 为真的前提下，检验统计量达到或超过观测值的概率。p 值越小，意味着观测到的数据在零假设成立的条件下发生的可能性越小。</p>
+<p>​    •    当 p 值小于显著性水平（如 0.05）时，数据对零假设的支持较弱，通常我们会拒绝零假设。</p>
+<ol>
+<li>针对均值的单样本 t 检验的 p 值计算</li>
+</ol>
+<p>​    •    在双侧检验中，我们计算两侧的概率，并将其最小值乘以2，来计算 p 值。</p>
+<p>​    •    例如，如果观察到的 t 值为 -2，我们计算 P(T \leq -2) ，并乘以2，得到 p 值。</p>
+<p>​    •    示例：假设我们有一个 IQ 测试的样本，其中 n = 10 ，样本均值为 100.6，样本标准差为 16.27，t 值为 0.117。p 值计算为： p = 2 \cdot (1 - P(T \leq 0.117)) \approx 0.909 。</p>
+<ol>
+<li>p 值的解释</li>
+</ol>
+<p>​    •    小的 p 值表明数据与零假设 H_0 相矛盾。</p>
+<p>​    •    通常，在社会科学中，p 值小于 0.05 被认为具有统计显著性。</p>
+<p>​    •    选择显著性水平：在分析数据之前选择显著性水平是避免决策偏见的好做法。</p>
+<p>比例的假设检验步骤：</p>
+<p>​    •    目标：假设我们想要检验某个真实比例 p 是否等于一个假设值 p_0 。</p>
+<p>​    •    条件：如果样本量 n 满足 n \cdot p_0 &gt; 10 和 n \cdot (1 - p_0) &gt; 10 ，我们可以使用正态分布来近似处理。这是因为当样本量较大时，二项分布接近于正态分布。</p>
+<p>检验统计量（Z 统计量）：</p>
+<p>​    •    用于进行比例检验的统计量 Z 定义为：</p>
+<p>Z = \frac{\hat{p} - p_0}{\sqrt{\frac{p_0(1 - p_0)}{n}}}</p>
+<p>​    •     \hat{p} 是样本中的观察比例。</p>
+<p>​    •     p_0 是假设的比例。</p>
+<p>​    •     n 是样本大小。</p>
+<p>在零假设 H_0 成立的情况下， Z 统计量服从标准正态分布 N(0,1) 。</p>
+<p>通过计算 Z 值，我们可以判断样本中观察到的比例与假设的比例 p_0 之间的差异是否显著，从而决定是否拒绝零假设 H_0 。</p>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/10/21/SDS%20L3%20Random%20variables%20and%20discrete%20probability%20distributions/">LC3 Random variables and discrete probability distributions<span class="note">Older</span></a><div class="line"></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="http://example.com/">@zennlyu</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

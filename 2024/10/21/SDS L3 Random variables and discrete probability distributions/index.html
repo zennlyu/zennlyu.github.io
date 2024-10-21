@@ -4,7 +4,7 @@
 <head>
   <meta name="generator" content="Hexo 6.3.0">
   <meta charset="utf-8">
-  <meta name="robots" content="noindex,follow">
+  
 
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
@@ -18,15 +18,20 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>Category: CS229 - zennlyu</title>
+  <title>LC3 Random variables and discrete probability distributions - zennlyu</title>
 
   
-    <meta property="og:type" content="website">
-<meta property="og:title" content="zennlyu">
-<meta property="og:url" content="http://example.com/categories/CS229/index.html">
+    <meta name="description" content="LC3 Random variables and discrete probability distributionsRandom variableFormal definition of a random variable：A function mapping the sample space to the real line X : Function that maps outcomes to">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LC3 Random variables and discrete probability distributions">
+<meta property="og:url" content="http://example.com/2024/10/21/SDS%20L3%20Random%20variables%20and%20discrete%20probability%20distributions/index.html">
 <meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="LC3 Random variables and discrete probability distributionsRandom variableFormal definition of a random variable：A function mapping the sample space to the real line X : Function that maps outcomes to">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-10-21T15:24:45.979Z">
+<meta property="article:modified_time" content="2024-10-21T15:45:04.235Z">
 <meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="LiU SDS">
 <meta name="twitter:card" content="summary">
   
   
@@ -52,8 +57,10 @@
   
 
 
+
+
   <div class='l_body' id='start'>
-    <aside class='l_left' layout=''>
+    <aside class='l_left' layout='post'>
     
 
 
@@ -63,58 +70,42 @@
 <nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
 
 <div class="widgets">
-<div class="widget-wrap" id="markdown"><div class="widget-header cap dis-select"><span class="name">About me</span></div><div class="widget-body fs14"><p>😉 Ciao~ 这里是 <a target="_blank" rel="noopener" href="https://github.com/zennlyu">zennlyu</a> 的个人小站 😉<br>～ 政府在册环保义工，长期活跃并探索环境问题的规模化技术解决方案(like <a target="_blank" rel="noopener" href="https://theoceancleanup.com/">Ocean Cleanup</a>) 🌊<br>～ 内容以技术积累为主，也不排除开辟些许生活与审美的空间 🌹<br>～ 欢迎通过 <a target="_blank" rel="noopener" href="https://twitter.com/zennryu616">twitter</a> 或者 <a target="_blank" rel="noopener" href="https://t.me/s081z">telegram</a> 联系我 🥳<br>📮：<a href="zennlyu@gmail.com">zennlyu@gmail.com</a></p>
-</div></div>
 
-<div class="widget-wrap" id="recent"><div class="widget-header cap dis-select"><span class="name">Recent Update</span><a class="cap-action" id="rss" title="Subscribe" href="/atom.xml"><svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8938"><path d="M800.966 947.251c0-404.522-320.872-732.448-716.69-732.448V62.785c477.972 0 865.44 395.987 865.44 884.466h-148.75z m-162.273 0h-148.74c0-228.98-181.628-414.598-405.678-414.598v-152.01c306.205 0 554.418 253.68 554.418 566.608z m-446.24-221.12c59.748 0 108.189 49.503 108.189 110.557 0 61.063-48.44 110.563-108.188 110.563-59.747 0-108.18-49.5-108.18-110.563 0-61.054 48.433-110.556 108.18-110.556z" p-id="8939"></path></svg></a></div><div class="widget-body fs14"><div class="more-item"><a class="title" href="/2024/07/15/-%20%E8%B8%A9%E5%9D%91%E5%90%88%E9%9B%86/">踩坑合集/(不定时补充)</a></div><div class="more-item"><a class="title" href="/2024/09/03/Colloquial%20Swedish%20Notes/">Colloquial Swedish Notes</a></div><div class="more-item"><a class="title" href="/2024/08/28/Counterfactual%20Model%20of%20casual/">Logic Inquiry Class Notes</a></div><div class="more-item"><a class="title" href="/2024/07/16/N2-%E5%8D%98%E8%AA%9E/">N2 単語</a></div><div class="more-item"><a class="title" href="/2024/07/15/6.824_T1-MapReduceRPC/">6.824 W1 MapReduce, RPC & threads</a></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Random-variable"><span class="toc-text">Random variable</span></a></li></ol></div></div></div>
+
+
 </div>
 
 
     </aside>
-    <div class='l_main list'>
+    <div class='l_main'>
       
-  
-
-<header class="header mobile-only">
-
-<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/09/eTtVL.jpg" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
-</header>
-
-
 
       
 
-  
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Machine-Learning/">Machine Learning</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2024-10-21T15:24:45.979Z">2024-10-21</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>LC3 Random variables and discrete probability distributions</span></h1>
+<h1 id="LC3-Random-variables-and-discrete-probability-distributions"><a href="#LC3-Random-variables-and-discrete-probability-distributions" class="headerlink" title="LC3 Random variables and discrete probability distributions"></a>LC3 Random variables and discrete probability distributions</h1><h3 id="Random-variable"><a href="#Random-variable" class="headerlink" title="Random variable"></a>Random variable</h3><p><strong>Formal definition of a random variable</strong>：A function mapping the sample space to the real line</p>
+<p>X : Function that maps outcomes to real numbers</p>
+<p>• X(s) : The numerical value of X for outcome s</p>
+<p>• C0uld be many-to-one</p>
+<p>• Deterministic (non-random)</p>
+<p>• Typically denoted with capital letters</p>
+<p>• Function (A.2 in book): in: domain, out: target</p>
 
 
-  <div class='nav-wrap'>
-  <nav class='sub post cap'>
-    
-      <a href='/'>Recent</a>
-    
-    
-      
-        <a class='active' href='/categories'>Category: CS229</a>
-      
-    
-    
-      
-        <a href='/tags'>Tags</a>
-      
-    
-    
-      
-        <a href='/archives'>Archives</a>
-      
-    
-  </nav>
-</div>
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
 
-  <div class="post-list post"><a class="post-card post " href="/2024/07/15/CS229-Courses-Note/">
-<article class="md"><h2 class="post-title">CS229 Courses Note</h2><div class="excerpt"><p>Intro本课程广泛介绍机器学习和统计模式识别。主题包括：监督学习（生成&#x2F;判别学习、参数化&#x2F;非参数化学习、神经网络、支持向量机）；无监督学习（聚类、维度缩减、核方法）；学习理论（偏差&#x2F;方差权衡，实用建议）；强化学习和自适应控制。本课程还将讨论机器学习的最新应用，如机器人控制、数据挖掘、自主导航、生物信息学、语音识别以及文本和网页数据处理。
-Res 2018 年秋...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2024-07-15T03:58:26.037Z">2024-07-15</time></span><span class="cap breadcrumb">CS229</span></div></article>
-</a></div>
-  
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2024/10/21/SDS%20L7%20Confidence%20intervals%20and%20univariate%20hypothesis%20testing/">LC 7. Confidence intervals and univariate hypothesis testing<span class="note">Older</span></a><div class="line"></div><a id="prev" href="/2024/10/21/SDS%20L8%20%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E4%BE%8B%E5%AD%90/">LC8 Hypothesis testing & Computational alternatives<span class="note">Newer</span></a></section></div>
+
+
+
 
 
 
