@@ -21,15 +21,15 @@
   <title>LC8 Hypothesis testing & Computational alternatives - zennlyu</title>
 
   
-    <meta name="description" content="LC8 Hypothesis testing &amp; Computational alternatives假设检验的定义与例子​    •    假设检验的形式化定义：假设 \theta 是我们感兴趣的未知参数， S 是所有可能的取值集合。我们将 S 分成两个互斥的子集 S_0 和 S_1 ： ​    •     H_0 ： \theta \in S_0 （零假设），即我们最初假设为真的条件">
+    <meta name="description" content="LC8 Hypothesis testing &amp; Computational alternatives假设检验的定义与例子​	•	假设检验的形式化定义：假设 $$\theta$$ 是我们感兴趣的未知参数， S 是所有可能的取值集合。我们将 S 分成两个互斥的子集 $$S_0$$ 和 $$S_1$$ ： ​	•	 $$H_0 ： \theta \in S_0$$ （零假设），即我们最初假设为">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LC8 Hypothesis testing &amp; Computational alternatives">
 <meta property="og:url" content="http://example.com/2024/10/21/SDS%20L8%20%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E4%BE%8B%E5%AD%90/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="LC8 Hypothesis testing &amp; Computational alternatives假设检验的定义与例子​    •    假设检验的形式化定义：假设 \theta 是我们感兴趣的未知参数， S 是所有可能的取值集合。我们将 S 分成两个互斥的子集 S_0 和 S_1 ： ​    •     H_0 ： \theta \in S_0 （零假设），即我们最初假设为真的条件">
+<meta property="og:description" content="LC8 Hypothesis testing &amp; Computational alternatives假设检验的定义与例子​	•	假设检验的形式化定义：假设 $$\theta$$ 是我们感兴趣的未知参数， S 是所有可能的取值集合。我们将 S 分成两个互斥的子集 $$S_0$$ 和 $$S_1$$ ： ​	•	 $$H_0 ： \theta \in S_0$$ （零假设），即我们最初假设为">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-10-21T15:34:26.608Z">
-<meta property="article:modified_time" content="2024-10-21T15:45:29.052Z">
+<meta property="article:modified_time" content="2024-10-21T15:54:09.605Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="LiU SDS">
 <meta name="twitter:card" content="summary">
@@ -71,7 +71,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E4%BE%8B%E5%AD%90"><span class="toc-text">假设检验的定义与例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E9%AA%8C%E7%BB%9F%E8%AE%A1%E9%87%8F%EF%BC%88Test-Statistic%EF%BC%89"><span class="toc-text">检验统计量（Test Statistic）</span></a></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E4%BE%8B%E5%AD%90"><span class="toc-text">假设检验的定义与例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E9%AA%8C%E7%BB%9F%E8%AE%A1%E9%87%8F%EF%BC%88Test-Statistic%EF%BC%89"><span class="toc-text">检验统计量（Test Statistic）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%B1%BB%E9%94%99%E8%AF%AF%E5%92%8C%E7%AC%AC%E4%BA%8C%E7%B1%BB%E9%94%99%E8%AF%AF"><span class="toc-text">第一类错误和第二类错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E8%AE%A8%E8%AE%BA"><span class="toc-text">进一步讨论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%92%88%E5%AF%B9%E5%9D%87%E5%80%BC%E7%9A%84%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C"><span class="toc-text">针对均值的假设检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E6%A0%B7%E6%9C%AC%E5%9D%87%E5%80%BC%E7%9A%84%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C"><span class="toc-text">小样本均值的假设检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#p-%E5%80%BC%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E8%AE%A1%E7%AE%97"><span class="toc-text">p 值的定义和计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%92%88%E5%AF%B9%E5%9D%87%E5%80%BC%E7%9A%84%E5%8D%95%E6%A0%B7%E6%9C%AC-t-%E6%A3%80%E9%AA%8C%E7%9A%84-p-%E5%80%BC%E8%AE%A1%E7%AE%97"><span class="toc-text">针对均值的单样本 t 检验的 p 值计算</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#p-%E5%80%BC%E7%9A%84%E8%A7%A3%E9%87%8A"><span class="toc-text">p 值的解释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AF%94%E4%BE%8B%E7%9A%84%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="toc-text">比例的假设检验步骤：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A3%80%E9%AA%8C%E7%BB%9F%E8%AE%A1%E9%87%8F%EF%BC%88Z-%E7%BB%9F%E8%AE%A1%E9%87%8F%EF%BC%89%EF%BC%9A"><span class="toc-text">检验统计量（Z 统计量）：</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Monte-Carlo"><span class="toc-text">Monte Carlo</span></a></div></div></div>
 
 
 </div>
@@ -88,74 +88,69 @@
 
 <article class='content md post'>
 <h1 class="article-title"><span>LC8 Hypothesis testing & Computational alternatives</span></h1>
-<h1 id="LC8-Hypothesis-testing-amp-Computational-alternatives"><a href="#LC8-Hypothesis-testing-amp-Computational-alternatives" class="headerlink" title="LC8 Hypothesis testing &amp; Computational alternatives"></a>LC8 Hypothesis testing &amp; Computational alternatives</h1><h3 id="假设检验的定义与例子"><a href="#假设检验的定义与例子" class="headerlink" title="假设检验的定义与例子"></a>假设检验的定义与例子</h3><p>​    •    假设检验的形式化定义：假设 <script type="math/tex">\theta</script> 是我们感兴趣的未知参数， S 是所有可能的取值集合。我们将 S 分成两个互斥的子集 <script type="math/tex">S_0</script> 和 <script type="math/tex">S_1</script> ：</p>
-<p>​    •     <script type="math/tex">H_0 ： \theta \in S_0</script> （零假设），即我们最初假设为真的条件。</p>
-<p>​    •     <script type="math/tex">H_1 ： \theta \in S_1</script> （备择假设），它是与零假设相对立的假设。</p>
+<h1 id="LC8-Hypothesis-testing-amp-Computational-alternatives"><a href="#LC8-Hypothesis-testing-amp-Computational-alternatives" class="headerlink" title="LC8 Hypothesis testing &amp; Computational alternatives"></a>LC8 Hypothesis testing &amp; Computational alternatives</h1><h3 id="假设检验的定义与例子"><a href="#假设检验的定义与例子" class="headerlink" title="假设检验的定义与例子"></a>假设检验的定义与例子</h3><p>​	•	假设检验的形式化定义：假设 $$\theta$$ 是我们感兴趣的未知参数， S 是所有可能的取值集合。我们将 S 分成两个互斥的子集 $$S_0$$ 和 $$S_1$$ ：</p>
+<p>​	•	 $$H_0 ： \theta \in S_0$$ （零假设），即我们最初假设为真的条件。</p>
+<p>​	•	 $$H_1 ： \theta \in S_1$$ （备择假设），它是与零假设相对立的假设。</p>
 <p>例子：在 Arbuthnot 性别比例的例子中，假设我们感兴趣的是某个比例 p ，我们可以提出以下假设：</p>
-<p>​    •     <script type="math/tex">H_0 ： p = 0.5</script> （性别比例为 0.5，即男女平等）。</p>
-<p>​    •     <script type="math/tex">H_1 ： p \neq 0.5</script> （性别比例不同于 0.5）。</p>
-<h3 id="检验统计量（Test-Statistic）"><a href="#检验统计量（Test-Statistic）" class="headerlink" title="检验统计量（Test Statistic）"></a>检验统计量（Test Statistic）</h3><p>​    •    定义：检验统计量是从观测数据（如样本均值）计算得出的值，用来进行假设检验。我们根据检验统计量 W 的值来判断是否接受零假设。</p>
-<p>​    •    接受区域和拒绝区域：</p>
-<p>​    •    接受区域 A ：如果检验统计量落在该区域内，我们接受零假设 H_0 。</p>
-<p>​    •    拒绝区域 R ：如果检验统计量落在该区域内，我们拒绝零假设 H_0 ，接受备择假设 H_1 。</p>
-<p>例如，假设我们的检验统计量服从标准正态分布 N(0,1) ，在95%的置信区间内，接受区域为 A = [-1.96, 1.96] ，超出这个范围的值则落入拒绝区域。</p>
-<ol>
-<li>第一类错误和第二类错误</li>
-</ol>
-<p>​    •    第一类错误（Type I Error）：错误地拒绝了一个实际上为真的零假设。这被称为“假阳性”。</p>
-<p>​    •    例如：在一个刑事审判中，假设 H_0 为“被告无罪”。如果我们拒绝了 H_0 （即判定有罪），但实际上被告无罪，那么这就是第一类错误。</p>
-<p>​    •    第二类错误（Type II Error）：未能拒绝一个实际上为假的零假设。这被称为“假阴性”。</p>
-<p>​    •    例如：如果我们支持 H_0 （即判定无罪），但实际上被告有罪，那么这就是第二类错误。</p>
-<p>​    •    权衡：通常存在第一类错误和第二类错误之间的权衡。增加一个错误的概率，往往会减少另一个错误的概率。一般情况下，我们希望同时减少这两类错误的发生率。</p>
-<ol>
-<li>进一步讨论</li>
-</ol>
-<p>​    •    通常，我们希望将第一类错误的概率（记为 \alpha）控制在较小的范围内，例如 0.05。当 \alpha 较小的时候，我们能够更好地控制错误拒绝真假设的可能性。</p>
-<ol>
-<li>针对均值的假设检验</li>
-</ol>
-<p>​    •    假设：我们有一个随机样本 X_1, X_2, …, X_n ，目标是对总体均值 \mu 做出推断。</p>
-<p>​    •    常见的假设检验类型：</p>
-<p>​    •    双侧检验： H_0: \mu = \mu_0 和 H_1: \mu \neq \mu_0 </p>
-<p>​    •    单侧检验： H_0: \mu \leq \mu_0 和 H_1: \mu &gt; \mu_0 或 H_0: \mu \geq \mu_0 和 H_1: \mu &lt; \mu_0 </p>
-<p>​    •    双侧检验（常见）：我们只覆盖最常见的双侧检验，它比较两侧的极端值，以评估样本均值与假设的总体均值是否不同。</p>
-<ol>
-<li>小样本均值的假设检验</li>
-</ol>
-<p>​    •    假设我们的样本量较小（ n &lt; 30 ），并且我们想要判断样本均值是否与给定的值 \mu_0 相同。</p>
-<p>​    •    当总体的方差未知时，我们使用 t 分布，而不是标准正态分布。</p>
-<p>​    •    t 检验统计量： T = \frac{\bar{X} - \mu_0}{s / \sqrt{n}} </p>
-<p>​    •    其中， \bar{X} 是样本均值， s 是样本标准差， n 是样本大小。</p>
-<p>​    •    检验统计量服从 t_{n-1} 分布（自由度为 n-1 ）。</p>
-<p>​    •    如果 |T| \leq t_{\alpha/2, n-1} ，我们接受零假设，否则拒绝零假设。</p>
-<ol>
-<li>p 值的定义和计算</li>
-</ol>
-<p>​    •    p 值：p 值表示在假设零假设 H_0 为真的前提下，检验统计量达到或超过观测值的概率。p 值越小，意味着观测到的数据在零假设成立的条件下发生的可能性越小。</p>
-<p>​    •    当 p 值小于显著性水平（如 0.05）时，数据对零假设的支持较弱，通常我们会拒绝零假设。</p>
-<ol>
-<li>针对均值的单样本 t 检验的 p 值计算</li>
-</ol>
-<p>​    •    在双侧检验中，我们计算两侧的概率，并将其最小值乘以2，来计算 p 值。</p>
-<p>​    •    例如，如果观察到的 t 值为 -2，我们计算 P(T \leq -2) ，并乘以2，得到 p 值。</p>
-<p>​    •    示例：假设我们有一个 IQ 测试的样本，其中 n = 10 ，样本均值为 100.6，样本标准差为 16.27，t 值为 0.117。p 值计算为： p = 2 \cdot (1 - P(T \leq 0.117)) \approx 0.909 。</p>
-<ol>
-<li>p 值的解释</li>
-</ol>
-<p>​    •    小的 p 值表明数据与零假设 H_0 相矛盾。</p>
-<p>​    •    通常，在社会科学中，p 值小于 0.05 被认为具有统计显著性。</p>
-<p>​    •    选择显著性水平：在分析数据之前选择显著性水平是避免决策偏见的好做法。</p>
-<p>比例的假设检验步骤：</p>
-<p>​    •    目标：假设我们想要检验某个真实比例 p 是否等于一个假设值 p_0 。</p>
-<p>​    •    条件：如果样本量 n 满足 n \cdot p_0 &gt; 10 和 n \cdot (1 - p_0) &gt; 10 ，我们可以使用正态分布来近似处理。这是因为当样本量较大时，二项分布接近于正态分布。</p>
-<p>检验统计量（Z 统计量）：</p>
-<p>​    •    用于进行比例检验的统计量 Z 定义为：</p>
-<p>Z = \frac{\hat{p} - p_0}{\sqrt{\frac{p_0(1 - p_0)}{n}}}</p>
-<p>​    •     \hat{p} 是样本中的观察比例。</p>
-<p>​    •     p_0 是假设的比例。</p>
-<p>​    •     n 是样本大小。</p>
-<p>在零假设 H_0 成立的情况下， Z 统计量服从标准正态分布 N(0,1) 。</p>
-<p>通过计算 Z 值，我们可以判断样本中观察到的比例与假设的比例 p_0 之间的差异是否显著，从而决定是否拒绝零假设 H_0 。</p>
+<p>​	•	 $$H_0 ： p &#x3D; 0.5$$ （性别比例为 0.5，即男女平等）。</p>
+<p>​	•	 $$H_1 ： p \neq 0.5$$ （性别比例不同于 0.5）。</p>
+<h3 id="检验统计量（Test-Statistic）"><a href="#检验统计量（Test-Statistic）" class="headerlink" title="检验统计量（Test Statistic）"></a>检验统计量（Test Statistic）</h3><p>​	•	定义：检验统计量是从观测数据（如样本均值）计算得出的值，用来进行假设检验。我们根据检验统计量 W 的值来判断是否接受零假设。</p>
+<p>​	•	接受区域和拒绝区域：</p>
+<p>​	•	接受区域 A ：如果检验统计量落在该区域内，我们接受零假设 $H_0$ 。</p>
+<p>​	•	拒绝区域 R ：如果检验统计量落在该区域内，我们拒绝零假设 $H_0$ ，接受备择假设 $H_1$ 。</p>
+<p>例如，假设我们的检验统计量服从标准正态分布 $N(0,1)$ ，在95%的置信区间内，接受区域为 $A &#x3D; [-1.96, 1.96]$ ，超出这个范围的值则落入拒绝区域。</p>
+<h3 id="第一类错误和第二类错误"><a href="#第一类错误和第二类错误" class="headerlink" title="第一类错误和第二类错误"></a>第一类错误和第二类错误</h3><p>​	•	第一类错误（Type I Error）：错误地拒绝了一个实际上为真的零假设。这被称为“假阳性”。</p>
+<p>​	•	例如：在一个刑事审判中，假设 $H_0$ 为“被告无罪”。如果我们拒绝了 $H_0$ （即判定有罪），但实际上被告无罪，那么这就是第一类错误。</p>
+<p>​	•	第二类错误（Type II Error）：未能拒绝一个实际上为假的零假设。这被称为“假阴性”。</p>
+<p>​	•	例如：如果我们支持 $H_0$（即判定无罪），但实际上被告有罪，那么这就是第二类错误。</p>
+<p>​	•	权衡：通常存在第一类错误和第二类错误之间的权衡。增加一个错误的概率，往往会减少另一个错误的概率。一般情况下，我们希望同时减少这两类错误的发生率。</p>
+<h3 id="进一步讨论"><a href="#进一步讨论" class="headerlink" title="进一步讨论"></a>进一步讨论</h3><p>​	•	通常，我们希望将第一类错误的概率（记为 $\alpha$）控制在较小的范围内，例如 0.05。当 $\alpha$ 较小的时候，我们能够更好地控制错误拒绝真假设的可能性。</p>
+<h3 id="针对均值的假设检验"><a href="#针对均值的假设检验" class="headerlink" title="针对均值的假设检验"></a>针对均值的假设检验</h3><p>​	•	假设：我们有一个随机样本 $X_1, X_2, …, X_n$，目标是对总体均值 $\mu$ 做出推断。</p>
+<p>​	•	常见的假设检验类型：</p>
+<p>​	•	双侧检验： $H_0: \mu &#x3D; \mu_0$ 和 $H_1: \mu \neq \mu_0$</p>
+<p>​	•	单侧检验： $H_0: \mu \leq \mu_0$ 和 $H_1: \mu &gt; \mu_0$ 或 $H_0: \mu \geq \mu_0$ 和 $H_1: \mu &lt; \mu_0$ </p>
+<p>​	•	双侧检验（常见）：我们只覆盖最常见的双侧检验，它比较两侧的极端值，以评估样本均值与假设的总体均值是否不同。</p>
+<h3 id="小样本均值的假设检验"><a href="#小样本均值的假设检验" class="headerlink" title="小样本均值的假设检验"></a>小样本均值的假设检验</h3><p>​	•	假设我们的样本量较小（ n &lt; 30 ），并且我们想要判断样本均值是否与给定的值 $\mu_0$ 相同。</p>
+<p>​	•	当总体的方差未知时，我们使用 t 分布，而不是标准正态分布。</p>
+<p>​	•	t 检验统计量：$T &#x3D; \frac{\bar{X} - \mu_0}{s &#x2F; \sqrt{n}}$ </p>
+<p>​	•	其中， $\bar{X}$ 是样本均值， s 是样本标准差， n 是样本大小。</p>
+<p>​	•	检验统计量服从 $t_{n-1}$ 分布（自由度为 n-1 ）。</p>
+<p>​	•	如果 $|T| \leq t_{\alpha&#x2F;2, n-1}$，我们接受零假设，否则拒绝零假设。</p>
+<h3 id="p-值的定义和计算"><a href="#p-值的定义和计算" class="headerlink" title="p 值的定义和计算"></a>p 值的定义和计算</h3><p>​	•	p 值：p 值表示在假设零假设 H_0 为真的前提下，检验统计量达到或超过观测值的概率。p 值越小，意味着观测到的数据在零假设成立的条件下发生的可能性越小。</p>
+<p>​	•	当 p 值小于显著性水平（如 0.05）时，数据对零假设的支持较弱，通常我们会拒绝零假设。</p>
+<h3 id="针对均值的单样本-t-检验的-p-值计算"><a href="#针对均值的单样本-t-检验的-p-值计算" class="headerlink" title="针对均值的单样本 t 检验的 p 值计算"></a>针对均值的单样本 t 检验的 p 值计算</h3><p>​	•	在双侧检验中，我们计算两侧的概率，并将其最小值乘以2，来计算 p 值。</p>
+<p>​	•	例如，如果观察到的 t 值为 -2，我们计算 P(T \leq -2) ，并乘以2，得到 p 值。</p>
+<p>​	•	示例：假设我们有一个 IQ 测试的样本，其中 n &#x3D; 10 ，样本均值为 100.6，样本标准差为 16.27，t 值为 0.117。p 值计算为： $p &#x3D; 2 \cdot (1 - P(T \leq 0.117)) \approx 0.909$ </p>
+<h4 id="p-值的解释"><a href="#p-值的解释" class="headerlink" title="p 值的解释"></a>p 值的解释</h4><p>​	•	小的 p 值表明数据与零假设 H_0 相矛盾。</p>
+<p>​	•	通常，在社会科学中，p 值小于 0.05 被认为具有统计显著性。</p>
+<p>​	•	选择显著性水平：在分析数据之前选择显著性水平是避免决策偏见的好做法。</p>
+<h4 id="比例的假设检验步骤："><a href="#比例的假设检验步骤：" class="headerlink" title="比例的假设检验步骤："></a>比例的假设检验步骤：</h4><p>​	•	目标：假设我们想要检验某个真实比例 p 是否等于一个假设值 p_0 。</p>
+<p>​	•	条件：如果样本量 $n$ 满足 $n \cdot p_0 &gt; 10 和 n \cdot (1 - p_0) &gt; 10$，我们可以使用正态分布来近似处理。这是因为当样本量较大时，二项分布接近于正态分布。</p>
+<h5 id="检验统计量（Z-统计量）："><a href="#检验统计量（Z-统计量）：" class="headerlink" title="检验统计量（Z 统计量）："></a>检验统计量（Z 统计量）：</h5><p>​	•	用于进行比例检验的统计量 Z 定义为：</p>
+<p>$$<br>Z &#x3D; \frac{\hat{p} - p_0}{\sqrt{\frac{p_0(1 - p_0)}{n}}}<br>$$<br>​	•	 $$\hat{p}$$ 是样本中的观察比例。</p>
+<p>​	•	 $$p_0$$ 是假设的比例。</p>
+<p>​	•	 $$n$$ 是样本大小。</p>
+<p>在零假设 $H_0$ 成立的情况下， Z 统计量服从标准正态分布 $N(0,1)$。</p>
+<p>通过计算 Z 值，我们可以判断样本中观察到的比例与假设的比例 $p_0$ 之间的差异是否显著，从而决定是否拒绝零假设 $H_0$ 。</p>
+<h2 id="Monte-Carlo"><a href="#Monte-Carlo" class="headerlink" title="Monte Carlo"></a>Monte Carlo</h2><p><strong>1. 计算替代方案</strong></p>
+<p>​	•	传统的分析和数值解可能对于某些问题不存在，或者在实践中太复杂或耗时。因此，<strong>计算机模拟</strong>成为解决复杂问题的有效工具。</p>
+<p>​	•	<strong>模拟的原理</strong>：它依赖于重复的随机抽样，通过大量模拟实验，提供近似解。只要模拟足够多次，结果通常会非常接近真实情况。</p>
+<p>​	•	<strong>实际应用</strong>：这类方法在频率统计学（Frequentist approach）中经常被使用，通过反复抽样理解样本分布。</p>
+<p><strong>2. 蒙特卡罗模拟</strong></p>
+<p>​	•	蒙特卡罗方法起源于20世纪40年代的原子弹项目，其名字来自摩纳哥的首都，以赌博著名，象征随机性。</p>
+<p>​	•	<strong>应用场景</strong>：蒙特卡罗模拟可用于以下任务：</p>
+<p>​	•	确定分布的属性（如均值、中位数、方差等）。</p>
+<p>​	•	计算置信区间（包括总体均值的置信区间）。</p>
+<p>​	•	分析函数的分布（如 X^2 或 log(X) 的分布）。</p>
+<p>​	•	解决包含多个变量的复杂分布问题。</p>
+<p><strong>3. 蒙特卡罗模拟的步骤</strong></p>
+<p>​	•	蒙特卡罗模拟通常遵循以下步骤：</p>
+<p>​	1.	<strong>设计表示实际情况的模型</strong>：建立一个反映现实问题的数学模型或随机过程。</p>
+<p>​	2.	<strong>生成多个可能结果的集合</strong>：通过随机输入生成许多结果集，模拟可能发生的不同情况。</p>
+<p>​	3.	<strong>计算结果</strong>：对生成的结果集进行相关的计算和分析。</p>
+<p>​	4.	<strong>分析结果</strong>：总结和分析结果，得出接近真实情况的结论。</p>
+<p><strong>4. 实例和应用</strong></p>
+<p>​	•	模拟方法可以用来演示统计原理，接下来可以运用到更实际的应用中。</p>
 
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
