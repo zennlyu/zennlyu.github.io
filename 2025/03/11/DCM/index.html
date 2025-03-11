@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>Discrete Choice Modeling - zennlyu</title>
+
+  
+    <meta name="description" content="lecture1.pdf 课程目标 学习目标: 识别适合使用离散选择方法的问题。 开发适当的离散选择模型规范。 导入、转换和可视化来自不同来源的数据。 创建适合估计离散选择模型的数据结构。 批判性审查和解释离散选择模型的结果。 使用统计软件估计离散选择模型，计算预测并可视化、解释和分析结果。 撰写包含研究问题、相关文献、数据和方法描述、结果展示和结论的文本。    离散选择模型简介 离散选择模型用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Discrete Choice Modeling">
+<meta property="og:url" content="http://example.com/2025/03/11/DCM/index.html">
+<meta property="og:site_name" content="zennlyu">
+<meta property="og:description" content="lecture1.pdf 课程目标 学习目标: 识别适合使用离散选择方法的问题。 开发适当的离散选择模型规范。 导入、转换和可视化来自不同来源的数据。 创建适合估计离散选择模型的数据结构。 批判性审查和解释离散选择模型的结果。 使用统计软件估计离散选择模型，计算预测并可视化、解释和分析结果。 撰写包含研究问题、相关文献、数据和方法描述、结果展示和结论的文本。    离散选择模型简介 离散选择模型用">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-03-11T14:45:26.674Z">
+<meta property="article:modified_time" content="2025-03-11T15:39:06.108Z">
+<meta property="article:author" content="zennlyu">
+<meta property="article:tag" content="ds">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://i.imgtg.com/2022/07/09/eTtVL.jpg" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main">zennlyu</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">Blog</a><a class="nav-item" href="/more/">更多</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BE%E7%A8%8B%E7%9B%AE%E6%A0%87"><span class="toc-text">课程目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%BB%E6%95%A3%E9%80%89%E6%8B%A9%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B"><span class="toc-text">离散选择模型简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%8E%E7%A6%BB%E6%95%A3%E9%80%89%E6%8B%A9%E6%A8%A1%E5%9E%8B"><span class="toc-text">线性回归与离散选择模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92"><span class="toc-text">逻辑回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93"><span class="toc-text">关键概念总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E4%B8%8D%E5%90%8C%E7%B5%90%E6%9E%9C%E7%9A%84%E6%A8%A1%E5%9E%8B%E9%81%B8%E6%93%87"><span class="toc-text">6. 不同結果的模型選擇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E4%BA%8C%E5%85%83%E8%AE%8A%E9%87%8F%E8%88%87%E4%BC%AF%E5%8A%AA%E5%88%A9%E5%88%86%E5%B8%83"><span class="toc-text">7. 二元變量與伯努利分布</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E4%BC%AF%E5%8A%AA%E5%88%A9%E5%88%86%E5%B8%83%E7%9A%84%E6%9C%9F%E6%9C%9B%E8%88%87%E6%96%B9%E5%B7%AE"><span class="toc-text">8. 伯努利分布的期望與方差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E4%BA%8C%E9%A0%85%E5%88%86%E5%B8%83"><span class="toc-text">9. 二項分布</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E7%B7%9A%E6%80%A7%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B-LPM"><span class="toc-text">10. 線性概率模型 (LPM)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E9%82%8F%E8%BC%AF%E5%9B%9E%E6%AD%B8-Logistic-Regression"><span class="toc-text">11. 邏輯回歸 (Logistic Regression)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E8%A7%A3%E9%87%8B%E9%82%8F%E8%BC%AF%E5%9B%9E%E6%AD%B8%E7%9A%84%E4%BF%82%E6%95%B8"><span class="toc-text">12. 解釋邏輯回歸的係數</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%AF%BE%E7%A8%8B%E6%A6%82%E8%BF%B0"><span class="toc-text">1. 课程概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B-GLM"><span class="toc-text">5. 广义线性模型 (GLM)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E4%BC%B0%E8%AE%A1"><span class="toc-text">6. 逻辑回归的估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E7%B3%BB%E6%95%B0%E8%A7%A3%E9%87%8A"><span class="toc-text">7. 逻辑回归的系数解释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E9%A2%84%E6%B5%8B%E6%A6%82%E7%8E%87"><span class="toc-text">8. 预测概率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0"><span class="toc-text">9. 模型评估</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E4%BC%BC%E7%84%B6%E6%AF%94%E6%A3%80%E9%AA%8C"><span class="toc-text">10. 似然比检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E8%BE%B9%E9%99%85%E6%95%88%E5%BA%94"><span class="toc-text">11. 边际效应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E6%80%BB%E7%BB%93"><span class="toc-text">12. 总结</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/ds/">ds</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2025-03-11T14:45:26.674Z">2025-03-11</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>Discrete Choice Modeling</span></h1>
+<p><strong>lecture1.pdf</strong></p>
+<h3 id="课程目标"><a href="#课程目标" class="headerlink" title="课程目标"></a><strong>课程目标</strong></h3><ol>
+<li><strong>学习目标</strong>:<ul>
+<li>识别适合使用离散选择方法的问题。</li>
+<li>开发适当的离散选择模型规范。</li>
+<li>导入、转换和可视化来自不同来源的数据。</li>
+<li>创建适合估计离散选择模型的数据结构。</li>
+<li>批判性审查和解释离散选择模型的结果。</li>
+<li>使用统计软件估计离散选择模型，计算预测并可视化、解释和分析结果。</li>
+<li>撰写包含研究问题、相关文献、数据和方法描述、结果展示和结论的文本。</li>
+</ul>
+</li>
+</ol>
+<h3 id="离散选择模型简介"><a href="#离散选择模型简介" class="headerlink" title="离散选择模型简介"></a><strong>离散选择模型简介</strong></h3><ul>
+<li><strong>离散选择模型</strong>用于建模从一组互斥且穷尽的选项中选择的行为。</li>
+<li><strong>应用场景</strong>:<ul>
+<li>解释特定选择的影响因素。</li>
+<li>预测结果，如分类观察。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="线性回归与离散选择模型"><a href="#线性回归与离散选择模型" class="headerlink" title="线性回归与离散选择模型"></a><strong>线性回归与离散选择模型</strong></h3><ul>
+<li><strong>线性回归 (OLS)</strong>:<ul>
+<li>公式: <code>y_i = \beta_0 + \beta_1 x_&#123;i1&#125; + \cdots + \beta_k x_&#123;ik&#125; + \varepsilon_i</code></li>
+<li>假设: 有效性、代表性、线性、误差独立、误差方差相等。</li>
+</ul>
+</li>
+<li><strong>线性概率模型 (LPM)</strong>:<ul>
+<li>用于二元结果，但可能违反线性回归的假设，且预测值可能超出0-1范围。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="逻辑回归"><a href="#逻辑回归" class="headerlink" title="逻辑回归"></a><strong>逻辑回归</strong></h3><ul>
+<li><strong>逻辑回归</strong>:<ul>
+<li>用于二元结果，预测值在0-1之间。</li>
+<li>公式: <code>\ln \left( \frac&#123;p&#125;&#123;1 - p&#125; \right) = X \beta</code></li>
+<li>概率计算: <code>p = \frac&#123;e^&#123;X \beta&#125;&#125;&#123;1 + e^&#123;X \beta&#125;&#125;</code></li>
+</ul>
+</li>
+<li><strong>优势比 (Odds Ratio)</strong>:<ul>
+<li>解释系数: <code>\exp(\beta)</code> 表示每增加一个单位 <code>x</code>，事件发生的优势比变化。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="关键概念总结"><a href="#关键概念总结" class="headerlink" title="关键概念总结"></a><strong>关键概念总结</strong></h3><ul>
+<li><strong>伯努利分布</strong>: 二元随机变量的概率分布，<code>Y \sim Bernoulli(p)</code>。</li>
+<li><strong>二项分布</strong>: 多次独立伯努利试验的分布，<code>Y \sim Binomial(n, p) </code>。</li>
+<li><strong>期望与方差</strong>:<ul>
+<li>期望: <code>E[Y] = p</code></li>
+<li>方差: <code>Var[Y] = p(1 - p)</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>lecture2.pdf</strong></p>
+<h3 id="6-不同結果的模型選擇"><a href="#6-不同結果的模型選擇" class="headerlink" title="6. 不同結果的模型選擇"></a><strong>6. 不同結果的模型選擇</strong></h3><ul>
+<li><strong>二元結果</strong>:<ul>
+<li>線性概率模型（LPM）、邏輯回歸（Logistic Regression）或Probit模型。</li>
+</ul>
+</li>
+<li><strong>名義結果</strong>:<ul>
+<li>多項Logit（Multinomial Logit）、條件Logit（Conditional Logit）。</li>
+</ul>
+</li>
+<li><strong>有序結果</strong>:<ul>
+<li>有序Logit（Ordinal Logit）或有序Probit（Ordinal Probit）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="7-二元變量與伯努利分布"><a href="#7-二元變量與伯努利分布" class="headerlink" title="7. 二元變量與伯努利分布"></a><strong>7. 二元變量與伯努利分布</strong></h3><ul>
+<li><strong>二元變量</strong>:<ul>
+<li>只能取兩個值，通常表示不同的類別或狀態，例如 <code>Y \in \&#123;0,1\&#125;</code>。</li>
+<li>需要明確0和1代表的具體含義，例如0表示死亡，1表示生存。</li>
+</ul>
+</li>
+<li><strong>伯努利分布</strong>:<ul>
+<li>如果 ( <code>Y \in \&#123;0,1\&#125;</code> )，則 ( <code>Y</code> ) 服從伯努利分布：<ul>
+<li>( <code>Y \sim Bernoulli(p)</code> )</li>
+<li>( <code>Pr(Y = 1) = p</code> )</li>
+<li>( <code>Pr(Y = 0) = 1 - p</code> )</li>
+</ul>
+</li>
+<li>( <code>p</code> ) 是唯一的參數，表示 ( <code>Y = 1</code> ) 的概率。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="8-伯努利分布的期望與方差"><a href="#8-伯努利分布的期望與方差" class="headerlink" title="8. 伯努利分布的期望與方差"></a><strong>8. 伯努利分布的期望與方差</strong></h3><ul>
+<li><strong>期望</strong>:<ul>
+<li>對於伯努利分布，( <code>E[Y] = p</code> )。</li>
+</ul>
+</li>
+<li><strong>方差</strong>:<ul>
+<li>對於伯努利分布，( <code>Var[Y] = p(1 - p)</code> )。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="9-二項分布"><a href="#9-二項分布" class="headerlink" title="9. 二項分布"></a><strong>9. 二項分布</strong></h3><ul>
+<li><strong>二項分布</strong>:<ul>
+<li>描述了在 ( <code>n</code> ) 次獨立伯努利試驗中，成功次數 ( <code>k</code> ) 的概率分布。</li>
+<li>公式：<code>Pr(Y = k|n, p) = \binom&#123;n&#125;&#123;k&#125;p^k(1 - p)^&#123;n-k&#125;</code></li>
+<li>伯努利分布是二項分布的特例，當 ( <code>n = 1</code> ) 時。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="10-線性概率模型-LPM"><a href="#10-線性概率模型-LPM" class="headerlink" title="10. 線性概率模型 (LPM)"></a><strong>10. 線性概率模型 (LPM)</strong></h3><ul>
+<li><strong>LPM</strong>:<ul>
+<li>將OLS回歸模型應用於二元結果變量。</li>
+<li>條件期望的參數化形式為：<code>E(Y_i|X_i) = \alpha + \beta_1 X_&#123;i1&#125; + \beta_2 X_&#123;i2&#125; + ...</code></li>
+<li>由於 <code>Y \in \&#123;0,1\&#125;</code>，期望可以解釋為概率：<code> P(Y_i = 1|X_i) = E(Y_i|X_i)</code></li>
+</ul>
+</li>
+<li><strong>LPM的問題</strong>:<ul>
+<li>違反線性回歸的假設。</li>
+<li>可能給出不合理的預測值（超出0-1範圍）。</li>
+<li>函數形式可能不符合實際情況。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="11-邏輯回歸-Logistic-Regression"><a href="#11-邏輯回歸-Logistic-Regression" class="headerlink" title="11. 邏輯回歸 (Logistic Regression)"></a><strong>11. 邏輯回歸 (Logistic Regression)</strong></h3><ul>
+<li><strong>Logit函數</strong>:<ul>
+<li>Logit函數定義為：<code>logit(x) = \ln \left( \frac&#123;x&#125;&#123;1-x&#125; \right)</code></li>
+<li>當 <code>x</code>是概率時 <code>x \in [0,1]</code> ，Logit函數的極限為 <code>\lim_&#123;x \to 1&#125; = \infty, \quad \lim_&#123;x \to 0&#125; = -\infty</code></li>
+</ul>
+</li>
+<li><strong>邏輯回歸的公式</strong>:<ul>
+<li>邏輯回歸的公式為 <code> \ln \left( \frac&#123;Pr(y = 1|x)&#125;&#123;1 - Pr(y = 1|x)&#125; \right) = X\beta</code></li>
+<li>概率計算為：<code>p = \frac&#123;e^&#123;X \beta&#125;&#125;&#123;1 + e^&#123;X \beta&#125;&#125;</code></li>
+<li>這樣，概率值始終在0到1之間。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="12-解釋邏輯回歸的係數"><a href="#12-解釋邏輯回歸的係數" class="headerlink" title="12. 解釋邏輯回歸的係數"></a><strong>12. 解釋邏輯回歸的係數</strong></h3><ul>
+<li><strong>係數的解釋</strong>:<ul>
+<li>( <code>\beta</code> ) 表示 ( <code>x</code> ) 每增加一個單位，對數優勢（log odds）的變化。</li>
+<li>例如，( <code>\beta_&#123;age&#125; \approx -0.005</code> )，表示每增加一歲，生存的對數優勢減少0.005。</li>
+</ul>
+</li>
+<li><strong>優勢比 (Odds Ratio)</strong>:<ul>
+<li>優勢比定義為 <code>\frac&#123;p&#125;&#123;1 - p&#125;</code></li>
+<li>邏輯回歸中，優勢比的變化可以通過 <code>e^&#123;\beta&#125;</code> 來解釋。</li>
+<li>例如，<code>\exp(\beta_&#123;age&#125;) \approx 0.995</code>，表示每增加一歲，生存的優勢比減少約0.5%。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>lecture3.pdf</strong></p>
+<hr>
+<h3 id="1-课程概述"><a href="#1-课程概述" class="headerlink" title="1. 课程概述"></a><strong>1. 课程概述</strong></h3><ul>
+<li><strong>课程名称</strong>: Discrete Choice Modelling 2025</li>
+<li><strong>第三讲内容</strong>: 主要介绍了广义线性模型（GLM）、逻辑回归的估计方法、模型解释、预测概率以及模型评估。</li>
+<li></li>
+</ul>
+<hr>
+<h3 id="5-广义线性模型-GLM"><a href="#5-广义线性模型-GLM" class="headerlink" title="5. 广义线性模型 (GLM)"></a><strong>5. 广义线性模型 (GLM)</strong></h3><ul>
+<li><strong>广义线性模型的三个要素</strong>:<ol>
+<li><strong>线性预测器</strong>：例如 ( <code>\alpha + \beta_1 x_i</code> )。</li>
+<li><strong>概率分布</strong>：假设生成结果变量的概率分布。</li>
+<li><strong>链接函数</strong>：将线性预测器与概率分布联系起来。</li>
+</ol>
+</li>
+<li><strong>OLS与逻辑回归的比较</strong>:<ul>
+<li><strong>OLS</strong>:<ul>
+<li>线性部分：( <code>X_i \beta</code> )</li>
+<li>链接函数：恒等函数（identity）</li>
+<li>分布族：正态分布</li>
+</ul>
+</li>
+<li><strong>逻辑回归</strong>:<ul>
+<li>线性部分：( <code>X_i \beta</code> )</li>
+<li>链接函数：logit函数</li>
+<li>分布族：二项分布</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="6-逻辑回归的估计"><a href="#6-逻辑回归的估计" class="headerlink" title="6. 逻辑回归的估计"></a><strong>6. 逻辑回归的估计</strong></h3><ul>
+<li><strong>为什么不能使用最小二乘法？</strong><ul>
+<li>由于逻辑回归的结果是离散的，最小二乘法不再是估计参数的最佳方法。</li>
+<li>逻辑回归使用<strong>最大似然估计法（Maximum Likelihood Estimation, MLE）</strong>来估计参数。</li>
+</ul>
+</li>
+<li><strong>最大似然估计</strong>:<ul>
+<li>似然函数表示在给定参数值下观察到数据的概率。</li>
+<li>通过最大化似然函数来找到最佳参数值。</li>
+<li>由于似然值通常非常小，通常使用<strong>对数似然函数</strong>进行计算：<code>\ell_n(\theta) = \ln(L_n(\theta)) = \sum_&#123;i&#125;^&#123;n&#125; \ln(f(y_i;\theta))</code><br>]</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="7-逻辑回归的系数解释"><a href="#7-逻辑回归的系数解释" class="headerlink" title="7. 逻辑回归的系数解释"></a><strong>7. 逻辑回归的系数解释</strong></h3><ul>
+<li><strong>系数的解释</strong>:<ul>
+<li>( <code>\beta</code> ) 表示 ( x ) 每增加一个单位，对数优势（log odds）的变化。</li>
+<li>例如，( <code>\beta_&#123;age&#125; \approx -0.005</code> )，表示每增加一岁，生存的对数优势减少0.005。</li>
+<li>( <code>\beta_&#123;male&#125; \approx -2.5</code> )，表示男性的生存对数优势比女性低2.5个单位。</li>
+</ul>
+</li>
+<li><strong>优势比 (Odds Ratio)</strong>:<ul>
+<li>优势比定义为：<code>\frac&#123;p&#125;&#123;1 - p&#125;</code></li>
+<li>通过指数化逻辑回归系数，可以得到优势比：<code>\frac&#123;p&#39;&#125;&#123;1 - p&#39;&#125; = e^&#123;\beta_1&#125; \frac&#123;p&#125;&#123;1 - p&#125;</code></li>
+<li>例如，<code>\exp(\beta_&#123;age&#125;) \approx 0.995</code>，表示每增加一岁，生存的优势比减少约0.5%。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="8-预测概率"><a href="#8-预测概率" class="headerlink" title="8. 预测概率"></a><strong>8. 预测概率</strong></h3><ul>
+<li><strong>预测概率的计算</strong>:<ul>
+<li>逻辑回归的预测概率公式为：<code> p(x) = \frac&#123;e^&#123;\beta_0 + \beta_1 x_1 + \beta_2 x_2&#125;&#125;&#123;1 + e^&#123;\beta_0 + \beta_1 x_1 + \beta_2 x_2&#125;&#125;</code></li>
+<li>例如，计算一个20岁男性的生存概率：<code>\frac&#123;\exp(1.277273 - 0.005426 \times 20 - 2.465920 \times 1)&#125;&#123;1 + \exp(1.277273 - 0.005426 \times 20 - 2.465920 \times 1)&#125; \approx 0.215 </code></li>
+</ul>
+</li>
+<li><strong>预测概率的应用</strong>:<ul>
+<li>可以比较不同预测概率，或改变某个变量的值来观察概率的变化。</li>
+<li>可以用于模型评估，例如计算正确分类的观察值数量。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="9-模型评估"><a href="#9-模型评估" class="headerlink" title="9. 模型评估"></a><strong>9. 模型评估</strong></h3><ul>
+<li><strong>标量拟合度量</strong>:<ul>
+<li>在线性回归中，使用 ( R^2 ) 表示解释的方差比例。</li>
+<li>对于分类结果模型，没有明显的 ( R^2 ) 替代指标，但可以使用伪 ( R^2 )。</li>
+</ul>
+</li>
+<li><strong>伪 ( R^2 )</strong>:<ul>
+<li><strong>McFadden’s ( R^2 )</strong>: <code>R_&#123;MCF&#125;^2 = 1 - \frac&#123;\ln L(M_\beta)&#125;&#123;\ln L(M_\alpha)&#125;</code></li>
+<li><strong>Cox and Snell’s ( R^2 )</strong>: <code>R_&#123;C\&amp;S&#125;^2 = 1 - \left[ \frac&#123;L(M_\alpha)&#125;&#123;L(M_\beta)&#125; \right]^&#123;2/N&#125;</code></li>
+<li><strong>Nagelkerke’s ( R^2 )</strong>: <code>R_N^2 = \frac&#123;R_&#123;C\&amp;S&#125;^2&#125;&#123;\max R_&#123;C\&amp;S&#125;^2&#125;</code></li>
+</ul>
+</li>
+<li><strong>信息准则</strong>:<ul>
+<li><strong>AIC (Akaike’s Information Criterion)</strong>:<br><code>AIC = -2 \ln \hat&#123;L&#125;(M_\beta) + 2k</code></li>
+<li><strong>BIC (Bayesian Information Criterion)</strong>:<br><code>BIC = -2 \ln \hat&#123;L&#125;(M_\beta) + \ln(N)k</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="10-似然比检验"><a href="#10-似然比检验" class="headerlink" title="10. 似然比检验"></a><strong>10. 似然比检验</strong></h3><ul>
+<li><strong>似然比检验</strong>:<ul>
+<li>用于比较嵌套模型，检验某个变量是否显著。</li>
+<li>公式：<br><code>G^2 = 2 \ln L(\text&#123;Mod&#125;_&#123;\text&#123;unconstrained&#125;&#125;) - 2 \ln L(\text&#123;Mod&#125;_&#123;\text&#123;constrained&#125;&#125;)</code></li>
+<li>检验统计量服从 <code>\chi^2</code> 分布，自由度等于两个模型参数数量的差异。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="11-边际效应"><a href="#11-边际效应" class="headerlink" title="11. 边际效应"></a><strong>11. 边际效应</strong></h3><ul>
+<li><strong>边际效应的类型</strong>:<ul>
+<li><strong>平均边际效应 (AME)</strong></li>
+<li><strong>均值处的边际效应 (MEM)</strong></li>
+<li><strong>代表性值处的边际效应 (MER)</strong></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="12-总结"><a href="#12-总结" class="headerlink" title="12. 总结"></a><strong>12. 总结</strong></h3><ul>
+<li><strong>广义线性模型</strong>:<ul>
+<li>逻辑回归是广义线性模型的一种，适用于二元结果变量。</li>
+</ul>
+</li>
+<li><strong>模型估计与解释</strong>:<ul>
+<li>使用最大似然估计法估计逻辑回归模型。</li>
+<li>通过解释对数优势和优势比来理解变量的影响。</li>
+</ul>
+</li>
+<li><strong>模型评估</strong>:<ul>
+<li>使用伪  <code>R^2</code>、AIC、BIC 等指标评估模型拟合度。</li>
+<li>使用似然比检验比较嵌套模型。</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>READ NEXT</span></section><section class="body fs14"><a id="next" href="/2025/02/12/SNA-4weeks/">Social Network Analysis - 4th Lec<span class="note">Older</span></a><div class="line"></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</p>
+<p>This site was deployed by <a href="http://example.com/">@zennlyu</a> using <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a>.</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: 'Just',
+      min: 'minutes ago',
+      hour: 'hours ago',
+      day: 'days ago',
+      month: 'months ago',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
