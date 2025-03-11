@@ -66,7 +66,7 @@
 <div class="widget-wrap" id="markdown"><div class="widget-header cap dis-select"><span class="name">About me</span></div><div class="widget-body fs14"><p>😉 Ciao~ 这里是 <a target="_blank" rel="noopener" href="https://github.com/zennlyu">zennlyu</a> 的个人小站 😉<br>～ 政府在册环保义工，长期活跃并探索环境问题的规模化技术解决方案(like <a target="_blank" rel="noopener" href="https://theoceancleanup.com/">Ocean Cleanup</a>) 🌊<br>～ 内容以技术积累为主，也不排除开辟些许生活与审美的空间 🌹<br>～ 欢迎通过 <a target="_blank" rel="noopener" href="https://twitter.com/zennryu616">twitter</a> 或者 <a target="_blank" rel="noopener" href="https://t.me/s081z">telegram</a> 联系我 🥳<br>📮：<a href="zennlyu@gmail.com">zennlyu@gmail.com</a></p>
 </div></div>
 
-<div class="widget-wrap" id="recent"><div class="widget-header cap dis-select"><span class="name">Recent Update</span><a class="cap-action" id="rss" title="Subscribe" href="/atom.xml"><svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8938"><path d="M800.966 947.251c0-404.522-320.872-732.448-716.69-732.448V62.785c477.972 0 865.44 395.987 865.44 884.466h-148.75z m-162.273 0h-148.74c0-228.98-181.628-414.598-405.678-414.598v-152.01c306.205 0 554.418 253.68 554.418 566.608z m-446.24-221.12c59.748 0 108.189 49.503 108.189 110.557 0 61.063-48.44 110.563-108.188 110.563-59.747 0-108.18-49.5-108.18-110.563 0-61.054 48.433-110.556 108.18-110.556z" p-id="8939"></path></svg></a></div><div class="widget-body fs14"><div class="more-item"><a class="title" href="/2024/07/15/-%20FRND-Skillset/">前端面试题总结</a></div><div class="more-item"><a class="title" href="/2024/07/15/6.824_T1-MapReduceRPC/">6.824</a></div><div class="more-item"><a class="title" href="/2024/07/15/CSAPP%20Lab/">CSAPP lab</a></div><div class="more-item"><a class="title" href="/2024/07/15/CS229/">CS229 Notes</a></div><div class="more-item"><a class="title" href="/2025/03/12/-%20%E8%B8%A9%E5%9D%91%E5%90%88%E9%9B%86/">踩坑合集/(不定时补充)</a></div></div></div>
+<div class="widget-wrap" id="recent"><div class="widget-header cap dis-select"><span class="name">Recent Update</span><a class="cap-action" id="rss" title="Subscribe" href="/atom.xml"><svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8938"><path d="M800.966 947.251c0-404.522-320.872-732.448-716.69-732.448V62.785c477.972 0 865.44 395.987 865.44 884.466h-148.75z m-162.273 0h-148.74c0-228.98-181.628-414.598-405.678-414.598v-152.01c306.205 0 554.418 253.68 554.418 566.608z m-446.24-221.12c59.748 0 108.189 49.503 108.189 110.557 0 61.063-48.44 110.563-108.188 110.563-59.747 0-108.18-49.5-108.18-110.563 0-61.054 48.433-110.556 108.18-110.556z" p-id="8939"></path></svg></a></div><div class="widget-body fs14"><div class="more-item"><a class="title" href="/2025/03/11/DCM/">Discrete Choice Modeling</a></div><div class="more-item"><a class="title" href="/2024/07/15/-%20FRND-Skillset/">前端面试题总结</a></div><div class="more-item"><a class="title" href="/2024/07/15/6.824_T1-MapReduceRPC/">6.824</a></div><div class="more-item"><a class="title" href="/2024/07/15/CSAPP%20Lab/">CSAPP lab</a></div><div class="more-item"><a class="title" href="/2024/07/15/CS229/">CS229 Notes</a></div></div></div>
 </div>
 
 
@@ -111,20 +111,18 @@
 </div>
 
   <div class="post-list post"><a class="post-card post " href="/2025/03/11/DCM/">
-<article class="md"><h2 class="post-title">Discrete Choice Modeling</h2><div class="excerpt"><p>lecture1课程目标
-学习目标:
-识别适合使用离散选择方法的问题。
-开发适当的离散选择模型规范。
-导入、转换和可视化来自不同来源的数据。
-创建适合估计离散选择模型的数据结构。
-批判性审查和解释离散选择模型的结果。
-使用统计软件估计离散选择模型，计算预测并可视化、解释和分析结果。
-撰写包含研究问题、相关文献、数据和方法描述、结果展示和结论的文本。
+<article class="md"><h2 class="post-title">Discrete Choice Modeling</h2><div class="excerpt"><p>lecture1 离散选择模型简介用于建模从一组互斥且穷尽的选项中选择的行为。
+
+应用场景:
+解释特定选择的影响因素。
+预测结果，如分类观察。
 
 
 
-离散选择模型简介
-离散选择模型用于建...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2025-03-11T14:45:26.674Z">2025-03-11</time></span><span class="cap breadcrumb">ds</span></div></article>
+线性回归与离散选择模型
+线性回归 (OLS):
+公式: $yi = \beta_0 + \beta_1 x{i1} + \cdots + \betak x{ik} + \varepsilon_i$
+假设: 有效性、代表性、线性、误差独立、误差方...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2025-03-11T14:45:26.674Z">2025-03-11</time></span><span class="cap breadcrumb">ds</span></div></article>
 </a></div>
   
 
