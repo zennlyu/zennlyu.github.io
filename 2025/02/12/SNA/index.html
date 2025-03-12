@@ -183,7 +183,7 @@
 </li>
 </ul>
 <h4 id="小世界网络的数学特性："><a href="#小世界网络的数学特性：" class="headerlink" title="小世界网络的数学特性："></a>小世界网络的数学特性：</h4><ul>
-<li><strong>短路径</strong>：小世界网络的平均路径长度 <code>L</code> 与网络规模 <code>n</code> 的关系为：<code>L \sim \frac&#123;\ln n&#125;&#123;\ln k&#125;</code><br>其中，<code>k</code> 是节点的平均度数。</li>
+<li><strong>短路径</strong>：小世界网络的平均路径长度 <code>L</code> 与网络规模 <code>n</code> 的关系为：<code>  L \sim \frac&#123;\ln n&#125;&#123;\ln k&#125;</code><br>其中，<code>k</code> 是节点的平均度数。</li>
 <li><strong>高聚类</strong>：小世界网络的聚类系数 (C) 远高于随机网络，通常接近规则网络的聚类系数。</li>
 </ul>
 <hr>
@@ -210,15 +210,15 @@
 </ol>
 </li>
 <li><p><strong>QAP相关性</strong>：用于检验两个网络矩阵之间的相关性。公式为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r = \frac&#123;\sum_&#123;i,j&#125; (X_&#123;ij&#125; - \bar&#123;X&#125;)(Y_&#123;ij&#125; - \bar&#123;Y&#125;)&#125;&#123;\sqrt&#123;\sum_&#123;i,j&#125; (X_&#123;ij&#125; - \bar&#123;X&#125;)^2 \sum_&#123;i,j&#125; (Y_&#123;ij&#125; - \bar&#123;Y&#125;)^2&#125;&#125;</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r = \frac&#123;\sum_&#123;i,j&#125; (X_&#123;ij&#125; - \bar&#123;X&#125;)(Y_&#123;ij&#125; - \bar&#123;Y&#125;)&#125;&#123;\sqrt&#123;\sum_&#123;i,j&#125; (X_&#123;ij&#125; - \bar&#123;X&#125;)^2 \sum_&#123;i,j&#125; (Y_&#123;ij&#125; - \bar&#123;Y&#125;)^2&#125;&#125;</span><br></pre></td></tr></table></figure>
 <p>其中，(<code>X_&#123;ij&#125;</code>) 和 (<code>Y_&#123;ij&#125;</code>) 是两个网络矩阵的元素，(<code>\bar&#123;X&#125;</code>) 和 (<code>\bar&#123;Y&#125;</code>) 是它们的均值。</p>
 </li>
 <li><p><strong>QAP回归</strong>：用于检验一个网络矩阵是否能够预测另一个网络矩阵。公式为：</p>
-<pre><code class="lang-math">Y_&#123;ij&#125; = \beta_0 + \beta_1 X_&#123;ij&#125; + \epsilon_&#123;ij&#125;
-</code></pre>
-<p>其中，(<code>\beta_0</code>) 和 (<code>\beta_1</code>) 是回归系数，(<code>\epsilon_&#123;ij&#125;</code>) 是误差项。</p>
 </li>
 </ul>
+<pre><code class="math">  Y_&#123;ij&#125; = \beta_0 + \beta_1 X_&#123;ij&#125; + \epsilon_&#123;ij&#125;
+</code></pre>
+<p>其中，(<code>\beta_0</code>) 和 (<code>\beta_1</code>) 是回归系数，(<code>\epsilon_&#123;ij&#125;</code>) 是误差项。</p>
 <h4 id="MRQAP的数学特性："><a href="#MRQAP的数学特性：" class="headerlink" title="MRQAP的数学特性："></a>MRQAP的数学特性：</h4><ul>
 <li><strong>解决依赖性问题</strong>：通过置换节点，MRQAP能够生成一个零分布，用于比较实际观测值与随机分布，从而解决网络数据中的依赖性问题。</li>
 <li><strong>非参数检验</strong>：MRQAP是一种非参数检验方法，不依赖于数据的分布假设。</li>

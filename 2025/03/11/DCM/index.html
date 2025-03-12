@@ -21,12 +21,12 @@
   <title>Discrete Choice Modeling - zennlyu</title>
 
   
-    <meta name="description" content="lecture1 离散选择模型简介用于建模从一组互斥且穷尽的选项中选择的行为。  应用场景: 解释特定选择的影响因素。 预测结果，如分类观察。    线性回归与离散选择模型 线性回归 (OLS): 公式: $yi &#x3D; \beta_0 + \beta_1 x{i1} + \cdots + \betak x{ik} + \varepsilon_i$ 假设: 有效性、代表性、线性、误差独立、误差方差相等">
+    <meta name="description" content="lecture1 离散选择模型简介用于建模从一组互斥且穷尽的选项中选择的行为。  应用场景: 解释特定选择的影响因素。 预测结果，如分类观察。    线性回归与离散选择模型 线性回归 (OLS): 公式: $y_i &#x3D; \beta_0 + \beta_1 x_{i1} + \cdots + \beta_k x_{ik} + \varepsilon_i$ 假设: 有效性、代表性、线性、误差">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Discrete Choice Modeling">
 <meta property="og:url" content="http://example.com/2025/03/11/DCM/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="lecture1 离散选择模型简介用于建模从一组互斥且穷尽的选项中选择的行为。  应用场景: 解释特定选择的影响因素。 预测结果，如分类观察。    线性回归与离散选择模型 线性回归 (OLS): 公式: $yi &#x3D; \beta_0 + \beta_1 x{i1} + \cdots + \betak x{ik} + \varepsilon_i$ 假设: 有效性、代表性、线性、误差独立、误差方差相等">
+<meta property="og:description" content="lecture1 离散选择模型简介用于建模从一组互斥且穷尽的选项中选择的行为。  应用场景: 解释特定选择的影响因素。 预测结果，如分类观察。    线性回归与离散选择模型 线性回归 (OLS): 公式: $y_i &#x3D; \beta_0 + \beta_1 x_{i1} + \cdots + \beta_k x_{ik} + \varepsilon_i$ 假设: 有效性、代表性、线性、误差">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-03-11T14:45:26.674Z">
 <meta property="article:modified_time" content="2025-03-11T17:41:23.963Z">
@@ -98,7 +98,7 @@
 </ul>
 <h3 id="线性回归与离散选择模型"><a href="#线性回归与离散选择模型" class="headerlink" title="线性回归与离散选择模型"></a><strong>线性回归与离散选择模型</strong></h3><ul>
 <li><strong>线性回归 (OLS)</strong>:<ul>
-<li>公式: $y<em>i = \beta_0 + \beta_1 x</em>{i1} + \cdots + \beta<em>k x</em>{ik} + \varepsilon_i$</li>
+<li>公式: $y_i &#x3D; \beta_0 + \beta_1 x_{i1} + \cdots + \beta_k x_{ik} + \varepsilon_i$</li>
 <li>假设: 有效性、代表性、线性、误差独立、误差方差相等。</li>
 </ul>
 </li>
@@ -110,8 +110,8 @@
 <h3 id="逻辑回归"><a href="#逻辑回归" class="headerlink" title="逻辑回归"></a><strong>逻辑回归</strong></h3><ul>
 <li><strong>逻辑回归</strong>:<ul>
 <li>用于二元结果，预测值在0-1之间。</li>
-<li>公式: $\ln \left( \frac{p}{1 - p} \right) = X \beta$</li>
-<li>概率计算: $p = \frac{e^{X \beta}}{1 + e^{X \beta}}$</li>
+<li>公式: $\ln \left( \frac{p}{1 - p} \right) &#x3D; X \beta$</li>
+<li>概率计算: $p &#x3D; \frac{e^{X \beta}}{1 + e^{X \beta}}$</li>
 </ul>
 </li>
 <li><strong>优势比 (Odds Ratio)</strong>:<ul>
@@ -123,8 +123,8 @@
 <li><strong>伯努利分布</strong>: 二元随机变量的概率分布，$Y \sim Bernoulli(p)$。</li>
 <li><strong>二项分布</strong>: 多次独立伯努利试验的分布，$Y \sim Binomial(n, p) $。</li>
 <li><strong>期望与方差</strong>:<ul>
-<li>期望: $E[Y] = p$</li>
-<li>方差: $Var[Y] = p(1 - p)$</li>
+<li>期望: $E[Y] &#x3D; p$</li>
+<li>方差: $Var[Y] &#x3D; p(1 - p)$</li>
 </ul>
 </li>
 </ul>
@@ -151,37 +151,37 @@
 <li><strong>伯努利分布</strong>:<ul>
 <li>如果  $Y \in {0,1}$，則  $Y$ 服從伯努利分布：<ul>
 <li>$Y \sim Bernoulli(p)$</li>
-<li>$Pr(Y = 1) = p$</li>
-<li>$Pr(Y = 0) = 1 - p$</li>
+<li>$Pr(Y &#x3D; 1) &#x3D; p$</li>
+<li>$Pr(Y &#x3D; 0) &#x3D; 1 - p$</li>
 </ul>
 </li>
-<li>$p$ 是唯一的參數，表示  $Y = 1$ 的概率。</li>
+<li>$p$ 是唯一的參數，表示  $Y &#x3D; 1$ 的概率。</li>
 </ul>
 </li>
 </ul>
 <h3 id="8-伯努利分布的期望與方差"><a href="#8-伯努利分布的期望與方差" class="headerlink" title="8. 伯努利分布的期望與方差"></a><strong>8. 伯努利分布的期望與方差</strong></h3><ul>
 <li><strong>期望</strong>:<ul>
-<li>對於伯努利分布， $E[Y] = p$。</li>
+<li>對於伯努利分布， $E[Y] &#x3D; p$。</li>
 </ul>
 </li>
 <li><strong>方差</strong>:<ul>
-<li>對於伯努利分布， $Var[Y] = p(1 - p)$。</li>
+<li>對於伯努利分布， $Var[Y] &#x3D; p(1 - p)$。</li>
 </ul>
 </li>
 </ul>
 <h3 id="9-二項分布"><a href="#9-二項分布" class="headerlink" title="9. 二項分布"></a><strong>9. 二項分布</strong></h3><ul>
 <li><strong>二項分布</strong>:<ul>
 <li>描述了在  $n$ 次獨立伯努利試驗中，成功次數  $k$ 的概率分布。</li>
-<li>公式：$Pr(Y = k|n, p) = \binom{n}{k}p^k(1 - p)^{n-k}$</li>
-<li>伯努利分布是二項分布的特例，當  $n = 1$ 時。</li>
+<li>公式：$Pr(Y &#x3D; k|n, p) &#x3D; \binom{n}{k}p^k(1 - p)^{n-k}$</li>
+<li>伯努利分布是二項分布的特例，當  $n &#x3D; 1$ 時。</li>
 </ul>
 </li>
 </ul>
 <h3 id="10-線性概率模型-LPM"><a href="#10-線性概率模型-LPM" class="headerlink" title="10. 線性概率模型 (LPM)"></a><strong>10. 線性概率模型 (LPM)</strong></h3><ul>
 <li><strong>LPM</strong>:<ul>
 <li>將OLS回歸模型應用於二元結果變量。</li>
-<li>條件期望的參數化形式為：$E(Y<em>i|X_i) = \alpha + \beta_1 X</em>{i1} + \beta<em>2 X</em>{i2} + …$</li>
-<li>由於 $Y \in {0,1}$，期望可以解釋為概率：$ P(Y_i = 1|X_i) = E(Y_i|X_i)$</li>
+<li>條件期望的參數化形式為：$E(Y_i|X_i) &#x3D; \alpha + \beta_1 X_{i1} + \beta_2 X_{i2} + …$</li>
+<li>由於 $Y \in {0,1}$，期望可以解釋為概率：$ P(Y_i &#x3D; 1|X_i) &#x3D; E(Y_i|X_i)$</li>
 </ul>
 </li>
 <li><strong>LPM的問題</strong>:<ul>
@@ -193,13 +193,13 @@
 </ul>
 <h3 id="11-邏輯回歸-Logistic-Regression"><a href="#11-邏輯回歸-Logistic-Regression" class="headerlink" title="11. 邏輯回歸 (Logistic Regression)"></a><strong>11. 邏輯回歸 (Logistic Regression)</strong></h3><ul>
 <li><strong>Logit函數</strong>:<ul>
-<li>Logit函數定義為：$logit(x) = \ln \left( \frac{x}{1-x} \right)$</li>
-<li>當 $x$是概率時 $x \in [0,1]$ ，Logit函數的極限為 $\lim<em>{x \to 1} = \infty, \quad \lim</em>{x \to 0} = -\infty$</li>
+<li>Logit函數定義為：$logit(x) &#x3D; \ln \left( \frac{x}{1-x} \right)$</li>
+<li>當 $x$是概率時 $x \in [0,1]$ ，Logit函數的極限為 $\lim_{x \to 1} &#x3D; \infty, \quad \lim_{x \to 0} &#x3D; -\infty$</li>
 </ul>
 </li>
 <li><strong>邏輯回歸的公式</strong>:<ul>
-<li>邏輯回歸的公式為 $ \ln \left( \frac{Pr(y = 1|x)}{1 - Pr(y = 1|x)} \right) = X\beta$</li>
-<li>概率計算為：$p = \frac{e^{X \beta}}{1 + e^{X \beta}}$</li>
+<li>邏輯回歸的公式為 $ \ln \left( \frac{Pr(y &#x3D; 1|x)}{1 - Pr(y &#x3D; 1|x)} \right) &#x3D; X\beta$</li>
+<li>概率計算為：$p &#x3D; \frac{e^{X \beta}}{1 + e^{X \beta}}$</li>
 <li>這樣，概率值始終在0到1之間。</li>
 </ul>
 </li>
@@ -253,7 +253,7 @@
 <li><strong>最大似然估计</strong>:<ul>
 <li>似然函数表示在给定参数值下观察到数据的概率。</li>
 <li>通过最大化似然函数来找到最佳参数值。</li>
-<li>由于似然值通常非常小，通常使用<strong>对数似然函数</strong>进行计算：$\ell<em>n(\theta) = \ln(L_n(\theta)) = \sum</em>{i}^{n} \ln(f(y_i;\theta))$<br>$$</li>
+<li>由于似然值通常非常小，通常使用<strong>对数似然函数</strong>进行计算：$\ell_n(\theta) &#x3D; \ln(L_n(\theta)) &#x3D; \sum_{i}^{n} \ln(f(y_i;\theta))$<br>$$</li>
 </ul>
 </li>
 </ul>
@@ -266,14 +266,14 @@
 </li>
 <li><strong>优势比 (Odds Ratio)</strong>:<ul>
 <li>优势比定义为：$\frac{p}{1 - p}$</li>
-<li>通过指数化逻辑回归系数，可以得到优势比：$\frac{p’}{1 - p’} = e^{\beta_1} \frac{p}{1 - p}$</li>
+<li>通过指数化逻辑回归系数，可以得到优势比：$\frac{p’}{1 - p’} &#x3D; e^{\beta_1} \frac{p}{1 - p}$</li>
 <li>例如，$\exp(\beta_{age}) \approx 0.995$，表示每增加一岁，生存的优势比减少约0.5%。</li>
 </ul>
 </li>
 </ul>
 <h3 id="8-预测概率"><a href="#8-预测概率" class="headerlink" title="8. 预测概率"></a><strong>8. 预测概率</strong></h3><ul>
 <li><strong>预测概率的计算</strong>:<ul>
-<li>逻辑回归的预测概率公式为：$ p(x) = \frac{e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2}}{1 + e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2}}$</li>
+<li>逻辑回归的预测概率公式为：$ p(x) &#x3D; \frac{e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2}}{1 + e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2}}$</li>
 <li>例如，计算一个20岁男性的生存概率：$\frac{\exp(1.277273 - 0.005426 \times 20 - 2.465920 \times 1)}{1 + \exp(1.277273 - 0.005426 \times 20 - 2.465920 \times 1)} \approx 0.215<br>$</li>
 </ul>
 </li>
@@ -290,21 +290,21 @@
 </ul>
 </li>
 <li><strong>伪  R^2</strong>:<ul>
-<li><strong>McFadden’s  R^2</strong>: $R<em>{MCF}^2 = 1 - \frac{\ln L(M</em>\beta)}{\ln L(M_\alpha)}$</li>
-<li><strong>Cox and Snell’s  R^2</strong>: $R<em>{C\&amp;S}^2 = 1 - \left[ \frac{L(M</em>\alpha)}{L(M_\beta)} \right]^{2/N}$</li>
-<li><strong>Nagelkerke’s  R^2</strong>: $R<em>N^2 = \frac{R</em>{C\&amp;S}^2}{\max R_{C\&amp;S}^2}$</li>
+<li><strong>McFadden’s  R^2</strong>: $R_{MCF}^2 &#x3D; 1 - \frac{\ln L(M_\beta)}{\ln L(M_\alpha)}$</li>
+<li><strong>Cox and Snell’s  R^2</strong>: $R_{C&amp;S}^2 &#x3D; 1 - \left[ \frac{L(M_\alpha)}{L(M_\beta)} \right]^{2&#x2F;N}$</li>
+<li><strong>Nagelkerke’s  R^2</strong>: $R_N^2 &#x3D; \frac{R_{C&amp;S}^2}{\max R_{C&amp;S}^2}$</li>
 </ul>
 </li>
 <li><strong>信息准则</strong>:<ul>
-<li><strong>AIC (Akaike’s Information Criterion)</strong>:<br>$AIC = -2 \ln \hat{L}(M_\beta) + 2k$</li>
-<li><strong>BIC (Bayesian Information Criterion)</strong>:<br>$BIC = -2 \ln \hat{L}(M_\beta) + \ln(N)k$</li>
+<li><strong>AIC (Akaike’s Information Criterion)</strong>:<br>$AIC &#x3D; -2 \ln \hat{L}(M_\beta) + 2k$</li>
+<li><strong>BIC (Bayesian Information Criterion)</strong>:<br>$BIC &#x3D; -2 \ln \hat{L}(M_\beta) + \ln(N)k$</li>
 </ul>
 </li>
 </ul>
 <h3 id="10-似然比检验"><a href="#10-似然比检验" class="headerlink" title="10. 似然比检验"></a><strong>10. 似然比检验</strong></h3><ul>
 <li><strong>似然比检验</strong>:<ul>
 <li>用于比较嵌套模型，检验某个变量是否显著。</li>
-<li>公式：<br>$G^2 = 2 \ln L(\text{Mod}<em>{\text{unconstrained}}) - 2 \ln L(\text{Mod}</em>{\text{constrained}})$</li>
+<li>公式：<br>$G^2 &#x3D; 2 \ln L(\text{Mod}<em>{\text{unconstrained}}) - 2 \ln L(\text{Mod}</em>{\text{constrained}})$</li>
 <li>检验统计量服从 $\chi^2$ 分布，自由度等于两个模型参数数量的差异。</li>
 </ul>
 </li>
@@ -358,14 +358,14 @@
 </ul>
 </li>
 <li><strong>逻辑回归的边际效应公式</strong>:<ul>
-<li>对于连续变量：$\frac{\partial}{\partial x} p_i = \beta_x p_i (1 - p_i)$</li>
-<li>对于虚拟变量 $\Delta y = f(x = 1) - f(x = 0)$</li>
+<li>对于连续变量：$\frac{\partial}{\partial x} p_i &#x3D; \beta_x p_i (1 - p_i)$</li>
+<li>对于虚拟变量 $\Delta y &#x3D; f(x &#x3D; 1) - f(x &#x3D; 0)$</li>
 </ul>
 </li>
 <li><strong>边际效应的计算方式</strong>:<ul>
-<li><strong>平均边际效应 (AME)</strong>：计算每个观测值的边际效应，然后取平均值。</li>
-<li><strong>均值处的边际效应 (MEM)</strong>：将所有协变量设为其均值，计算边际效应。</li>
-<li><strong>代表性值处的边际效应 (MER)</strong>：选择特定的协变量值，计算边际效应。</li>
+<li>**平均边际效应 (AME)**：计算每个观测值的边际效应，然后取平均值。</li>
+<li>**均值处的边际效应 (MEM)**：将所有协变量设为其均值，计算边际效应。</li>
+<li>**代表性值处的边际效应 (MER)**：选择特定的协变量值，计算边际效应。</li>
 </ul>
 </li>
 </ul>
@@ -380,17 +380,17 @@
 <hr>
 <h3 id="8-数据框的合并操作"><a href="#8-数据框的合并操作" class="headerlink" title="8. 数据框的合并操作"></a>8. 数据框的合并操作</h3><ul>
 <li><strong>数据框的合并</strong>:<ul>
-<li><strong><code>bind_rows</code></strong>：按行合并数据框（类似于 <code>rbind</code>）。</li>
-<li><strong><code>bind_cols</code></strong>：按列合并数据框（类似于 <code>cbind</code>），但需要确保行对齐。</li>
+<li>**<code>bind_rows</code>**：按行合并数据框（类似于 <code>rbind</code>）。</li>
+<li>**<code>bind_cols</code>**：按列合并数据框（类似于 <code>cbind</code>），但需要确保行对齐。</li>
 </ul>
 </li>
 <li><strong>数据框的连接操作</strong>:<ul>
-<li><strong><code>inner_join</code></strong>：只保留两个数据框中匹配的行。</li>
-<li><strong><code>left_join</code></strong>：保留左表的所有行，右表只保留匹配的行。</li>
-<li><strong><code>right_join</code></strong>：保留右表的所有行，左表只保留匹配的行。</li>
-<li><strong><code>full_join</code></strong>：保留两个数据框的所有行，未匹配的行用 <code>NA</code> 填充。</li>
-<li><strong><code>semi_join</code></strong>：只保留左表中与右表匹配的行，不添加右表的列。</li>
-<li><strong><code>anti_join</code></strong>：只保留左表中与右表不匹配的行。</li>
+<li>**<code>inner_join</code>**：只保留两个数据框中匹配的行。</li>
+<li>**<code>left_join</code>**：保留左表的所有行，右表只保留匹配的行。</li>
+<li>**<code>right_join</code>**：保留右表的所有行，左表只保留匹配的行。</li>
+<li>**<code>full_join</code>**：保留两个数据框的所有行，未匹配的行用 <code>NA</code> 填充。</li>
+<li>**<code>semi_join</code>**：只保留左表中与右表匹配的行，不添加右表的列。</li>
+<li>**<code>anti_join</code>**：只保留左表中与右表不匹配的行。</li>
 </ul>
 </li>
 </ul>
@@ -429,13 +429,13 @@
 <h3 id="卡方分布-chi-2"><a href="#卡方分布-chi-2" class="headerlink" title="卡方分布 ($\chi^2$)"></a>卡方分布 ($\chi^2$)</h3><ul>
 <li><strong>卡方分布的定义</strong>:<ul>
 <li>卡方分布是连续概率分布，常用于统计假设检验，特别是涉及分类数据和拟合优度检验。</li>
-<li>卡方分布是 $k$ 个独立标准正态变量的平方和：<br>$V = Z_1^2 + Z_2^2 + \cdots + Z_k^2$<br>$V \sim \chi_k^2$</li>
+<li>卡方分布是 $k$ 个独立标准正态变量的平方和：<br>$V &#x3D; Z_1^2 + Z_2^2 + \cdots + Z_k^2$<br>$V \sim \chi_k^2$</li>
 </ul>
 </li>
 <li><strong>卡方分布的性质</strong>:<ul>
 <li>非负 ($\chi^2 \geq 0$)。</li>
-<li>均值：$E[V] = k$。</li>
-<li>方差：$V[V] = 2k$。</li>
+<li>均值：$E[V] &#x3D; k$。</li>
+<li>方差：$V[V] &#x3D; 2k$。</li>
 <li>偏度：右偏，但随着 $k$ 的增加逐渐对称。</li>
 </ul>
 </li>
@@ -444,40 +444,33 @@
 <li><strong>多项逻辑回归</strong>:<ul>
 <li>用于处理多个类别的分类问题。</li>
 <li>与二元逻辑回归类似，但扩展到多个类别。</li>
-<li>公式：<script type="math/tex; mode=display">
-\ln \left[ \frac{\Pr(A|x)}{\Pr(B|x)} \right] = \beta_{0,A|B} + \beta_{1,A|B} x</script><script type="math/tex; mode=display">
-\ln \left[ \frac{\Pr(B|x)}{\Pr(C|x)} \right] = \beta_{0,B|C} + \beta_{1,B|C} x</script><script type="math/tex; mode=display">
-\ln \left[ \frac{\Pr(A|x)}{\Pr(C|x)} \right] = \beta_{0,A|C} + \beta_{1,A|C} x</script></li>
+<li>公式：<br>$$<br>\ln \left[ \frac{\Pr(A|x)}{\Pr(B|x)} \right] &#x3D; \beta_{0,A|B} + \beta_{1,A|B} x<br>$$<br>$$<br>\ln \left[ \frac{\Pr(B|x)}{\Pr(C|x)} \right] &#x3D; \beta_{0,B|C} + \beta_{1,B|C} x<br>$$<br>$$<br>\ln \left[ \frac{\Pr(A|x)}{\Pr(C|x)} \right] &#x3D; \beta_{0,A|C} + \beta_{1,A|C} x<br>$$</li>
 </ul>
 </li>
 <li><strong>参考类别的选择</strong>:<ul>
-<li>为了识别模型，通常将某个类别设为参考类别（如 $\beta_1 = 0$）。</li>
+<li>为了识别模型，通常将某个类别设为参考类别（如 $\beta_1 &#x3D; 0$）。</li>
 <li>参考类别的选择应便于解释。</li>
 </ul>
 </li>
 </ul>
 <h3 id="多项逻辑回归的概率计算"><a href="#多项逻辑回归的概率计算" class="headerlink" title="多项逻辑回归的概率计算"></a>多项逻辑回归的概率计算</h3><ul>
 <li><strong>概率公式</strong>:<ul>
-<li>对于参考类别 $\beta_1 = 0$，概率计算为：<script type="math/tex; mode=display">
-\Pr(y_i = 1 | x_i) = \frac{1}{1 + \sum_{j=2}^J \exp(x_i \beta_j)}</script><script type="math/tex; mode=display">
-\Pr(y_i = m | x_i) = \frac{\exp(x_i \beta_m)}{1 + \sum_{j=2}^J \exp(x_i \beta_j)}; \text{for } m > 1</script></li>
+<li>对于参考类别 $\beta_1 &#x3D; 0$，概率计算为：<br>$$<br>\Pr(y_i &#x3D; 1 | x_i) &#x3D; \frac{1}{1 + \sum_{j&#x3D;2}^J \exp(x_i \beta_j)}<br>$$<br>$$<br>\Pr(y_i &#x3D; m | x_i) &#x3D; \frac{\exp(x_i \beta_m)}{1 + \sum_{j&#x3D;2}^J \exp(x_i \beta_j)}; \text{for } m &gt; 1<br>$$</li>
 </ul>
 </li>
 </ul>
 <h3 id="多项逻辑回归的似然函数"><a href="#多项逻辑回归的似然函数" class="headerlink" title="多项逻辑回归的似然函数"></a>多项逻辑回归的似然函数</h3><ul>
 <li><strong>似然函数</strong>:<ul>
 <li>多项逻辑回归模型通常使用最大似然估计法进行估计。</li>
-<li>似然函数为：<script type="math/tex; mode=display">
-L(\beta; X) = \prod_{i=1}^{N} \prod_{j=1}^{K} \left( \frac{e^{X_i \beta_j}}{\sum_{k=1}^{K} e^{X_i \beta_k}} \right)^{I(y = j)}</script></li>
-<li>其中 $I(y = j)$ 是指示函数，当 $y = j$ 时为1，否则为0。</li>
+<li>似然函数为：<br>$$<br>L(\beta; X) &#x3D; \prod_{i&#x3D;1}^{N} \prod_{j&#x3D;1}^{K} \left( \frac{e^{X_i \beta_j}}{\sum_{k&#x3D;1}^{K} e^{X_i \beta_k}} \right)^{I(y &#x3D; j)}<br>$$</li>
+<li>其中 $I(y &#x3D; j)$ 是指示函数，当 $y &#x3D; j$ 时为1，否则为0。</li>
 </ul>
 </li>
 </ul>
 <h3 id="多项逻辑回归与离散选择模型"><a href="#多项逻辑回归与离散选择模型" class="headerlink" title="多项逻辑回归与离散选择模型"></a>多项逻辑回归与离散选择模型</h3><ul>
 <li><strong>离散选择模型</strong>:<ul>
 <li>McFadden (1973) 证明了离散选择模型可以推导出多项逻辑回归模型。</li>
-<li>个体选择效用最大的选项，效用函数为：<script type="math/tex; mode=display">
-\mu_{im} = x_i \beta_m</script></li>
+<li>个体选择效用最大的选项，效用函数为：<br>$$<br>\mu_{im} &#x3D; x_i \beta_m<br>$$</li>
 <li>如果误差项 $\varepsilon$ 独立且服从类型I极值分布，则多项逻辑回归是离散选择模型的特例。</li>
 </ul>
 </li>
@@ -485,8 +478,7 @@ L(\beta; X) = \prod_{i=1}^{N} \prod_{j=1}^{K} \left( \frac{e^{X_i \beta_j}}{\sum
 <h3 id="多项逻辑回归的系数解释"><a href="#多项逻辑回归的系数解释" class="headerlink" title="多项逻辑回归的系数解释"></a>多项逻辑回归的系数解释</h3><ul>
 <li><strong>系数解释</strong>:<ul>
 <li>系数 $\beta_k$ 表示 $x$ 每增加一个单位，选择类别 $k$ 相对于参考类别的对数优势的变化。</li>
-<li>优势比：<script type="math/tex; mode=display">
-\frac{p_k(x' + 1)}{p_K(x' + 1)} = e^{\beta_k} \frac{p_k(x')}{p_K(x')}</script></li>
+<li>优势比：<br>$$<br>\frac{p_k(x’ + 1)}{p_K(x’ + 1)} &#x3D; e^{\beta_k} \frac{p_k(x’)}{p_K(x’)}<br>$$</li>
 <li>优势比可以解释为 $x$ 每增加一个单位，选择类别 $k$ 相对于参考类别的优势比的变化。</li>
 </ul>
 </li>
@@ -495,8 +487,7 @@ L(\beta; X) = \prod_{i=1}^{N} \prod_{j=1}^{K} \left( \frac{e^{X_i \beta_j}}{\sum
 <h3 id="预测概率与模型评估"><a href="#预测概率与模型评估" class="headerlink" title="预测概率与模型评估"></a>预测概率与模型评估</h3><ul>
 <li><strong>预测概率</strong>:<ul>
 <li>可以计算每个观测值的预测概率，并与实际结果进行比较，评估模型的准确性。</li>
-<li>公式：<script type="math/tex; mode=display">
-\Pr(y_i | X_i) = \frac{\exp(X_i \beta_j)}{\sum_{m=1}^J \exp(X_i \beta_m)}</script></li>
+<li>公式：<br>$$<br>\Pr(y_i | X_i) &#x3D; \frac{\exp(X_i \beta_j)}{\sum_{m&#x3D;1}^J \exp(X_i \beta_m)}<br>$$</li>
 </ul>
 </li>
 <li><strong>模型评估</strong>:<ul>
@@ -556,15 +547,13 @@ L(\beta; X) = \prod_{i=1}^{N} \prod_{j=1}^{K} \left( \frac{e^{X_i \beta_j}}{\sum
 </ul>
 <h3 id="2-卡方分布-chi-2"><a href="#2-卡方分布-chi-2" class="headerlink" title="2. 卡方分布 ($ \chi^2 $)"></a><strong>2. 卡方分布 ($ \chi^2 $)</strong></h3><ul>
 <li><strong>卡方分布的定义</strong>:<ul>
-<li>卡方分布是 $ k $ 个独立标准正态变量的平方和：<script type="math/tex; mode=display">
-V = Z_1^2 + Z_2^2 + \cdots + Z_k^2</script><script type="math/tex; mode=display">
-V \sim \chi_k^2</script></li>
+<li>卡方分布是 $ k $ 个独立标准正态变量的平方和：<br>$$<br>V &#x3D; Z_1^2 + Z_2^2 + \cdots + Z_k^2<br>$$<br>$$<br>V \sim \chi_k^2<br>$$</li>
 <li>其中 $ k $ 是自由度（degrees of freedom）。</li>
 </ul>
 </li>
 <li><strong>卡方分布的性质</strong>:<ul>
-<li>均值：$ E[V] = k $。</li>
-<li>方差：$ Var[V] = 2k $。</li>
+<li>均值：$ E[V] &#x3D; k $。</li>
+<li>方差：$ Var[V] &#x3D; 2k $。</li>
 <li>偏度：右偏，但随着 $ k $ 的增加逐渐对称。</li>
 </ul>
 </li>
@@ -576,28 +565,59 @@ V \sim \chi_k^2</script></li>
 </ul>
 </li>
 <li><strong>示例</strong>:<ul>
-<li>一个关于男性和女性教育水平的列联表：<br>| 女性教育水平 | 男性教育水平 | 总计 |<br>| —- | —- | —- |<br>| 基础 | 高中 | 大学 | 总计 |<br>| 9 | 8 | 13 | 30 |<br>| 16 | 20 | 9 | 45 |<br>| 6 | 13 | 6 | 25 |<br>| 总计 | 31 | 41 | 28 | 100 |</li>
+<li>一个关于男性和女性教育水平的列联表：<table>
+<thead>
+<tr>
+<th>女性教育水平</th>
+<th>男性教育水平</th>
+<th>总计</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>基础</td>
+<td>高中</td>
+<td>大学</td>
+</tr>
+<tr>
+<td>9</td>
+<td>8</td>
+<td>13</td>
+</tr>
+<tr>
+<td>16</td>
+<td>20</td>
+<td>9</td>
+</tr>
+<tr>
+<td>6</td>
+<td>13</td>
+<td>6</td>
+</tr>
+<tr>
+<td>总计</td>
+<td>31</td>
+<td>41</td>
+</tr>
+</tbody></table>
+</li>
 </ul>
 </li>
 </ul>
 <h3 id="4-期望频数的计算"><a href="#4-期望频数的计算" class="headerlink" title="4. 期望频数的计算"></a><strong>4. 期望频数的计算</strong></h3><ul>
 <li><strong>期望频数</strong>:<ul>
-<li>在原假设 $ H_0 $ 下，变量独立时，每个单元格的期望频数为：<script type="math/tex; mode=display">
-e_{ij} = \frac{o_i \cdot o_j}{n}</script></li>
+<li>在原假设 $ H_0 $ 下，变量独立时，每个单元格的期望频数为：<br>$$<br>e_{ij} &#x3D; \frac{o_i \cdot o_j}{n}<br>$$</li>
 <li>其中 $ o_i $ 是第 $ i $ 行的总和，$ o_j $ 是第 $ j $ 列的总和，$ n $ 是总样本量。</li>
 </ul>
 </li>
 <li><strong>示例</strong>:<ul>
-<li>对于第2行第1列的期望频数：<script type="math/tex; mode=display">
-e_{21} = \frac{o_2 \cdot o_1}{n} = \frac{45 \times 31}{100} = 13.95</script></li>
+<li>对于第2行第1列的期望频数：<br>$$<br>e_{21} &#x3D; \frac{o_2 \cdot o_1}{n} &#x3D; \frac{45 \times 31}{100} &#x3D; 13.95<br>$$</li>
 </ul>
 </li>
 </ul>
 <h3 id="5-卡方检验统计量的计算"><a href="#5-卡方检验统计量的计算" class="headerlink" title="5. 卡方检验统计量的计算"></a><strong>5. 卡方检验统计量的计算</strong></h3><ul>
 <li><strong>卡方检验统计量</strong>:<ul>
-<li>卡方检验统计量用于衡量观测频数与期望频数之间的差异：<script type="math/tex; mode=display">
-\chi^2 = \sum_{i=1}^r \sum_{j=1}^c \frac{(o_{ij} - e_{ij})^2}{e_{ij}}</script></li>
-<li>其中 $ o<em>{ij} $ 是观测频数，$ e</em>{ij} $ 是期望频数。</li>
+<li>卡方检验统计量用于衡量观测频数与期望频数之间的差异：<br>$$<br>\chi^2 &#x3D; \sum_{i&#x3D;1}^r \sum_{j&#x3D;1}^c \frac{(o_{ij} - e_{ij})^2}{e_{ij}}<br>$$</li>
+<li>其中 $ o_{ij} $ 是观测频数，$ e_{ij} $ 是期望频数。</li>
 </ul>
 </li>
 <li><strong>自由度</strong>:<ul>
@@ -612,11 +632,11 @@ e_{21} = \frac{o_2 \cdot o_1}{n} = \frac{45 \times 31}{100} = 13.95</script></li
 </ul>
 </li>
 <li><strong>计算期望频数</strong>:<ul>
-<li>使用公式 $ e_{ij} = \frac{o_i \cdot o_j}{n} $ 计算每个单元格的期望频数。</li>
+<li>使用公式 $ e_{ij} &#x3D; \frac{o_i \cdot o_j}{n} $ 计算每个单元格的期望频数。</li>
 </ul>
 </li>
 <li><strong>计算卡方统计量</strong>:<ul>
-<li>使用公式 $ \chi^2 = \sum<em>{i=1}^r \sum</em>{j=1}^c \frac{(o<em>{ij} - e</em>{ij})^2}{e_{ij}} $ 计算卡方统计量。</li>
+<li>使用公式 $ \chi^2 &#x3D; \sum_{i&#x3D;1}^r \sum_{j&#x3D;1}^c \frac{(o_{ij} - e_{ij})^2}{e_{ij}} $ 计算卡方统计量。</li>
 </ul>
 </li>
 <li><strong>确定自由度</strong>:<ul>
@@ -637,20 +657,18 @@ e_{21} = \frac{o_2 \cdot o_1}{n} = \frac{45 \times 31}{100} = 13.95</script></li
 <li><p><strong>示例1：教育水平的关联性检验</strong>:</p>
 <ul>
 <li>数据：男性和女性的教育水平列联表。</li>
-<li>计算卡方统计量：<script type="math/tex; mode=display">
-\chi^2 = \frac{(9 - 9.3)^2}{9.3} + \frac{(8 - 12.3)^2}{12.3} + \cdots + \frac{(6 - 7)^2}{7} = 6.768</script></li>
-<li>自由度：$ (3-1)(3-1) = 4 $。</li>
-<li>p值：$ p = P(\chi^2_{df=4} \geq 6.768) = 0.1486 $。</li>
+<li>计算卡方统计量：<br>$$<br>\chi^2 &#x3D; \frac{(9 - 9.3)^2}{9.3} + \frac{(8 - 12.3)^2}{12.3} + \cdots + \frac{(6 - 7)^2}{7} &#x3D; 6.768<br>$$</li>
+<li>自由度：$ (3-1)(3-1) &#x3D; 4 $。</li>
+<li>p值：$ p &#x3D; P(\chi^2_{df&#x3D;4} \geq 6.768) &#x3D; 0.1486 $。</li>
 <li>结论：$ p &gt; 0.05 $，不拒绝 $ H_0 $，认为男性和女性的教育水平独立。</li>
 </ul>
 </li>
 <li><p><strong>示例2：性别与投票意向的关联性检验</strong>:</p>
 <ul>
 <li>数据：男性和女性的投票意向列联表。</li>
-<li>计算卡方统计量：<script type="math/tex; mode=display">
-\chi^2 = \frac{(23 - 28.16)^2}{28.16} + \frac{(21 - 15.84)^2}{15.84} + \frac{(41 - 35.84)^2}{35.84} + \frac{(15 - 20.16)^2}{20.16} = 4.69</script></li>
-<li>自由度：$ (2-1)(2-1) = 1 $。</li>
-<li>p值：$ p = P(\chi^2_{df=1} \geq 4.69) \approx 0.03 $。</li>
+<li>计算卡方统计量：<br>$$<br>\chi^2 &#x3D; \frac{(23 - 28.16)^2}{28.16} + \frac{(21 - 15.84)^2}{15.84} + \frac{(41 - 35.84)^2}{35.84} + \frac{(15 - 20.16)^2}{20.16} &#x3D; 4.69<br>$$</li>
+<li>自由度：$ (2-1)(2-1) &#x3D; 1 $。</li>
+<li>p值：$ p &#x3D; P(\chi^2_{df&#x3D;1} \geq 4.69) \approx 0.03 $。</li>
 <li>结论：$ p &lt; 0.05 $，拒绝 $ H_0 $，认为性别与投票意向相关。</li>
 </ul>
 </li>
@@ -741,9 +759,8 @@ e_{21} = \frac{o_2 \cdot o_1}{n} = \frac{45 \times 31}{100} = 13.95</script></li
 <li>是多项逻辑回归模型的扩展，能够处理替代项层面的变量。</li>
 </ul>
 </li>
-<li><strong>模型公式</strong>:<script type="math/tex; mode=display">
-Pr(y_{ij} = 1) = \frac{e^{Z_{ij}\alpha_{ij}}}{\sum_{k=1}^{K_i} e^{Z_{ik}\alpha_{ik}}}</script><ul>
-<li>$ y_{ij} = 1 $ 表示决策者 $ i $ 选择了替代项 $ j $。</li>
+<li><strong>模型公式</strong>:<br>$$<br>Pr(y_{ij} &#x3D; 1) &#x3D; \frac{e^{Z_{ij}\alpha_{ij}}}{\sum_{k&#x3D;1}^{K_i} e^{Z_{ik}\alpha_{ik}}}<br>$$<ul>
+<li>$ y_{ij} &#x3D; 1 $ 表示决策者 $ i $ 选择了替代项 $ j $。</li>
 <li>$ Z_{ij} $ 是替代项 $ j $ 的属性向量。</li>
 <li>$ \alpha_{ij} $ 是替代项 $ j $ 的系数向量，可能随决策者 $ i $ 变化。</li>
 <li>$ K_i $ 是决策者 $ i $ 的选择集中的替代项数量。</li>
@@ -753,7 +770,88 @@ Pr(y_{ij} = 1) = \frac{e^{Z_{ij}\alpha_{ij}}}{\sum_{k=1}^{K_i} e^{Z_{ik}\alpha_{
 <h3 id="6-数据结构"><a href="#6-数据结构" class="headerlink" title="6. 数据结构"></a><strong>6. 数据结构</strong></h3><ul>
 <li><strong>长格式数据</strong>:<ul>
 <li>数据通常以长格式存储，每个决策者的每个替代项占一行。</li>
-<li>示例数据结构：<br>| id | college | hsg2 | coml5 | alt | choice | type | fuel | cost |<br>| —- | —- | —- | —- | —- | —- | —- | —- | —- |<br>| 1 | 0 | 0 | 0 | 1 | 1 | van | eng | 4 |<br>| 1 | 0 | 0 | 0 | 2 | 0 | regcar | eng | 4 |<br>| 1 | 0 | 0 | 0 | 3 | 0 | van | electric | 6 |<br>| 1 | 0 | 0 | 0 | 4 | 0 | stwagon | electric | 6 |<br>| 1 | 0 | 0 | 0 | 5 | 0 | van | gasoline | 8 |<br>| 1 | 0 | 0 | 0 | 6 | 0 | truck | gasoline | 8 |</li>
+<li>示例数据结构：<table>
+<thead>
+<tr>
+<th>id</th>
+<th>college</th>
+<th>hsg2</th>
+<th>coml5</th>
+<th>alt</th>
+<th>choice</th>
+<th>type</th>
+<th>fuel</th>
+<th>cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>van</td>
+<td>eng</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>regcar</td>
+<td>eng</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>3</td>
+<td>0</td>
+<td>van</td>
+<td>electric</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>4</td>
+<td>0</td>
+<td>stwagon</td>
+<td>electric</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>5</td>
+<td>0</td>
+<td>van</td>
+<td>gasoline</td>
+<td>8</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>6</td>
+<td>0</td>
+<td>truck</td>
+<td>gasoline</td>
+<td>8</td>
+</tr>
+</tbody></table>
+</li>
 </ul>
 </li>
 </ul>
@@ -778,9 +876,9 @@ Pr(y_{ij} = 1) = \frac{e^{Z_{ij}\alpha_{ij}}}{\sum_{k=1}^{K_i} e^{Z_{ik}\alpha_{
 <li><strong>模型结果</strong>:<ul>
 <li>模型估计了不同车身类型、燃料类型和成本对选择概率的影响。</li>
 <li>示例解释：<ul>
-<li>选择SUV的概率是选择轿车的2.273倍（$ e^{0.821} = 2.273 $）。</li>
-<li>选择电动车的概率是选择汽油车的1.166倍（$ e^{0.154} = 1.166 $）。</li>
-<li>成本每增加10美分，选择概率降低7.5%（$ e^{-0.078} = 0.925 $）。</li>
+<li>选择SUV的概率是选择轿车的2.273倍（$ e^{0.821} &#x3D; 2.273 $）。</li>
+<li>选择电动车的概率是选择汽油车的1.166倍（$ e^{0.154} &#x3D; 1.166 $）。</li>
+<li>成本每增加10美分，选择概率降低7.5%（$ e^{-0.078} &#x3D; 0.925 $）。</li>
 </ul>
 </li>
 </ul>
