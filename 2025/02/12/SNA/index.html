@@ -18,18 +18,18 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>Social Network Analysis - 4th Lec - zennlyu</title>
+  <title>Social Network Analysis - zennlyu</title>
 
   
-    <meta name="description" content="社会网络分析课程笔记 - 第4周1. 小世界网络 (Small Worlds)1.1 小世界现象 小世界现象：指的是在社交网络中，虽然每个人只认识有限的人，但通过这些有限的连接，任何两个人之间的路径长度通常很短。 六度分隔理论：由Frigyes Karinthy在1929年提出，Stanley Milgram在1967年通过实验验证了这一理论。实验表明，通过熟人传递信件，平均需要6步就能将信件传递">
+    <meta name="description" content="社会网络分析课程笔记 - 第1周1. 课程概述 课程目标: 介绍社会网络分析的理论和方法，帮助学生理解网络思维，掌握基本的社会网络概念，并能够使用R语言处理、描述和可视化网络数据。 学习目标: 理解网络思维和基本的社会网络概念。 能够从社会网络嵌入的角度回答社会科学问题。 使用R语言存储、读取、描述和可视化网络数据。 检测网络中的社区和角色模式。 运行指数随机图模型（ERGMs）分析横截面网络数据">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Social Network Analysis - 4th Lec">
+<meta property="og:title" content="Social Network Analysis">
 <meta property="og:url" content="http://example.com/2025/02/12/SNA/index.html">
 <meta property="og:site_name" content="zennlyu">
-<meta property="og:description" content="社会网络分析课程笔记 - 第4周1. 小世界网络 (Small Worlds)1.1 小世界现象 小世界现象：指的是在社交网络中，虽然每个人只认识有限的人，但通过这些有限的连接，任何两个人之间的路径长度通常很短。 六度分隔理论：由Frigyes Karinthy在1929年提出，Stanley Milgram在1967年通过实验验证了这一理论。实验表明，通过熟人传递信件，平均需要6步就能将信件传递">
+<meta property="og:description" content="社会网络分析课程笔记 - 第1周1. 课程概述 课程目标: 介绍社会网络分析的理论和方法，帮助学生理解网络思维，掌握基本的社会网络概念，并能够使用R语言处理、描述和可视化网络数据。 学习目标: 理解网络思维和基本的社会网络概念。 能够从社会网络嵌入的角度回答社会科学问题。 使用R语言存储、读取、描述和可视化网络数据。 检测网络中的社区和角色模式。 运行指数随机图模型（ERGMs）分析横截面网络数据">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-02-12T10:26:12.795Z">
-<meta property="article:modified_time" content="2025-02-12T10:44:22.827Z">
+<meta property="article:modified_time" content="2025-03-12T12:18:38.568Z">
 <meta property="article:author" content="zennlyu">
 <meta property="article:tag" content="SNA">
 <meta name="twitter:card" content="summary">
@@ -71,7 +71,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0-%E7%AC%AC4%E5%91%A8"><span class="toc-text">社会网络分析课程笔记 - 第4周</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B0%8F%E4%B8%96%E7%95%8C%E7%BD%91%E7%BB%9C-Small-Worlds"><span class="toc-text">1. 小世界网络 (Small Worlds)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%B0%8F%E4%B8%96%E7%95%8C%E7%8E%B0%E8%B1%A1"><span class="toc-text">1.1 小世界现象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%B0%8F%E4%B8%96%E7%95%8C%E7%BD%91%E7%BB%9C%E7%9A%84%E7%89%B9%E5%BE%81"><span class="toc-text">1.2 小世界网络的特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%B0%8F%E4%B8%96%E7%95%8C%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B"><span class="toc-text">1.3 小世界网络模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E5%B0%8F%E4%B8%96%E7%95%8C%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">1.4 小世界网络的应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%97%A0%E6%A0%87%E5%BA%A6%E7%BD%91%E7%BB%9C-Scale-Free-Networks"><span class="toc-text">2. 无标度网络 (Scale-Free Networks)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%97%A0%E6%A0%87%E5%BA%A6%E7%BD%91%E7%BB%9C%E7%9A%84%E7%89%B9%E5%BE%81"><span class="toc-text">2.1 无标度网络的特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%97%A0%E6%A0%87%E5%BA%A6%E7%BD%91%E7%BB%9C%E7%9A%84%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="toc-text">2.2 无标度网络的生成模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%97%A0%E6%A0%87%E5%BA%A6%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">2.3 无标度网络的应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A4%9A%E9%87%8D%E5%9B%9E%E5%BD%92%E4%BA%8C%E6%AC%A1%E5%88%86%E9%85%8D%E7%A8%8B%E5%BA%8F-MRQAP"><span class="toc-text">3. 多重回归二次分配程序 (MRQAP)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8MRQAP%EF%BC%9F"><span class="toc-text">3.1 为什么使用MRQAP？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-MRQAP%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="toc-text">3.2 MRQAP的基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-MRQAP%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">3.3 MRQAP的应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BB%BB%E5%8A%A1%E6%80%BB%E7%BB%93"><span class="toc-text">4. 任务总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E4%BB%BB%E5%8A%A11%EF%BC%9A%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96%E4%B8%8E%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2"><span class="toc-text">4.1 任务1：数据读取与格式转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E4%BB%BB%E5%8A%A12%EF%BC%9A%E5%A4%84%E7%90%86%E5%AD%A4%E7%AB%8B%E8%8A%82%E7%82%B9%E5%92%8C%E5%A4%9A%E7%BB%84%E4%BB%B6"><span class="toc-text">4.2 任务2：处理孤立节点和多组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E4%BB%BB%E5%8A%A13%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%AF%86%E5%BA%A6%E4%B8%8E%E6%8F%8F%E8%BF%B0%E6%80%A7%E7%BB%9F%E8%AE%A1"><span class="toc-text">4.3 任务3：网络密度与描述性统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E4%BB%BB%E5%8A%A14%EF%BC%9A%E5%BA%A6%E6%95%B0%E5%88%86%E5%B8%83%E5%9B%BE"><span class="toc-text">4.4 任务4：度数分布图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E4%BB%BB%E5%8A%A15%EF%BC%9A%E8%8A%82%E7%82%B9%E7%BA%A7%E5%8F%98%E9%87%8F%E7%9A%84%E6%8F%8F%E8%BF%B0%E6%80%A7%E7%BB%9F%E8%AE%A1"><span class="toc-text">4.5 任务5：节点级变量的描述性统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-%E4%BB%BB%E5%8A%A16%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-text">4.6 任务6：网络可视化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-7-%E4%BB%BB%E5%8A%A17%EF%BC%9A%E5%90%8C%E9%85%8D%E6%80%A7%E6%A3%80%E9%AA%8C"><span class="toc-text">4.7 任务7：同配性检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-8-%E4%BB%BB%E5%8A%A18%EF%BC%9A%E7%BD%91%E7%BB%9C%E9%B2%81%E6%A3%92%E6%80%A7%E6%B5%8B%E9%87%8F"><span class="toc-text">4.8 任务8：网络鲁棒性测量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86"><span class="toc-text">5. 拓展知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%B0%8F%E4%B8%96%E7%95%8C%E7%BD%91%E7%BB%9C%E4%B8%8E%E9%9A%8F%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E6%AF%94%E8%BE%83"><span class="toc-text">5.1 小世界网络与随机网络的比较</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%97%A0%E6%A0%87%E5%BA%A6%E7%BD%91%E7%BB%9C%E4%B8%8E%E9%9A%8F%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E6%AF%94%E8%BE%83"><span class="toc-text">5.2 无标度网络与随机网络的比较</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-MRQAP%E4%B8%8E%E4%BC%A0%E7%BB%9F%E5%9B%9E%E5%BD%92%E7%9A%84%E6%AF%94%E8%BE%83"><span class="toc-text">5.3 MRQAP与传统回归的比较</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B0%8F%E4%B8%96%E7%95%8C%E7%BD%91%E7%BB%9C-Small-Worlds-1"><span class="toc-text">1. 小世界网络 (Small Worlds)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%B0%8F%E4%B8%96%E7%95%8C%E7%8E%B0%E8%B1%A1-1"><span class="toc-text">1.1 小世界现象</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%89%E5%8F%8A%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A"><span class="toc-text">涉及的数学原理：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%8F%E4%B8%96%E7%95%8C%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E7%89%B9%E6%80%A7%EF%BC%9A"><span class="toc-text">小世界网络的数学特性：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%97%A0%E6%A0%87%E5%BA%A6%E7%BD%91%E7%BB%9C-Scale-Free-Networks-1"><span class="toc-text">2. 无标度网络 (Scale-Free Networks)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%97%A0%E6%A0%87%E5%BA%A6%E7%BD%91%E7%BB%9C%E7%9A%84%E7%89%B9%E5%BE%81-1"><span class="toc-text">2.1 无标度网络的特征</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%89%E5%8F%8A%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A-1"><span class="toc-text">涉及的数学原理：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A0%E6%A0%87%E5%BA%A6%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E7%89%B9%E6%80%A7%EF%BC%9A"><span class="toc-text">无标度网络的数学特性：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A4%9A%E9%87%8D%E5%9B%9E%E5%BD%92%E4%BA%8C%E6%AC%A1%E5%88%86%E9%85%8D%E7%A8%8B%E5%BA%8F-MRQAP-1"><span class="toc-text">3. 多重回归二次分配程序 (MRQAP)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-MRQAP%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="toc-text">3.1 MRQAP的基本思想</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%89%E5%8F%8A%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A-2"><span class="toc-text">涉及的数学原理：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MRQAP%E7%9A%84%E6%95%B0%E5%AD%A6%E7%89%B9%E6%80%A7%EF%BC%9A"><span class="toc-text">MRQAP的数学特性：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%80%BB%E7%BB%93"><span class="toc-text">4. 总结</span></a></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">TOC</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0-%E7%AC%AC1%E5%91%A8"><span class="toc-text">社会网络分析课程笔记 - 第1周</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%AF%BE%E7%A8%8B%E6%A6%82%E8%BF%B0"><span class="toc-text">1. 课程概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%BE%E7%A8%8B%E7%BB%93%E6%9E%84"><span class="toc-text">2. 课程结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E7%9A%84%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-text">4. 社会网络分析的核心概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E7%9A%84%E5%8E%86%E5%8F%B2"><span class="toc-text">5. 社会网络分析的历史</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90-vs-%E7%BD%91%E7%BB%9C%E7%A7%91%E5%AD%A6"><span class="toc-text">6. 社会网络分析 vs. 网络科学</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E7%9A%84%E6%A0%B8%E5%BF%83%E7%90%86%E8%AE%BA%E8%B4%A1%E7%8C%AE"><span class="toc-text">7. 社会网络分析的核心理论贡献</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-text">8. 社会网络分析的例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E7%BD%91%E7%BB%9C%E6%95%B0%E6%8D%AE%E7%9A%84%E6%95%B0%E5%AD%A6%E8%A1%A8%E7%A4%BA"><span class="toc-text">9. 网络数据的数学表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E7%BD%91%E7%BB%9C%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8C%87%E6%A0%87"><span class="toc-text">10. 网络的基本指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97%E4%B8%8E%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90"><span class="toc-text">11. 矩阵运算与网络分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E4%B8%AD%E5%BF%83%E6%80%A7%E5%BA%A6%E9%87%8F"><span class="toc-text">12. 中心性度量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%A6%E9%87%8F"><span class="toc-text">13. 网络的其他度量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-%E4%BA%8C%E6%A8%A1%E7%BD%91%E7%BB%9C%EF%BC%88Bipartite-Networks%EF%BC%89"><span class="toc-text">14. 二模网络（Bipartite Networks）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-%E7%BD%91%E7%BB%9C%E6%95%B0%E6%8D%AE%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">15. 网络数据的转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16-%E6%80%BB%E7%BB%93"><span class="toc-text">16. 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0-%E7%AC%AC2%E5%91%A8"><span class="toc-text">社会网络分析课程笔记 - 第2周</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%AC%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8C%87%E6%A0%87"><span class="toc-text">1. 网络层次的基本指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%A1%8C%E5%8A%A8%E8%80%85%E5%B1%82%E6%AC%A1%E7%9A%84%E4%B8%AD%E5%BF%83%E6%80%A7%E5%BA%A6%E9%87%8F"><span class="toc-text">2. 行动者层次的中心性度量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%A6%E9%87%8F"><span class="toc-text">3. 网络的其他度量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BD%91%E7%BB%9C%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%84%E7%90%86%E4%B8%8E%E8%BD%AC%E6%8D%A2"><span class="toc-text">4. 网络数据的处理与转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E4%BA%8C%E6%A8%A1%E7%BD%91%E7%BB%9C%EF%BC%88Bipartite-Networks%EF%BC%89"><span class="toc-text">5. 二模网络（Bipartite Networks）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%BD%91%E7%BB%9C%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-text">6. 网络可视化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E7%BA%B5%E5%90%91%E7%BD%91%E7%BB%9C%EF%BC%88Longitudinal-Networks%EF%BC%89"><span class="toc-text">7. 纵向网络（Longitudinal Networks）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E6%80%BB%E7%BB%93"><span class="toc-text">8. 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0-%E7%AC%AC3%E5%91%A8"><span class="toc-text">社会网络分析课程笔记 - 第3周</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A4%BE%E5%8C%BA%E6%A3%80%E6%B5%8B%EF%BC%88Community-Detection%EF%BC%89"><span class="toc-text">1. 社区检测（Community Detection）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%A4%BE%E5%8C%BA%E6%A3%80%E6%B5%8B%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">2. 社区检测的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%A8%A1%E5%9D%97%E5%BA%A6%EF%BC%88Modularity%EF%BC%89"><span class="toc-text">3. 模块度（Modularity）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%A4%BE%E5%8C%BA%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95"><span class="toc-text">4. 社区检测算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%BD%91%E7%BB%9C%E7%9B%B8%E4%BC%BC%E6%80%A7%E5%BA%A6%E9%87%8F"><span class="toc-text">5. 网络相似性度量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%80%BB%E7%BB%93"><span class="toc-text">6. 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E7%AC%AC%E5%9B%9B%E8%AF%BE%E7%AC%94%E8%AE%B0"><span class="toc-text">社会网络分析第四课笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B0%8F%E4%B8%96%E7%95%8C%E7%BD%91%E7%BB%9C%EF%BC%88Small-World-Networks%EF%BC%89"><span class="toc-text">1. 小世界网络（Small World Networks）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%97%A0%E6%A0%87%E5%BA%A6%E7%BD%91%E7%BB%9C%EF%BC%88Scale-Free-Networks%EF%BC%89"><span class="toc-text">2. 无标度网络（Scale-Free Networks）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BA%8C%E6%AC%A1%E5%88%86%E9%85%8D%E7%A8%8B%E5%BA%8F%EF%BC%88Quadratic-Assignment-Procedure-QAP%EF%BC%89"><span class="toc-text">3. 二次分配程序（Quadratic Assignment Procedure, QAP）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BD%91%E7%BB%9C%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-text">4. 网络可视化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%80%BB%E7%BB%93"><span class="toc-text">5. 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E7%AC%AC%E4%BA%94%E8%AF%BE%E7%AC%94%E8%AE%B0"><span class="toc-text">社会网络分析第五课笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BD%91%E7%BB%9C%E5%BB%BA%E6%A8%A1%E7%9A%84%E7%9B%AE%E7%9A%84"><span class="toc-text">1. 网络建模的目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%8C%87%E6%95%B0%E9%9A%8F%E6%9C%BA%E5%9B%BE%E6%A8%A1%E5%9E%8B%EF%BC%88Exponential-Random-Graph-Model-ERGM%EF%BC%89"><span class="toc-text">2. 指数随机图模型（Exponential Random Graph Model, ERGM）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ERGM-%E7%9A%84%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A"><span class="toc-text">3. ERGM 的参数解释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-ERGM-%E7%9A%84%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-text">4. ERGM 的应用示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%A8%A1%E5%9E%8B%E9%80%80%E5%8C%96%EF%BC%88Model-Degeneracy%EF%BC%89"><span class="toc-text">5. 模型退化（Model Degeneracy）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%A8%A1%E5%9E%8B%E6%8B%9F%E5%90%88%E4%BC%98%E5%BA%A6%EF%BC%88Goodness-of-Fit-GOF%EF%BC%89"><span class="toc-text">6. 模型拟合优度（Goodness of Fit, GOF）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E6%80%BB%E7%BB%93"><span class="toc-text">7. 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E7%AC%AC%E5%85%AD%E8%AF%BE%E7%AC%94%E8%AE%B0"><span class="toc-text">社会网络分析第六课笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%A4%9A%E9%87%8D%E7%BD%91%E7%BB%9C%EF%BC%88Multiplex-Networks%EF%BC%89"><span class="toc-text">1. 多重网络（Multiplex Networks）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%A4%9A%E9%87%8D%E7%BD%91%E7%BB%9C%E7%9A%84%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95"><span class="toc-text">2. 多重网络的分析方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%A4%9A%E9%87%8D%E7%BD%91%E7%BB%9C%E7%9A%84%E6%8F%8F%E8%BF%B0%E6%80%A7%E7%BB%9F%E8%AE%A1"><span class="toc-text">3. 多重网络的描述性统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%9A%E9%87%8D%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BB%BA%E6%A8%A1"><span class="toc-text">4. 多重网络的建模</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%B4%9F%E5%90%91%E5%85%B3%E7%B3%BB%E4%B8%8E%E7%BB%93%E6%9E%84%E5%B9%B3%E8%A1%A1%EF%BC%88Negative-Ties-and-Structural-Balance%EF%BC%89"><span class="toc-text">5. 负向关系与结构平衡（Negative Ties and Structural Balance）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E8%B4%9F%E5%90%91%E5%85%B3%E7%B3%BB%E7%9A%84%E6%8C%91%E6%88%98"><span class="toc-text">6. 负向关系的挑战</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E6%80%BB%E7%BB%93-1"><span class="toc-text">7. 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8A%A8%E6%80%81%E5%BB%BA%E6%A8%A1%EF%BC%88Modelling-Network-Dynamics%EF%BC%89"><span class="toc-text">社会网络分析：网络动态建模（Modelling Network Dynamics）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%BB%BA%E6%A8%A1%E7%BD%91%E7%BB%9C%E5%8A%A8%E6%80%81%EF%BC%9F"><span class="toc-text">1. 为什么需要建模网络动态？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%A6%82%E4%BD%95%E5%BB%BA%E6%A8%A1%E7%BD%91%E7%BB%9C%E5%8A%A8%E6%80%81%EF%BC%9F"><span class="toc-text">2. 如何建模网络动态？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-SAOM%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%81%87%E8%AE%BE"><span class="toc-text">3. SAOM的基本假设</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%81%87%E8%AE%BE1%EF%BC%9A%E8%A1%8C%E5%8A%A8%E8%80%85%E5%AF%BC%E5%90%91%E7%9A%84%E8%A7%86%E8%A7%92"><span class="toc-text">假设1：行动者导向的视角</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%81%87%E8%AE%BE2%EF%BC%9A%E5%8F%AF%E5%88%86%E8%A7%A3%E6%80%A7%EF%BC%88Decomposability%EF%BC%89"><span class="toc-text">假设2：可分解性（Decomposability）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-SAOM%E7%9A%84%E6%95%B0%E5%AD%A6%E5%AE%9A%E4%B9%89"><span class="toc-text">4. SAOM的数学定义</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9F%E7%8E%87%E5%87%BD%E6%95%B0%EF%BC%88Rate-Function%EF%BC%89"><span class="toc-text">速率函数（Rate Function）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E5%87%BD%E6%95%B0%EF%BC%88Objective-Function%EF%BC%89"><span class="toc-text">目标函数（Objective Function）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BB%93%E6%9E%84%E6%95%88%E5%BA%94%E7%BB%9F%E8%AE%A1%E9%87%8F"><span class="toc-text">5. 常用的结构效应统计量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E8%A1%8C%E5%8A%A8%E8%80%85%E5%B1%9E%E6%80%A7%E7%9B%B8%E5%85%B3%E7%9A%84%E6%95%88%E5%BA%94"><span class="toc-text">6. 行动者属性相关的效应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-SAOM%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1%E4%B8%8E%E6%94%B6%E6%95%9B"><span class="toc-text">7. SAOM的参数估计与收敛</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E6%A8%A1%E5%9E%8B%E6%8B%9F%E5%90%88%E4%B8%8E%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C"><span class="toc-text">8. 模型拟合与假设检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%A1%8C%E4%B8%BA%E7%9A%84%E5%85%B1%E6%BC%94%E5%8C%96"><span class="toc-text">9. 网络与行为的共演化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E9%80%89%E6%8B%A9%E4%B8%8E%E5%BD%B1%E5%93%8D%E7%9A%84%E6%B7%B7%E6%B7%86%E9%97%AE%E9%A2%98"><span class="toc-text">10. 选择与影响的混淆问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E7%A4%BA%E4%BE%8B%EF%BC%9AMBA%E5%AD%A6%E7%94%9F%E7%9A%84%E5%BB%BA%E8%AE%AE%E5%AF%BB%E6%B1%82%E7%BD%91%E7%BB%9C"><span class="toc-text">11. 示例：MBA学生的建议寻求网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E6%80%BB%E7%BB%93"><span class="toc-text">12. 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BE%E4%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%EF%BC%9A%E8%A7%92%E8%89%B2%E5%88%86%E6%9E%90%E4%B8%8E%E5%9D%97%E6%A8%A1%E5%9E%8B%EF%BC%88Role-Analysis-and-Blockmodeling%EF%BC%89"><span class="toc-text">社会网络分析：角色分析与块模型（Role Analysis and Blockmodeling）**</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BD%91%E7%BB%9C%E4%BD%9C%E4%B8%BA%E7%9F%A9%E9%98%B5%E7%9A%84%E5%88%9D%E6%AD%A5%E4%BB%8B%E7%BB%8D"><span class="toc-text">1. 网络作为矩阵的初步介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BE%E4%BC%9A%E7%9F%A9%E9%98%B5%E7%9A%84%E8%AF%BB%E5%8F%96"><span class="toc-text">社会矩阵的读取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E7%A7%B0%E6%80%A7%EF%BC%88Symmetric%EF%BC%89"><span class="toc-text">对称性（Symmetric）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%A7%92%E8%89%B2%E5%88%86%E6%9E%90%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">2. 角色分析的基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%9D%97%E6%A8%A1%E5%9E%8B%EF%BC%88Blockmodeling%EF%BC%89"><span class="toc-text">3. 块模型（Blockmodeling）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9D%97%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-text">块模型的类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9D%97%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%95%B0%E5%AD%A6%E5%AE%9A%E4%B9%89"><span class="toc-text">块模型的数学定义</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%9D%97%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%9E%84%E5%BB%BA%E6%AD%A5%E9%AA%A4"><span class="toc-text">4. 块模型的构建步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E6%96%B9%E6%B3%95%EF%BC%88Direct-Blockmodeling%EF%BC%89"><span class="toc-text">直接方法（Direct Blockmodeling）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%B4%E6%8E%A5%E6%96%B9%E6%B3%95%EF%BC%88Indirect-Blockmodeling%EF%BC%89"><span class="toc-text">间接方法（Indirect Blockmodeling）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%9D%97%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%95%B0%E5%AD%A6%E5%B7%A5%E5%85%B7"><span class="toc-text">5. 块模型的数学工具</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B1%89%E6%98%8E%E8%B7%9D%E7%A6%BB%EF%BC%88Hamming-Distance%EF%BC%89"><span class="toc-text">汉明距离（Hamming Distance）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A0%E6%9D%83%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0%EF%BC%88Weighted-Correlation-Coefficient%EF%BC%89"><span class="toc-text">加权相关系数（Weighted Correlation Coefficient）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%9D%97%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">6. 块模型的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83-%E5%A4%96%E5%9B%B4%E7%BB%93%E6%9E%84%EF%BC%88Core-Periphery-Structure%EF%BC%89"><span class="toc-text">核心-外围结构（Core-Periphery Structure）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BE%E5%8C%BA%E6%A3%80%E6%B5%8B%EF%BC%88Community-Detection%EF%BC%89"><span class="toc-text">社区检测（Community Detection）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%9D%97%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7"><span class="toc-text">7. 块模型的软件工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E6%80%BB%E7%BB%93-1"><span class="toc-text">8. 总结</span></a></li></ol></li></ol></div></div></div>
 
 
 </div>
@@ -87,150 +87,1216 @@
 <div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a><span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/SNA/">SNA</a></div><div id="post-meta">Posted on&nbsp;<time datetime="2025-02-12T10:26:12.795Z">2025-02-12</time></div></div>
 
 <article class='content md post'>
-<h1 class="article-title"><span>Social Network Analysis - 4th Lec</span></h1>
-<h2 id="社会网络分析课程笔记-第4周"><a href="#社会网络分析课程笔记-第4周" class="headerlink" title="社会网络分析课程笔记 - 第4周"></a>社会网络分析课程笔记 - 第4周</h2><h2 id="1-小世界网络-Small-Worlds"><a href="#1-小世界网络-Small-Worlds" class="headerlink" title="1. 小世界网络 (Small Worlds)"></a>1. 小世界网络 (Small Worlds)</h2><h3 id="1-1-小世界现象"><a href="#1-1-小世界现象" class="headerlink" title="1.1 小世界现象"></a>1.1 小世界现象</h3><ul>
-<li><strong>小世界现象</strong>：指的是在社交网络中，虽然每个人只认识有限的人，但通过这些有限的连接，任何两个人之间的路径长度通常很短。</li>
-<li><strong>六度分隔理论</strong>：由Frigyes Karinthy在1929年提出，Stanley Milgram在1967年通过实验验证了这一理论。实验表明，通过熟人传递信件，平均需要6步就能将信件传递到目标人物。</li>
+<h1 class="article-title"><span>Social Network Analysis</span></h1>
+<h2 id="社会网络分析课程笔记-第1周"><a href="#社会网络分析课程笔记-第1周" class="headerlink" title="社会网络分析课程笔记 - 第1周"></a>社会网络分析课程笔记 - 第1周</h2><h3 id="1-课程概述"><a href="#1-课程概述" class="headerlink" title="1. 课程概述"></a><strong>1. 课程概述</strong></h3><ul>
+<li><strong>课程目标</strong>: 介绍社会网络分析的理论和方法，帮助学生理解网络思维，掌握基本的社会网络概念，并能够使用R语言处理、描述和可视化网络数据。</li>
+<li><strong>学习目标</strong>:<ul>
+<li>理解网络思维和基本的社会网络概念。</li>
+<li>能够从社会网络嵌入的角度回答社会科学问题。</li>
+<li>使用R语言存储、读取、描述和可视化网络数据。</li>
+<li>检测网络中的社区和角色模式。</li>
+<li>运行指数随机图模型（ERGMs）分析横截面网络数据。</li>
+<li>分析纵向社会网络数据，包括使用随机行动者导向模型（SAOMs）分离选择和影响。</li>
+<li>理解并解释这些统计技术的结果，同时注意模型的局限性和拟合优度。</li>
 </ul>
-<h3 id="1-2-小世界网络的特征"><a href="#1-2-小世界网络的特征" class="headerlink" title="1.2 小世界网络的特征"></a>1.2 小世界网络的特征</h3><ul>
-<li><strong>短平均路径长度</strong>：网络中任意两个节点之间的平均路径长度较短。</li>
-<li><strong>高聚类系数</strong>：网络中的节点倾向于形成紧密的群体，即“朋友的朋友也是朋友”。</li>
-<li><strong>低密度</strong>：网络中的连接相对稀疏。</li>
-</ul>
-<h3 id="1-3-小世界网络模型"><a href="#1-3-小世界网络模型" class="headerlink" title="1.3 小世界网络模型"></a>1.3 小世界网络模型</h3><ul>
-<li><strong>Watts-Strogatz模型</strong>：通过引入随机连接（“捷径”）来模拟小世界网络。模型从高度规则的网络开始，逐步增加随机性，直到达到随机网络。</li>
-<li><strong>Kasturirangan模型</strong>：通过引入“经纪人”角色来模拟小世界网络，经纪人连接不同的群体，从而缩短路径长度。</li>
-</ul>
-<h3 id="1-4-小世界网络的应用"><a href="#1-4-小世界网络的应用" class="headerlink" title="1.4 小世界网络的应用"></a>1.4 小世界网络的应用</h3><ul>
-<li><strong>创新扩散</strong>：小世界网络有助于快速传播信息和创新。</li>
-<li><strong>社会影响</strong>：在小世界网络中，社会规范、意见等可以迅速传播。</li>
-<li><strong>传染病传播</strong>：小世界网络可以解释传染病的快速传播。</li>
-</ul>
-<h2 id="2-无标度网络-Scale-Free-Networks"><a href="#2-无标度网络-Scale-Free-Networks" class="headerlink" title="2. 无标度网络 (Scale-Free Networks)"></a>2. 无标度网络 (Scale-Free Networks)</h2><h3 id="2-1-无标度网络的特征"><a href="#2-1-无标度网络的特征" class="headerlink" title="2.1 无标度网络的特征"></a>2.1 无标度网络的特征</h3><ul>
-<li><strong>幂律分布</strong>：无标度网络的度分布遵循幂律分布，即大部分节点的度数较低，少数节点的度数非常高（“枢纽”节点）。</li>
-<li><strong>枢纽节点</strong>：这些高度连接的节点在网络中起到关键作用，能够快速传播信息或影响。</li>
-</ul>
-<h3 id="2-2-无标度网络的生成模型"><a href="#2-2-无标度网络的生成模型" class="headerlink" title="2.2 无标度网络的生成模型"></a>2.2 无标度网络的生成模型</h3><ul>
-<li><strong>Barabási-Albert模型</strong>：通过“优先连接”机制生成无标度网络。新加入的节点更倾向于连接到已经高度连接的节点。</li>
-</ul>
-<h3 id="2-3-无标度网络的应用"><a href="#2-3-无标度网络的应用" class="headerlink" title="2.3 无标度网络的应用"></a>2.3 无标度网络的应用</h3><ul>
-<li><strong>互联网</strong>：互联网的链接结构近似于无标度网络，少数网站拥有大量的链接。</li>
-<li><strong>社交网络</strong>：社交网络中的“影响力人物”类似于无标度网络中的枢纽节点。</li>
-</ul>
-<h2 id="3-多重回归二次分配程序-MRQAP"><a href="#3-多重回归二次分配程序-MRQAP" class="headerlink" title="3. 多重回归二次分配程序 (MRQAP)"></a>3. 多重回归二次分配程序 (MRQAP)</h2><h3 id="3-1-为什么使用MRQAP？"><a href="#3-1-为什么使用MRQAP？" class="headerlink" title="3.1 为什么使用MRQAP？"></a>3.1 为什么使用MRQAP？</h3><ul>
-<li><strong>观测依赖性</strong>：在社交网络中，观测数据（如节点之间的关系）通常不是独立的，传统的回归方法（如OLS）无法处理这种依赖性。</li>
-<li><strong>MRQAP的优势</strong>：通过置换节点来生成随机数据集，从而估计标准误差，解决了观测依赖性问题。</li>
-</ul>
-<h3 id="3-2-MRQAP的基本思想"><a href="#3-2-MRQAP的基本思想" class="headerlink" title="3.2 MRQAP的基本思想"></a>3.2 MRQAP的基本思想</h3><ul>
-<li><strong>置换节点</strong>：通过置换节点的位置来生成多个随机数据集，保持网络结构不变。</li>
-<li><strong>生成零分布</strong>：通过多次置换生成一个零分布，用于比较实际观测值与随机分布。</li>
-</ul>
-<h3 id="3-3-MRQAP的应用"><a href="#3-3-MRQAP的应用" class="headerlink" title="3.3 MRQAP的应用"></a>3.3 MRQAP的应用</h3><ul>
-<li><strong>QAP相关性</strong>：用于检验两个网络矩阵之间的相关性。</li>
-<li><strong>QAP回归</strong>：用于检验一个网络矩阵是否能够预测另一个网络矩阵。</li>
-</ul>
-<h2 id="4-任务总结"><a href="#4-任务总结" class="headerlink" title="4. 任务总结"></a>4. 任务总结</h2><h3 id="4-1-任务1：数据读取与格式转换"><a href="#4-1-任务1：数据读取与格式转换" class="headerlink" title="4.1 任务1：数据读取与格式转换"></a>4.1 任务1：数据读取与格式转换</h3><ul>
-<li><strong>目标</strong>：读取数据并将其转换为适合分析的格式。</li>
-<li><strong>常见方法</strong>：使用<code>igraph</code>包读取邻接矩阵或边列表，或直接从GML文件读取数据。</li>
-</ul>
-<h3 id="4-2-任务2：处理孤立节点和多组件"><a href="#4-2-任务2：处理孤立节点和多组件" class="headerlink" title="4.2 任务2：处理孤立节点和多组件"></a>4.2 任务2：处理孤立节点和多组件</h3><ul>
-<li><strong>目标</strong>：识别并处理网络中的孤立节点和多组件。</li>
-<li><strong>常见方法</strong>：使用<code>igraph::components()</code>函数计算网络的组件，或使用<code>sna::isolates()</code>函数识别孤立节点。</li>
-</ul>
-<h3 id="4-3-任务3：网络密度与描述性统计"><a href="#4-3-任务3：网络密度与描述性统计" class="headerlink" title="4.3 任务3：网络密度与描述性统计"></a>4.3 任务3：网络密度与描述性统计</h3><ul>
-<li><strong>目标</strong>：报告并解释网络的密度，创建包含进一步描述性统计的表格。</li>
-<li><strong>常见方法</strong>：计算平均度数、标准差、互惠性和传递性等指标。</li>
-</ul>
-<h3 id="4-4-任务4：度数分布图"><a href="#4-4-任务4：度数分布图" class="headerlink" title="4.4 任务4：度数分布图"></a>4.4 任务4：度数分布图</h3><ul>
-<li><strong>目标</strong>：创建度数分布图，并解释观察到的分布。</li>
-<li><strong>常见方法</strong>：使用直方图或密度图展示度数分布。</li>
-</ul>
-<h3 id="4-5-任务5：节点级变量的描述性统计"><a href="#4-5-任务5：节点级变量的描述性统计" class="headerlink" title="4.5 任务5：节点级变量的描述性统计"></a>4.5 任务5：节点级变量的描述性统计</h3><ul>
-<li><strong>目标</strong>：创建包含节点级变量描述性信息的表格。</li>
-<li><strong>常见方法</strong>：计算均值、中位数、标准差等统计量。</li>
-</ul>
-<h3 id="4-6-任务6：网络可视化"><a href="#4-6-任务6：网络可视化" class="headerlink" title="4.6 任务6：网络可视化"></a>4.6 任务6：网络可视化</h3><ul>
-<li><strong>目标</strong>：根据节点变量或中心性度量对网络进行可视化。</li>
-<li><strong>常见方法</strong>：使用<code>igraph</code>或<code>ggraph</code>包进行网络可视化，并根据节点属性着色。</li>
-</ul>
-<h3 id="4-7-任务7：同配性检验"><a href="#4-7-任务7：同配性检验" class="headerlink" title="4.7 任务7：同配性检验"></a>4.7 任务7：同配性检验</h3><ul>
-<li><strong>目标</strong>：检验网络的同配性，并解释结果。</li>
-<li><strong>常见方法</strong>：使用<code>assortativity()</code>函数计算同配性系数。</li>
-</ul>
-<h3 id="4-8-任务8：网络鲁棒性测量"><a href="#4-8-任务8：网络鲁棒性测量" class="headerlink" title="4.8 任务8：网络鲁棒性测量"></a>4.8 任务8：网络鲁棒性测量</h3><ul>
-<li><strong>目标</strong>：提出一种测量网络鲁棒性的方法，并论证其有用性。</li>
-<li><strong>常见方法</strong>：通过节点或边的移除来模拟网络的脆弱性，或考虑平均路径长度的变化。</li>
-</ul>
-<h2 id="5-拓展知识"><a href="#5-拓展知识" class="headerlink" title="5. 拓展知识"></a>5. 拓展知识</h2><h3 id="5-1-小世界网络与随机网络的比较"><a href="#5-1-小世界网络与随机网络的比较" class="headerlink" title="5.1 小世界网络与随机网络的比较"></a>5.1 小世界网络与随机网络的比较</h3><ul>
-<li><strong>随机网络</strong>：随机网络的聚类系数较低，平均路径长度较短。</li>
-<li><strong>小世界网络</strong>：小世界网络具有较高的聚类系数和较短的平均路径长度，介于规则网络和随机网络之间。</li>
-</ul>
-<h3 id="5-2-无标度网络与随机网络的比较"><a href="#5-2-无标度网络与随机网络的比较" class="headerlink" title="5.2 无标度网络与随机网络的比较"></a>5.2 无标度网络与随机网络的比较</h3><ul>
-<li><strong>随机网络</strong>：随机网络的度分布近似于正态分布，几乎没有枢纽节点。</li>
-<li><strong>无标度网络</strong>：无标度网络的度分布遵循幂律分布，存在少数高度连接的枢纽节点。</li>
-</ul>
-<h3 id="5-3-MRQAP与传统回归的比较"><a href="#5-3-MRQAP与传统回归的比较" class="headerlink" title="5.3 MRQAP与传统回归的比较"></a>5.3 MRQAP与传统回归的比较</h3><ul>
-<li><strong>传统回归</strong>：假设观测数据是独立的，无法处理社交网络中的依赖性。</li>
-<li><strong>MRQAP</strong>：通过置换节点生成随机数据集，解决了观测依赖性问题，适用于社交网络分析。</li>
-</ul>
-<h1 id="社会网络分析第4周内容分析"><a href="#社会网络分析第4周内容分析" class="headerlink" title="社会网络分析第4周内容分析"></a>社会网络分析第4周内容分析</h1><p>第4周的内容主要围绕<strong>小世界网络</strong>、<strong>无标度网络</strong>和<strong>多重回归二次分配程序（MRQAP）</strong>展开。这些内容不仅涉及社会网络的基本概念，还牵涉到一些重要的数学原理。以下是对这些内容的详细分析，特别是其中涉及的数学原理。</p>
-<hr>
-<h2 id="1-小世界网络-Small-Worlds-1"><a href="#1-小世界网络-Small-Worlds-1" class="headerlink" title="1. 小世界网络 (Small Worlds)"></a>1. 小世界网络 (Small Worlds)</h2><h3 id="1-1-小世界现象-1"><a href="#1-1-小世界现象-1" class="headerlink" title="1.1 小世界现象"></a>1.1 小世界现象</h3><p>小世界现象的核心是<strong>短平均路径长度</strong>和<strong>高聚类系数</strong>。这两个特性使得网络既具有局部紧密连接的特性，又具有全局的快速连通性。</p>
-<h4 id="涉及的数学原理："><a href="#涉及的数学原理：" class="headerlink" title="涉及的数学原理："></a>涉及的数学原理：</h4><ul>
-<li><p><strong>平均路径长度</strong>：网络中任意两个节点之间的最短路径的平均值。公式为：<code>L = \frac&#123;1&#125;&#123;n(n-1)&#125; \sum_&#123;i \neq j&#125; d_&#123;ij&#125;</code><br>其中，(<code>d_&#123;ij&#125;</code>) 是节点 (<code>i</code>) 和节点 (<code>j</code>) 之间的最短路径长度，(<code>n</code>) 是网络中的节点数。</p>
-</li>
-<li><p><strong>聚类系数</strong>：衡量网络中节点的邻居之间是否也相互连接。局部聚类系数 (<code>C_i</code>) 定义为: <code>C_i = \frac&#123;2 \cdot \text&#123;实际存在的边数&#125;&#125;&#123;k_i (k_i - 1)&#125;</code><br>其中，(<code>k_i</code>) 是节点 (<code>i</code>) 的度数。全局聚类系数是网络中所有节点局部聚类系数的平均值。</p>
 </li>
 </ul>
-<h4 id="小世界网络的数学特性："><a href="#小世界网络的数学特性：" class="headerlink" title="小世界网络的数学特性："></a>小世界网络的数学特性：</h4><ul>
-<li><strong>短路径</strong>：小世界网络的平均路径长度 <code>L</code> 与网络规模 <code>n</code> 的关系为：<code>  L \sim \frac&#123;\ln n&#125;&#123;\ln k&#125;</code><br>其中，<code>k</code> 是节点的平均度数。</li>
-<li><strong>高聚类</strong>：小世界网络的聚类系数 (C) 远高于随机网络，通常接近规则网络的聚类系数。</li>
+<h3 id="2-课程结构"><a href="#2-课程结构" class="headerlink" title="2. 课程结构"></a><strong>2. 课程结构</strong></h3><ul>
+<li><strong>课程安排</strong>: 共10周，每周有不同的主题和活动，包括讲座、实验室和文献研讨会。<ul>
+<li><strong>第1周</strong>: 网络介绍，为什么研究社会网络。</li>
+<li><strong>第2周</strong>: 社会网络的描述和可视化。</li>
+<li><strong>第3周</strong>: 社区检测和群体分析。</li>
+<li><strong>第4周</strong>: 小世界网络和传染现象。</li>
+<li><strong>第5周</strong>: 指数随机图模型（ERGMs）。</li>
+<li><strong>第6周</strong>: 多重网络和负向关系。</li>
+<li><strong>第7周</strong>: 随机行动者导向模型（SAOMs）。</li>
+<li><strong>第8周</strong>: 块模型分析。</li>
+<li><strong>第9-10周</strong>: 最终项目的在线咨询。</li>
 </ul>
-<hr>
-<h2 id="2-无标度网络-Scale-Free-Networks-1"><a href="#2-无标度网络-Scale-Free-Networks-1" class="headerlink" title="2. 无标度网络 (Scale-Free Networks)"></a>2. 无标度网络 (Scale-Free Networks)</h2><h3 id="2-1-无标度网络的特征-1"><a href="#2-1-无标度网络的特征-1" class="headerlink" title="2.1 无标度网络的特征"></a>2.1 无标度网络的特征</h3><p>无标度网络的核心特征是<strong>度分布遵循幂律分布</strong>，即网络中大部分节点的度数较低，少数节点的度数非常高（“枢纽”节点）。</p>
-<h4 id="涉及的数学原理：-1"><a href="#涉及的数学原理：-1" class="headerlink" title="涉及的数学原理："></a>涉及的数学原理：</h4><ul>
-<li><p><strong>幂律分布</strong>：无标度网络的度分布 <code>P(k)</code> 满足：<code>P(k) \sim k^&#123;-\gamma&#125;</code><br>其中，<code>\gamma</code> 是幂律指数，通常在 2 &lt; <code>\gamma</code> &lt; 3 之间。幂律分布的特点是“长尾”，即存在少数高度连接的节点。</p>
 </li>
-<li><p><strong>优先连接机制</strong>：Barabási-Albert模型通过优先连接生成无标度网络。新节点连接到已有节点的概率与已有节点的度数成正比：<code>\Pi(k_i) = \frac&#123;k_i&#125;&#123;\sum_j k_j&#125;</code><br>其中，<code>k_i</code> 是节点 <code>i</code> 的度数。</p>
+</ul>
+<h3 id="4-社会网络分析的核心概念"><a href="#4-社会网络分析的核心概念" class="headerlink" title="4. 社会网络分析的核心概念"></a><strong>4. 社会网络分析的核心概念</strong></h3><ol>
+<li><p><strong>网络研究在社会科学中的应用</strong>:</p>
+<ul>
+<li>传统调查数据关注个体的属性（如年龄、收入、教育等），而社会网络分析关注个体之间的关系（如友谊、合作等）。</li>
+<li>社会网络分析适用于研究社会系统中个体、属性和行为的相互依赖性。</li>
+</ul>
+</li>
+<li><p><strong>社会网络的层次</strong>:</p>
+<ul>
+<li><strong>网络层次</strong>: 研究整个社会系统的功能。</li>
+<li><strong>行动者层次</strong>: 研究个体在社会系统中的行为。</li>
+<li><strong>二元层次</strong>: 研究个体之间的关系依赖性。</li>
+</ul>
+</li>
+<li><p><strong>社会网络的类型</strong>:</p>
+<ul>
+<li><strong>正式网络 vs. 非正式网络</strong>: 正式网络是设计的、结构化的（如组织架构），非正式网络是自然形成的（如社区关系）。</li>
+<li><strong>社会网络分析的焦点</strong>: 通常关注非正式、自然形成的网络现象。</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-社会网络分析的历史"><a href="#5-社会网络分析的历史" class="headerlink" title="5. 社会网络分析的历史"></a><strong>5. 社会网络分析的历史</strong></h3><ul>
+<li><strong>Jacob L. Moreno</strong>: 1932年首次使用社会矩阵和社会图来展示儿童之间的喜欢和不喜欢关系。</li>
+<li><strong>John Barnes</strong>: 1954年提出了“社会网络”的概念，认为社会关系是由点和线组成的。</li>
+<li><strong>1970年代</strong>: 社会学家开始应用图论、聚类和空间建模方法来研究小群体结构和社区网络。</li>
+<li><strong>1990年代末至2000年代初</strong>: 网络科学的兴起，依赖于图论、小世界网络和无标度网络的研究。</li>
+</ul>
+<h3 id="6-社会网络分析-vs-网络科学"><a href="#6-社会网络分析-vs-网络科学" class="headerlink" title="6. 社会网络分析 vs. 网络科学"></a><strong>6. 社会网络分析 vs. 网络科学</strong></h3><ul>
+<li><strong>社会网络分析</strong>:<ul>
+<li>根植于行为科学、地理学和社会学。</li>
+<li>通常是假设驱动的。</li>
+<li>关注小型到中型网络（&lt;100个节点）。</li>
+<li>强调社会科学的背景和问题。</li>
+</ul>
+</li>
+<li><strong>网络科学</strong>:<ul>
+<li>根植于物理学和数学。</li>
+<li>通常是探索性的。</li>
+<li>关注大型网络（&gt;100个节点）。</li>
+<li>强调网络结构，跨学科应用。</li>
+</ul>
 </li>
 </ul>
-<h4 id="无标度网络的数学特性："><a href="#无标度网络的数学特性：" class="headerlink" title="无标度网络的数学特性："></a>无标度网络的数学特性：</h4><ul>
-<li><strong>枢纽节点</strong>：由于幂律分布的存在，无标度网络中存在少数高度连接的节点，这些节点在网络中起到关键作用。</li>
-<li><strong>鲁棒性与脆弱性</strong>：无标度网络对随机节点失效具有鲁棒性，但对枢纽节点的攻击非常脆弱。</li>
+<h3 id="7-社会网络分析的核心理论贡献"><a href="#7-社会网络分析的核心理论贡献" class="headerlink" title="7. 社会网络分析的核心理论贡献"></a><strong>7. 社会网络分析的核心理论贡献</strong></h3><ol>
+<li><p><strong>社会资本</strong>:</p>
+<ul>
+<li><strong>James Coleman</strong>: 社会资本作为群体凝聚和封闭的产物。</li>
+<li><strong>Mark Granovetter</strong>: 弱关系的力量（Weak Ties）。</li>
+<li><strong>Ronald Burt</strong>: 结构洞（Structural Holes）。</li>
+<li><strong>Robert Putnam</strong>: 公民参与和成员关系。</li>
 </ul>
-<hr>
-<h2 id="3-多重回归二次分配程序-MRQAP-1"><a href="#3-多重回归二次分配程序-MRQAP-1" class="headerlink" title="3. 多重回归二次分配程序 (MRQAP)"></a>3. 多重回归二次分配程序 (MRQAP)</h2><h3 id="3-1-MRQAP的基本思想"><a href="#3-1-MRQAP的基本思想" class="headerlink" title="3.1 MRQAP的基本思想"></a>3.1 MRQAP的基本思想</h3><p>MRQAP用于分析网络数据中的依赖性问题。传统的回归方法假设观测数据是独立的，但在网络数据中，节点之间的关系通常不是独立的。MRQAP通过置换节点来生成随机数据集，从而解决依赖性问题。</p>
-<h4 id="涉及的数学原理：-2"><a href="#涉及的数学原理：-2" class="headerlink" title="涉及的数学原理："></a>涉及的数学原理：</h4><ul>
-<li><p><strong>置换检验</strong>：MRQAP通过置换节点来生成多个随机数据集，保持网络结构不变。具体步骤如下：</p>
-<ol>
-<li>对网络中的节点进行随机置换，生成一个新的网络矩阵。</li>
-<li>计算置换后的网络矩阵与原始网络矩阵之间的相关性或回归系数。</li>
-<li>重复多次，生成一个零分布。</li>
-<li>将实际观测值与零分布进行比较，计算显著性水平。</li>
+</li>
+<li><p><strong>嵌入性</strong>:</p>
+<ul>
+<li><strong>Mark Granovetter</strong>: 经济行为嵌入社会结构中。</li>
+<li><strong>Brian Uzzi</strong>: 嵌入性与组织绩效的关系。</li>
+</ul>
+</li>
+<li><p><strong>网络同质性</strong>:</p>
+<ul>
+<li>社会网络中的同质性选择和社会影响导致网络的隔离。</li>
+</ul>
+</li>
+</ol>
+<h3 id="8-社会网络分析的例子"><a href="#8-社会网络分析的例子" class="headerlink" title="8. 社会网络分析的例子"></a><strong>8. 社会网络分析的例子</strong></h3><ul>
+<li><strong>R&amp;D团队的沟通网络</strong>: 研究团队成员之间的沟通模式。</li>
+<li><strong>无家可归妇女的自我网络</strong>: 研究个体在社会网络中的强关系。</li>
+<li><strong>库拉环</strong>: 研究太平洋岛屿之间的礼物交换网络。</li>
+<li><strong>俄罗斯贸易路线</strong>: 研究12-13世纪的贸易网络。</li>
+<li><strong>土耳其内部迁移</strong>: 使用网络分析研究人口迁移模式。</li>
+</ul>
+<h3 id="9-网络数据的数学表示"><a href="#9-网络数据的数学表示" class="headerlink" title="9. 网络数据的数学表示"></a><strong>9. 网络数据的数学表示</strong></h3><ol>
+<li><p><strong>网络的定义</strong>:</p>
+<ul>
+<li>一个网络（或图）可以表示为 $ G &#x3D; (V, E) $，其中：<ul>
+<li>$ V &#x3D; {1, 2, …, n} $ 是节点的集合（也称为顶点或行动者）。</li>
+<li>$ E \subseteq {&lt;i,j&gt; | i,j \in V} $ 是边的集合（也称为关系或连接）。</li>
+</ul>
+</li>
+<li>在<strong>社会网络分析</strong>中，节点通常表示个体、组织、国家等，边表示它们之间的关系（如友谊、合作等）。</li>
+</ul>
+</li>
+<li><p><strong>邻接矩阵</strong>:</p>
+<ul>
+<li>网络可以用邻接矩阵 $ X $ 表示，其中：<ul>
+<li>$ x_{ij} &#x3D; 1 $ 如果节点 $ i $ 与节点 $ j $ 之间有边（即 $ &lt;i,j&gt; \in E $）。</li>
+<li>$ x_{ij} &#x3D; 0 $ 如果节点 $ i $ 与节点 $ j $ 之间没有边。</li>
+</ul>
+</li>
+<li>对于<strong>无向网络</strong>，邻接矩阵是对称的，即 $ x_{ij} &#x3D; x_{ji} $。</li>
+<li>对于<strong>有向网络</strong>，邻接矩阵不一定对称。</li>
+</ul>
+</li>
+<li><p><strong>节点列表和边列表</strong>:</p>
+<ul>
+<li><strong>节点列表</strong>: 列出每个节点的邻居。<ul>
+<li>例如：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a1: a3</span><br><span class="line">a2: </span><br><span class="line">a3: a2, a4, a5</span><br><span class="line">a4: a5</span><br><span class="line">a5: a4</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>边列表</strong>: 列出所有边及其权重（如果有）。<ul>
+<li>例如：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a1 a3 1</span><br><span class="line">a3 a2 1</span><br><span class="line">a3 a4 1</span><br><span class="line">a3 a5 1</span><br><span class="line">a4 a5 1</span><br><span class="line">a5 a4 1</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="10-网络的基本指标"><a href="#10-网络的基本指标" class="headerlink" title="10. 网络的基本指标"></a><strong>10. 网络的基本指标</strong></h3><ol>
+<li><p><strong>网络密度</strong>:</p>
+<ul>
+<li>密度表示网络中实际存在的关系占所有可能关系的比例。</li>
+<li>公式：<br>$$<br>\text{density} &#x3D; \frac{2M + A}{n(n-1)}<br>$$<br>其中：<ul>
+<li>$ M $ 是双向关系的数量。</li>
+<li>$ A $ 是单向关系的数量。</li>
+<li>$ n $ 是节点的数量。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>互惠性</strong>:</p>
+<ul>
+<li>互惠性表示网络中双向关系的比例。</li>
+<li>公式：<br>$$<br>\text{reciprocity} &#x3D; \frac{2M}{2M + A}<br>$$<br>其中：<ul>
+<li>$ M $ 是双向关系的数量。</li>
+<li>$ A $ 是单向关系的数量。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>传递性</strong>:</p>
+<ul>
+<li>传递性表示网络中三元关系的传递性。</li>
+<li>公式：<br>$$<br>\text{transitivity} &#x3D; \frac{\sum_{i \neq j, k \neq i, k \neq j} x_{ik} x_{kj} x_{ij}}{\sum_{i \neq j, k \neq i, k \neq j} x_{ik} x_{kj}}<br>$$<br>其中：<ul>
+<li>$ x_{ij} $ 表示节点 $ i $ 和 $ j $ 之间的关系。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="11-矩阵运算与网络分析"><a href="#11-矩阵运算与网络分析" class="headerlink" title="11. 矩阵运算与网络分析"></a><strong>11. 矩阵运算与网络分析</strong></h3><ol>
+<li><p><strong>邻接矩阵的幂</strong>:</p>
+<ul>
+<li>邻接矩阵的幂 $ X^k $ 表示节点之间通过 $ k $ 步路径的连接情况。</li>
+<li>例如，$ X^2 $ 表示节点之间通过两步路径的连接情况。</li>
+<li>公式：<br>$$<br>X^2 &#x3D; X \times X<br>$$<br>其中：<ul>
+<li>$ X^2_{ij} $ 表示节点 $ i $ 和 $ j $ 之间通过两步路径的连接数量。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>最短路径（Geodesic Distance）</strong>:</p>
+<ul>
+<li>最短路径是指两个节点之间最短的连接路径的长度。</li>
+<li>通过邻接矩阵的幂运算可以计算最短路径。</li>
+<li>例如，如果 $ X^k_{ij} &gt; 0 $ 且 $ X^{k-1}_{ij} &#x3D; 0 $，则节点 $ i $ 和 $ j $ 之间的最短路径长度为 $ k $。</li>
+</ul>
+</li>
+</ol>
+<h3 id="12-中心性度量"><a href="#12-中心性度量" class="headerlink" title="12. 中心性度量"></a><strong>12. 中心性度量</strong></h3><ol>
+<li><p><strong>度中心性（Degree Centrality）</strong>:</p>
+<ul>
+<li>度中心性表示一个节点的连接数量。</li>
+<li>对于有向网络，分为<strong>入度</strong>（in-degree）和<strong>出度</strong>（out-degree）。</li>
+<li>公式：<br>$$<br>\text{degree centrality}(i) &#x3D; \sum_{j} x_{ij}<br>$$</li>
+</ul>
+</li>
+<li><p><strong>特征向量中心性（Eigenvector Centrality）</strong>:</p>
+<ul>
+<li>特征向量中心性表示一个节点的中心性与其邻居的中心性成正比。</li>
+<li>公式：<br>$$<br>\mathbf{v} &#x3D; \lambda^{-1} X \mathbf{v}<br>$$<br>其中：<ul>
+<li>$ \mathbf{v} $ 是特征向量。</li>
+<li>$ \lambda $ 是特征值。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>介数中心性（Betweenness Centrality）</strong>:</p>
+<ul>
+<li>介数中心性表示一个节点在所有最短路径中出现的频率。</li>
+<li>公式：<br>$$<br>\text{betweenness centrality}(i) &#x3D; \sum_{j \neq k \neq i} \frac{\sigma_{jk}(i)}{\sigma_{jk}}<br>$$<br>其中：<ul>
+<li>$ \sigma_{jk} $ 是节点 $ j $ 和 $ k $ 之间的最短路径数量。</li>
+<li>$ \sigma_{jk}(i) $ 是节点 $ j $ 和 $ k $ 之间经过节点 $ i $ 的最短路径数量。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="13-网络的其他度量"><a href="#13-网络的其他度量" class="headerlink" title="13. 网络的其他度量"></a><strong>13. 网络的其他度量</strong></h3><ol>
+<li><p><strong>聚类系数（Clustering Coefficient）</strong>:</p>
+<ul>
+<li>聚类系数表示一个节点的邻居之间相互连接的程度。</li>
+<li>公式：<br>$$<br>\text{clustering coefficient}(i) &#x3D; \frac{2 \times \text{number of triangles connected to } i}{\text{degree}(i) \times (\text{degree}(i) - 1)}<br>$$</li>
+</ul>
+</li>
+<li><p><strong>网络直径（Diameter）</strong>:</p>
+<ul>
+<li>网络直径是网络中任意两个节点之间最长的最短路径。</li>
+</ul>
+</li>
+</ol>
+<h3 id="14-二模网络（Bipartite-Networks）"><a href="#14-二模网络（Bipartite-Networks）" class="headerlink" title="14. 二模网络（Bipartite Networks）"></a><strong>14. 二模网络（Bipartite Networks）</strong></h3><ol>
+<li><p><strong>二模网络的定义</strong>:</p>
+<ul>
+<li>二模网络由两组不同的节点组成，边只存在于两组节点之间。</li>
+<li>例如，人和事件之间的关系。</li>
+</ul>
+</li>
+<li><p><strong>二模网络的投影</strong>:</p>
+<ul>
+<li>二模网络可以投影为两个一模网络：<ul>
+<li><strong>节点到节点的网络</strong>: 表示两个节点共享了多少个事件。</li>
+<li><strong>事件到事件的网络</strong>: 表示两个事件共享了多少个节点。</li>
+</ul>
+</li>
+<li>投影公式：<br>$$<br>P &#x3D; X \cdot X^T<br>$$<br>其中：<ul>
+<li>$ X $ 是二模网络的邻接矩阵。</li>
+<li>$ P $ 是投影后的一模网络。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="15-网络数据的转换"><a href="#15-网络数据的转换" class="headerlink" title="15. 网络数据的转换"></a><strong>15. 网络数据的转换</strong></h3><ol>
+<li><p><strong>二值化（Dichotomization）</strong>:</p>
+<ul>
+<li>将加权网络转换为二值网络。</li>
+<li>公式：<br>$$<br>b_{ij} &#x3D;<br>\begin{cases}<br>1 &amp; \text{if } x_{ij} \geq \text{cutoff} \<br>0 &amp; \text{if } x_{ij} &lt; \text{cutoff}<br>\end{cases}<br>$$<br>其中：<ul>
+<li>$ x_{ij} $ 是原始网络的权重。</li>
+<li>$ \text{cutoff} $ 是阈值。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>对称化（Symmetrization）</strong>:</p>
+<ul>
+<li>将有向网络转换为无向网络。</li>
+<li>公式：<br>$$<br>b_{ij} &#x3D; \max(x_{ij}, x_{ji})<br>$$</li>
+</ul>
+</li>
+</ol>
+<h3 id="16-总结"><a href="#16-总结" class="headerlink" title="16. 总结"></a><strong>16. 总结</strong></h3><ul>
+<li><strong>社会网络分析</strong>涉及大量的数学和统计方法，特别是图论和矩阵运算。</li>
+<li><strong>网络数据</strong>的表示和分析依赖于邻接矩阵、节点列表和边列表等数据结构。</li>
+<li><strong>网络指标</strong>如密度、中心性、传递性等帮助我们理解网络的结构和功能。</li>
+<li><strong>二模网络</strong>和<strong>网络数据的转换</strong>（如二值化和对称化）是处理复杂网络数据的重要工具。</li>
+</ul>
+<p>好的！以下是基于《Social Network Analysis》第二课课件的<strong>详细笔记</strong>，涵盖了所有内容，包括理论、方法、数学定义和公式。笔记按照课件的结构进行组织，确保全面且详细，并使用 $$ 的 LaTeX 语法标记数学公式。</p>
+<h2 id="社会网络分析课程笔记-第2周"><a href="#社会网络分析课程笔记-第2周" class="headerlink" title="社会网络分析课程笔记 - 第2周"></a>社会网络分析课程笔记 - 第2周</h2><h3 id="1-网络层次的基本指标"><a href="#1-网络层次的基本指标" class="headerlink" title="1. 网络层次的基本指标"></a><strong>1. 网络层次的基本指标</strong></h3><ol>
+<li><p><strong>最短路径分布（Geodesic Distributions）</strong>:</p>
+<ul>
+<li>对于每个网络，可以计算每个距离出现的频率，生成最短路径的分布。</li>
+<li>如果节点位于不同的组件中，则它们之间的距离为无穷大。</li>
+<li>公式：<br>$$<br>\text{Geodesic Distance}(i, j) &#x3D; \text{最短路径的长度}<br>$$</li>
+<li>示例：在英格兰&#x2F;威尔士的学校友谊网络中，最短路径分布随时间变化。</li>
+</ul>
+</li>
+<li><p><strong>度分布（Degree Distributions）</strong>:</p>
+<ul>
+<li>度分布表示网络中每个节点的出度或入度的频率分布。</li>
+<li>公式：<br>$$<br>\text{Degree Distribution}(k) &#x3D; \text{具有度 } k \text{ 的节点数量}<br>$$</li>
+<li>示例：苏格兰学校友谊网络中的出度和入度分布。</li>
+</ul>
+</li>
+<li><p><strong>无标度网络（Scale-Free Networks）</strong>:</p>
+<ul>
+<li>度分布通常在“对数-对数”尺度上绘制。</li>
+<li>如果分布在对数-对数尺度上呈线性，则网络被称为“无标度网络”。</li>
+<li>公式：<br>$$<br>P(k) \sim k^{-\gamma}<br>$$<br>其中：<ul>
+<li>$ P(k) $ 是度为 $ k $ 的节点的概率。</li>
+<li>$ \gamma $ 是幂律指数。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-行动者层次的中心性度量"><a href="#2-行动者层次的中心性度量" class="headerlink" title="2. 行动者层次的中心性度量"></a><strong>2. 行动者层次的中心性度量</strong></h3><ol>
+<li><p><strong>中心性的基本概念</strong>:</p>
+<ul>
+<li>中心性度量用于衡量节点在网络中的结构优势。</li>
+<li>当节点在中心性上差异较大时，网络被称为“集中化”网络。</li>
+</ul>
+</li>
+<li><p><strong>度中心性（Degree Centrality）</strong>:</p>
+<ul>
+<li>度中心性表示一个节点的连接数量。</li>
+<li>公式：<br>$$<br>\text{Degree Centrality}(i) &#x3D; \sum_{j} x_{ij}<br>$$<br>其中：<ul>
+<li>$ x_{ij} $ 表示节点 $ i $ 和 $ j $ 之间的连接。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>特征向量中心性（Eigenvector Centrality）</strong>:</p>
+<ul>
+<li>特征向量中心性表示一个节点的中心性与其邻居的中心性成正比。</li>
+<li>公式：<br>$$<br>\mathbf{v} &#x3D; \lambda^{-1} X \mathbf{v}<br>$$<br>其中：<ul>
+<li>$ \mathbf{v} $ 是特征向量。</li>
+<li>$ \lambda $ 是特征值。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>介数中心性（Betweenness Centrality）</strong>:</p>
+<ul>
+<li>介数中心性表示一个节点在所有最短路径中出现的频率。</li>
+<li>公式：<br>$$<br>\text{Betweenness Centrality}(i) &#x3D; \sum_{j \neq k \neq i} \frac{\sigma_{jk}(i)}{\sigma_{jk}}<br>$$<br>其中：<ul>
+<li>$ \sigma_{jk} $ 是节点 $ j $ 和 $ k $ 之间的最短路径数量。</li>
+<li>$ \sigma_{jk}(i) $ 是节点 $ j $ 和 $ k $ 之间经过节点 $ i $ 的最短路径数量。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-网络的其他度量"><a href="#3-网络的其他度量" class="headerlink" title="3. 网络的其他度量"></a><strong>3. 网络的其他度量</strong></h3><ol>
+<li><p><strong>聚类系数（Clustering Coefficient）</strong>:</p>
+<ul>
+<li>聚类系数表示一个节点的邻居之间相互连接的程度。</li>
+<li>公式：<br>$$<br>\text{Clustering Coefficient}(i) &#x3D; \frac{2 \times \text{number of triangles connected to } i}{\text{degree}(i) \times (\text{degree}(i) - 1)}<br>$$</li>
+</ul>
+</li>
+<li><p><strong>网络直径（Diameter）</strong>:</p>
+<ul>
+<li>网络直径是网络中任意两个节点之间最长的最短路径。</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-网络数据的处理与转换"><a href="#4-网络数据的处理与转换" class="headerlink" title="4. 网络数据的处理与转换"></a><strong>4. 网络数据的处理与转换</strong></h3><ol>
+<li><p><strong>二值化（Dichotomization）</strong>:</p>
+<ul>
+<li>将加权网络转换为二值网络。</li>
+<li>公式：<br>$$<br>b_{ij} &#x3D;<br>\begin{cases}<br>1 &amp; \text{if } x_{ij} \geq \text{cutoff} \<br>0 &amp; \text{if } x_{ij} &lt; \text{cutoff}<br>\end{cases}<br>$$<br>其中：<ul>
+<li>$ x_{ij} $ 是原始网络的权重。</li>
+<li>$ \text{cutoff} $ 是阈值。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>对称化（Symmetrization）</strong>:</p>
+<ul>
+<li>将有向网络转换为无向网络。</li>
+<li>公式：<br>$$<br>b_{ij} &#x3D; \max(x_{ij}, x_{ji})<br>$$</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-二模网络（Bipartite-Networks）"><a href="#5-二模网络（Bipartite-Networks）" class="headerlink" title="5. 二模网络（Bipartite Networks）"></a><strong>5. 二模网络（Bipartite Networks）</strong></h3><ol>
+<li><p><strong>二模网络的定义</strong>:</p>
+<ul>
+<li>二模网络由两组不同的节点组成，边只存在于两组节点之间。</li>
+<li>例如，人和事件之间的关系。</li>
+</ul>
+</li>
+<li><p><strong>二模网络的投影</strong>:</p>
+<ul>
+<li>二模网络可以投影为两个一模网络：<ul>
+<li><strong>节点到节点的网络</strong>: 表示两个节点共享了多少个事件。</li>
+<li><strong>事件到事件的网络</strong>: 表示两个事件共享了多少个节点。</li>
+</ul>
+</li>
+<li>投影公式：<br>$$<br>P &#x3D; X \cdot X^T<br>$$<br>其中：<ul>
+<li>$ X $ 是二模网络的邻接矩阵。</li>
+<li>$ P $ 是投影后的一模网络。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="6-网络可视化"><a href="#6-网络可视化" class="headerlink" title="6. 网络可视化"></a><strong>6. 网络可视化</strong></h3><ol>
+<li><p><strong>可视化原则</strong>:</p>
+<ul>
+<li><strong>最小化边交叉</strong>: 减少边的交叉，使图形更清晰。</li>
+<li><strong>最小化边长度方差</strong>: 使边的长度尽可能均匀。</li>
+<li><strong>避免节点靠近非相邻边</strong>: 确保节点不会靠近与其不相连的边。</li>
+</ul>
+</li>
+<li><p><strong>布局算法</strong>:</p>
+<ul>
+<li><strong>力导向布局（Force-Directed Layout）</strong>:<ul>
+<li>使用物理模拟（如弹簧模型）来绘制图形。</li>
+<li>常见的算法包括 Kamada-Kawai 和 Fruchterman-Reingold。</li>
+</ul>
+</li>
+<li><strong>圆形布局（Circle Layout）</strong>:<ul>
+<li>适用于小世界网络和接近规则的网络。</li>
+</ul>
+</li>
+<li><strong>树形布局（Tree Layout）</strong>:<ul>
+<li>适用于层次结构或食物链网络。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>大型网络的可视化</strong>:</p>
+<ul>
+<li>大型网络无法完全显示所有节点和边，因此需要压缩信息。</li>
+<li>常见的策略包括：<ul>
+<li>仅显示网络的一个子集。</li>
+<li>突出显示关键节点属性。</li>
+<li>使用径向布局（Radial Layout）来分层显示网络。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="7-纵向网络（Longitudinal-Networks）"><a href="#7-纵向网络（Longitudinal-Networks）" class="headerlink" title="7. 纵向网络（Longitudinal Networks）"></a><strong>7. 纵向网络（Longitudinal Networks）</strong></h3><ol>
+<li><p><strong>纵向网络的特点</strong>:</p>
+<ul>
+<li>纵向网络涉及多个时间点的网络数据。</li>
+<li>网络的结构和组成可能随时间变化。</li>
+<li>可视化的目标是比较不同时间点的网络或展示网络的演化。</li>
+</ul>
+</li>
+<li><p><strong>可视化策略</strong>:</p>
+<ul>
+<li><strong>固定节点位置</strong>: 为了便于比较，可以固定节点的位置。</li>
+<li><strong>联合优化</strong>: 使用联合优化算法来平衡不同时间点的布局。</li>
+</ul>
+</li>
+</ol>
+<h3 id="8-总结"><a href="#8-总结" class="headerlink" title="8. 总结"></a><strong>8. 总结</strong></h3><ul>
+<li><strong>社会网络分析</strong>涉及大量的数学和统计方法，特别是图论和矩阵运算。</li>
+<li><strong>网络指标</strong>如密度、中心性、传递性等帮助我们理解网络的结构和功能。</li>
+<li><strong>网络数据的转换</strong>（如二值化和对称化）是处理复杂网络数据的重要工具。</li>
+<li><strong>网络可视化</strong>是理解和展示网络结构的关键步骤，特别是在处理大型和纵向网络时。</li>
+</ul>
+<p>以下是基于《Social Network Analysis》第三课课件的<strong>详细笔记</strong>，涵盖了所有内容，包括理论、方法、数学定义和公式。笔记按照课件的结构进行组织，确保全面且详细，并使用 $$ 的 LaTeX 语法标记数学公式。</p>
+<h2 id="社会网络分析课程笔记-第3周"><a href="#社会网络分析课程笔记-第3周" class="headerlink" title="社会网络分析课程笔记 - 第3周"></a>社会网络分析课程笔记 - 第3周</h2><h3 id="1-社区检测（Community-Detection）"><a href="#1-社区检测（Community-Detection）" class="headerlink" title="1. 社区检测（Community Detection）"></a><strong>1. 社区检测（Community Detection）</strong></h3><ol>
+<li><p><strong>社区的定义</strong>:</p>
+<ul>
+<li>社区是指网络中一组紧密连接的节点，组内节点之间的连接比组外节点之间的连接更紧密。</li>
+<li>社区可以是外生的（如团队成员的划分）或内生的（通过网络结构检测）。</li>
+</ul>
+</li>
+<li><p><strong>社区检测的意义</strong>:</p>
+<ul>
+<li><strong>中观层次（Meso-level）</strong>: 社区介于微观（个体）和宏观（整体网络）之间，有助于理解社会规范、领导力、群体冲突等。</li>
+<li><strong>应用场景</strong>: 市场营销、犯罪群体识别、欺诈检测、推荐系统等。</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-社区检测的方法"><a href="#2-社区检测的方法" class="headerlink" title="2. 社区检测的方法"></a><strong>2. 社区检测的方法</strong></h3><ol>
+<li><p><strong>基于凝聚子群（Cohesive Subgroups）的方法</strong>:</p>
+<ul>
+<li><p><strong>团（Cliques）</strong>:</p>
+<ul>
+<li>团是一个完全连接的子图，即团内的每对节点之间都有边连接。</li>
+<li>团是<strong>极大</strong>的，意味着不能通过添加更多节点来扩展团。</li>
+<li>公式：<br>$$<br>\text{Clique}(S) &#x3D; \text{Complete}(S) \land \text{Maximal}(S)<br>$$<br>其中：<ul>
+<li>$ S $ 是节点子集。</li>
+<li>$ \text{Complete}(S) $ 表示 $ S $ 中的每对节点都有边连接。</li>
+<li>$ \text{Maximal}(S) $ 表示 $ S $ 不能通过添加更多节点来扩展。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>n-团（n-Cliques）</strong>:</p>
+<ul>
+<li>n-团是指子集中的每对节点之间的路径长度不超过 $ n $。</li>
+<li>公式：<br>$$<br>\text{n-Clique}(S) &#x3D; \text{Maximal}(S) \land \text{Distance}(i, j) \leq n, \forall i, j \in S<br>$$<br>其中：<ul>
+<li>$ \text{Distance}(i, j) $ 是节点 $ i $ 和 $ j $ 之间的最短路径长度。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>k-核（k-Core）</strong>:</p>
+<ul>
+<li>k-核是指子集中的每个节点至少与子集中的 $ k $ 个其他节点相连。</li>
+<li>公式：<br>$$<br>\text{k-Core}(S) &#x3D; \text{Maximal}(S) \land \text{Degree}(i) \geq k, \forall i \in S<br>$$<br>其中：<ul>
+<li>$ \text{Degree}(i) $ 是节点 $ i $ 在子集中的度数。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>层次聚类（Hierarchical Clustering）</strong>:</p>
+<ul>
+<li>层次聚类是一种自底向上的聚类方法，逐步合并最相似的簇。</li>
+<li>公式：<br>$$<br>\text{Similarity}(C_1, C_2) &#x3D; \text{Measure}(C_1, C_2)<br>$$<br>其中：<ul>
+<li>$ C_1 $ 和 $ C_2 $ 是两个簇。</li>
+<li>$ \text{Measure} $ 是相似性度量（如距离、相关性等）。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-模块度（Modularity）"><a href="#3-模块度（Modularity）" class="headerlink" title="3. 模块度（Modularity）"></a><strong>3. 模块度（Modularity）</strong></h3><ol>
+<li><p><strong>模块度的定义</strong>:</p>
+<ul>
+<li>模块度用于衡量网络划分为模块的强度，表示组内边的比例减去随机分布下的期望比例。</li>
+<li>公式：<br>$$<br>Q &#x3D; \frac{1}{2m} \sum_{ij} \left[ A_{ij} - \frac{k_i k_j}{2m} \right] \delta (c_i, c_j)<br>$$<br>其中：<ul>
+<li>$ m $ 是网络中的边数。</li>
+<li>$ A_{ij} $ 是邻接矩阵的元素，表示节点 $ i $ 和 $ j $ 之间是否有边。</li>
+<li>$ k_i $ 和 $ k_j $ 是节点 $ i $ 和 $ j $ 的度数。</li>
+<li>$ \delta(c_i, c_j) $ 是 Kronecker delta 函数，当 $ c_i &#x3D; c_j $ 时为 1，否则为 0。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>模块度的解释</strong>:</p>
+<ul>
+<li>$ Q $ 的取值范围为 $[-1, 1]$。</li>
+<li>$ Q &gt; 0 $ 表示组内边的比例高于随机分布下的期望比例。</li>
+<li>$ Q &#x3D; 0 $ 表示组内边的比例与随机分布下的期望比例相同。</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-社区检测算法"><a href="#4-社区检测算法" class="headerlink" title="4. 社区检测算法"></a><strong>4. 社区检测算法</strong></h3><ol>
+<li><p><strong>Girvan-Newman 算法</strong>:</p>
+<ul>
+<li>基于边介数（Edge Betweenness）的层次聚类方法。</li>
+<li>步骤：<ol>
+<li>计算每条边的介数。</li>
+<li>移除介数最高的边。</li>
+<li>重复步骤 1 和 2，直到所有边被移除。</li>
 </ol>
 </li>
-<li><p><strong>QAP相关性</strong>：用于检验两个网络矩阵之间的相关性。公式为：</p>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r = \frac&#123;\sum_&#123;i,j&#125; (X_&#123;ij&#125; - \bar&#123;X&#125;)(Y_&#123;ij&#125; - \bar&#123;Y&#125;)&#125;&#123;\sqrt&#123;\sum_&#123;i,j&#125; (X_&#123;ij&#125; - \bar&#123;X&#125;)^2 \sum_&#123;i,j&#125; (Y_&#123;ij&#125; - \bar&#123;Y&#125;)^2&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>其中，(<code>X_&#123;ij&#125;</code>) 和 (<code>Y_&#123;ij&#125;</code>) 是两个网络矩阵的元素，(<code>\bar&#123;X&#125;</code>) 和 (<code>\bar&#123;Y&#125;</code>) 是它们的均值。</p>
+<li>结果生成一个树状图（Dendrogram）。</li>
+</ul>
 </li>
-<li><p><strong>QAP回归</strong>：用于检验一个网络矩阵是否能够预测另一个网络矩阵。公式为：</p>
+<li><p><strong>Louvain 方法</strong>:</p>
+<ul>
+<li>一种贪婪算法，通过最大化模块度来检测社区。</li>
+<li>步骤：<ol>
+<li>将节点分配到局部社区，以最大化模块度增益。</li>
+<li>将社区聚合为超级节点，构建加权图。</li>
+<li>重复步骤 1 和 2，直到模块度不再增加。</li>
+</ol>
 </li>
 </ul>
-<pre><code class="math">  Y_&#123;ij&#125; = \beta_0 + \beta_1 X_&#123;ij&#125; + \epsilon_&#123;ij&#125;
-</code></pre>
-<p>其中，(<code>\beta_0</code>) 和 (<code>\beta_1</code>) 是回归系数，(<code>\epsilon_&#123;ij&#125;</code>) 是误差项。</p>
-<h4 id="MRQAP的数学特性："><a href="#MRQAP的数学特性：" class="headerlink" title="MRQAP的数学特性："></a>MRQAP的数学特性：</h4><ul>
-<li><strong>解决依赖性问题</strong>：通过置换节点，MRQAP能够生成一个零分布，用于比较实际观测值与随机分布，从而解决网络数据中的依赖性问题。</li>
-<li><strong>非参数检验</strong>：MRQAP是一种非参数检验方法，不依赖于数据的分布假设。</li>
+</li>
+</ol>
+<h3 id="5-网络相似性度量"><a href="#5-网络相似性度量" class="headerlink" title="5. 网络相似性度量"></a><strong>5. 网络相似性度量</strong></h3><ol>
+<li><p><strong>汉明距离（Hamming Distance）</strong>:</p>
+<ul>
+<li>汉明距离表示两个网络之间的差异边数。</li>
+<li>公式：<br>$$<br>H &#x3D; n_{01} + n_{10}<br>$$<br>其中：<ul>
+<li>$ n_{01} $ 是在网络 $ X $ 中没有边但在网络 $ Y $ 中有边的数量。</li>
+<li>$ n_{10} $ 是在网络 $ X $ 中有边但在网络 $ Y $ 中没有边的数量。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Jaccard 指数（Jaccard Index）</strong>:</p>
+<ul>
+<li>Jaccard 指数表示两个网络之间重叠边的比例。</li>
+<li>公式：<br>$$<br>J &#x3D; \frac{n_{11}}{n_{11} + n_{01} + n_{10}}<br>$$<br>其中：<ul>
+<li>$ n_{11} $ 是在两个网络中都有边的数量。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>皮尔逊相关系数（Pearson Correlation）</strong>:</p>
+<ul>
+<li>皮尔逊相关系数用于衡量两个网络之间的线性相关性。</li>
+<li>公式：<br>$$<br>r &#x3D; \frac{\sum_{i,j} (A_{ij} - \bar{A})(B_{ij} - \bar{B})}{\sqrt{\sum_{i,j} (A_{ij} - \bar{A})^2 \sum_{i,j} (B_{ij} - \bar{B})^2}}<br>$$<br>其中：<ul>
+<li>$ A_{ij} $ 和 $ B_{ij} $ 是两个网络的邻接矩阵元素。</li>
+<li>$ \bar{A} $ 和 $ \bar{B} $ 是两个网络的平均边权重。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a><strong>6. 总结</strong></h3><ul>
+<li><strong>社区检测</strong>是理解网络结构的重要工具，帮助识别网络中的紧密连接群体。</li>
+<li><strong>模块度</strong>是衡量社区划分质量的关键指标，通过最大化模块度可以找到最优的社区划分。</li>
+<li><strong>Girvan-Newman 算法</strong>和 <strong>Louvain 方法</strong>是常用的社区检测算法。</li>
+<li><strong>网络相似性度量</strong>（如汉明距离、Jaccard 指数、皮尔逊相关系数）用于比较不同网络之间的相似性。</li>
+</ul>
+<p>以下是基于《Social Network Analysis》第四课课件的<strong>详细笔记</strong>，涵盖了所有内容，包括理论、方法、数学定义和公式。笔记按照课件的结构进行组织，确保全面且详细，并使用 $$ 的 LaTeX 语法标记数学公式。</p>
+<h2 id="社会网络分析第四课笔记"><a href="#社会网络分析第四课笔记" class="headerlink" title="社会网络分析第四课笔记"></a><strong>社会网络分析第四课笔记</strong></h2><h3 id="1-小世界网络（Small-World-Networks）"><a href="#1-小世界网络（Small-World-Networks）" class="headerlink" title="1. 小世界网络（Small World Networks）"></a><strong>1. 小世界网络（Small World Networks）</strong></h3><ol>
+<li><p><strong>小世界现象</strong>:</p>
+<ul>
+<li><strong>六度分隔理论（Six Degrees of Separation）</strong>: 任何两个人之间通过不超过六个中间人相连。</li>
+<li><strong>Milgram 实验</strong>: 通过信件传递实验验证了六度分隔理论。</li>
+</ul>
+</li>
+<li><p><strong>小世界网络的特征</strong>:</p>
+<ul>
+<li><strong>低密度</strong>: 网络中的边数相对较少。</li>
+<li><strong>短路径</strong>: 节点之间的平均最短路径较短。</li>
+<li><strong>高聚类系数</strong>: 节点倾向于形成紧密的群体。</li>
+<li><strong>公式</strong>:<br>$$<br>L &#x3D; \text{平均最短路径长度}, \quad C &#x3D; \text{平均聚类系数}<br>$$<br>其中：<ul>
+<li>$ L $ 是网络中所有节点对之间的平均最短路径长度。</li>
+<li>$ C $ 是网络中所有节点的局部聚类系数的平均值。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>小世界网络的生成模型</strong>:</p>
+<ul>
+<li><strong>Watts-Strogatz 模型</strong>: 通过随机重连规则生成小世界网络。<ul>
+<li>公式：<br>$$<br>p &#x3D; \text{重连概率}, \quad L(p) &#x3D; \text{平均路径长度}, \quad C(p) &#x3D; \text{聚类系数}<br>$$<br>其中：<ul>
+<li>$ p $ 是重连概率，控制网络的随机性。</li>
+<li>$ L(p) $ 和 $ C(p) $ 分别表示在不同 $ p $ 值下的平均路径长度和聚类系数。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-无标度网络（Scale-Free-Networks）"><a href="#2-无标度网络（Scale-Free-Networks）" class="headerlink" title="2. 无标度网络（Scale-Free Networks）"></a><strong>2. 无标度网络（Scale-Free Networks）</strong></h3><ol>
+<li><p><strong>无标度网络的定义</strong>:</p>
+<ul>
+<li>无标度网络的度分布遵循幂律分布，即少数节点具有非常高的度数（“枢纽”节点），而大多数节点的度数较低。</li>
+<li>公式：<br>$$<br>P(k) \sim k^{-\gamma}<br>$$<br>其中：<ul>
+<li>$ P(k) $ 是度数为 $ k $ 的节点的概率。</li>
+<li>$ \gamma $ 是幂律指数，通常在 $ 2 &lt; \gamma &lt; 3 $ 之间。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>无标度网络的生成模型</strong>:</p>
+<ul>
+<li><strong>Barabási-Albert 模型</strong>: 通过优先连接机制生成无标度网络。<ul>
+<li>公式：<br>$$<br>\Pi(k_i) &#x3D; \frac{k_i}{\sum_j k_j}<br>$$<br>其中：<ul>
+<li>$ \Pi(k_i) $ 是新节点连接到已有节点 $ i $ 的概率。</li>
+<li>$ k_i $ 是节点 $ i $ 的度数。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>无标度网络的应用</strong>:</p>
+<ul>
+<li><strong>社交网络</strong>: 少数人拥有大量的社交关系，而大多数人只有少量关系。</li>
+<li><strong>互联网</strong>: 少数网站拥有大量的链接，而大多数网站只有少量链接。</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-二次分配程序（Quadratic-Assignment-Procedure-QAP）"><a href="#3-二次分配程序（Quadratic-Assignment-Procedure-QAP）" class="headerlink" title="3. 二次分配程序（Quadratic Assignment Procedure, QAP）"></a><strong>3. 二次分配程序（Quadratic Assignment Procedure, QAP）</strong></h3><ol>
+<li><p><strong>QAP 的基本思想</strong>:</p>
+<ul>
+<li>QAP 是一种用于分析网络数据的非参数统计方法，特别适用于处理网络数据中的依赖性问题。</li>
+<li>QAP 通过随机置换节点来生成多个随机数据集，并基于这些数据集构建经验抽样分布。</li>
+</ul>
+</li>
+<li><p><strong>QAP 的相关性分析</strong>:</p>
+<ul>
+<li>QAP 相关性用于检验两个网络矩阵之间的相关性。</li>
+<li>公式：<br>$$<br>r &#x3D; \frac{\sum_{i,j} (A_{ij} - \bar{A})(B_{ij} - \bar{B})}{\sqrt{\sum_{i,j} (A_{ij} - \bar{A})^2 \sum_{i,j} (B_{ij} - \bar{B})^2}}<br>$$<br>其中：<ul>
+<li>$ A_{ij} $ 和 $ B_{ij} $ 是两个网络的邻接矩阵元素。</li>
+<li>$ \bar{A} $ 和 $ \bar{B} $ 是两个网络的平均边权重。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>QAP 回归分析（MRQAP）</strong>:</p>
+<ul>
+<li>MRQAP 是 QAP 的多元回归扩展，用于分析多个自变量对因变量的影响。</li>
+<li>公式：<br>$$<br>Y &#x3D; \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_k X_k + \epsilon<br>$$<br>其中：<ul>
+<li>$ Y $ 是因变量矩阵。</li>
+<li>$ X_1, X_2, \ldots, X_k $ 是自变量矩阵。</li>
+<li>$ \beta_0, \beta_1, \ldots, \beta_k $ 是回归系数。</li>
+<li>$ \epsilon $ 是误差项。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-网络可视化"><a href="#4-网络可视化" class="headerlink" title="4. 网络可视化"></a><strong>4. 网络可视化</strong></h3><ol>
+<li><p><strong>网络可视化的原则</strong>:</p>
+<ul>
+<li><strong>最小化边交叉</strong>: 减少边的交叉，使图形更清晰。</li>
+<li><strong>最小化边长度方差</strong>: 使边的长度尽可能均匀。</li>
+<li><strong>避免节点靠近非相邻边</strong>: 确保节点不会靠近与其不相连的边。</li>
+</ul>
+</li>
+<li><p><strong>布局算法</strong>:</p>
+<ul>
+<li><strong>力导向布局（Force-Directed Layout）</strong>: 使用物理模拟（如弹簧模型）来绘制图形。</li>
+<li><strong>圆形布局（Circle Layout）</strong>: 适用于小世界网络和接近规则的网络。</li>
+<li><strong>树形布局（Tree Layout）</strong>: 适用于层次结构或食物链网络。</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a><strong>5. 总结</strong></h3><ul>
+<li><strong>小世界网络</strong>具有短路径和高聚类系数的特征，Watts-Strogatz 模型是生成小世界网络的经典模型。</li>
+<li><strong>无标度网络</strong>的度分布遵循幂律分布，Barabási-Albert 模型通过优先连接机制生成无标度网络。</li>
+<li><strong>QAP</strong> 是一种处理网络数据依赖性的非参数统计方法，适用于相关性分析和回归分析。</li>
+<li><strong>网络可视化</strong>是理解和展示网络结构的关键步骤，特别是在处理大型和复杂网络时。</li>
+</ul>
+<h2 id="社会网络分析第五课笔记"><a href="#社会网络分析第五课笔记" class="headerlink" title="社会网络分析第五课笔记"></a><strong>社会网络分析第五课笔记</strong></h2><h3 id="1-网络建模的目的"><a href="#1-网络建模的目的" class="headerlink" title="1. 网络建模的目的"></a><strong>1. 网络建模的目的</strong></h3><ol>
+<li><p><strong>网络建模的三种目的</strong>:</p>
+<ul>
+<li><strong>理论发展（Conceptual Work）</strong>: 通过模型发展理论，如基于代理的模型（Agent-Based Models）。</li>
+<li><strong>实证研究（Empirical Work）</strong>: 通过数据检验理论，进行统计推断。</li>
+<li><strong>数据驱动（Data-Driven Work）</strong>: 通过机器学习等方法进行数据预测。</li>
+</ul>
+</li>
+<li><p><strong>网络建模的任务</strong>:</p>
+<ul>
+<li>解释观察到的网络结构，推断生成网络的机制。</li>
+<li>通过生成模型（Generative Model）模拟网络，并与观察到的数据进行比较，校准模型参数。</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-指数随机图模型（Exponential-Random-Graph-Model-ERGM）"><a href="#2-指数随机图模型（Exponential-Random-Graph-Model-ERGM）" class="headerlink" title="2. 指数随机图模型（Exponential Random Graph Model, ERGM）"></a><strong>2. 指数随机图模型（Exponential Random Graph Model, ERGM）</strong></h3><ol>
+<li><p><strong>ERGM 的定义</strong>:</p>
+<ul>
+<li>ERGM 是一种用于描述网络结构的概率模型，假设网络是从所有可能的网络中随机抽取的。</li>
+<li>公式：<br>$$<br>\Pr(X &#x3D; x) \propto \exp\left(\sum_{k&#x3D;1}^K \beta_k s_k(x)\right)<br>$$<br>其中：<ul>
+<li>$ X $ 是随机网络变量。</li>
+<li>$ x $ 是观察到的网络。</li>
+<li>$ \beta_k $ 是模型参数。</li>
+<li>$ s_k(x) $ 是网络 $ x $ 的子图统计量（如边数、互惠性、传递性等）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>ERGM 的挑战</strong>:</p>
+<ul>
+<li><strong>计算困难</strong>: 由于网络空间 $ \mathfrak{X} $ 非常大，计算概率的归一化常数 $ C(\beta) $ 是不可行的。<ul>
+<li>公式：<br>$$<br>C(\beta) &#x3D; \sum_{x \in \mathfrak{X}} \exp\left(\sum_{k&#x3D;1}^K \beta_k s_k(x)\right)<br>$$</li>
+<li>对于中等规模的网络，计算 $ C(\beta) $ 是不可行的。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>解决方案</strong>:</p>
+<ul>
+<li><strong>基于模拟的推断（Simulation-Based Inference）</strong>: 通过马尔可夫链蒙特卡洛（MCMC）方法近似生成网络的概率分布。</li>
+<li><strong>参数估计</strong>: 通过模拟生成的网络与观察到的网络进行比较，校准模型参数 $ \beta_k $。</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-ERGM-的参数解释"><a href="#3-ERGM-的参数解释" class="headerlink" title="3. ERGM 的参数解释"></a><strong>3. ERGM 的参数解释</strong></h3><ol>
+<li><p><strong>参数的意义</strong>:</p>
+<ul>
+<li>参数 $ \beta_k $ 表示子图统计量 $ s_k(x) $ 对网络概率的影响。</li>
+<li>正参数 $ \beta_k $ 表示该子图在网络中出现的概率较高。</li>
+<li>负参数 $ \beta_k $ 表示该子图在网络中出现的概率较低。</li>
+</ul>
+</li>
+<li><p><strong>条件对数几率（Conditional Log-Odds）</strong>:</p>
+<ul>
+<li>公式：<br>$$<br>\ln\left(\frac{\Pr(X &#x3D; x^a)}{\Pr(X &#x3D; x^b)}\right) &#x3D; \sum_{k&#x3D;1}^K \beta_k \left(s_k(x^a) - s_k(x^b)\right)<br>$$<br>其中：<ul>
+<li>$ x^a $ 和 $ x^b $ 是两个不同的网络。</li>
+<li>参数 $ \beta_k $ 表示网络 $ x^a $ 相对于 $ x^b $ 的对数几率。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-ERGM-的应用示例"><a href="#4-ERGM-的应用示例" class="headerlink" title="4. ERGM 的应用示例"></a><strong>4. ERGM 的应用示例</strong></h3><ol>
+<li><p><strong>示例：关于老板的八卦</strong>:</p>
+<ul>
+<li><strong>数据来源</strong>: Lea Ellwardt 的博士研究，涉及一个青少年社会工作组织的员工八卦网络。</li>
+<li><strong>假设</strong>:<ul>
+<li><strong>邻近性假设（Propinquity Hypothesis）</strong>: 八卦倾向于在局部群体中传播，形成传递性闭合（Transitive Closure）。</li>
+<li><strong>信息不对称假设（Information Asymmetry Hypothesis）</strong>: 与老板接触次数不同的员工之间更有可能传播八卦。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>模型结果</strong>:</p>
+<ul>
+<li><strong>传递性闭合（Transitive Closure）</strong>: 正效应，支持邻近性假设。</li>
+<li><strong>与老板接触次数的相似性（Similarity in Contacts with Boss）</strong>: 负效应，但不显著，信息不对称假设未得到支持。</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-模型退化（Model-Degeneracy）"><a href="#5-模型退化（Model-Degeneracy）" class="headerlink" title="5. 模型退化（Model Degeneracy）"></a><strong>5. 模型退化（Model Degeneracy）</strong></h3><ol>
+<li><p><strong>模型退化问题</strong>:</p>
+<ul>
+<li>当模型参数导致模拟生成的网络集中在极端情况（如全连接或全断开）时，模型被称为“退化”。</li>
+<li><strong>线性传递性效应（Linear Transitivity Effect）</strong>: 容易导致模型退化，因为传递性效应会自我加速，导致网络迅速变得全连接。</li>
+</ul>
+</li>
+<li><p><strong>解决方案</strong>:</p>
+<ul>
+<li><strong>几何加权传递性效应（Geometrically Weighted Transitivity Effect）</strong>: 通过引入几何加权传递性效应，避免模型退化。<ul>
+<li>公式：<br>$$<br>s_k(x) &#x3D; \sum_{m&#x3D;1}^{n-2} (-1)^{m+1} \frac{\tau_m}{2^{m-1}}<br>$$<br>其中：<ul>
+<li>$ \tau_m $ 是网络中 $ m $-三角形的数量。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="6-模型拟合优度（Goodness-of-Fit-GOF）"><a href="#6-模型拟合优度（Goodness-of-Fit-GOF）" class="headerlink" title="6. 模型拟合优度（Goodness of Fit, GOF）"></a><strong>6. 模型拟合优度（Goodness of Fit, GOF）</strong></h3><ol>
+<li><p><strong>拟合优度评估</strong>:</p>
+<ul>
+<li><strong>信息准则（AIC, BIC）</strong>: 用于比较不同模型的拟合优度。</li>
+<li><strong>模拟数据与观察数据的比较</strong>: 通过生成模拟数据，检查模拟数据是否围绕观察数据分布。</li>
+<li><strong>其他网络统计量的拟合</strong>: 如度分布、最短路径分布等。</li>
+</ul>
+</li>
+<li><p><strong>收敛性检查</strong>:</p>
+<ul>
+<li><strong>关键问题</strong>: 观察到的数据是否位于模拟数据的中心。</li>
+<li><strong>收敛性诊断</strong>: 通过检查模拟数据的轨迹图（Trace Plots）和分布图（Distribution Plots）来评估模型是否收敛。</li>
+</ul>
+</li>
+</ol>
+<h3 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a><strong>7. 总结</strong></h3><ul>
+<li><strong>ERGM</strong> 是一种灵活的网络建模工具，能够通过子图统计量描述网络结构。</li>
+<li><strong>模型参数</strong> 的解释类似于逻辑回归模型，参数的正负表示子图统计量对网络概率的影响。</li>
+<li><strong>模型退化</strong> 是 ERGM 建模中的常见问题，通过引入几何加权传递性效应可以避免退化。</li>
+<li><strong>拟合优度评估</strong> 是模型验证的关键步骤，通过模拟数据与观察数据的比较来评估模型的拟合效果。</li>
+</ul>
+<p>以下是基于《Social Network Analysis》第六课课件的<strong>详细笔记</strong>，涵盖了所有内容，包括理论、方法、数学定义和公式。笔记按照课件的结构进行组织，确保全面且详细，并使用 $$ 的 LaTeX 语法标记数学公式。</p>
+<hr>
+<h2 id="社会网络分析第六课笔记"><a href="#社会网络分析第六课笔记" class="headerlink" title="社会网络分析第六课笔记"></a>社会网络分析第六课笔记</h2><h3 id="1-多重网络（Multiplex-Networks）"><a href="#1-多重网络（Multiplex-Networks）" class="headerlink" title="1. 多重网络（Multiplex Networks）"></a><strong>1. 多重网络（Multiplex Networks）</strong></h3><ol>
+<li><p><strong>多重网络的定义</strong>:</p>
+<ul>
+<li>多重网络是指在同一组节点之间存在多种类型的关系（如友谊、敌对、信任等）。</li>
+<li>示例：<ul>
+<li><strong>友谊</strong>、<strong>敌对</strong>、<strong>浪漫关系</strong>、<strong>信任</strong>、<strong>声誉</strong>、<strong>八卦伙伴</strong>等。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>多重网络的重要性</strong>:</p>
+<ul>
+<li>人类关系是复杂的，单一类型的关系无法全面描述社会网络。</li>
+<li>多重关系相互交织，忽略其他类型的关系可能导致对网络本质的误解。<ul>
+<li>例如，借贷网络仅显示银行的中心地位，忽略了其他类型的关系。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>历史案例</strong>:</p>
+<ul>
+<li><strong>Padgett &amp; Ansell (1993)</strong>: 通过分析佛罗伦萨的多重关系（婚姻、经济合作等）研究权力斗争。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="2-多重网络的分析方法"><a href="#2-多重网络的分析方法" class="headerlink" title="2. 多重网络的分析方法"></a><strong>2. 多重网络的分析方法</strong></h3><ol>
+<li><p><strong>多重网络的简化</strong>:</p>
+<ul>
+<li><strong>聚类分析（Cluster Analysis）</strong>: 通过聚类分析找到相似的关系类型，并将其合并。</li>
+<li><strong>多维尺度分析（Multidimensional Scaling, MDS）</strong>: 通过可视化方法展示不同关系类型之间的相似性。<ul>
+<li>公式：<br>$$<br>\text{Jaccard Index} &#x3D; \frac{n_{11}}{n_{11} + n_{01} + n_{10}}<br>$$<br>其中：<ul>
+<li>$ n_{11} $ 是在两个网络中都有边的数量。</li>
+<li>$ n_{01} $ 和 $ n_{10} $ 是在一个网络中有边，另一个网络中没有边的数量。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>多重网络的合并</strong>:</p>
+<ul>
+<li>通过层次聚类（Hierarchical Clustering）将相似的关系类型合并，简化网络分析。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="3-多重网络的描述性统计"><a href="#3-多重网络的描述性统计" class="headerlink" title="3. 多重网络的描述性统计"></a><strong>3. 多重网络的描述性统计</strong></h3><ol>
+<li><p><strong>低密度（Low Density）</strong>:</p>
+<ul>
+<li>多重网络中的每种关系类型通常具有较低的密度。</li>
+<li>示例：<ul>
+<li><strong>友谊</strong>、<strong>信任</strong>等关系的平均出度较低。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>高互惠性（High Reciprocity）</strong>:</p>
+<ul>
+<li>某些关系类型（如友谊）具有较高的互惠性，但并非所有关系类型都如此。</li>
+<li>示例：<ul>
+<li><strong>友谊</strong>的互惠性较高，而<strong>敌对</strong>关系的互惠性较低。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="4-多重网络的建模"><a href="#4-多重网络的建模" class="headerlink" title="4. 多重网络的建模"></a><strong>4. 多重网络的建模</strong></h3><ol>
+<li><p><strong>指数随机图模型（ERGM）</strong>:</p>
+<ul>
+<li>ERGM 可以用于建模多重网络，通过引入跨网络效应（Cross-Network Effects）来描述不同类型关系之间的相互影响。</li>
+<li><strong>跨网络效应</strong>:<ul>
+<li><strong>共现（Co-occurrence）</strong>: 两种关系类型在同一对节点上同时出现的概率。</li>
+<li><strong>交换（Exchange）</strong>: 一种关系类型的出现会影响另一种关系类型的出现。</li>
+<li><strong>混合传递性（Mixed Triadic Closure）</strong>: 不同类型关系之间的传递性闭合。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>ERGM 示例</strong>:</p>
+<ul>
+<li><strong>信任（Trust）</strong>和<strong>工作困难（Difficulty in Work）</strong>网络：<ul>
+<li><strong>共现效应（Entrainment）</strong>: 负效应，表示信任和工作困难关系不太可能同时出现。</li>
+<li><strong>交换效应（Exchange）</strong>: 正效应，表示信任关系和工作困难关系之间存在交换。</li>
+<li><strong>入二星效应（In-Two-Star Effect）</strong>: 正效应，表示节点的入度在两种关系类型之间存在相关性。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="5-负向关系与结构平衡（Negative-Ties-and-Structural-Balance）"><a href="#5-负向关系与结构平衡（Negative-Ties-and-Structural-Balance）" class="headerlink" title="5. 负向关系与结构平衡（Negative Ties and Structural Balance）"></a><strong>5. 负向关系与结构平衡（Negative Ties and Structural Balance）</strong></h3><ol>
+<li><p><strong>结构平衡理论（Structural Balance Theory）</strong>:</p>
+<ul>
+<li><strong>Fritz Heider 的平衡理论</strong>: 描述个体、对象和观察者之间的关系平衡。</li>
+<li><strong>Cartwright &amp; Harary 的结构平衡理论</strong>: 将平衡理论扩展到社会网络，描述三元组中的关系平衡。<ul>
+<li><strong>平衡三元组</strong>: 所有关系均为正向，或两个负向关系和一个正向关系。</li>
+<li><strong>不平衡三元组</strong>: 其他情况。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>结构平衡定理</strong>:</p>
+<ul>
+<li>一个符号图（Signed Graph）是平衡的，当且仅当它可以被划分为最多两个子图，子图内部只有正向关系，子图之间只有负向关系。</li>
+<li>公式：<br>$$<br>\text{Balance} \iff \text{Partition into two subgraphs with positive ties within and negative ties between}<br>$$</li>
+</ul>
+</li>
+<li><p><strong>结构平衡的应用</strong>:</p>
+<ul>
+<li><strong>国际关系</strong>: 冷战期间的联盟结构、二战期间的联盟结构等。</li>
+<li><strong>群体结构</strong>: 负向关系通常位于群体之间，正向关系位于群体内部。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="6-负向关系的挑战"><a href="#6-负向关系的挑战" class="headerlink" title="6. 负向关系的挑战"></a><strong>6. 负向关系的挑战</strong></h3><ol>
+<li><p><strong>负向关系的持久性</strong>:</p>
+<ul>
+<li>负向关系在社会网络中往往是持久的，且难以消除。</li>
+<li><strong>张力管理（Tension Management）</strong>: 社会网络中的个体通过管理负向关系来避免网络的完全崩溃。</li>
+</ul>
+</li>
+<li><p><strong>结构洞与负向关系</strong>:</p>
+<ul>
+<li>负向关系通常位于群体之间，可能成为结构洞（Structural Holes）的桥梁。</li>
+<li><strong>结构洞理论（Structural Hole Theory）</strong>: 负向关系可能为个体提供中介机会，但也可能增加网络的张力。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="7-总结-1"><a href="#7-总结-1" class="headerlink" title="7. 总结"></a><strong>7. 总结</strong></h3><ul>
+<li><strong>多重网络</strong>是描述复杂社会关系的重要工具，通过分析不同类型的关系可以更全面地理解社会网络。</li>
+<li><strong>ERGM</strong> 可以用于建模多重网络，通过跨网络效应描述不同类型关系之间的相互影响。</li>
+<li><strong>结构平衡理论</strong> 提供了分析正向和负向关系的框架，负向关系通常位于群体之间，正向关系位于群体内部。</li>
+<li><strong>负向关系的持久性</strong> 和 <strong>张力管理</strong> 是社会网络中的重要挑战，负向关系可能为个体提供中介机会，但也可能增加网络的张力。</li>
+</ul>
+<p>好的！以下是第7课的<strong>更详细笔记</strong>，涵盖了<strong>随机行动者导向模型（Stochastic Actor-Oriented Model, SAOM）</strong>的核心概念、数学定义、应用示例以及模型估计和检验的详细步骤。笔记会尽量详细，确保不遗漏重要的数学定义和理论部分。</p>
+<hr>
+<h2 id="社会网络分析：网络动态建模（Modelling-Network-Dynamics）"><a href="#社会网络分析：网络动态建模（Modelling-Network-Dynamics）" class="headerlink" title="社会网络分析：网络动态建模（Modelling Network Dynamics）"></a><strong>社会网络分析：网络动态建模（Modelling Network Dynamics）</strong></h2><h3 id="1-为什么需要建模网络动态？"><a href="#1-为什么需要建模网络动态？" class="headerlink" title="1. 为什么需要建模网络动态？"></a><strong>1. 为什么需要建模网络动态？</strong></h3><ul>
+<li><strong>研究问题</strong>：通常从网络特征与个体特征之间的关联开始。<ul>
+<li>例如：受欢迎的学生是否更容易参与高风险行为？南欧学生是否比北欧学生有更多的朋友？</li>
+</ul>
+</li>
+<li><strong>横截面分析</strong>：可以使用<strong>指数随机图模型（ERGM）</strong>来分析这些关联，但无法解释“为什么”和“如何”发生。</li>
+<li><strong>动态机制</strong>：解释网络变化的机制通常是动态的，例如：<ul>
+<li><strong>同质性选择（Homophily）</strong>：学生倾向于与同种族的学生建立友谊。</li>
+<li><strong>地理邻近性</strong>：学生倾向于与住在附近的学生建立友谊。</li>
+<li><strong>关系破裂</strong>：跨种族的关系更容易破裂。</li>
+</ul>
+</li>
 </ul>
 <hr>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>第4周的内容涉及了以下数学原理：</p>
-<ol>
-<li><strong>图论</strong>：小世界网络和无标度网络的分析基于图论中的路径长度、聚类系数和度分布等概念。</li>
-<li><strong>概率论</strong>：无标度网络的生成模型（如Barabási-Albert模型）涉及概率论中的优先连接机制。</li>
-<li><strong>统计推断</strong>：MRQAP通过置换检验和回归分析来解决网络数据中的依赖性问题，涉及统计推断中的非参数检验方法。</li>
+<h3 id="2-如何建模网络动态？"><a href="#2-如何建模网络动态？" class="headerlink" title="2. 如何建模网络动态？"></a><strong>2. 如何建模网络动态？</strong></h3><ul>
+<li><strong>统计方法</strong>：需要控制不同效应之间的相互影响。</li>
+<li><strong>纵向数据</strong>：需要将前因与后果联系起来。</li>
+<li><strong>社会中心网络方法</strong>：选择机制只能在知道所有候选人的情况下进行研究。</li>
+<li><strong>随机行动者导向模型（SAOM）</strong>：由Snijders于1996年提出，用于处理纵向网络数据。</li>
+</ul>
+<hr>
+<h3 id="3-SAOM的基本假设"><a href="#3-SAOM的基本假设" class="headerlink" title="3. SAOM的基本假设"></a><strong>3. SAOM的基本假设</strong></h3><h4 id="假设1：行动者导向的视角"><a href="#假设1：行动者导向的视角" class="headerlink" title="假设1：行动者导向的视角"></a><strong>假设1：行动者导向的视角</strong></h4><ul>
+<li><strong>行动者是模型的核心</strong>：网络变化是由行动者的决策驱动的。</li>
+<li><strong>两个基本模型组件</strong>：<ol>
+<li><strong>速率函数（Rate Function）</strong>：行动者何时可以做出决策？<ul>
+<li>模型化行动者做出网络变化的机会频率。</li>
+</ul>
+</li>
+<li><strong>目标函数（Objective Function）</strong>：行动者做出什么决策？<ul>
+<li>模型化行动者创建和维护哪些关系。</li>
+</ul>
+</li>
 </ol>
-<p>这些数学原理为理解小世界网络、无标度网络和MRQAP提供了理论基础，同时也为实际的社会网络分析提供了有力的工具。</p>
+</li>
+</ul>
+<h4 id="假设2：可分解性（Decomposability）"><a href="#假设2：可分解性（Decomposability）" class="headerlink" title="假设2：可分解性（Decomposability）"></a><strong>假设2：可分解性（Decomposability）</strong></h4><ul>
+<li><strong>离散时间观测</strong>：假设通过未观察到的连续时间过程相关联。</li>
+<li><strong>最小变化（Ministeps）</strong>：网络变化被分解为尽可能小的变化步骤。<ul>
+<li>例如：两个网络之间只有一个关系变量发生变化。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-SAOM的数学定义"><a href="#4-SAOM的数学定义" class="headerlink" title="4. SAOM的数学定义"></a><strong>4. SAOM的数学定义</strong></h3><h4 id="速率函数（Rate-Function）"><a href="#速率函数（Rate-Function）" class="headerlink" title="速率函数（Rate Function）"></a><strong>速率函数（Rate Function）</strong></h4><ul>
+<li>模型化行动者 ( i ) 做出网络变化的速度。</li>
+<li>数学公式：<br>[<br>\lambda_i(x) &#x3D; \sum_{k} p_k r_{ik}(x)<br>]<ul>
+<li>( r_{ik}(x) )：行动者 ( i ) 在网络 ( x ) 中的邻居统计量。</li>
+<li>( p_k )：模型参数，表示该统计量是否与更频繁的网络变化相关。</li>
+</ul>
+</li>
+</ul>
+<h4 id="目标函数（Objective-Function）"><a href="#目标函数（Objective-Function）" class="headerlink" title="目标函数（Objective Function）"></a><strong>目标函数（Objective Function）</strong></h4><ul>
+<li>模型化网络状态 ( x ) 对行动者 ( i ) 的吸引力。</li>
+<li>数学公式：<br>[<br>f_i(x) &#x3D; \sum_{k} \beta_k s_{ik}(x)<br>]<ul>
+<li>( s_{ik}(x) )：行动者 ( i ) 在网络 ( x ) 中的邻居统计量。</li>
+<li>( \beta_k )：模型参数，表示该统计量是否被行动者追求（( \beta_k &gt; 0 )）或避免（( \beta_k &lt; 0 )）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="5-常用的结构效应统计量"><a href="#5-常用的结构效应统计量" class="headerlink" title="5. 常用的结构效应统计量"></a><strong>5. 常用的结构效应统计量</strong></h3><ul>
+<li><strong>出度效应（Outdegree Effect）</strong>：行动者倾向于保持一定数量的出度关系。<br>[<br>s_i^{\text{outdeg}} &#x3D; \sum_j x_{ij}<br>]</li>
+<li><strong>互惠效应（Reciprocity Effect）</strong>：行动者倾向于互惠关系。<br>[<br>s_i^{\text{recip}} &#x3D; \sum_j x_{ij} x_{ji}<br>]</li>
+<li><strong>传递性效应（Transitivity Effect）</strong>：行动者倾向于形成传递性三元组。<br>[<br>s_i^{\text{tr.trip}} &#x3D; \sum_{jk} x_{ij} x_{jk} x_{ik}<br>]</li>
+</ul>
+<hr>
+<h3 id="6-行动者属性相关的效应"><a href="#6-行动者属性相关的效应" class="headerlink" title="6. 行动者属性相关的效应"></a><strong>6. 行动者属性相关的效应</strong></h3><ul>
+<li><strong>发送者效应（Sender Effect）</strong>：某些属性使行动者更倾向于发送关系。<br>[<br>\beta_e \sum_j x_{ij} v_i<br>]</li>
+<li><strong>接收者效应（Receiver Effect）</strong>：某些属性使行动者更倾向于接收关系。<br>[<br>\beta_a \sum_j x_{ij} v_j<br>]</li>
+<li><strong>同质性效应（Homophily Effect）</strong>：行动者倾向于与具有相似属性的其他行动者建立关系。<br>[<br>\beta_s \sum_j x_{ij} I{v_i &#x3D; v_j}<br>]</li>
+</ul>
+<hr>
+<h3 id="7-SAOM的参数估计与收敛"><a href="#7-SAOM的参数估计与收敛" class="headerlink" title="7. SAOM的参数估计与收敛"></a><strong>7. SAOM的参数估计与收敛</strong></h3><ul>
+<li><strong>蒙特卡洛模拟</strong>：通过模拟网络变化来估计模型参数。</li>
+<li><strong>收敛性检验</strong>：通过比较模拟数据与观测数据的拟合度来评估模型是否收敛。<ul>
+<li><strong>收敛标准</strong>：( t_{conv} ) 值应接近0（通常 ( -0.1 &lt; t_{conv} &lt; +0.1 )）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="8-模型拟合与假设检验"><a href="#8-模型拟合与假设检验" class="headerlink" title="8. 模型拟合与假设检验"></a><strong>8. 模型拟合与假设检验</strong></h3><ul>
+<li><p><strong>参数显著性检验</strong>：通过计算参数与标准误差的比值来检验参数的显著性。<br>[<br>\frac{\beta_k}{\text{st.err.}(\beta_k)}<br>]</p>
+<ul>
+<li>该比值近似服从标准正态分布，可用于检验 ( H_0: \beta_k &#x3D; 0 )。</li>
+</ul>
+</li>
+<li><p><strong>模型拟合</strong>：通过检查未包含在模型中的网络特征来评估模型的拟合度。</p>
+<ul>
+<li>例如：检查入度分布是否与观测数据一致。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="9-网络与行为的共演化"><a href="#9-网络与行为的共演化" class="headerlink" title="9. 网络与行为的共演化"></a><strong>9. 网络与行为的共演化</strong></h3><ul>
+<li><strong>网络依赖行为</strong>：个体特征可以影响网络结构（例如：同质性选择）。</li>
+<li><strong>行为依赖网络</strong>：网络结构可以影响个体特征（例如：社会影响）。</li>
+<li><strong>共演化模型</strong>：同时建模网络和行为的变化，允许分离选择与影响机制。</li>
+</ul>
+<hr>
+<h3 id="10-选择与影响的混淆问题"><a href="#10-选择与影响的混淆问题" class="headerlink" title="10. 选择与影响的混淆问题"></a><strong>10. 选择与影响的混淆问题</strong></h3><ul>
+<li><strong>同质性偏差（Homophily Bias）</strong>：网络中的连接个体往往在行为上更相似。</li>
+<li><strong>竞争解释</strong>：<ol>
+<li><strong>选择机制</strong>：个体基于相似性选择关系。</li>
+<li><strong>影响机制</strong>：个体根据其社交环境调整行为。</li>
+</ol>
+</li>
+<li><strong>控制混淆因素</strong>：通过测量和控制共享的社会背景来减少未观察到的混淆因素。</li>
+</ul>
+<hr>
+<h3 id="11-示例：MBA学生的建议寻求网络"><a href="#11-示例：MBA学生的建议寻求网络" class="headerlink" title="11. 示例：MBA学生的建议寻求网络"></a><strong>11. 示例：MBA学生的建议寻求网络</strong></h3><ul>
+<li><strong>数据</strong>：75名MBA学生，3个时间点的建议寻求网络和考试成绩。</li>
+<li><strong>假设</strong>：<ol>
+<li><strong>朋友之间更可能寻求建议</strong>（同质性选择）。</li>
+<li><strong>成绩较低的学生更可能寻求建议</strong>（发送者效应）。</li>
+<li><strong>成绩较高的学生更可能被寻求建议</strong>（接收者效应）。</li>
+</ol>
+</li>
+<li><strong>结果</strong>：所有假设均得到支持。</li>
+</ul>
+<hr>
+<h3 id="12-总结"><a href="#12-总结" class="headerlink" title="12. 总结"></a><strong>12. 总结</strong></h3><ul>
+<li><strong>SAOM</strong> 是一种强大的工具，用于建模网络动态和行为共演化。</li>
+<li>通过分离选择与影响机制，SAOM 可以帮助解释网络变化的动态过程。</li>
+<li>模型参数通过蒙特卡洛模拟估计，并通过拟合度检验评估模型的合理性。</li>
+</ul>
+<p>好的！以下是根据你提供的课件内容整理的详细笔记，涵盖了社会网络分析中的角色分析和块模型（Blockmodeling）的核心概念、数学定义和应用。笔记会尽量详细，确保不遗漏重要的数学定义和理论部分。</p>
+<h2 id="社会网络分析：角色分析与块模型（Role-Analysis-and-Blockmodeling）"><a href="#社会网络分析：角色分析与块模型（Role-Analysis-and-Blockmodeling）" class="headerlink" title="社会网络分析：角色分析与块模型（Role Analysis and Blockmodeling）**"></a>社会网络分析：角色分析与块模型（Role Analysis and Blockmodeling）**</h2><h3 id="1-网络作为矩阵的初步介绍"><a href="#1-网络作为矩阵的初步介绍" class="headerlink" title="1. 网络作为矩阵的初步介绍"></a><strong>1. 网络作为矩阵的初步介绍</strong></h3><ul>
+<li><strong>节点（Nodes）&#x2F;顶点（Vertices）&#x2F;行动者（Actors）</strong>：网络中的个体或实体。</li>
+<li><strong>边（Edges）&#x2F;关系（Relations）&#x2F;二元组（Dyads）</strong>：节点之间的连接。</li>
+<li><strong>数据格式</strong>：<ul>
+<li><strong>节点列表（Nodelist）</strong>：列出所有节点。</li>
+<li><strong>社会矩阵（Sociomatrix）</strong>：矩阵形式表示节点之间的关系。</li>
+<li><strong>边列表（Edgelist）</strong>：列出所有边的连接关系。</li>
+</ul>
+</li>
+</ul>
+<h4 id="社会矩阵的读取"><a href="#社会矩阵的读取" class="headerlink" title="社会矩阵的读取"></a><strong>社会矩阵的读取</strong></h4><ul>
+<li>社会矩阵是一个 ( n \times n ) 的矩阵，其中 ( n ) 是节点的数量。</li>
+<li>矩阵中的每个元素 ( a_{ij} ) 表示节点 ( i ) 和节点 ( j ) 之间是否存在关系（通常用 1 表示存在关系，0 表示不存在）。</li>
+<li><strong>无自环（No self-ties）</strong>：矩阵对角线上的元素 ( a_{ii} ) 通常为 0，表示节点不与自身相连。</li>
+</ul>
+<h4 id="对称性（Symmetric）"><a href="#对称性（Symmetric）" class="headerlink" title="对称性（Symmetric）"></a><strong>对称性（Symmetric）</strong></h4><ul>
+<li>如果网络是无向的（即关系是双向的），社会矩阵是对称的，即 ( a_{ij} &#x3D; a_{ji} )。</li>
+</ul>
+<hr>
+<h3 id="2-角色分析的基本概念"><a href="#2-角色分析的基本概念" class="headerlink" title="2. 角色分析的基本概念"></a><strong>2. 角色分析的基本概念</strong></h3><ul>
+<li><p><strong>社会角色（Social Roles）</strong>：</p>
+<ul>
+<li>社会角色是指在社会结构中，个体所扮演的角色（如 CEO、员工、老师、学生等）。</li>
+<li>每个角色都有其特定的行为、期望和责任。</li>
+<li><strong>Harrison White</strong> 提出，角色可以通过纯粹的关系形式来定义，社会结构是由多重人际关系的网络构成的。</li>
+</ul>
+</li>
+<li><p><strong>角色与位置的关系</strong>：</p>
+<ul>
+<li>角色是通过互动模式定义的，而不是通过个体的属性。</li>
+<li>例如，在医院中，医生、护士、行政人员和患者有不同的互动模式，这些模式定义了他们的角色。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="3-块模型（Blockmodeling）"><a href="#3-块模型（Blockmodeling）" class="headerlink" title="3. 块模型（Blockmodeling）"></a><strong>3. 块模型（Blockmodeling）</strong></h3><ul>
+<li><strong>块模型的目标</strong>：<ul>
+<li>将网络划分为若干个“块”（blocks），每个块代表一组在结构上等价的节点。</li>
+<li>通过块模型，可以将复杂的网络简化为更简单的结构，便于分析和理解。</li>
+</ul>
+</li>
+</ul>
+<h4 id="块模型的类型"><a href="#块模型的类型" class="headerlink" title="块模型的类型"></a><strong>块模型的类型</strong></h4><ul>
+<li><strong>完全块（Complete Block, com）</strong>：块内的所有节点之间都有连接。</li>
+<li><strong>空块（Null Block, nul）</strong>：块内的节点之间没有任何连接。</li>
+<li><strong>规则块（Regular Block, reg）</strong>：块内的节点至少有一个出边和一个入边。</li>
+</ul>
+<h4 id="块模型的数学定义"><a href="#块模型的数学定义" class="headerlink" title="块模型的数学定义"></a><strong>块模型的数学定义</strong></h4><ul>
+<li><p><strong>结构等价性（Structural Equivalence）</strong>：</p>
+<ul>
+<li>两个节点在结构上等价，当且仅当它们与其他节点的连接模式完全相同。</li>
+<li>数学上，节点 ( i ) 和节点 ( j ) 是结构等价的，如果对于所有节点 ( k )，都有 ( a_{ik} &#x3D; a_{jk} ) 且 ( a_{ki} &#x3D; a_{kj} )。</li>
+<li>结构等价性通常用于生成完全块和空块。</li>
+</ul>
+</li>
+<li><p><strong>规则等价性（Regular Equivalence）</strong>：</p>
+<ul>
+<li>两个节点在规则上等价，当且仅当它们连接到其他规则等价的节点。</li>
+<li>数学上，节点 ( i ) 和节点 ( j ) 是规则等价的，如果它们连接到相同的等价类中的节点。</li>
+<li>规则等价性通常用于生成规则块。</li>
+</ul>
+</li>
+<li><p><strong>广义等价性（Generalized Equivalence）</strong>：</p>
+<ul>
+<li>广义等价性允许更灵活的定义，块可以是完全块、空块、规则块，或其他类型的块（如行规则块、列规则块等）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-块模型的构建步骤"><a href="#4-块模型的构建步骤" class="headerlink" title="4. 块模型的构建步骤"></a><strong>4. 块模型的构建步骤</strong></h3><h4 id="直接方法（Direct-Blockmodeling）"><a href="#直接方法（Direct-Blockmodeling）" class="headerlink" title="直接方法（Direct Blockmodeling）"></a><strong>直接方法（Direct Blockmodeling）</strong></h4><ol>
+<li><strong>初始分区</strong>：随机将节点分配到若干个位置（positions）。</li>
+<li><strong>局部优化</strong>：通过移动或交换节点来优化分区，使得块模型与理想块类型（如完全块、空块等）的拟合度最高。</li>
+<li><strong>拟合度评估</strong>：使用拟合度函数（如汉明距离、加权相关系数等）评估块模型的质量。</li>
+<li><strong>块模型的生成</strong>：根据最优分区生成块模型。</li>
+</ol>
+<h4 id="间接方法（Indirect-Blockmodeling）"><a href="#间接方法（Indirect-Blockmodeling）" class="headerlink" title="间接方法（Indirect Blockmodeling）"></a><strong>间接方法（Indirect Blockmodeling）</strong></h4><ol>
+<li><strong>计算等价性度量</strong>：首先计算节点之间的结构等价性（或其他等价性度量）。</li>
+<li><strong>生成相似性矩阵</strong>：根据等价性度量生成节点之间的相似性矩阵。</li>
+<li><strong>聚类分析</strong>：使用层次聚类等方法将节点划分为若干个等价类。</li>
+<li><strong>生成块模型</strong>：根据聚类结果生成块模型。</li>
+</ol>
+<hr>
+<h3 id="5-块模型的数学工具"><a href="#5-块模型的数学工具" class="headerlink" title="5. 块模型的数学工具"></a><strong>5. 块模型的数学工具</strong></h3><h4 id="汉明距离（Hamming-Distance）"><a href="#汉明距离（Hamming-Distance）" class="headerlink" title="汉明距离（Hamming Distance）"></a><strong>汉明距离（Hamming Distance）</strong></h4><ul>
+<li>汉明距离用于衡量两个块模型之间的差异。</li>
+<li>对于两个块模型 ( A ) 和 ( B )，汉明距离定义为两个矩阵中不一致的元素数量。</li>
+<li>数学公式：<br>[<br>H(A, B) &#x3D; \sum_{i&#x3D;1}^n \sum_{j&#x3D;1}^n |a_{ij} - b_{ij}|<br>]<br>其中 ( a_{ij} ) 和 ( b_{ij} ) 分别是矩阵 ( A ) 和 ( B ) 的元素。</li>
+</ul>
+<h4 id="加权相关系数（Weighted-Correlation-Coefficient）"><a href="#加权相关系数（Weighted-Correlation-Coefficient）" class="headerlink" title="加权相关系数（Weighted Correlation Coefficient）"></a><strong>加权相关系数（Weighted Correlation Coefficient）</strong></h4><ul>
+<li>加权相关系数用于衡量块模型与理想块类型之间的拟合度。</li>
+<li>数学公式：<br>[<br>\rho &#x3D; \frac{\sum_{i&#x3D;1}^n \sum_{j&#x3D;1}^n w_{ij} (a_{ij} - \bar{a})(b_{ij} - \bar{b})}{\sqrt{\sum_{i&#x3D;1}^n \sum_{j&#x3D;1}^n w_{ij} (a_{ij} - \bar{a})^2 \sum_{i&#x3D;1}^n \sum_{j&#x3D;1}^n w_{ij} (b_{ij} - \bar{b})^2}}<br>]<br>其中 ( w_{ij} ) 是权重，( \bar{a} ) 和 ( \bar{b} ) 分别是矩阵 ( A ) 和 ( B ) 的均值。</li>
+</ul>
+<hr>
+<h3 id="6-块模型的应用"><a href="#6-块模型的应用" class="headerlink" title="6. 块模型的应用"></a><strong>6. 块模型的应用</strong></h3><h4 id="核心-外围结构（Core-Periphery-Structure）"><a href="#核心-外围结构（Core-Periphery-Structure）" class="headerlink" title="核心-外围结构（Core-Periphery Structure）"></a><strong>核心-外围结构（Core-Periphery Structure）</strong></h4><ul>
+<li>核心-外围结构是一种常见的网络结构，其中核心节点之间高度连接，而外围节点只与核心节点连接。</li>
+<li>通过块模型，可以将网络划分为核心和外围两个块，并分析它们之间的关系。</li>
+</ul>
+<h4 id="社区检测（Community-Detection）"><a href="#社区检测（Community-Detection）" class="headerlink" title="社区检测（Community Detection）"></a><strong>社区检测（Community Detection）</strong></h4><ul>
+<li>社区检测是块模型的一种应用，用于识别网络中的社区结构。</li>
+<li>常用的算法包括模块化优化算法（Modularity Optimization），通过最大化模块化值来识别社区。</li>
+</ul>
+<hr>
+<h3 id="7-块模型的软件工具"><a href="#7-块模型的软件工具" class="headerlink" title="7. 块模型的软件工具"></a><strong>7. 块模型的软件工具</strong></h3><ul>
+<li><strong>Socnet.se</strong>：一个用于直接块模型分析的命令行工具，支持结构等价性、规则等价性和广义等价性分析。</li>
+<li><strong>R 脚本</strong>：可以使用 R 语言进行间接块模型分析，支持层次聚类和块模型的生成。</li>
+</ul>
+<hr>
+<h3 id="8-总结-1"><a href="#8-总结-1" class="headerlink" title="8. 总结"></a><strong>8. 总结</strong></h3><ul>
+<li>块模型和角色分析是理解复杂网络结构的有力工具。</li>
+<li>通过将网络划分为等价的位置，并分析这些位置之间的关系模式，可以揭示网络的功能解剖学。</li>
+<li>数学工具如汉明距离和加权相关系数用于评估块模型的拟合度，确保分析的准确性。</li>
+</ul>
+<hr>
+<p>如果你有任何具体的问题或需要进一步的解释，请告诉我！</p>
 
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>License</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
